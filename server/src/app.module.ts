@@ -40,7 +40,7 @@ import { AuthController } from './controller/auth/auth.controller';
 import { RoleService } from './services/role.service';
 import { RoleController } from './controller/role/role.controller';
 import { Role ,RoleModel } from './Models/role.modle';
-import { PriorityController } from './controller/status/status.controller';
+import { PriorityController } from './controller/priority/priority.controller';
 import { MeetService } from './services/meet.service';
 import { Meet, MeetModel } from './Models/meet.model';
 import { MeetController } from './controller/meet/meet.controller';
@@ -54,7 +54,7 @@ import * as path from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { Status, StatusModel } from './Models/status.model';
 import { Priority, PriorityModel } from './Models/priority.model';
-import { StatusController } from './controller/priority/priority.controller';
+import { StatusController } from './controller/status/status.controller';
 import { StatusService } from './services/status.service';
 import { PriorityService } from './services/priority.service';
 import { CommunicationArchiveController } from './controller/communicationArchive/communicationArchive.controler';
@@ -88,7 +88,7 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
-  controllers: [AppController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController],  
+  controllers: [AppController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController],  
 
 
   providers: [
