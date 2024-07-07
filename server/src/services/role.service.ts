@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { CreateRoleDto, UpdateRoleDto } from "../Models/dto/role.dto";
+import { CreateRoleDto ,UpdateRoleDto } from "../Models/dto/role.dto";
 import { Role } from "../Models/role.modle";
 import { ValidationException } from "../common/exceptions/validation.exception";
 
@@ -20,6 +20,13 @@ export class RoleService {
         return await createdRole.save();
     }
 
+    async getRole(level: number): Promise<Role> {
+        const role:Role = await this.RoleModel.findOne({"level":level}).exec();
+        if (!role) {
+            throw new NotFoundException(`Role with Level ${level} not found`);
+        }
+        return role;
+    }
     async getALLRolies(): Promise<Role[]> {
         return await this.RoleModel.find().exec();
     }
