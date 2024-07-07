@@ -1,0 +1,25 @@
+<p>client-add-communication works!</p>
+
+<div class="p-grid">
+    <h2 class="p-my-4">Create New Communication</h2>
+    <form (ngSubmit)="createCommunication()" #createForm="ngForm" class="form-background">
+      <div class="p-field">
+        <label for="date">Date</label>
+        <input type="date" class="p-inputtext" id="date" [(ngModel)]="formattedDate" name="date" required (dblclick)="setTodayDate()">
+      </div>
+      <div class="p-field">
+        <label for="type">Type</label>
+        <input type="text" class="p-inputtext" id="type" [(ngModel)]="newCommunication.type" name="type" required>
+      </div>
+      <div class="p-field">
+        <label for="summary">Summary</label>
+        <textarea class="p-textarea" id="summary" [(ngModel)]="newCommunication.summary" name="summary" rows="3" required></textarea>
+      </div>
+      <div class="p-field">
+        <label for="assignedTo">Assigned To</label>
+        <p-dropdown [options]="users" [(ngModel)]="newCommunication.assignedTo" name="assignedTo" optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
+      </div>
+      <button type="submit" class="p-button" [disabled]="!createForm.form.valid">Create Communication</button>
+    </form>
+  </div>
+  

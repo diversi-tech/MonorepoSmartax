@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "types": ["jest", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["apps/front/src/app/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "../../libs/**/*.ts", "src/polyfills.ts"],
+  "exclude": ["node_modules", "dist"]
+}

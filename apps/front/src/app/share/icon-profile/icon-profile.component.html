@@ -1,0 +1,10 @@
+<p-avatar
+  [label]="userName && userName!.charAt(0)"
+  styleClass="mr-3"
+  [style]="{
+    'background-color': userName && getColor(userName!),
+    color: '#fff'
+  }"
+  shape="circle"
+  class="avatar"
+></p-avatar>

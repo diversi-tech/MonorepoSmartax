@@ -1,0 +1,41 @@
+
+<!-- <div *ngIf="true" [@dialog] class="dialog-container"> -->
+    <p-dialog header="לקוח חדש" [(visible)]="displayDialog" [modal]="true" [responsive]="true" [style]="{width: '300px'}" [closable]="true" (onHide)="onClose()">
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+            <div>
+              <label for="name">שם:</label>
+              <input type="text" id="name" formControlName="name" required placeholder="הכנס שם">
+                <div *ngIf="contactForm.get('name')?.errors?.['required']" class="red">חייבים להכניס שם</div>
+                <div *ngIf="contactForm.get('name')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+            </div>
+          
+             <label for="phoneNumber">מספר טלפון:</label>
+              <input type="tel" id="phoneNumber" formControlName="phoneNumber" class="form-control" placeholder="הכנס מספר טלפון">
+              <div *ngIf="contactForm.get('phoneNumber')?.invalid && (contactForm.get('phoneNumber')?.dirty || contactForm.get('phoneNumber')?.touched)">
+                <div *ngIf="contactForm.get('phoneNumber')?.errors?.['required']" class="red">חייבים להכניס מספר טלפון</div>
+                <div *ngIf="contactForm.get('phoneNumber')?.errors?.['pattern']" class="red">טלפון לא תקין הכנס טלפון תקין</div>
+              </div>
+              
+            <div>
+              <label for="businessName">שם עסק:</label>
+              <input type="text" id="businessName" formControlName="businessName" placeholder="הכנס שם עסק">
+              <div *ngIf="contactForm.get('businessName')?.errors?.['required']" class="red">חייבים להכניס שם עסק</div>
+            </div>
+            <div>
+              <label for="source">מקור:</label>
+              <input type="text" id="source" formControlName="source" placeholder="הכנס מקור">
+            </div>
+            <div>
+              <label for="status">סטטוס:</label>
+              <select id="status" formControlName="status" placeholder="הכנס סטטוס">
+                <option value="active">פעיל</option>
+                <option value="inactive">לא פעיל</option>
+              </select>
+            </div>
+            <div>
+              <label for="date">תאריך:</label>
+              <input type="date" id="date" formControlName="date" required>
+            </div>
+            <button type="submit" [disabled]="!contactForm.valid">שלח</button>
+          </form>
+        </p-dialog>

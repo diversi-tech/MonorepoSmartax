@@ -1,0 +1,42 @@
+<p>all-communication works!</p>
+<div class="p-grid">
+    <h2 class="p-my-4">Communications</h2>
+    <ul class="p-list-group">
+      <li class="p-list-group-item" *ngFor="let communication of communications">
+        <ng-container *ngIf="communication">
+          {{ communication.date | date: 'yyyy-MM-dd' }} - {{ communication.type }}: {{ communication.summary }}
+          <button class="p-button p-button-warning p-button-sm p-float-right p-ml-2" (click)="selectCommunication(communication)">Edit</button>
+          <button class="p-button p-button-danger p-button-sm p-float-right" (click)="deleteCommunication(communication._id!)">Delete</button>
+        </ng-container>
+      </li>
+    </ul>
+  </div>
+  
+  <div *ngIf="selectedCommunication" class="p-grid">
+    <h2 class="p-my-4">Edit Communication</h2>
+    <form (ngSubmit)="updateCommunication()" class="form-background">
+      <div class="p-field">
+        <label for="editClientName">Client Name</label>
+        <input type="text" class="p-inputtext" id="editClientName" [(ngModel)]="selectedCommunication.client" name="editClientName" required>
+      </div>
+      <div class="p-field">
+        <label for="editDate">Date</label>
+        <input type="date" class="p-inputtext" id="editDate" [(ngModel)]="selectedCommunication.date" name="editDate" required>
+      </div>
+      <div class="p-field">
+        <label for="editType">Type</label>
+        <input type="text" class="p-inputtext" id="editType" [(ngModel)]="selectedCommunication.type" name="editType" required>
+      </div>
+      <div class="p-field">
+        <label for="editSummary">Summary</label>
+        <textarea class="p-textarea" id="editSummary" [(ngModel)]="selectedCommunication.summary" name="editSummary" rows="3" required></textarea>
+      </div>
+      <div class="p-field">
+        <label for="editAssignedTo">Assigned To</label>
+        <p-dropdown [options]="users" [(ngModel)]="selectedCommunication.assignedTo" name="editAssignedTo" optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
+      </div>
+      <button type="submit" class="p-button">Update Communication</button>
+    </form>
+  </div>
+  
+  

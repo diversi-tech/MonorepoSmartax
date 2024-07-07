@@ -1,0 +1,51 @@
+<!-- <p>client-upload-doc works!</p>
+<p-fileUpload
+name="file"
+[customUpload]="true"
+(uploadHandler)="upload($event)"
+[style]="{'margin-bottom': '20px'}"
+[auto]="true"
+chooseIcon="pi pi-cloud-upload"
+chooseLabel=" ">
+</p-fileUpload> -->
+<!-- <div *ngIf="fileUrl">(onSelect)="onFileSelect($event)"
+
+  <ng-container [ngSwitch]="fileType" width="100%">
+    <img *ngSwitchCase="'image/jpg'" [src]="fileUrl" alt="Image" width="50%">
+    <img *ngSwitchCase="'image/png'" [src]="fileUrl" alt="Image" width="100%">
+    <iframe *ngSwitchCase="'application/pdf'" [src]="fileUrl" width="100%" height="500px"></iframe>
+    <video *ngSwitchCase="'video/mp4'" [src]="fileUrl" width="100%" controls></video>
+    <audio *ngSwitchCase="'audio/mp3'" [src]="fileUrl" controls></audio>
+    <iframe *ngSwitchDefault [src]="fileUrl" width="100%" height="500px"></iframe>
+  </ng-container>
+</div> -->
+
+<!-- <div class="card">
+  <p-table [value]="uploadedFiles" sortField="name" [sortOrder]="-1" [tableStyle]="{ 'min-width': '60rem' }">
+      <ng-template pTemplate="header">
+          <tr>
+              <th pSortableColumn="name" style="width:20%">
+                Name <p-sortIcon field="name" />
+              </th>
+              <th pSortableColumn="viewLink" style="width:20%">
+                ViewLink <p-sortIcon field="viewLink" />
+              </th>
+              <th pSortableColumn="date" style="width:20%">
+                Date <p-sortIcon field="date" />
+              </th>
+              <th pSortableColumn="status" style="width:20%">
+                Status <p-sortIcon field="status" />
+              </th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-doc>
+          <tr>
+              <td>{{ doc.name }}</td>
+              <td> <a href="{{doc.viewLink}}">{{doc.viewLink}}</a></td>
+              <td>{{doc.date}}</td>
+              <td>{{ doc.status }}</td>
+          </tr>
+      </ng-template>
+  </p-table>
+</div>
+   -->

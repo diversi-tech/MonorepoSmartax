@@ -1,0 +1,18 @@
+<!-- task-in-list.component.html -->
+<tr>
+  <td>{{ task.taskName }}</td>
+  <td>
+    <app-icon-profile [userName]="task.assignedTo.userName" [email]="task.assignedTo.email"></app-icon-profile>
+  </td>
+  <td>{{ task.dueDate | date:'shortDate' }}</td>
+  <td>
+    <button *ngFor="let tag of task.tags; let i = index"
+      [ngStyle]="{ backgroundColor: tag.color, color: 'white' }" class="custom-button">
+      {{ tag.text }}
+      <span [ngClass]="{ bounce: task.tags && i < task.tags.length - 1 }" class="delete-button">
+        x
+      </span>
+    </button>
+  </td>
+  <td><button [routerLink]="['/taskSpe', task._id]" pButton icon="pi pi-pencil" label="Edit"></button></td>
+</tr>

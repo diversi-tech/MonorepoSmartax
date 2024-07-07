@@ -1,0 +1,30 @@
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-results {
+  border: 1px solid #ccc;
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.search-results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.search-results li {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.search-results li:hover {
+  background-color: #f0f0f0;
+}
+
+.styleCliennt {
+  text-align: center;
+  margin: 2%;
+  margin-left: 45%;
+}

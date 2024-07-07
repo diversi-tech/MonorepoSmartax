@@ -1,0 +1,11 @@
+<full-calendar 
+[options]="calendarOptions"
+[events]="eventsPromise | async"
+[deepChangeDetection]="true"
+>
+<ng-template #eventContent let-arg>
+    <b>{{ arg.event.title }}</b>
+    <br>
+    <small>{{ arg.event.start | date:'shortTime' }}</small>
+  </ng-template>
+</full-calendar>
