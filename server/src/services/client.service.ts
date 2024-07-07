@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Client } from '../Models/client.model';
-import { CreateClientDto, UpdateClientDto } from '../Models/dto/client.dto';
+import { CreateClientDto ,UpdateClientDto } from '../Models/dto/client.dto';
 import { ValidationException } from '../common/exceptions/validation.exception';
 
 @Injectable()
@@ -12,24 +12,25 @@ export class ClientService {
     constructor(@InjectModel('Client') private readonly clientModel: Model<Client>) {}
 
     async createClient(createClientDto: CreateClientDto): Promise<Client> {
-        const { name, contactInfo, businessName, source, status, createdDate } = createClientDto;
+        const { name, contactInfo, businessName, source, status, createdDate, tag } = createClientDto;
 
-        if (!name || !contactInfo || !businessName || !source || !status || !createdDate) {
+        if (!name || !contactInfo || !businessName || !source || !status || !createdDate || !tag) {
           throw new ValidationException('Missing required fields');
         }
-        const createdClient = new this.clientModel({ name, contactInfo, businessName, source, status, createdDate });
+        
+        const createdClient = new this.clientModel({ name, contactInfo, businessName, source, status, createdDate, tag });
         return await createdClient.save();
     }
 
-    async getALLClients(): Promise<Client[]> {
+    async getAllClients(): Promise<Client[]> {
         return await this.clientModel.find().exec();
     }
-    async searchClient(id:string): Promise<Client[]> {
-        const clients= await this.clientModel.find({"_id":id}).exec();
-        if (!clients || clients.length === 0) {
+    async searchClient(id:string): Promise<Client> {
+        const client= await this.clientModel.findOne({"_id":id}).exec();
+        if (!client) {
             throw new NotFoundException('Client not found');
           }
-          return clients;
+          return client;
     }
     async updateClient(updateClientDto: UpdateClientDto): Promise<Client> {
         const {id, ...updateData } = updateClientDto;

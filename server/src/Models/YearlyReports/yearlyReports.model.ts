@@ -1,35 +1,37 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+// import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+// import { Document } from 'mongoose';
+// import { Step1 } from './Steps/step1.model';
 
-@Schema()
-export class YearlyReports extends Document {
-    @Prop()
-    name: string;
-
-    @Prop()
-    idUser: string;
-
-    @Prop()
-    assignee: string[];
+// @Schema()
+// export class YearlyReports extends Document {
     
-    @Prop()
-    idEmploye: string;
+//     @Prop()
+//     idUser: string;
 
-    @Prop()
-    yearReport: string;
+//     @Prop()
+//     assignee: string[];
+    
+//     @Prop()
+//     idEmploye: string;
 
-    @Prop()
-    dateTime: Date;
+//     @Prop()
+//     yearReport: string;
 
-    @Prop()
-    price: number;
+//     @Prop()
+//     dateTime: Date;
 
-    @Prop()
-    paymentAmountPaid: number;
+//     @Prop()
+//     price: number;
 
-    @Prop()
-    balanceDue: number;
+//     @Prop()
+//     paymentAmountPaid: number;
+
+//     @Prop()
+//     balanceDue: number;
+
+//     @Prop()
+//     step1: Step1;
    
-}
+// }
 
-export const YearlyReportstModel = SchemaFactory.createForClass(YearlyReports);
+// export const YearlyReportstModel = SchemaFactory.createForClass(YearlyReports);

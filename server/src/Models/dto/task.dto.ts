@@ -1,5 +1,10 @@
-import { IsNotEmpty, IsDateString, IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsDateString, IsString, IsOptional, IsNumber, isNotEmpty } from 'class-validator';
 import { Client } from "../client.model";
+import { Tag } from '../tag.model';
+import { User } from '../../Models/user.model';
+import { ApiProperty } from '@nestjs/swagger';
+import { Priority } from '../priority.model';
+import { Status } from '../status.model';
 
 export class CreateTaskDto {
     @IsNotEmpty()
@@ -18,15 +23,32 @@ export class CreateTaskDto {
     dueDate: Date;
 
     @IsNotEmpty()
-    @IsString()
-    status: string;
+    @IsDateString()
+    startDate: Date;
 
     @IsNotEmpty()
-    @IsNumber()
-    assignedTo: number;
+    @IsString()
+    status: Status;
+
+    @IsNotEmpty()
+    assignedTo: User;
+
+    @IsNotEmpty()
+    tags: Tag[];
+
+    @IsNotEmpty()
+    @IsString()
+    priority: Priority;
+    
 }
 
 export class UpdateTaskDto {
+
+    @ApiProperty({ description: 'The task ID' })
+    @IsNotEmpty()
+    @IsString()
+    id: string;
+
     @IsOptional()
     client?: Client;
 
@@ -47,6 +69,8 @@ export class UpdateTaskDto {
     status?: string;
 
     @IsOptional()
-    @IsNumber()
-    assignedTo?: number;
+    assignedTo?: User;
+
+    @IsOptional()
+    tags: Tag[];
 }

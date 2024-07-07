@@ -3,7 +3,8 @@ import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { CommunicationsService } from '../../services/communication.service';
 import { CreateCommunicationDto, UpdateCommunicationDto } from '../../Models/dto/communication.dto';
 import { Communication } from '../../Models/communication.model';
-import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
+import { HttpErrorFilter } from '../../common/filters/http-error.filter';
+import { CommunicationArchive } from 'server/src/Models/communicationArchive.model';
 
 @ApiTags('communications')
 @Controller('communications')
@@ -63,5 +64,11 @@ export class CommunicationsController {
     })
     async getCommunicationsByClientId(@Body() body: { clientId: string }): Promise<Communication[]> {
         return this.communicationsService.getCommunicationsByClientId(body.clientId);
+    }
+
+    @Post('DeleteOldComunication')
+    @ApiOperation({ summary: 'Delete old comunication and moved them to the communicationArchives table' })
+    async deleteOldComunications(): Promise<Communication[]> {
+        return this.communicationsService.deletingOldCommunications();
     }
 }
