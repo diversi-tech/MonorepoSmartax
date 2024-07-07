@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { User, UserModel } from '../Models/user.model';
 import { CreateUserDto, UpdateUserDto } from '../Models/dto/user.dto';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import * as jwt from 'jsonwebtoken';
+import { Role } from '../Models/role.modle';
 
 @Injectable()
 export class TokenService {
@@ -15,10 +16,7 @@ export class TokenService {
     private readonly jwtService: JwtService,
   ) { }
 
-  async createToken(email: string, policy: number): Promise<any> {
-    const payload = { email, policy };
-    console.log("payload: "+payload);
-    
+  async createToken(payload:{email: string, role: Role, _id:unknown}): Promise<any> {    
     return {
       access_token: this.jwtService.sign(payload, { expiresIn: '12h', privateKey: process.env.PRIVATEKEY })
     };
@@ -38,10 +36,9 @@ export class TokenService {
     }
   }
 
-  async validateToken(token: string) {
+  async validatePolicy(token: string) {
     try {
       const decode = this.decodeToken(token);
-      console.log("decode: "+JSON.stringify(decode));
       
       return decode.policy;
     } catch (error) {
