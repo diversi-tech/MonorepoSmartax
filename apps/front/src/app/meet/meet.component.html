@@ -35,7 +35,7 @@
             <div class="form-group">
                 <label for="beginningTime">Beginning Time</label>
                 <input type="time" class="form-control" name="beginningTime" [(ngModel)]="form.beginningTime" required
-                    #beginningTime="ngModel" [ngClass]="{ 'is-invalid': f.submitted && beginningTime.errors }" />
+                    #beginningTime="ngModel" (change)="onBeginningTimeChange()" [ngClass]="{ 'is-invalid': f.submitted && beginningTime.errors }" />
                 @if (beginningTime.errors && f.submitted) {
                 <div class="invalid-feedback">
                     @if (beginningTime.errors['required']) {
@@ -48,7 +48,12 @@
             <div class="form-group">
                 <label for="endTime">End Time</label>
                 <input type="time" class="form-control" name="endTime" [(ngModel)]="form.endTime" required
-                    #endTime="ngModel" [ngClass]="{ 'is-invalid': f.submitted && endTime.errors }" />
+                    #endTime="ngModel"
+                    [disabled]="!form.beginningTime"
+                    min="11:30"
+                    max="12:45"
+                    (focus)="restrictTimeOptions($event)"
+                    [ngClass]="{ 'is-invalid': f.submitted && endTime.errors }" />
                 @if (endTime.errors && f.submitted) {
                 <div class="invalid-feedback">
                     @if (endTime.errors['required']) {
@@ -109,3 +114,18 @@
 
     </div>
 </div>
+
+
+
+<script>
+    function validateTime(event) {
+        const input = event.target;
+        const selectedTime = input.value;
+        
+        if (selectedTime < '11:30' || selectedTime > '12:45') {
+            input.setCustomValidity('Please select a time between 11:30 and 12:45.');
+        } else {
+            input.setCustomValidity('');
+        }
+    }
+</script>

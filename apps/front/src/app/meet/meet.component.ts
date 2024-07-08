@@ -44,6 +44,8 @@ export class MeetComponent implements OnInit {
   meetId: string = ""
   currentMeet!: Meet;
 
+  // minEndTime: string = '';
+  // maxEndTime: string = '';
 
   constructor(
     private meetService: MeetService,
@@ -144,6 +146,36 @@ export class MeetComponent implements OnInit {
     }
     return url.protocol === "http:" || url.protocol === "https:";
   }
+
+  onBeginningTimeChange() {
+    // if (this.form.beginningTime) {
+    //   const beginningHour = parseInt(this.form.beginningTime.split(':')[0], 10);
+    //   const beginningMinute = parseInt(this.form.beginningTime.split(':')[1], 10);
+
+    //   // Calculate max end time based on beginning time + 5 hours
+    //   const maxEndTimeHour = (beginningHour + 5) % 24;
+    //   this.maxEndTime = `${String(maxEndTimeHour).padStart(2, '0')}:${String(beginningMinute).padStart(2, '0')}`;
+
+    //   // Set min end time as beginning time
+    //   this.minEndTime = this.form.beginningTime;
+    // }
+  }
+
+  // updateEndTimeConstraints() {
+  //   if (this.form.beginningTime) {
+  //     const endTimeInput = document.querySelector('input[name="endTime"]') as HTMLInputElement;
+  //     endTimeInput.setAttribute('min', this.form.beginningTime);
+  //     endTimeInput.setAttribute('max', this.maxEndTime || '');
+  //   }
+  // }
+
+  restrictTimeOptions(event: Event) {
+    // debugger  
+    // const input = event.target as HTMLInputElement;
+    // input.focus();
+    // input.click();
+}
+
 
   onSubmit(): void {
 
