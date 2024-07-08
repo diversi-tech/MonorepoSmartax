@@ -39,7 +39,10 @@ import { hashPasswordService } from './services/hash-password';
 import { AuthController } from './controller/auth/auth.controller';
 import { RoleService } from './services/role.service';
 import { RoleController } from './controller/role/role.controller';
-import { Role, RoleModel } from './Models/role.modle';
+import { Role ,RoleModel } from './Models/role.modle';
+import { ClientTypeController } from './controller/clientTypes/clientTypes.controller';
+import { ClientType, ClientTypeModel } from './Models/clientType.model';
+import { ClientTypeService } from './services/clientType.service';
 import { PriorityController } from './controller/priority/priority.controller';
 import { MeetService } from './services/meet.service';
 import { Meet, MeetModel } from './Models/meet.model';
@@ -72,7 +75,7 @@ import { FrequencyService } from './services/frequency.service';
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
 
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
-
+ MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
   MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
   MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel }]),
@@ -92,7 +95,7 @@ import { FrequencyService } from './services/frequency.service';
   MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
     JwtModule
   ],
-  controllers: [AppController,
+  controllers: [AppController,ClientTypeController,
     UserController,
     PriorityController,
     ClientController,
@@ -119,6 +122,7 @@ import { FrequencyService } from './services/frequency.service';
     hashPasswordService,
     JwtService,
     ClientService,
+    ClientTypeService,
     TaskService,
     TagService,
     StatusService,

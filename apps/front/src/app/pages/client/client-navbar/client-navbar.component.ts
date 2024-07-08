@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Client } from '../../../_models/client.module';
 import { Button } from 'primeng/button';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import {  RouterLink, RouterLinkActive, RouterOutlet, RouterModule, Router } from '@angular/router';
 import { ClientProfileComponent } from '../client-profile/client-profile.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { ClientProfileComponent } from '../client-profile/client-profile.compone
     templateUrl: './client-navbar.component.html',
     styleUrls: ['./client-navbar.component.css'],
     standalone: true,
-    imports: [ClientProfileComponent, Button, RouterLink, RouterLinkActive, RouterOutlet]
+    imports: [ClientProfileComponent, Button, RouterLink, RouterLinkActive, RouterOutlet,RouterModule]
 })
 export class ClientNavbarComponent implements OnInit {
   client: Client | null = null;
