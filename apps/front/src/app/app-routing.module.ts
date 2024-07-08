@@ -74,7 +74,7 @@ import { icons } from './icons';
  // { path: 'communicationLogs', component: CommunicationLogsComponent, data: { authType: 6, forToolbar: true, label: 'Communication Logs', icon: icons.comment } },
   { path: 'clientSearch', component: ClientSearchComponent, data: { authType: 3, forToolbar: false, label: 'Client Search', icon: icons.search } },
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
-  { path: 'clientSearch', component: ClientSearchComponent , data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' }},
+  { path: 'clientSearch', component: ClientSearchComponent , data: { authType: 6, forToolbar: true, label: 'Clients', icon: icons.clients }},
   { path: 'clientSearch/clientManagement', component: ClientManagementComponent , data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' }},
   { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' } },
   {
