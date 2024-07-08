@@ -6,6 +6,19 @@
 <ng-template #eventContent let-arg>
     <b>{{ arg.event.title }}</b>
     <br>
-    <small>{{ arg.event.start | date:'shortTime' }}</small>
-  </ng-template>
+    <small>{{ getAdjustedTime(arg.event.start) }}</small>  </ng-template>
 </full-calendar>
+
+<div class="card flex justify-content-center">
+  <p-dialog 
+    [modal]="true"
+    [(visible)]="visible" 
+    [style]="{ width: '50rem' }" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    
+    <ng-template #modalContent></ng-template>
+  
+  </p-dialog>
+</div>
+
+<!-- header="Meeting Details"  -->

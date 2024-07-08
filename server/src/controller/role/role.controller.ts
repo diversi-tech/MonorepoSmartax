@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Put, UseFilters, ValidationPipe } from "@nestjs/common";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
-import { CreateRoleDto, UpdateRoleDto } from "../../Models/dto/role.dto";
-import { Role } from "server/src/Models/role.modle";
+import { CreateRoleDto, UpdateRoleDto } from "server/src/Models/dto/role.dto";
+import { Role } from "../../Models/role.modle";
 import { HttpExceptionFilter } from "server/src/common/filters/http-exception.filter";
 import { RoleService } from "server/src/services/role.service";
 
@@ -21,11 +21,13 @@ export class RoleController {
     async getAllRolies(): Promise<Role[]> {
         return await this.roleService.getALLRolies();
     }
+
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
     @Post('searchRole')
     async searchRole(@Body(new ValidationPipe())  body:{"id":string}): Promise<Role> {
         return await this.roleService.searchRole(body.id);
     }
+    
     @Post()
     async updateRole(@Body(new ValidationPipe()) updateRoleDto: UpdateRoleDto): Promise<Role> {
         return await this.roleService.updateRole(updateRoleDto);
