@@ -67,6 +67,7 @@ export class ClientSearchComponent implements OnInit  {
   }
 
   selectClientFromList(client: Client): void {
+    
     debugger
     this.router.navigate(['/clientSearch/clientManagement'], { state: { client } });
   }

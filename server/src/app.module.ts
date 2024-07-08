@@ -31,6 +31,9 @@ import { AuthController } from './controller/auth/auth.controller';
 import { RoleService } from './services/role.service';
 import { RoleController } from './controller/role/role.controller';
 import { Role ,RoleModel } from './Models/role.modle';
+import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
+import { CallTopicService } from './services/callTopicSchema.service';
+import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
 
 
 
@@ -39,18 +42,19 @@ import { Role ,RoleModel } from './Models/role.modle';
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
      MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
   JwtModule ,
- 
+  MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
   MongooseModule.forFeature([{ name: Communication.name, schema: communicationModel }]),
   MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }])
 
   ],
-  controllers: [AppController, UserController, ClientController, TasksController, CommunicationsController, BillingController,MailController, GoogleDriveController, AuthController,RoleController],  
+  controllers: [AppController, UserController, ClientController,CallTopicController, TasksController, CommunicationsController, BillingController,MailController, GoogleDriveController, AuthController,RoleController],  
   providers: [
     AppService,
     // DbService,
     UserService,MailService,TokenService, hashPasswordService,
     ClientService,
+    CallTopicService,
     CommunicationsService,
     GoogleDriveService,
     RoleService,

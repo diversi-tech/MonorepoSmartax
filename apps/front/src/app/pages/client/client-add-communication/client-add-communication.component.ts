@@ -2,11 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { Client } from '../../../_models/client.module';
-import { SelectItem } from 'primeng/api';
+import { PrimeTemplate, SelectItem } from 'primeng/api';
 import { Communication } from '../../../_models/communication.module';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { CommunicationService } from '../../../_services/communicaton.service';
 import { UserService } from '../../../_services/user.service';
+import { callTopicSchema } from '../../../_models/callTopic.module';
+import { CallTopicService } from "../../../_services/callTopic.service"
+import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { NgIf } from '@angular/common';
+import { TableModule } from 'primeng/table';
+import { AddClientComponent } from '../add-client/add-client.component';
 
 
 @Component({
@@ -15,7 +21,14 @@ import { UserService } from '../../../_services/user.service';
     templateUrl: './client-add-communication.component.html',
     styleUrl: './client-add-communication.component.css',
     standalone: true,
-    imports: [FormsModule, DropdownModule],
+    imports: [FormsModule, DropdownModule,
+      AutoCompleteModule,
+      PrimeTemplate,
+      NgIf,
+      TableModule,
+      AddClientComponent,
+      RouterOutlet,
+    ],
 })
 export class ClientAddCommunicationComponent implements OnInit {
   client: Client | null = null;
@@ -23,34 +36,58 @@ export class ClientAddCommunicationComponent implements OnInit {
   newCommunication: Communication = {
     client: '',
     date: new Date(),
-    type: '',
     summary: '',
-    assignedTo: null
+    assignedTo: null,
+    Status: false,
+    Subject:""
   };
+  thisSubject=""
+  thisSubject2=""
   formattedDate: string = '';
-
-  constructor(private router: Router, private communicationService: CommunicationService, private userService: UserService) { }
+  isSelected: number;
+  selectedCallTopic: callTopicSchema| null = null;
+  filteredCallTopic: callTopicSchema[] = [];
+  callTopics: callTopicSchema[];
+  callTopics2: callTopicSchema[]=[{name:"לא נמצא"}]
+  is: boolean = false;
+  newcallTopicSchema: callTopicSchema={
+    name:""
+  }
+  constructor(private router: Router, private communicationService: CommunicationService, private userService: UserService,
+    private calltopicservice : CallTopicService
+  ) { }
 
   ngOnInit(): void {
     this.client = history.state.client;
     this.newCommunication.client = this.client?._id ?? '';
     this.formattedDate = this.formatDate(this.newCommunication.date);
     this.loadUsers();
+    this.getCallTopics();
   }
-
+ getCallTopics(): void {
+    this.calltopicservice.getAll().subscribe(callTopic => {
+      this.callTopics = callTopic
+      this.filteredCallTopic= callTopic ;
+    });
+  }
   private formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
-
+  onStatusChange(statusValue: any) {
+    if(statusValue=="0: true")
+    this.newCommunication.Status = true;
+  }
   setTodayDate(): void {
     this.newCommunication.date = new Date();
     this.formattedDate = this.formatDate(this.newCommunication.date);
   }
 
   createCommunication(): void {
+    this.newCommunication.Subject=this.thisSubject;
+    alert( this.thisSubject)
     console.log('Creating communication:', this.newCommunication);
     this.communicationService.createCommunication(this.newCommunication)
       .subscribe(
@@ -67,9 +104,10 @@ export class ClientAddCommunicationComponent implements OnInit {
     this.newCommunication = {
       client: this.client?._id ?? '',
       date: new Date(),
-      type: '',
       summary: '',
-      assignedTo: null
+      assignedTo: null,
+      Status: false,
+      Subject : ""
     };
     this.formattedDate = this.formatDate(this.newCommunication.date);
   }
@@ -83,4 +121,38 @@ export class ClientAddCommunicationComponent implements OnInit {
         }));
       });
   }
+  add(){
+    this.newcallTopicSchema.name=this.thisSubject2
+    this.calltopicservice.createCallTopic(this.newcallTopicSchema).subscribe(response => {
+      this.callTopics.push(response);  // הוספת הנושא החדש לרשימה המקומית
+    });
+  }
+  filterByNameCallTopic(value: string): void {
+  
+    if (value != "") {
+      this.is=false
+      const query = value.toLowerCase();
+      this.filteredCallTopic = this.callTopics.filter(callTopic => 
+        callTopic.name.toLowerCase().includes(query.toLowerCase())
+      );
+      if(this.filteredCallTopic.length==0)
+        {
+          this.filteredCallTopic=this.callTopics2
+          this.thisSubject2=value
+          this.is=true;
+          
+        }
+    }
+    else
+    {
+      this.filteredCallTopic = this.callTopics;
+    }
+    this.selectedCallTopic = null;
+    
+  }
+  select(event:  AutoCompleteSelectEvent): void {
+   
+      const callTopic = event.value as callTopicSchema;
+      this.thisSubject=callTopic.name
+    }
 }
