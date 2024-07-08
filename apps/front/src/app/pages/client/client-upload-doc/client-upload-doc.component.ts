@@ -2,21 +2,17 @@ import { Component,OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { DocumentService } from '../../../_services/document.service';
 import { Client } from '../../../_models/client.module';
-import { Doc } from '../../../_models/document.module';
+import { Doc } from '../../../_models/doc.module';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { PrimeTemplate } from 'primeng/api';
-@Component({
-    selector: 'app-upload-doc',
-    templateUrl: './client-upload-doc.component.html',
-    styleUrl: './client-upload-doc.component.css',
-    standalone: true,
-    imports: [FileUploadModule]
-})
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { DocType } from '../../../_models/docType.module';
+import { UploadDocTaskComponent } from '../../../upload-doc-task/upload-doc-task.component';
 
 @Component({
-    // standalone: true,
     selector: 'app-client-upload-doc',
     templateUrl: './client-upload-doc.component.html',
     styleUrl: './client-upload-doc.component.css',
@@ -25,6 +21,9 @@ import { PrimeTemplate } from 'primeng/api';
         FileUploadModule,
         TableModule,
         PrimeTemplate,
+        DropdownModule,
+        FormsModule,
+        UploadDocTaskComponent
     ],
 })
 export class ClientUploadDocComponent implements OnInit {
@@ -33,6 +32,8 @@ export class ClientUploadDocComponent implements OnInit {
   fileUrl: SafeUrl | null = null;
   fileType: string | null = null;
   client: Client | undefined = undefined;
+  DocTypes:DocType[]= [];
+  selectedType: DocType | undefined;
 
   constructor(private documentService:DocumentService, private sanitizer: DomSanitizer) {}
   
@@ -48,6 +49,16 @@ export class ClientUploadDocComponent implements OnInit {
         }
       }
     )
+    this.documentService.getAllDocTypes().subscribe(
+      {
+        next:(response: any) => {
+          this.DocTypes=response;
+        },
+        error: (err) => {
+          console.error('Error get all docs', err);
+        }
+      }
+    )
   }
   // onFileSelect(event: any) {
   //   //this.uploadedFiles = event.files;
@@ -59,8 +70,8 @@ export class ClientUploadDocComponent implements OnInit {
     (await this.documentService.uploadFile(formData)).subscribe({
       next: (response: any) => {
         console.log('File uploaded successfully', response);
-        const fileId = response.fileId;
-        this.documentService.getviewLink(fileId);
+        // const fileId = response.fileId;
+        // this.documentService.getviewLink(fileId);
       },
       error: (err) => {
         console.error('Error uploading file', err);

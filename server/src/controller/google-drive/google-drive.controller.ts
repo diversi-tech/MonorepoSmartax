@@ -1,5 +1,5 @@
 
-import { Controller, Post, UploadedFile, UseInterceptors, Body, Get, Param, Res, Logger, Put, UseFilters, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseInterceptors, Body, Get, Param, Res, Logger, Put, UseFilters, ValidationPipe, Delete } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GoogleDriveService } from '../../services/google-drive.service';
 import { diskStorage } from 'multer';
@@ -7,6 +7,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestj
 import { v4 as uuidv4 } from 'uuid';
 import { Response } from 'express';
 import { HttpErrorFilter } from '../../common/filters/http-error.filter';
+import { DocType } from 'server/src/Models/docType.model';
 
 
 @ApiTags('docs')
@@ -33,10 +34,10 @@ export class GoogleDriveController {
       }
     })
   }))
-  async uploadFile(@UploadedFile(new ValidationPipe()) file: Express.Multer.File, @Body('clientId',new ValidationPipe()) clientId: string, @Res() res: Response) {
+  async uploadFile(@UploadedFile(new ValidationPipe()) file: Express.Multer.File, @Body('clientId',new ValidationPipe()) clientId: string, @Body('docType',new ValidationPipe())docType:string, @Res() res: Response) {
 
     try {
-      const response = await this.googleDriveService.uploadFile(file, clientId);
+      const response = await this.googleDriveService.uploadFile(file, clientId,docType);
       return res.json(response);
     } catch (error) {
       console.error('Upload failed:', error);
@@ -99,6 +100,15 @@ export class GoogleDriveController {
     } catch (error) {
       console.error('get file name failed:', error);
       return res.status(500).json({ error: 'get file name failed' });
+    }
+  }
+  @Delete(':fileId')
+  async deleteFile(@Param('fileId') fileId: string) {
+    try {
+      await this.googleDriveService.deleteFile(fileId);
+      return { message: `File with ID ${fileId} deleted successfully.` };
+    } catch (error) {
+      return { error: 'Failed to delete file', details: error.message };
     }
   }
 }

@@ -1,13 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document, SchemaTypes, Types } from 'mongoose';
+import mongoose, { Date, Document } from 'mongoose';
 import { Client } from './client.model';
-import { User } from '../Models/user.model';
+import { User } from './user.model';
+import { DocType } from './docType.model';
 
 @Schema()
-export class Documents extends Document {
-    @Prop({ type: SchemaTypes.ObjectId, required: true })
-    fileId: Types.ObjectId;
-    
+export class Docs extends Document {
+    @Prop({ type: String, required: true })
+    _id: string;
     @Prop()
     name: string;
 
@@ -23,9 +23,12 @@ export class Documents extends Document {
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
     userUploaded: User;
+
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'DocType'})
+    DocType: DocType;
     @Prop()
     status: string;
 
 }
 
-export const DocumentsModel = SchemaFactory.createForClass(Documents);
+export const DocumentsModel = SchemaFactory.createForClass(Docs);
