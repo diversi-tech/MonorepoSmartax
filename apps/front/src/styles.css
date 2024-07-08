@@ -8,3 +8,4 @@
 /* Import Quill styles */
 @import "~quill/dist/quill.core.css";
 @import "~quill/dist/quill.snow.css";
+@import "node_modules/primeng/resources/themes/nova-light/theme.css"
