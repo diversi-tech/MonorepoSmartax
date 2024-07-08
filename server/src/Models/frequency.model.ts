@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from 'mongoose';
 
 @Schema()
-export class frequency extends Document {
+export class Frequency extends Document {
     @Prop()
     name: string;
 
@@ -9,4 +10,4 @@ export class frequency extends Document {
     color: string;
 }
 
-export const frequencyModel = SchemaFactory.createForClass(frequency);
+export const frequencyModel = SchemaFactory.createForClass(Frequency);

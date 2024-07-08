@@ -39,7 +39,7 @@ import { hashPasswordService } from './services/hash-password';
 import { AuthController } from './controller/auth/auth.controller';
 import { RoleService } from './services/role.service';
 import { RoleController } from './controller/role/role.controller';
-import { Role ,RoleModel } from './Models/role.modle';
+import { Role, RoleModel } from './Models/role.modle';
 import { PriorityController } from './controller/priority/priority.controller';
 import { MeetService } from './services/meet.service';
 import { Meet, MeetModel } from './Models/meet.model';
@@ -60,12 +60,15 @@ import { PriorityService } from './services/priority.service';
 import { CommunicationArchiveController } from './controller/communicationArchive/communicationArchive.controler';
 import { CommunicationArchive, communicationArchiveModel } from './Models/communicationArchive.model';
 import { CommunicationArchiveService } from './services/communicationArchive.service';
+import { FrequencyController } from './controller/frequency/frequency.controller';
+import { Frequency, frequencyModel } from './Models/frequency.model';
+import { FrequencyService } from './services/frequency.service';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
 
 @Module({
-//add
+  //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
 
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
@@ -78,17 +81,34 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
   MongooseModule.forFeature([{ name: Documents.name, schema: DocumentsModel }]),
   MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
   MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
- MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
- MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
- MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
- ServeStaticModule.forRoot({
-   rootPath: path.join(__dirname, '../uploads'),
-   serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
- }),
- MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
-  JwtModule
+  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+  MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
+  ServeStaticModule.forRoot({
+    rootPath: path.join(__dirname, '../uploads'),
+    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+  }),
+  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
+    JwtModule
   ],
-  controllers: [AppController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController],  
+  controllers: [AppController,
+    UserController,
+    PriorityController,
+    ClientController,
+    TasksController,
+    CommunicationsController,
+    BillingController,
+    BillingStatusController,
+    MailController,
+    GoogleDriveController,
+    AuthController,
+    RoleController,
+    TasksController,
+    TagController,
+    MeetController,
+    StatusController,
+    FrequencyController],
 
 
   providers: [
@@ -110,13 +130,14 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
     RoleService,
     MeetService,
     CommunicationArchiveService,
+    FrequencyService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
