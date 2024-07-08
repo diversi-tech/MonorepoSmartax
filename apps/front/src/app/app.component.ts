@@ -63,7 +63,7 @@ export class AppComponent {
       next: res => {
         console.log(res);
         this.storageService.clean();
-        // window.location.reload();
+        window.location.reload();
         this.router.navigate(['/home']);
       },
       error: err => {
