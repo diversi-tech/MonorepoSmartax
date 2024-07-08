@@ -48,6 +48,7 @@ export class AppComponent {
     this.isLoggedIn = this.storageService.isLoggedIn();
 
     if (this.isLoggedIn) {
+      this.username = this.tokenServise.getCurrentDetail("email")
       const user = this.tokenServise.getToken();
       const currentRole = this.tokenServise.getCurrentDetail("role")
       this.toolbarItems = this.toolbarService.getCurrentItems(currentRole.level)
@@ -63,7 +64,7 @@ export class AppComponent {
       next: res => {
         console.log(res);
         this.storageService.clean();
-        // window.location.reload();
+        window.location.reload();
         this.router.navigate(['/home']);
       },
       error: err => {
