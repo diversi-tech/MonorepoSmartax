@@ -11,6 +11,7 @@ import { IconProfileComponent } from '../share/icon-profile/icon-profile.compone
 import { MultiSelectModule } from 'primeng/multiselect';
 import { NgClass, NgIf, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { GoogleAuthService } from '../_services/google-calendar.service';
 
 @Component({
     selector: 'app-meet',
@@ -45,7 +46,8 @@ export class MeetComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private clientService: ClientService,
-    private primengConfig: PrimeNGConfig) { }
+    private primengConfig: PrimeNGConfig,
+  private googleCalendarService:GoogleAuthService) { }
 
   ngOnInit(): void {
 
@@ -169,7 +171,22 @@ export class MeetComponent implements OnInit {
 
       this.meetService.createMeet(this.currentMeet).subscribe(
         meet => {
-        },
+          // add to google-meeting
+          // scheduleMeeting() {
+            let appointmentTime = new Date();
+            const startTime = appointmentTime.toISOString().slice(0, 18) + '-07:00';
+            const endTime = appointmentTime.toISOString().slice(0, 18) + '-08:00';
+            const eventDetails = {
+              nameT: 'פגישה חשובה',
+              description: 'פגישה על פרויקט חדש',
+              startTime: '2024-07-15T10:00:00',
+              endTime: '2024-07-15T11:00:00',
+              email: 'rbn9574@gmail.com'
+            };
+            console.info(eventDetails);
+            this.googleCalendarService.createGoogleEvent(eventDetails)
+          },
+        // },
         error => {
         }
       )

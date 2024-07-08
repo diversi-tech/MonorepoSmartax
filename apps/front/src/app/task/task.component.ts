@@ -47,6 +47,8 @@ import { EditorModule } from 'primeng/editor';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
 import { StatusService } from '../_services/status.service';
+import { GoogleAuthService } from '../_services/google-calendar.service';
+import { MultiSelect, MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
 
@@ -84,6 +86,7 @@ import { StatusService } from '../_services/status.service';
     TabMenuModule,
     EditorComponent,
     UploadDocTaskComponent,
+    MultiSelectModule
   ],
   providers: [DocumentService],
 
@@ -105,6 +108,7 @@ export class TaskComponent implements OnInit {
   buttons: { color: string; text: string; id: string }[] = [];
   htmlContent: string = '';
   images: string[] = [];
+  tags:Tag[] = [];
 
   //
   showStatus: boolean = false;
@@ -136,7 +140,8 @@ export class TaskComponent implements OnInit {
     private statusService: StatusService,
     private priorityService: PriorityService,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private googleCalendarService:GoogleAuthService
   ) {}
 
   ngOnInit(): void {
@@ -207,6 +212,16 @@ export class TaskComponent implements OnInit {
       next: (data) => {
         console.log(data);
         this.listPriority = data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+    // tags
+    this.tagService.getAllTags().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.tags = data;
       },
       error: (err) => {
         console.log(err);
@@ -356,4 +371,20 @@ export class TaskComponent implements OnInit {
     this.editorComponent.initialContent = newContent;
   }
   // ========================================
+
+  // add to google-meeting
+          scheduleMeeting() {
+            let appointmentTime = new Date();
+            const startTime = appointmentTime.toISOString().slice(0, 18) + '-07:00';
+            const endTime = appointmentTime.toISOString().slice(0, 18) + '-08:00';
+            const eventDetails = {
+              nameT: 'פגישה חשובה',
+              description: 'פגישה על פרויקט חדש',
+              startTime: '2024-07-15T10:00:00',
+              endTime: '2024-07-15T11:00:00',
+              email: 'rbn9574@gmail.com'
+            };
+            console.info(eventDetails);
+            this.googleCalendarService.createGoogleEvent(eventDetails)
+          }
 }

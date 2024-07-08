@@ -386,3 +386,71 @@
     </ng-template>
   </p-card>
 </div>
+
+<button (click)="scheduleMeeting()">meet</button>
+
+<div class="card flex justify-content-center">
+  <p-multiSelect 
+      [options]="tags" 
+      [(ngModel)]="buttons" 
+      optionLabel="text" 
+      placeholder="Select Tags" />
+</div>
+
+<!--  -->
+<form [formGroup]="formGroupStatus" >
+  <div style="width: 170px" class="card flex justify-content-center">
+    <p-menu [model]="tags!" styleClass="w-full md:w-5rem">
+      <ng-template pTemplate="item" let-item let-i>
+        <div
+          pRipple
+          class="flex align-items-center p-menuitem-link"
+          (click)="showPriority = !showPriority"
+        >
+          <span
+            [style]="{ color: item.color }"
+            class="pi pi-stop-circle"
+          ></span>
+          <span
+            (click)="priority(item)"
+            class="ml-2"
+            [style]="{ color: 'gray', 'font-size': '12px','margin-left': '5%'}"
+            >{{ item.text}}</span
+          >
+        </div>
+      </ng-template>
+    </p-menu>
+  </div>
+</form>
+
+<!--  -->
+<form [formGroup]="formGroupUser" >
+  <p-listbox
+    [options]="tags!"
+    [filter]="true"
+    formControlName="selectedUser"
+    [(ngModel)]="selectedTags"
+    optionLabel="text"
+    [style]="{ width: '15rem' }"
+    [listStyle]="{ 'max-height': '400px' }"
+    (onChange)="showAssignees = !showAssignees"
+  >
+    <ng-template let-user pTemplate="item">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <span
+            [style]="{ color: user.color }"
+            class="pi pi-stop-circle"
+          ></span>
+          <span
+            (click)="priority(item)"
+            class="ml-2"
+            [style]="{ color: 'gray', 'font-size': '12px','margin-left': '5%'}"
+            >{{ user.text}}</span
+          >
+          <span style="margin-left: 5%;">{{ user.userName }}</span>
+        </div>
+      </div>
+    </ng-template>
+  </p-listbox>
+</form>
