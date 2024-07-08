@@ -2,41 +2,41 @@
 import { Controller, Get, Post, Put, Delete, Body, NotFoundException, UseFilters, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from '../../common/filters/http-exception.filter'; 
 import { Client } from 'server/src/Models/client.model';
-import { CreateClientDto, UpdateClientDto } from '../../Models/dto/client.dto';
+import { CreateClientDto, UpdateClientDto } from 'server/src/Models/dto/client.dto';
 import { ClientService } from 'server/src/services/client.service';
 import {  ApiOperation ,ApiBody, ApiProperty, ApiTags} from '@nestjs/swagger';
-import { PriorityService } from '../../services/priority.service';
-import { CreatePriorityDto ,UpdatePriorityDto } from 'server/src/Models/dto/priority.dto';
-import { Priority } from 'server/src/Models/priority.model';
+import { StatusService } from '../../services/status.service';
+import { CreateStatusDto, UpdateStatusDto } from '../../Models/dto/status.dto';
+import { Status } from '../../Models/status.model';
 
-@ApiTags('Priority')
-@Controller('Priority')
+@ApiTags('Status')
+@Controller('Status')
 @UseFilters(HttpExceptionFilter) 
-export class PriorityController {
+export class StatusController {
 
-    constructor(private readonly PriorityService: PriorityService) { }
+    constructor(private readonly StatusService: StatusService) { }
 
     @Post()
-    async createPriority(@Body(new ValidationPipe()) createClientDto: CreatePriorityDto): Promise<Priority> {
-        return await this.PriorityService.createPriority(createClientDto);
+    async createStatus(@Body(new ValidationPipe()) createClientDto: CreateStatusDto): Promise<Status> {
+        return await this.StatusService.createStatus(createClientDto);
     }
 
     @Get()
-    async getAllPrioritys(): Promise<Priority[]> {
-        return await this.PriorityService.getAllPrioritys();
+    async getAllStatuss(): Promise<Status[]> {
+        return await this.StatusService.getAllStatuss();
     }
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
-    @Post('searchPriority')
-    async searchPriority(@Body(new ValidationPipe())  body:{"id":string}): Promise<Priority[]> {
-        return await this.PriorityService.searchPriority(body.id);
+    @Post('searchStatus')
+    async searchStatus(@Body(new ValidationPipe())  body:{"id":string}): Promise<Status[]> {
+        return await this.StatusService.searchStatus(body.id);
     }
     @Put()
-    async updatePriority(@Body(new ValidationPipe()) updatePriorityDto: UpdatePriorityDto): Promise<Priority> {
-        return await this.PriorityService.updatePriority(updatePriorityDto);
+    async updateStatus(@Body(new ValidationPipe()) updateStatusDto: UpdateStatusDto): Promise<Status> {
+        return await this.StatusService.updateStatus(updateStatusDto);
     }
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
     @Delete()
-    async deletePriority(@Body(new ValidationPipe()) id:{"id":string}): Promise<boolean> {
-        return await this.PriorityService.deletePriority(id.id);
+    async deleteStatus(@Body(new ValidationPipe()) id:{"id":string}): Promise<boolean> {
+        return await this.StatusService.deleteStatus(id.id);
     }
 }
