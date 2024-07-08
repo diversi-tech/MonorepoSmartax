@@ -95,7 +95,9 @@ import { FrequencyService } from './services/frequency.service';
   MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
     JwtModule
   ],
-  controllers: [AppController,ClientTypeController,
+  controllers: [
+    AppController,
+    ClientTypeController,
     UserController,
     PriorityController,
     ClientController,
