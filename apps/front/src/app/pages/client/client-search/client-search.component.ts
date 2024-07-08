@@ -24,6 +24,7 @@ import { TableModule } from 'primeng/table';
         TableModule,
         AddClientComponent,
         RouterOutlet,
+        
     ],
 })
 export class ClientSearchComponent implements OnInit  {
