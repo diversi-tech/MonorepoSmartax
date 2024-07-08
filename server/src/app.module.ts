@@ -60,6 +60,12 @@ import { PriorityService } from './services/priority.service';
 import { CommunicationArchiveController } from './controller/communicationArchive/communicationArchive.controler';
 import { CommunicationArchive, communicationArchiveModel } from './Models/communicationArchive.model';
 import { CommunicationArchiveService } from './services/communicationArchive.service';
+import { StepFieldController } from './controller/yearlyReport/stepField.controller';
+import { YearlyReportController } from './controller/yearlyReport/yearlyReport.controller';
+import { StepFieldService } from './services/stepField.service';
+import { YearlyReportService } from './services/yearlyReport.service';
+import { stepField,stepFieldModel } from './Models/fieldSchema.model';
+import { YearlyReport, YearlyReportstModel } from './Models/yearlyReports.model';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -80,15 +86,21 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
   MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+ 
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
  ServeStaticModule.forRoot({
    rootPath: path.join(__dirname, '../uploads'),
    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
  }),
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
-  JwtModule
+  JwtModule,
+  MongooseModule.forFeature([{name: stepField.name, schema:stepFieldModel }]),
+ MongooseModule.forFeature([{name: CommunicationArchive.name, schema: communicationArchiveModel}]),
+ MongooseModule.forFeature([{name:YearlyReport.name, schema: YearlyReportstModel}]),
+
   ],
-  controllers: [AppController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController],  
+  
+  controllers: [AppController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,CommunicationArchiveController,StepFieldController],  
 
 
   providers: [
@@ -114,6 +126,12 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
     },
+    CommunicationArchiveService,
+    
+    StepFieldService,
+    YearlyReportService,
+    
+
   ],
 })
 export class AppModule {}

@@ -1,14 +1,24 @@
-// import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-// import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-// @Schema()
-// export class FieldSchema extends Document {
+@Schema()
+export class stepField extends Document {
     
-//     @Prop()
-//     value: string;
+    @Prop()
+    value: string;
 
-//     @Prop()
-//     isCompleted: boolean;
-// }
+    @Prop({ default: false })
+    isCompleted: boolean;
 
-// export const FieldSchemaModel = SchemaFactory.createForClass(FieldSchema);
+    @Prop({
+        required: true,
+        min: 1,
+        max: 5,
+        validate: {
+          validator: (value: number) => Number.isInteger(value),
+          message: 'Step number must be an integer'
+    }})
+    stepNumber: number;
+}
+
+export const stepFieldModel = SchemaFactory.createForClass(stepField);

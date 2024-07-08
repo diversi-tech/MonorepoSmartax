@@ -1,26 +1,40 @@
-// import { ApiProperty } from "@nestjs/swagger";
-// import { IsBoolean, isBoolean, IsNotEmpty, IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsBoolean, isBoolean, IsInt, IsNotEmpty, IsString, Max, Min } from "class-validator";
 
-// export class CreateFieldSchemaDto {
-//     @ApiProperty({ description: 'The value name' })
-//     @IsNotEmpty()
-//     @IsString()
-//     value: string;
+export class CreateStepFieldDto {
+    @ApiProperty({ description: 'The value name' })
+    @IsNotEmpty()
+    @IsString()
+    value: string;
 
-//     @ApiProperty({type: Boolean,description:'Is it complete?'})
-//     @IsBoolean()
-//     isCompleted: Boolean 
-// }
+    @ApiProperty({type: Boolean,description:'Is it complete?'})
+    @IsBoolean()
+    isCompleted: Boolean 
 
-// export class UpdateFieldSchemaDto {
+    @ApiProperty({  description: 'The step number'})
+    @IsInt()
+    @Min(1)
+    @Max(5)
+    stepNumber: number;
+    
+}
 
-//     @ApiProperty({ description: 'The value name' })
-//     @IsNotEmpty()
-//     @IsString()
-//     value: string;
+export class UpdateStepFieldDto {
 
-//     @ApiProperty({type: Boolean, description:'Is it complete?'})
-//     @IsBoolean()
-//     isCompleted: Boolean 
+    @ApiProperty({ description: 'The value name' })
+    @IsNotEmpty()
+    @IsString()
+    value: string;
 
-// }
+    @ApiProperty({type: Boolean,description:'Is it complete?'})
+    @IsBoolean()
+    isCompleted: Boolean 
+
+    @ApiProperty({  description: 'The step number'})
+    @IsInt()
+    @Min(1)
+    @Max(5)
+    stepNumber: number;
+    
+
+}
