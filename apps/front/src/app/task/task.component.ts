@@ -82,7 +82,6 @@ import { MultiSelect, MultiSelectModule } from 'primeng/multiselect';
     ColorPickerModule,
     AutoCompleteModule,
     IconProfileComponent,
-    // UploadDocComponent,
     TabMenuModule,
     EditorComponent,
     UploadDocTaskComponent,
@@ -118,6 +117,7 @@ export class TaskComponent implements OnInit {
   showDescription: boolean = false;
   showPriority: boolean = false;
   showDoc: boolean = false;
+  showTagsList: boolean = false;
   //
   selectedCity!: any;
   selectedClient!: any;
@@ -126,6 +126,9 @@ export class TaskComponent implements OnInit {
   selectedColor: string = '#1976d2'; // default color
   selectedTags: Tag[] = [];
   selectedPriority!: Priority;
+  // array
+  selectedClients: Client[] = [];
+  selectedUsers: User[] = [];
   //
   formGroupClient!: FormGroup;
   formGroupUser!: FormGroup;
@@ -157,9 +160,11 @@ export class TaskComponent implements OnInit {
           this.selectedPriority = this.currentTask.priority;
           this.selectedClient = this.currentTask.client;
           this.selectedUser = this.currentTask.assignedTo;
+          //this.selectedUsers = this.currentTask.assignedTo;
+          //this.selectedClients = this.currentTask.clients;
           this.rangeDates = [new Date(), new Date()];
-          this.rangeDates![0] = new Date(this.currentTask.startDate); //
-          this.rangeDates![1] = new Date(this.currentTask.dueDate); //
+          this.rangeDates![0] = new Date(this.currentTask.startDate); 
+          this.rangeDates![1] = new Date(this.currentTask.dueDate); 
           this.htmlContent = this.currentTask.description;
           console.log(this.rangeDates);
 
@@ -250,10 +255,12 @@ export class TaskComponent implements OnInit {
     //create task
     const newTask: Task = {
       client: this.selectedClient,
+      //client: this.selectedClients,
       description: this.htmlContent,
       status: this.selectStatus,
       tags: this.buttons,
       assignedTo: this.selectedUser,
+      //assignedTo: this.selectedUsers,
       taskName: this.taskName,
       dueDate: this.rangeDates[1]!,
       startDate: this.rangeDates[0]!,
@@ -338,6 +345,11 @@ export class TaskComponent implements OnInit {
     this.selectedPriority = s;
     console.log(this.selectedPriority);
   }
+  tag(s: Tag) {
+    this.selectedTags.push(s);
+    this.buttons.push({ color: s.color, text: s.text, id: s._id! });
+    this.showTagsList=!this.showTagsList
+  }
   // date
   onDateSelect(event: any) {
     if (event.data) {
@@ -382,9 +394,15 @@ export class TaskComponent implements OnInit {
               description: 'פגישה על פרויקט חדש',
               startTime: '2024-07-15T10:00:00',
               endTime: '2024-07-15T11:00:00',
-              email: 'rbn9574@gmail.com'
+              email: 'sh0548487958@gmail.com'
             };
             console.info(eventDetails);
             this.googleCalendarService.createGoogleEvent(eventDetails)
+          }
+
+          // 
+
+          onUserChange(event: any) {
+            // this.form.usersId = event.value.map((user: User) => user._id);
           }
 }
