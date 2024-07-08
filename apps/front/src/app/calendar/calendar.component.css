@@ -1,0 +1,19 @@
+/* סגנון עבור פגישות */
+.fc-event-meeting {
+    background-color: #007bff; /* צבע רקע עבור פגישות */
+    border-color: #007bff; /* צבע גבול עבור פגישות */
+  }
+  
+  /* סגנון עבור משימות */
+  .fc-event-task {
+    background-color: #28a745; /* צבע רקע עבור משימות */
+    border-color: #28a745; /* צבע גבול עבור משימות */
+  }
+
+  .gap-2{
+    margin-top: 20px;
+    padding: 30px;
+  }
+  .taskBtn{
+    margin-left: 40px;
+  }
