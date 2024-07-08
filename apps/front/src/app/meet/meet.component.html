@@ -68,13 +68,13 @@
                            (onChange)="onUserChange($event)">
               <ng-template let-user pTemplate="item">
                 <div class="avatar-item">
-                  <!-- <app-icon-profile class="avatar" [userName]="user.userName"></app-icon-profile> -->
+                  <app-icon-profile class="avatar" [userName]="user.userName"></app-icon-profile>
                   <span>{{ user.userName }}</span>
                 </div>
               </ng-template>
               <ng-template let-user pTemplate="selectedItems">
                 <div *ngFor="let selectedUser of selectedUsers" class="selected-item">
-                  <!-- <app-icon-profile class="avatar" [userName]="selectedUser.userName"></app-icon-profile> -->
+                  <app-icon-profile class="avatar" [userName]="selectedUser.userName"></app-icon-profile>
                 </div>
               </ng-template>
             </p-multiSelect>
@@ -89,13 +89,13 @@
                         (onChange)="onClientChange($event)">
             <ng-template let-client pTemplate="item">
                 <div class="avatar-item">
-                <!-- <app-icon-profile class="avatar" [userName]="client.name"></app-icon-profile> -->
+                <app-icon-profile class="avatar" [userName]="client.name"></app-icon-profile>
                 <span>{{ client.name }}</span>
                 </div>
             </ng-template>
             <ng-template let-client pTemplate="selectedItems">
                 <div *ngFor="let selectedClient of selectedClients" class="selected-item">
-                <!-- <app-icon-profile class="avatar" [userName]="selectedClient.name"></app-icon-profile> -->
+                <app-icon-profile class="avatar" [userName]="selectedClient.name"></app-icon-profile>
                 </div>
             </ng-template>
             </p-multiSelect>
