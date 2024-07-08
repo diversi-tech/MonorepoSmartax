@@ -66,7 +66,7 @@ import { icons } from './icons';
   { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'Forget-Password', icon: '' } },
   { path: 'restartPassword', component: RestartPasswordComponent, data: { forToolbar: false, label: 'Restart-Password', icon: '' } },
-  { path: 'meet/:id', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
+  { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'Reports', icon: icons.reports }, children: [ { path: 'task-report', component: TaskReportComponent } ] },
   { path: 'employeesTable', component: EmployeesTableComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'Employees', icon: icons.employees } },
