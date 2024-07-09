@@ -54,7 +54,7 @@ import { TagController } from './controller/tag/tag.controller';
 import { TagService } from './services/tag.service';
 import express from 'express';
 import * as path from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
+// import { ServeStaticModule } from '@nestjs/serve-static';
 import { Status, StatusModel } from './Models/status.model';
 import { Priority, PriorityModel } from './Models/priority.model';
 import { StatusController } from './controller/status/status.controller';
@@ -84,10 +84,10 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
- ServeStaticModule.forRoot({
-   rootPath: path.join(__dirname, '../uploads'),
-   serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
- }),
+//  ServeStaticModule.forRoot({
+//    rootPath: path.join(__dirname, '../uploads'),
+//    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+//  }),
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
