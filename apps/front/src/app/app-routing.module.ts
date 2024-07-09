@@ -33,6 +33,7 @@ import { TaskInListComponent } from './task-in-list/task-in-list.component';
 import { icons } from './icons';
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
+import { SensitiveDetailsComponent } from './pages/client/sensitive-details/sensitive-details.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -104,8 +105,10 @@ import { PaymentsReportsComponent } from './reports/payments-reports/payments-re
       { path: 'clientBillings', component: ClientBillingsComponent },
     ]
   },
-  { path: 'a', component: AllCommunicationComponent },
-  { path: 'ae', component: ClientAddCommunicationComponent }
+  { path: 'allCommunication', component: AllCommunicationComponent },
+  { path: 'clientAddCommunication', component: ClientAddCommunicationComponent },
+  { path: 'sensitiveDetails', component: SensitiveDetailsComponent }
+
 ];
 
 
