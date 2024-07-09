@@ -35,7 +35,7 @@
             <div class="form-group">
                 <label for="beginningTime">Beginning Time</label>
                 <input type="time" class="form-control" name="beginningTime" [(ngModel)]="form.beginningTime" required
-                    #beginningTime="ngModel" [ngClass]="{ 'is-invalid': f.submitted && beginningTime.errors }" />
+                    #beginningTime="ngModel" (change)="onBeginningTimeChange()" [ngClass]="{ 'is-invalid': f.submitted && beginningTime.errors }" />
                 @if (beginningTime.errors && f.submitted) {
                 <div class="invalid-feedback">
                     @if (beginningTime.errors['required']) {
@@ -48,7 +48,12 @@
             <div class="form-group">
                 <label for="endTime">End Time</label>
                 <input type="time" class="form-control" name="endTime" [(ngModel)]="form.endTime" required
-                    #endTime="ngModel" [ngClass]="{ 'is-invalid': f.submitted && endTime.errors }" />
+                    #endTime="ngModel"
+                    [disabled]="!form.beginningTime"
+                    min="11:30"
+                    max="12:45"
+                    (focus)="restrictTimeOptions($event)"
+                    [ngClass]="{ 'is-invalid': f.submitted && endTime.errors }" />
                 @if (endTime.errors && f.submitted) {
                 <div class="invalid-feedback">
                     @if (endTime.errors['required']) {
@@ -68,13 +73,13 @@
                            (onChange)="onUserChange($event)">
               <ng-template let-user pTemplate="item">
                 <div class="avatar-item">
-                  <!-- <app-icon-profile class="avatar" [userName]="user.userName"></app-icon-profile> -->
+                  <app-icon-profile class="avatar" [userName]="user.userName"></app-icon-profile>
                   <span>{{ user.userName }}</span>
                 </div>
               </ng-template>
               <ng-template let-user pTemplate="selectedItems">
                 <div *ngFor="let selectedUser of selectedUsers" class="selected-item">
-                  <!-- <app-icon-profile class="avatar" [userName]="selectedUser.userName"></app-icon-profile> -->
+                  <app-icon-profile class="avatar" [userName]="selectedUser.userName"></app-icon-profile>
                 </div>
               </ng-template>
             </p-multiSelect>
@@ -89,13 +94,13 @@
                         (onChange)="onClientChange($event)">
             <ng-template let-client pTemplate="item">
                 <div class="avatar-item">
-                <!-- <app-icon-profile class="avatar" [userName]="client.name"></app-icon-profile> -->
+                <app-icon-profile class="avatar" [userName]="client.name"></app-icon-profile>
                 <span>{{ client.name }}</span>
                 </div>
             </ng-template>
             <ng-template let-client pTemplate="selectedItems">
                 <div *ngFor="let selectedClient of selectedClients" class="selected-item">
-                <!-- <app-icon-profile class="avatar" [userName]="selectedClient.name"></app-icon-profile> -->
+                <app-icon-profile class="avatar" [userName]="selectedClient.name"></app-icon-profile>
                 </div>
             </ng-template>
             </p-multiSelect>
@@ -109,3 +114,18 @@
 
     </div>
 </div>
+
+
+
+<script>
+    function validateTime(event) {
+        const input = event.target;
+        const selectedTime = input.value;
+        
+        if (selectedTime < '11:30' || selectedTime > '12:45') {
+            input.setCustomValidity('Please select a time between 11:30 and 12:45.');
+        } else {
+            input.setCustomValidity('');
+        }
+    }
+</script>

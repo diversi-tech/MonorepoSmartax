@@ -18,7 +18,7 @@ import { RestartPasswordComponent } from './pages/restart-password/restart-passw
 import { AuthGuard } from './auth.guard';
 import { ClientSearchComponent } from './pages/client/client-search/client-search.component';
 import { ClientProfileComponent } from './pages/client/client-profile/client-profile.component';
-import { ReportsComponent } from './reports/reports.component';
+import { ReportsComponent } from './reports/reports/reports.component';
 import { TaskReportComponent } from './task-report/task-report.component';
 import { EmployeesTableComponent } from './pages/employees-table/employees-table.component';
 // import { CommunicationClientComponent } from './pages/client/communication-client/communication-client.component';
@@ -31,6 +31,7 @@ import { ClientTaskManagementComponent } from './pages/client/client-task-manage
 import { ClientBillingsComponent } from './pages/client/client-billings/client-billings.component';
 import { TaskInListComponent } from './task-in-list/task-in-list.component';
 import { icons } from './icons';
+import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -66,15 +67,25 @@ import { icons } from './icons';
   { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'Forget-Password', icon: '' } },
   { path: 'restartPassword', component: RestartPasswordComponent, data: { forToolbar: false, label: 'Restart-Password', icon: '' } },
-  { path: 'meet/:id', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
+  { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard], data: { authType: 6 } },
-  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'Reports', icon: icons.reports }, children: [ { path: 'task-report', component: TaskReportComponent } ] },
+  {
+    path: 'reports',
+    component: ReportsComponent,
+    canActivate: [AuthGuard],
+    data: { authType: 3, forToolbar: true, label: 'Reports', icon: icons.reports },
+    children: [
+      // { path: '', redirectTo: 'task-report', pathMatch: 'full' },
+      { path: 'task-report', component: TaskReportComponent,data: { authType: 10, forToolbar: false, label: 'Tasks Reports', icon: icons.reports } },
+      { path: 'payments', component: PaymentsReportsComponent, data: { authType: 10, forToolbar: false, label: 'Payments Reports', icon: icons.reports } }
+    ]
+  },
   { path: 'employeesTable', component: EmployeesTableComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'Employees', icon: icons.employees } },
   { path: '', redirectTo: 'home', pathMatch: 'full', data: { forToolbar: false, label: '#', icon: '' } },
  // { path: 'communicationLogs', component: CommunicationLogsComponent, data: { authType: 6, forToolbar: true, label: 'Communication Logs', icon: icons.comment } },
   { path: 'clientSearch', component: ClientSearchComponent, data: { authType: 3, forToolbar: false, label: 'Client Search', icon: icons.search } },
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
-  { path: 'clientSearch', component: ClientSearchComponent , data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' }},
+  { path: 'clientSearch', component: ClientSearchComponent , data: { authType: 6, forToolbar: true, label: 'Clients', icon: icons.clients }},
   { path: 'clientSearch/clientManagement', component: ClientManagementComponent , data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' }},
   { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' } },
   {
