@@ -9,6 +9,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
+import { Button } from 'primeng/button';
 
 @Component({
     // standalone:true,
@@ -24,6 +25,7 @@ import { TableModule } from 'primeng/table';
         TableModule,
         AddClientComponent,
         RouterOutlet,
+        Button,
     ],
 })
 export class ClientSearchComponent implements OnInit  {

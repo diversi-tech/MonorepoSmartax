@@ -36,6 +36,10 @@ export class GoogleDriveController {
   }))
   async uploadFile(@UploadedFile(new ValidationPipe()) file: Express.Multer.File, @Body('clientId',new ValidationPipe()) clientId: string, @Body('docType',new ValidationPipe())docType:string, @Res() res: Response) {
 
+    console.log(file);
+    console.log(clientId);
+    
+    
     try {
       const response = await this.googleDriveService.uploadFile(file, clientId,docType);
       return res.json(response);

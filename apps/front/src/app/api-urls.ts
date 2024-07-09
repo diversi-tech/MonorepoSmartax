@@ -7,5 +7,5 @@ export const DOCS_TYPES_ENDPOINT = `${API_URL}/doctypes`;
 export const ROLE_ENDPOINT = `${API_URL}/role`;
 export const MEET_ENDPOINT = `${API_URL}/meet`;
 export const CLIENT_ENDPOINT = `${API_URL}/clients`;
-export const STATUS_ENDPOINT = `${API_URL}/Priority`;
+export const STATUS_ENDPOINT = `${API_URL}/Status`;
 export const TAG_ENDPOINT = `${API_URL}/tags`;
