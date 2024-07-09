@@ -1,0 +1,63 @@
+<!-- <p-avatar
+  [label]="userName && userName!.charAt(0)"
+  styleClass="mr-3"
+  [style]="{
+    'background-color': userName && getColor(userName!),
+    color: '#fff'
+  }"
+  shape="circle"
+  class="avatar"
+></p-avatar> -->
+
+<div style="margin-left: 100px">
+    <p-inputGroup class="w-full md:w-30rem flex-container">
+      <!-- <p-button
+        (click)="showTags = !showTags"
+        [style]="{ height: '30px', marginRight: '20px', marginTop: '5px' }"
+        [outlined]="true"
+        severity="secondary"
+      ></p-button> -->
+  
+      <button
+        *ngFor="let button of buttons; let i = index"
+        [style]="{
+          'background-color': getColor(button.text),
+          color: '#fff'
+        }"
+        class="custom-button"
+        (click)="removeButton(i)"
+      >
+        {{ button.text }}
+        <span
+          (click)="buttons.splice(i, 1)"
+          class="delete-button"
+        >
+          x
+        </span>
+      </button>
+    </p-inputGroup>
+  </div>
+  
+<div style="margin-top: 10%">
+    <p-card
+      header="Tag"
+      subheader="Create and update your Tag"
+      [style]="{ width: '800px' }"
+    >
+      <ng-template pTemplate="header">
+        <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
+      </ng-template>
+      <!-- Task Name -->
+      <div style="display: flex; align-items: center; height: 50px" id="divHover">
+        <p style="margin-top: 2%; margin-right: 5%">
+          <span class="pi pi-clipboard"></span>
+          Tag Name
+        </p>
+        <div style="margin-left: 50px">
+          <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+            <input type="text" pInputText  />
+          </p-inputGroup>
+        </div>
+      </div>
+      <br />
+
