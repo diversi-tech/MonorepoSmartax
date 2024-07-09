@@ -32,6 +32,7 @@ import { ClientBillingsComponent } from './pages/client/client-billings/client-b
 import { TaskInListComponent } from './task-in-list/task-in-list.component';
 import { icons } from './icons';
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
+import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -69,7 +70,17 @@ import { AllCommunicationComponent } from './pages/client/all-communication/all-
   { path: 'restartPassword', component: RestartPasswordComponent, data: { forToolbar: false, label: 'Restart-Password', icon: '' } },
   { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard], data: { authType: 6 } },
-  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'Reports', icon: icons.reports }, children: [ { path: 'task-report', component: TaskReportComponent } ] },
+  {
+    path: 'reports',
+    component: ReportsComponent,
+    canActivate: [AuthGuard],
+    data: { authType: 3, forToolbar: true, label: 'Reports', icon: icons.reports },
+    children: [
+      // { path: '', redirectTo: 'task-report', pathMatch: 'full' },
+      { path: 'task-report', component: TaskReportComponent,data: { authType: 10, forToolbar: false, label: 'Tasks Reports', icon: icons.reports } },
+      { path: 'payments', component: PaymentsReportsComponent, data: { authType: 10, forToolbar: false, label: 'Payments Reports', icon: icons.reports } }
+    ]
+  },
   { path: 'employeesTable', component: EmployeesTableComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'Employees', icon: icons.employees } },
   { path: '', redirectTo: 'home', pathMatch: 'full', data: { forToolbar: false, label: '#', icon: '' } },
  // { path: 'communicationLogs', component: CommunicationLogsComponent, data: { authType: 6, forToolbar: true, label: 'Communication Logs', icon: icons.comment } },
