@@ -8,7 +8,7 @@ import { Status } from '../status.model';
 
 export class CreateTaskDto {
     @IsNotEmpty()
-    client: Client;
+    client: Client[];
 
     @IsNotEmpty()
     @IsString()
@@ -18,9 +18,13 @@ export class CreateTaskDto {
     @IsString()
     description: string;
 
-    @IsNotEmpty()
+    // @IsNotEmpty()
     @IsDateString()
     dueDate: Date;
+
+    @IsNotEmpty()
+    @IsDateString()
+    deadline: Date;
 
     @IsNotEmpty()
     @IsDateString()
@@ -31,7 +35,7 @@ export class CreateTaskDto {
     status: Status;
 
     @IsNotEmpty()
-    assignedTo: User;
+    assignedTo: User[];
 
     @IsNotEmpty()
     tags: Tag[];
@@ -50,7 +54,7 @@ export class UpdateTaskDto {
     id: string;
 
     @IsOptional()
-    client?: Client;
+    client?: Client[];
 
     @IsOptional()
     @IsString()
@@ -65,12 +69,23 @@ export class UpdateTaskDto {
     dueDate?: Date;
 
     @IsOptional()
+    @IsDateString()
+    deadline?: Date;
+
+    @IsOptional()
+    @IsDateString()
+    startDate?: Date;
+
+    @IsOptional()
     @IsString()
     status?: string;
 
     @IsOptional()
-    assignedTo?: User;
+    assignedTo?: User[];
 
     @IsOptional()
     tags: Tag[];
+
+    @IsOptional()
+    priority?: Priority;
 }
