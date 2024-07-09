@@ -9,6 +9,7 @@ import { TokenService } from './_services/token.service';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { LoginComponent } from './pages/login/login.component';
+import { TaskReportComponent } from './task-report/task-report.component';
 
 // import { RouterTestingModule } from '@angular/router/testing';
 // import { TestBed } from '@angular/core/testing';
@@ -23,7 +24,7 @@ import { LoginComponent } from './pages/login/login.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [LoginComponent,RouterLinkActive, RouterLink, ToolBarComponent, RouterOutlet, ToolBarComponent]
+  imports: [LoginComponent,RouterLinkActive, RouterLink, ToolBarComponent, RouterOutlet, ToolBarComponent,TaskReportComponent]
 })
 export class AppComponent {
   isLoggedIn = false;
