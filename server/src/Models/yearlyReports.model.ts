@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-import { stepFieldModel, stepField } from './fieldSchema.model';
+import { stepFieldModel, StepField } from './stepField.model';
 
 @Schema()
 export class YearlyReport extends Document {
@@ -44,8 +44,8 @@ export class YearlyReport extends Document {
 
     // @Prop()
     // step5: Step5[];
-    @Prop([stepField])
-    stepsList: stepField[]
+    @Prop([StepField])
+    stepsList: StepField[]
    
 }
 

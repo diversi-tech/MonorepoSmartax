@@ -5,14 +5,14 @@ import { Model } from 'mongoose';
 import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { CreateYearlyReportDto } from '../Models/dto/yearlyReport.dbo';
 import { YearlyReport } from '../Models/yearlyReports.model';
-import { stepField } from '../Models/fieldSchema.model';
+import { StepField } from '../Models/stepField.model';
 import { UpdateYearlyReportDto } from '../Models/dto/yearlyReport.dbo';
 
 @Injectable()
 export class YearlyReportService {
 
     constructor(@InjectModel('YearlyReport') private readonly YearlyReportModel: Model<YearlyReport>,
-                 @InjectModel('StepField')private readonly stepFieldModel: Model<stepField>) {}
+                 @InjectModel('StepField')private readonly stepFieldModel: Model<StepField>) {}
 
     async createYearlyReport(createYearlyReportDto: CreateYearlyReportDto): Promise<YearlyReport> {
       const allStepFields = await this.stepFieldModel.find().exec();

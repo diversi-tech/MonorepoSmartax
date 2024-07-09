@@ -1,8 +1,8 @@
-import { Body, Controller, Post, UseFilters } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseFilters } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
-import { CreateStepFieldDto, UpdateStepFieldDto } from "server/src/Models/dto/fieldSchema.dto";
-import { stepField, stepFieldModel} from "server/src/Models/fieldSchema.model";
+import { CreateStepFieldDto, UpdateStepFieldDto } from "server/src/Models/dto/stepField.dto";
+import { StepField, stepFieldModel} from "server/src/Models/stepField.model";
 import { StepFieldService } from "server/src/services/stepField.service";
 
 
@@ -17,7 +17,7 @@ export class StepFieldController{
   @Post('create')
   @ApiOperation({ summary: 'Create a new step field' })
   @ApiBody({ type: CreateStepFieldDto })
-  async create(@Body() createStepFieldDto: CreateStepFieldDto): Promise<stepField> {
+  async create(@Body() createStepFieldDto: CreateStepFieldDto): Promise<StepField> {
     return this.stepFieldService.createStep(createStepFieldDto);
   }
 
@@ -25,7 +25,7 @@ export class StepFieldController{
   @Post('update')
   @ApiOperation({ summary: 'Update a step field by ID' })
   @ApiBody({ type: UpdateStepFieldDto })
-  async update(@Body('id') id: string, @Body() updateStepFieldDto: UpdateStepFieldDto): Promise<stepField> {
+  async update(@Body('id') id: string, @Body() updateStepFieldDto: UpdateStepFieldDto): Promise<StepField> {
     return this.stepFieldService.updateStepFieldDto(id, updateStepFieldDto);
   }
 
@@ -35,9 +35,9 @@ export class StepFieldController{
     return this.stepFieldService.deleteStepField(body.id);
   }
 
-  @Post('all')
+  @Get('all')
   @ApiOperation({ summary: 'Get all step fields' })
-  async getAllStepFields(): Promise<stepField[]> {
+  async getAllStepFields(): Promise<StepField[]> {
     return this.stepFieldService.getAllStepFields();
   }
 

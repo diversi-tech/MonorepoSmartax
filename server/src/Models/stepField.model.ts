@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema()
-export class stepField extends Document {
+export class StepField extends Document {
     
     @Prop()
     value: string;
@@ -21,4 +21,4 @@ export class stepField extends Document {
     stepNumber: number;
 }
 
-export const stepFieldModel = SchemaFactory.createForClass(stepField);
+export const stepFieldModel = SchemaFactory.createForClass(StepField);
