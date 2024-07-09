@@ -32,7 +32,7 @@ export class UploadDocTaskComponent implements OnInit{
   @Output() responseReceived = new EventEmitter<any>();
   DocTypes:DocType[]= [];
   selectedType: DocType | undefined;
-
+  newTypeName: string = '';
   ngOnInit(): void {
     this.documentService.getAllDocTypes().subscribe(
       {
@@ -71,5 +71,26 @@ export class UploadDocTaskComponent implements OnInit{
       }
     });
   }
+  addItem(event:Event) {
+    event.stopPropagation();
+    if (this.newTypeName.trim()) {
+      const newType: DocType = { name: this.newTypeName };
+      this.documentService.addDocTypes(newType).subscribe({
+        next: (response: any) => {
+          this.DocTypes.push(newType);
+          this.newTypeName = '';
+        },
+        error: (err) => {
+          console.error('Error adding new type', err);
+        },
+        complete: () => {
+          console.log('add type complete');
+        }
+      });
+      }
+    }
 
-}
+    
+  }
+
+

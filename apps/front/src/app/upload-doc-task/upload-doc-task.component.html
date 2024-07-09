@@ -11,4 +11,15 @@ chooseLabel=" ">
     [options]="DocTypes" 
     [(ngModel)]="selectedType" 
     optionLabel="name" 
-    placeholder="Select a Type" />
+    placeholder="Select a Type">
+    <ng-template pTemplate="footer">
+        <div class="p-fluid">
+          <div class="p-field">
+            <input type="text" pInputText [(ngModel)]="newTypeName" placeholder="Add new type" (click)="$event.stopPropagation()" (keydown.enter)="addItem($event)">
+            <!-- <div class="p-field"> -->
+              <button type="button" pButton label="Add" icon="pi pi-plus" (click)="addItem($event)"></button>
+            <!-- </div> -->
+          </div>
+        </div>
+      </ng-template>
+</p-dropdown>

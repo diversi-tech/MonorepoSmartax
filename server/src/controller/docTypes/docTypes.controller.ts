@@ -11,14 +11,14 @@ import { DocTypeService } from 'server/src/services/docTypes.service';
 export class DocTypeController {
     constructor(private readonly DocTypeService: DocTypeService) { }
 
-    @Post('create')
+    @Post()
     @ApiOperation({ summary: 'Create a new Docs Type' })
     @ApiBody({ type: CreateDocTypeDto })
     async create(@Body() CreateDocTypeDto: CreateDocTypeDto): Promise<DocType> {
         return await this.DocTypeService.createDocType(CreateDocTypeDto);
     }
 
-    @Put('update')
+    @Put()
     @ApiOperation({ summary: 'Update a Docs Type by ID' })
     @ApiBody({ type: UpdateDocTypeDto })
     async update(@Body() UpdateDocTypeDto: UpdateDocTypeDto): Promise<DocType> {
