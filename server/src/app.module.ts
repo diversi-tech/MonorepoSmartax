@@ -54,7 +54,7 @@ import { TagController } from './controller/tag/tag.controller';
 import { TagService } from './services/tag.service';
 import express from 'express';
 import * as path from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
+ import { ServeStaticModule } from '@nestjs/serve-static';
 import { Status, StatusModel } from './Models/status.model';
 import { Priority, PriorityModel } from './Models/priority.model';
 import { StatusController } from './controller/status/status.controller';
@@ -66,6 +66,9 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
 import { DocTypeController } from './controller/docTypes/docTypes.controller';
 import { DocTypeService } from './services/docTypes.service';
 import { DocType, docTypeModel } from './Models/docType.model';
+import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
+import { CallTopicService } from './services/callTopicSchema.service';
+import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -88,6 +91,7 @@ import { DocType, docTypeModel } from './Models/docType.model';
  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+ MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
  ServeStaticModule.forRoot({
    rootPath: path.join(__dirname, '../uploads'),
    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -95,7 +99,7 @@ import { DocType, docTypeModel } from './Models/docType.model';
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
-  controllers: [AppController,ClientTypeController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
+  controllers: [AppController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
 
 
   providers: [
@@ -117,6 +121,7 @@ import { DocType, docTypeModel } from './Models/docType.model';
     BillingStatusService,
     RoleService,
     MeetService,
+    CallTopicService,
     CommunicationArchiveService,
     DocTypeService,
     {
