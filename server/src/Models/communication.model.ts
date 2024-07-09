@@ -12,13 +12,16 @@ export class Communication extends Document {
     date: Date;
 
     @Prop({ type: String, required: true })
-    type: string;
+    Subject: string;
 
     @Prop({ type: String, required: true })
     summary: string;
 
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
     assignedTo: User;
+
+    @Prop({ type: String, required: true })
+    Status: boolean;
 }
 
 export const communicationModel = SchemaFactory.createForClass(Communication);
