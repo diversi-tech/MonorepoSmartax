@@ -33,7 +33,7 @@ export class GoogleDriveService{
     try {
       const client=await this.clientService.searchClient(clientId);
       // const folderId = await this.getOrCreateFolder(client.name);
-      const folderId = await this.getOrCreateFolder(client.name);
+      const folderId = await this.getOrCreateFolder(client[0].name);
       const response = await this.drive.files.create({
         requestBody: {
           name: Buffer.from(file.originalname, 'latin1').toString('utf8'),
