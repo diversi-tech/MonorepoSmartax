@@ -1,229 +1,88 @@
-import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, ValidateNested, IsBoolean, IsNumber, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, Length, ValidateNested } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { SensitiveData } from '../sensitiveData';
-import { User } from '../user.model';
-import { ReportType } from '../client.model';
+import { CreateTagDto } from './tag.dto';
+import { UpdateTagDto } from './tag.dto';
+import { Type } from 'class-transformer';
 
 export class CreateClientDto {
-    @ApiProperty({ example: 'ACME Corporation' })
+    @ApiProperty({ type: String })
+    @IsNotEmpty()
     @IsString()
-    companyName: string;
+    name: string;
 
-    @ApiProperty({ example: 'John' })
+    @ApiProperty({ type: String })
+    @IsNotEmpty()
     @IsString()
-    firstName: string;
+    @IsPhoneNumber('IL', { message: 'ContactInfo must be a valid Israeli phone number' })
+    @Length(10, 10, { message: 'ContactInfo must be exactly 10 digits' })
+    contactInfo: string;
 
-    @ApiProperty({ example: 'Doe' })
+    @ApiProperty({ type: String })
+    @IsNotEmpty()
     @IsString()
-    lastName: string;
+    businessName: string;
 
-    @ApiProperty({ example: 'Jane Smith' })
+    @ApiProperty({ type: String })
+    @IsNotEmpty()
     @IsString()
-    contactPersonName: string;
+    source: string;
 
-    @ApiProperty({ example: '123456' })
+    @ApiProperty({ type: String })
+    @IsNotEmpty()
     @IsString()
-    tz: string;
+    status: string;
 
-    @ApiProperty({ example: 'Mary Doe' })
-    @IsString()
-    spouseName: string;
-
-    @ApiProperty({ example: '456789' })
-    @IsString()
-    spouseTZ: string;
-
-    @ApiProperty({ example: '555-555-5555' })
-    @IsString()
-    phone: string;
-
-    @ApiProperty({ example: 'john.doe@example.com' })
-    @IsString()
-    email: string;
-
-    @ApiProperty({ example: '123 Main Street, City, Country' })
-    @IsString()
-    address: string;
-
-    @ApiProperty({ example: [] })
-    encryptedPasswords: SensitiveData[];
-
-    @ApiProperty({ example: 'No special comments' })
-    @IsString()
-    @MaxLength(300)
-    comments: string;
-
-    @ApiProperty({ example: '<user_id>' })
-    lastUserUpdate: User;
-
-    @ApiProperty({ example: ['<user_id_1>', '<user_id_2>'] })
-    assignTo: User[];
-
-    @ApiProperty({ example: 1001 })
-    @IsNumber()
-    _id: number;
-
-    @ApiProperty({ example: true })
-    @IsBoolean()
-    isEmploysWorkers: boolean;
-
-    @ApiProperty({ example: false })
-    @IsBoolean()
-    isWorkData: boolean;
-
-    @ApiProperty({ example: '789012' })
-    @IsString()
-    incomeTaxFileNumber: string;
-
-    @ApiProperty({ example: '345678' })
-    @IsString()
-    VATFileNumber: string;
-
-    @ApiProperty({ example: ReportType.NotReporting })
-    reports: ReportType;
-
-    @ApiProperty({ example: false })
-    @IsBoolean()
-    isStatisticsData: boolean;
-
-    @ApiProperty({ example: 'Alice Johnson' })
-    @IsString()
-    referrerName: string;
-
-    @ApiProperty({ example: '2022-01-01' })
+    @ApiProperty({ type: Date })
+    @IsNotEmpty()
     @IsDateString()
-    joinDate: Date;
+    createdDate: Date;
 
-    @ApiProperty({ example: false })
-    @IsBoolean()
-    isAccounter: boolean;
-
-    @ApiProperty({ example: true })
-    @IsBoolean()
-    isOpenAccountWithUs: boolean;
+    @ApiProperty({ type: CreateTagDto, example: {text:"aaaa",color:"red"},required: true  })
+    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => CreateTagDto)
+    tag: CreateTagDto;
 }
 
 export class UpdateClientDto {
-    @ApiProperty({ example: 'ACME Corporation' })
+    @ApiProperty()
+    @IsNotEmpty()
     @IsString()
-    @IsOptional()
-    companyName?: string;
+    id: string;
 
-    @ApiProperty({ example: 'John' })
-    @IsOptional()
-    @IsString()
-    firstName?: string;
-
-    @ApiProperty({ example: 'Doe' })
+    @ApiProperty({ type: String, required: true })
     @IsOptional()
     @IsString()
-    lastName?: string;
+    name?: string;
 
-    @ApiProperty({ example: 'Jane Smith' })
+    @ApiProperty({ type: String, required: true })
     @IsOptional()
     @IsString()
-    contactPersonName?: string;
+    contactInfo?: string;
 
-    @ApiProperty({ example: '123456' })
+    @ApiProperty({ type: String, required: true })
     @IsOptional()
     @IsString()
-    tz?: string;
+    businessName?: string;
 
-    @ApiProperty({ example: 'Mary Doe' })
+    @ApiProperty({ type: String, required: true })
     @IsOptional()
     @IsString()
-    spouseName?: string;
+    source?: string;
 
-    @ApiProperty({ example: '456789' })
+    @ApiProperty({ type: String, required: true })
     @IsOptional()
     @IsString()
-    spouseTZ?: string;
+    status?: string;
 
-    @ApiProperty({ example: '555-555-5555' })
-    @IsOptional()
-    @IsString()
-    phone?: string;
-
-    @ApiProperty({ example: 'john.doe@example.com' })
-    @IsOptional()
-    @IsString()
-    email?: string;
-
-    @ApiProperty({ example: '123 Main Street, City, Country' })
-    @IsOptional()
-    @IsString()
-    address?: string;
-
-    @ApiProperty({ example: [] })
-    @IsOptional()
-    encryptedPasswords?: SensitiveData[];
-
-    @ApiProperty({ example: 'No special comments' })
-    @IsOptional()
-    @MaxLength(300)
-    @IsString()
-    comments?: string;
-
-    @ApiProperty({ example: '<user_id>' })
-    @IsOptional()
-    lastUserUpdate?: User;
-
-    @ApiProperty({ example: ['<user_id_1>', '<user_id_2>'] })
-    @IsOptional()
-    assignTo?: User[];
-
-    @ApiProperty({ example: 1001 })
-    @IsOptional()
-    @IsNumber()
-    _id?: number;
-
-    @ApiProperty({ example: true })
-    @IsOptional()
-    @IsBoolean()
-    isEmploysWorkers?: boolean;
-
-    @ApiProperty({ example: false })
-    @IsOptional()
-    @IsBoolean()
-    isWorkData?: boolean;
-
-    @ApiProperty({ example: '789012' })
-    @IsOptional()
-    @IsString()
-    incomeTaxFileNumber?: string;
-
-    @ApiProperty({ example: '345678' })
-    @IsOptional()
-    @IsString()
-    VATFileNumber?: string;
-
-    @ApiProperty({ example: ReportType.NotReporting })
-    @IsOptional()
-    reports?: ReportType;
-
-    @ApiProperty({ example: false })
-    @IsOptional()
-    @IsBoolean()
-    isStatisticsData?: boolean;
-
-    @ApiProperty({ example: 'Alice Johnson' })
-    @IsOptional()
-    @IsString()
-    referrerName?: string;
-
-    @ApiProperty({ example: '2022-01-01' })
+    @ApiProperty({ type: Date, required: true })
     @IsOptional()
     @IsDateString()
-    joinDate?: Date;
+    createdDate?: Date;
 
-    @ApiProperty({ example: false })
-    @IsOptional()
-    @IsBoolean()
-    isAccounter?: boolean;
-
-    @ApiProperty({ example: true })
-    @IsOptional()
-    @IsBoolean()
-    isOpenAccountWithUs?: boolean;
+    @ApiProperty({ type: UpdateTagDto, example: {text:"aaaa",color:"red"},required: true  })
+    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => UpdateTagDto)
+    tag: UpdateTagDto;
 }
-
