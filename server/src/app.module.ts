@@ -60,16 +60,17 @@ import { PriorityService } from './services/priority.service';
 import { CommunicationArchiveController } from './controller/communicationArchive/communicationArchive.controler';
 import { CommunicationArchive, communicationArchiveModel } from './Models/communicationArchive.model';
 import { CommunicationArchiveService } from './services/communicationArchive.service';
-
+import { AuthModule } from './auth/auth.module';
+import { GmailService } from './services/GmailService';
+import { Token ,TokenSchema } from './Models/token';
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
 
 @Module({
 //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
-
+    AuthModule,
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
-
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
   MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
   MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel }]),
@@ -78,10 +79,11 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
   MongooseModule.forFeature([{ name: Documents.name, schema: DocumentsModel }]),
   MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
   MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
- MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
- MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
- MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
- ServeStaticModule.forRoot({
+  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+  MongooseModule.forFeature([{ name: Token.name, schema: TokenSchema }]),
+  ServeStaticModule.forRoot({
    rootPath: path.join(__dirname, '../uploads'),
    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
  }),
@@ -92,6 +94,7 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
 
 
   providers: [
+    GmailService,
     AppService,
     UserService,
     MailService,

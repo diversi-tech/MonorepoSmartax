@@ -1,0 +1,16 @@
+{
+    "web": {
+        "client_id": "450626878965-7r8nl14gj5eh5h4lfb1qs2d4kfkvq15l.apps.googleusercontent.com",
+        "project_id": "smart-tax-427307",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://localhost:4200/EmailSearch"
+        ],
+        "javascript_origins": [
+            "http://localhost:4200"
+        ]
+    }
+}

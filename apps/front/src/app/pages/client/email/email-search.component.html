@@ -1,0 +1,41 @@
+<!-- 
+   <div>
+    <input [(ngModel)]="clientEmail" placeholder="Enter client email" />
+    <button (click)="searchEmails()">Search Emails</button>
+  </div>
+  
+  <div *ngIf="emails.length > 0">
+    <h3>Emails Sent to {{ clientEmail }}</h3>
+    <ul>
+      <li *ngFor="let email of emails">
+        From: {{ email.from }} | Subject: {{ email.subject }} | Date: {{ email.date | date: 'short' }}
+        <button (click)="openEmail(email)">Open Email</button>
+      </li>
+    </ul>
+  </div> -->
+<!-- email-search.component.html -->
+
+
+<!-- <div class="email-search-container">
+    <button (click)="openClientEmail()">Open Client Email</button>
+</div> -->
+
+<form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    <div>
+      <label for="fromEmail">From Email:</label>
+      <input id="fromEmail" formControlName="fromEmail">
+    </div>
+    <div>
+      <label for="toEmail">To Email:</label>
+      <input id="toEmail" formControlName="toEmail">
+    </div>
+    <button type="submit" pButton label="Search"></button>
+  </form>
+  
+  <div *ngIf="emails.length > 0">
+    <h3>Emails Found:</h3>
+    <ul>
+      <li *ngFor="let email of emails">{{ email }}</li>
+    </ul>
+  </div>
+  

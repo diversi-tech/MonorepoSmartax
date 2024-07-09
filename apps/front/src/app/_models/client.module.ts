@@ -11,4 +11,5 @@ export interface Client {
   status: Status|null;
   createdDate: Date;
   tag:Tag;
+  email:string;
 }
