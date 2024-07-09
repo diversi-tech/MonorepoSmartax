@@ -12,19 +12,20 @@ export class ClientService {
     constructor(@InjectModel('Client') private readonly clientModel: Model<Client>) {}
 
     async createClient(createClientDto: CreateClientDto): Promise<Client> {
-        const { name, contactInfo, businessName, source, status, createdDate, tag } = createClientDto;
+        // const { name, contactInfo, businessName, source, status, createdDate, tag } = createClientDto;
 
-        if (!name || !contactInfo || !businessName || !source || !status || !createdDate || !tag) {
-          throw new ValidationException('Missing required fields');
-        }
+        // if (!name || !contactInfo || !businessName || !source || !status || !createdDate || !tag) {
+        //   throw new ValidationException('Missing required fields');
+        // }
         
-        const createdClient = new this.clientModel({ name, contactInfo, businessName, source, status, createdDate, tag });
+        const createdClient = new this.clientModel(createClientDto);
         return await createdClient.save();
     }
 
     async getAllClients(): Promise<Client[]> {
         return await this.clientModel.find().exec();
     }
+
     async searchClient(id:string): Promise<Client> {
         const client= await this.clientModel.findOne({"_id":id}).exec();
         if (!client) {
@@ -32,11 +33,11 @@ export class ClientService {
           }
           return client;
     }
-    async updateClient(updateClientDto: UpdateClientDto): Promise<Client> {
-        const {id, ...updateData } = updateClientDto;
-        const updatedClient = await this.clientModel.findByIdAndUpdate(id, updateData, { new: true });
+
+    async updateClient(_id: number, updateClientDto: UpdateClientDto): Promise<Client> {
+        const updatedClient = await this.clientModel.findByIdAndUpdate(_id, updateClientDto, { new: true }).exec();
         if (!updatedClient) {
-            throw new NotFoundException(`Client with ID ${id} not found`);
+            throw new NotFoundException(`Client with customerID ${_id} not found`);
         }
         return updatedClient;
     }
