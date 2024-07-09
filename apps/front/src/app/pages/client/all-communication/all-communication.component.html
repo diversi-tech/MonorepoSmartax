@@ -62,8 +62,25 @@
         <input type="date" class="p-inputtext" id="editDate" [(ngModel)]="selectedCommunication.date" name="editDate" required>
       </div>
       <div class="p-field">
-        <label for="editSubject">נושא שיחה</label>
-        <textarea class="p-textarea" id="editSubject" [(ngModel)]="selectedCommunication.Subject" name="editSubject" rows="3" required></textarea>
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <label for="searchName">בחר נושא שיחה:</label>
+              <p-autoComplete [(ngModel)]="selectedCallTopic" [suggestions]="filteredCallTopic"
+                (completeMethod)="filterByNameCallTopic($event.query)" 
+                [minLength]="1" placeholder="Search callTopics" field="name" [dropdown]="true" (onSelect)="select($event)">
+                  <ng-template let-callTopicSchema pTemplate="item">
+                  <div>
+                    callTopics - {{ callTopicSchema.name }} 
+                    <ng-container *ngIf="is">
+                      <button (click)="add()">{{thisSubject2}} רוצה להוסיף את הנושא שיחה הזה</button>
+                    </ng-container>
+                  </div>
+                </ng-template>
+              </p-autoComplete>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="p-field">
         <label for="editSummary">Summary</label>

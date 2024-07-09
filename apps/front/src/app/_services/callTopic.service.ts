@@ -15,7 +15,6 @@ export class CallTopicService {
 
   // פונקציה להוספת נתונים
   createCallTopic(callTopic: callTopicSchema): Observable<callTopicSchema> {
-    console.log("g",callTopic)
     return this.http.post<callTopicSchema>(`${this.apiUrl}`, callTopic, this.httpOptions);
   }
 

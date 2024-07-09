@@ -145,6 +145,7 @@ export class ClientAddCommunicationComponent implements OnInit {
     }
     else
     {
+      this.is=false
       this.filteredCallTopic = this.callTopics;
     }
     this.selectedCallTopic = null;

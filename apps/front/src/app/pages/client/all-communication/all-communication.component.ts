@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from '@angular/core';
 import { CommunicationService } from '../../../_services/communicaton.service';
 import { Communication } from '../../../_models/communication.module';
 import { UserService } from '../../../_services/user.service';
-import { SelectItem } from 'primeng/api';
+import { PrimeTemplate, SelectItem } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf, DatePipe,CommonModule } from '@angular/common';
@@ -10,6 +10,9 @@ import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { callTopicSchema } from '../../../_models/callTopic.module'
 import { CallTopicService } from "../../../_services/callTopic.service"
+import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { AddClientComponent } from '../add-client/add-client.component';
+import { RouterOutlet } from '@angular/router';
 @Component({
     // standalone:true,
     selector: 'app-client-communication-logs',
@@ -23,7 +26,12 @@ import { CallTopicService } from "../../../_services/callTopic.service"
         FormsModule,
         DropdownModule,
         DatePipe,
-        TableModule
+        TableModule,
+        FormsModule, DropdownModule,
+      AutoCompleteModule,
+      PrimeTemplate,
+      AddClientComponent,
+      RouterOutlet,
     ],  
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -42,7 +50,15 @@ export class AllCommunicationComponent {
   filterCallTopic: string="";
   callTopics: callTopicSchema[] = [];
   selectedCallTopic: string = '';
-
+  selectedCallTopic2: callTopicSchema| null = null;
+  filteredCallTopic: callTopicSchema[] = [];
+  callTopics2: callTopicSchema[]=[{name:"לא נמצא"}]
+  is: boolean = false;
+  newcallTopicSchema: callTopicSchema={
+    name:""
+  }
+  thisSubject=""
+  thisSubject2=""
   constructor(private communicationService: CommunicationService, private userService: UserService,
     private callTopicService: CallTopicService) { }
 
@@ -53,7 +69,7 @@ export class AllCommunicationComponent {
    
   }
   getCallTopics(): void {
-    this.callTopicService.getAll().subscribe(callTopic => {
+      this.callTopicService.getAll().subscribe(callTopic => {
       this.callTopics = callTopic ;
     });
     console.log("שלום ",this.callTopics)
@@ -69,6 +85,7 @@ export class AllCommunicationComponent {
     this.selectedCommunication = { ...communication }; // Clone the communication for editing
   }
   updateCommunication(): void {
+    this.selectedCommunication.Subject=this.thisSubject
     if (this.selectedCommunication) {
       this.communicationService.updateCommunication(this.selectedCommunication._id!, this.selectedCommunication)
         .subscribe((updatedCommunication: Communication) => {
@@ -76,6 +93,7 @@ export class AllCommunicationComponent {
           if (index !== -1) {
             this.communications[index] = updatedCommunication;
           }
+          
           this.selectedCommunication = null;
         });
     }
@@ -143,4 +161,39 @@ export class AllCommunicationComponent {
       this.filteredCommunicatio = this.communications;
     }
   }
+  filterByNameCallTopic(value: string): void {
+  
+    if (value != "") {
+      this.is=false
+      const query = value.toLowerCase();
+      this.filteredCallTopic = this.callTopics.filter(callTopic => 
+        callTopic.name.toLowerCase().includes(query.toLowerCase())
+      );
+      if(this.filteredCallTopic.length==0)
+        {
+          this.filteredCallTopic=this.callTopics2
+          this.thisSubject2=value
+          this.is=true;
+          
+        }
+    }
+    else
+    {
+      this.is=false
+      this.filteredCallTopic = this.callTopics;
+    }
+    this.selectedCallTopic2 = null;
+    
+  }
+  select(event:  AutoCompleteSelectEvent): void {
+   
+      const callTopic = event.value as callTopicSchema;
+      this.thisSubject=callTopic.name
+    }
+    add(){
+      this.newcallTopicSchema.name=this.thisSubject2
+      this.callTopicService.createCallTopic(this.newcallTopicSchema).subscribe(response => {
+        this.callTopics.push(response);  // הוספת הנושא החדש לרשימה המקומית
+      });
+    }
 }

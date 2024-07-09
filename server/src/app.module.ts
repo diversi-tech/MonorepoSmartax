@@ -54,7 +54,7 @@ import { TagController } from './controller/tag/tag.controller';
 import { TagService } from './services/tag.service';
 import express from 'express';
 import * as path from 'path';
-// import { ServeStaticModule } from '@nestjs/serve-static';
+ import { ServeStaticModule } from '@nestjs/serve-static';
 import { Status, StatusModel } from './Models/status.model';
 import { Priority, PriorityModel } from './Models/priority.model';
 import { StatusController } from './controller/status/status.controller';
@@ -63,6 +63,9 @@ import { PriorityService } from './services/priority.service';
 import { CommunicationArchiveController } from './controller/communicationArchive/communicationArchive.controler';
 import { CommunicationArchive, communicationArchiveModel } from './Models/communicationArchive.model';
 import { CommunicationArchiveService } from './services/communicationArchive.service';
+import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
+import { CallTopicService } from './services/callTopicSchema.service';
+import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -84,14 +87,15 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-//  ServeStaticModule.forRoot({
-//    rootPath: path.join(__dirname, '../uploads'),
-//    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
-//  }),
+ MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
+ ServeStaticModule.forRoot({
+   rootPath: path.join(__dirname, '../uploads'),
+   serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+ }),
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
-  controllers: [AppController,ClientTypeController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController],  
+  controllers: [AppController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController],  
 
 
   providers: [
@@ -113,6 +117,7 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
     BillingStatusService,
     RoleService,
     MeetService,
+    CallTopicService,
     CommunicationArchiveService,
     {
       provide: APP_FILTER,
