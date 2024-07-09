@@ -101,69 +101,6 @@ export class GoogleAuthService {
     }
     console.log('Token request initiated');
   }
-
-  // private async scheduleEvent(eventDetails: any) {
-  //   const event = {
-  //     summary: eventDetails.nameT,
-  //     location: "",
-  //     description: eventDetails.description,
-  //     start: {
-  //       dateTime: eventDetails.startTime,
-  //       timeZone: "Asia/Jerusalem",
-  //     },
-  //     end: {
-  //       dateTime: eventDetails.endTime,
-  //       timeZone: "Asia/Jerusalem",
-  //     },
-  //     attendees: [{ email: eventDetails.email }],
-  //     reminders: {
-  //       useDefault: false,
-  //       overrides: [
-  //         { method: "email", minutes: 24 * 60 },
-  //         { method: "popup", minutes: 10 },
-  //       ],
-  //     },
-  //     conferenceData: {
-  //       createRequest: {
-  //         requestId: Math.random().toString(36).substring(2),  // Use a unique string
-  //         conferenceSolutionKey: {
-  //           type: "hangoutsMeet"  // For Google Meet
-  //         }
-  //       }
-  //     }
-  //   };
-
-  //   try {
-  //     const request = gapi.client.calendar.events.insert({
-  //       calendarId: "primary",
-  //       resource: event,
-  //       conferenceDataVersion: 1
-  //     });
-      
-  //     request.execute((event: any) => {
-  //       let conferenceLink = '';
-  //       if (event.conferenceData && event.conferenceData.entryPoints && event.conferenceData.entryPoints.length > 0) {
-  //         conferenceLink = event.conferenceData.entryPoints[0].uri;
-  //       }
-  //       Swal.fire({
-  //         position: "top-end",
-  //         icon: "success",
-  //         title: "המשימה נשמרה",
-  //         html: `
-  //           לצפיה בלוח המשימות
-  //           <a href="${event.htmlLink}" target="_blank" autofocus>לחץ כאן</a>
-  //           <br>
-  //           לפגישה ב-Google Meet
-  //           <a href="${conferenceLink}" target="_blank" autofocus>לחץ כאן</a>
-  //         `,
-  //         showConfirmButton: false,
-  //         timer: 3000
-  //       });
-  //     });
-  //   } catch (error) {
-  //     console.error("Error creating event:", error);
-  //   }
-  // }
   private async scheduleEvent(eventDetails: any) {
     // Ensure event details have startTime and endTime
     if (!eventDetails.startTime || !eventDetails.endTime) {

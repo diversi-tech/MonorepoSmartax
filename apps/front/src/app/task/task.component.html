@@ -28,15 +28,48 @@
         <span class="pi pi-user"></span>
         Assignees
       </p>
-      <div style="margin-left: 60px">
-        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+      <div style="margin-left: 60px; width: 32%">
+        <!-- <p-inputGroup class="w-full" [style]="{ height: '20px' }">
           <p-inputGroupAddon *ngIf="!selectedUser"
             ><span
               (click)="showAssignees = !showAssignees"
               class="pi pi-user-plus"
             ></span>
           </p-inputGroupAddon>
-        </p-inputGroup>
+        </p-inputGroup> -->
+        <p-multiSelect
+          [options]="users"
+          [(ngModel)]="selectedUsers"
+          name="selectedUsers"
+          placeholder="Select Users"
+          defaultLabel="Select Users"
+          [style]="{ height: '50px', width: '100%' }"
+          (onChange)="onUserChange($event)"
+        >
+          <ng-template let-user pTemplate="item">
+            <div class="avatar-item">
+              <app-icon-profile
+                class="avatar"
+                [userName]="user.userName"
+              ></app-icon-profile>
+              <span>{{ user.userName }}</span>
+            </div>
+          </ng-template>
+          <ng-template let-user pTemplate="selectedItems">
+            <div class="selected-items-container">
+              <div
+                *ngFor="let selectedUser of selectedUsers"
+                class="selected-item"
+                style="margin-right: 10px"
+              >
+                <app-icon-profile
+                  class="avatar"
+                  [userName]="selectedUser.userName"
+                ></app-icon-profile>
+              </div>
+            </div>
+          </ng-template>
+        </p-multiSelect>
       </div>
       <div (click)="showAssignees = !showAssignees">
         <app-icon-profile
@@ -103,6 +136,7 @@
               ></p-checkbox>
             </div>
           </p-inputGroupAddon>
+            <p style="height: 20px;" >{{currentTask && currentTask.dueDate && currentTask.dueDate | date}}</p>
         </p-inputGroup>
       </div>
     </div>
@@ -316,8 +350,8 @@
         <span class="pi pi-users"></span>
         Client
       </p>
-      <div style="margin-left: 85px">
-        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+      <div style="margin-left: 85px; width: 32%">
+        <!-- <p-inputGroup class="w-full" [style]="{ height: '20px' }">
           <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"
             ><span
               (click)="showClients = !showClients"
@@ -330,7 +364,40 @@
               [userName]="selectedClient.name"
             ></app-icon-profile>
           </div>
-        </p-inputGroup>
+        </p-inputGroup> -->
+        <p-multiSelect
+          [options]="clients"
+          [(ngModel)]="selectedClients"
+          name="selectedClients"
+          defaultLabel="Select Clients"
+          optionLabel="name"
+          [style]="{ height: '50px', width: '100%' }"
+          (onChange)="onUserChange($event)"
+        >
+          <ng-template let-client pTemplate="item">
+            <div class="avatar-item">
+              <app-icon-profile
+                class="avatar"
+                [userName]="client.name"
+              ></app-icon-profile>
+              <span>{{ client.name }}</span>
+            </div>
+          </ng-template>
+          <ng-template let-client pTemplate="selectedItems">
+            <div class="selected-items-container">
+              <div
+                *ngFor="let selectedClient of selectedClients"
+                class="selected-item"
+                style="margin-right: 10px"
+              >
+                <app-icon-profile
+                  class="avatar"
+                  [userName]="selectedClient.name"
+                ></app-icon-profile>
+              </div>
+            </div>
+          </ng-template>
+        </p-multiSelect>
       </div>
     </div>
     <!-- pop -->
@@ -445,66 +512,3 @@
 <button (click)="scheduleMeeting()">meet</button>
 
 <!--  -->
-
-<h5>Select Users</h5>
-<p-multiSelect
-  [options]="users"
-  [(ngModel)]="selectedUsers"
-  name="selectedUsers"
-  placeholder="Select Users"
-  defaultLabel="Select Users"
-  [style]="{ height: '50px', width: '100%' }"
-  (onChange)="onUserChange($event)"
->
-  <ng-template let-user pTemplate="item">
-    <div class="avatar-item">
-      <app-icon-profile class="avatar" [userName]="user.userName"></app-icon-profile>
-      <span>{{ user.userName }}</span>
-    </div>
-  </ng-template>
-  <ng-template let-user pTemplate="selectedItems">
-    <div class="selected-items-container">
-      <div *ngFor="let selectedUser of selectedUsers" class="selected-item" style="margin-right: 10px">
-        <app-icon-profile class="avatar" [userName]="selectedUser.userName"></app-icon-profile>
-      </div>
-    </div>
-   
-  </ng-template>
-</p-multiSelect>
-
-<!--  -->
-
-<h5>Select Clients</h5>
-<p-multiSelect
-  [options]="clients"
-  [(ngModel)]="selectedClients"
-  name="selectedClients"
-  defaultLabel="Select Clients"
-  optionLabel="name"
-  [style]="{ height: '50px', width: '100%' }"
-  (onChange)="onUserChange($event)"
->
-  <ng-template let-client pTemplate="item">
-    <div class="avatar-item">
-      <app-icon-profile
-        class="avatar"
-        [userName]="client.name"
-      ></app-icon-profile>
-      <span>{{ client.name }}</span>
-    </div>
-  </ng-template>
-  <ng-template let-client pTemplate="selectedItems">
-    <div class="selected-items-container">
-      <div
-        *ngFor="let selectedClient of selectedClients"
-        class="selected-item"
-        style="margin-right: 10px"
-      >
-        <app-icon-profile
-          class="avatar"
-          [userName]="selectedClient.name"
-        ></app-icon-profile>
-      </div>
-    </div>
-  </ng-template>
-</p-multiSelect>
