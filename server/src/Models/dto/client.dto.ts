@@ -92,11 +92,11 @@ export class CreateClientDto {
 
     @ApiProperty({ example: '2022-01-01' })
     @IsDateString()
-    entryDate: Date;
+    joinDate: Date;
 
     @ApiProperty({ example: false })
     @IsBoolean()
-    isAccountant: boolean;
+    isAccounter: boolean;
 
     @ApiProperty({ example: true })
     @IsBoolean()
@@ -214,12 +214,12 @@ export class UpdateClientDto {
     @ApiProperty({ example: '2022-01-01' })
     @IsOptional()
     @IsDateString()
-    entryDate?: Date;
+    joinDate?: Date;
 
     @ApiProperty({ example: false })
     @IsOptional()
     @IsBoolean()
-    isAccountant?: boolean;
+    isAccounter?: boolean;
 
     @ApiProperty({ example: true })
     @IsOptional()

@@ -92,10 +92,10 @@ export class Client extends Document {
   referrerName: string;
 
   @Prop()
-  entryDate: Date;
+  joinDate: Date;
 
   @Prop()
-  isAccountant: boolean;
+  isAccounter: boolean;
 
   @Prop()
   isOpenAccountWithUs: boolean;
