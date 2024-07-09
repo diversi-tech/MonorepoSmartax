@@ -14,7 +14,7 @@ chooseLabel=" ">
     placeholder="Select a Type">
     <ng-template pTemplate="footer">
         <div class="p-fluid">
-            <div class="input-container p-field">
+            <div class="input-container">
              <input type="text" pInputText [(ngModel)]="newTypeName" placeholder="Add new type" (click)="$event.stopPropagation()" (keydown.enter)="addItem($event)">
             <!-- <div class="p-field"> -->
               <button type="button" icon="pi pi-plus" (click)="addItem($event)" [style]="{'margin-left': '8px',
