@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from '../Models/user.model';
+import { User ,UserModel } from '../Models/user.model';
 import { CreateUserDto, UpdateUserDto } from '../Models/dto/user.dto';
 import { ValidationException } from '../common/exceptions/validation.exception';
 import { TokenService } from './jwt.service';
@@ -20,8 +20,6 @@ export class UserService {
     
   }
 
-
-
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { userName, email, passwordHash, role } = createUserDto;
 
@@ -30,6 +28,7 @@ export class UserService {
     }
 
     const createdUser = new this.userModel({ userName, email, passwordHash, role });
+    
     return await createdUser.save();
   }
 

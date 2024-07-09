@@ -9,8 +9,8 @@ export class ToolBarService {
 
   getCurrentItems(role: number) {
     routes.forEach(item => {
-      if (item.data && item.data!['forToolbar'] == true)
-        if (item.data!['authType'] >= role)
+      if (item.data && item.data!['forToolbar']&&item.data!['forToolbar'] == true)
+        if (item.data!['authType']&&item.data!['authType'] >= role)
           {
             const newItem={ label: item.data!['label'], icon: item.data!['icon'], route: item.path };
             this.toolBarItems.push(newItem);
