@@ -1,6 +1,6 @@
 import { PriorityService } from './../_services/priority.service';
 import { Priority } from './../_models/priority.module';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, Output, ViewChild, EventEmitter} from '@angular/core';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/user.module';
 import {
@@ -135,6 +135,9 @@ export class TaskComponent implements OnInit {
   formGroupStatus!: FormGroup;
   formGroupTags!: FormGroup;
   //
+  @Input() taskId: string | null = null;
+  @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
+  //
   constructor(
     private userSErvice: UserService,
     private clientService: ClientService,
@@ -150,6 +153,8 @@ export class TaskComponent implements OnInit {
   ngOnInit(): void {
 
     this.id = this.route.snapshot.paramMap.get('id')!;
+    if(this.taskId)
+      this.id=this.taskId
     console.log(this.id);
     if (this.id != 'create') {
       this.tasksService.searchTask(this.id!).subscribe({
@@ -281,6 +286,8 @@ export class TaskComponent implements OnInit {
       this.tasksService.updateTask(this.id!, newTask).subscribe({
         next: (dataClients) => {
           console.log(dataClients);
+          if(this.taskId)
+            this.closeModal.emit();
         },
         error: (errClients) => {
           console.log(errClients);
