@@ -16,7 +16,8 @@ export class CommunicationArchiveService {
         const communicationArchive = new this.communicationArchiveModel({
           client: communication.client,
           date: communication.date,
-          type: communication.type,
+          Status:communication.Status,
+          Subject: communication.Subject,
           summary: communication.summary,
           isDeleted: isDeleted,
         });

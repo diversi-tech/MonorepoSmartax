@@ -16,7 +16,7 @@ export class CreateCommunicationDto {
     @ApiProperty({ type: String, example: 'Meeting' })
     @IsNotEmpty()
     @IsString()
-    type: string;
+    Subject: string;
 
     @ApiProperty({ type: String, example: 'Discussion summary' })
     @IsNotEmpty()
@@ -27,6 +27,12 @@ export class CreateCommunicationDto {
     @ApiProperty({ type: String, example: 'user_id_example' })
     @IsNotEmpty()
     assignedTo: Types.ObjectId;
+
+    
+    @ApiProperty({ type: Boolean, example: 'false' })
+    @IsNotEmpty()
+    @IsString()
+    Status : boolean
 }
 
 export class UpdateCommunicationDto {
@@ -42,7 +48,7 @@ export class UpdateCommunicationDto {
     @ApiProperty({ type: String, example: 'Meeting', required: true })
     @IsOptional()
     @IsString()
-    type?: string;
+    Subject?: string;
 
     @ApiProperty({ type: String, example: 'Discussion summary', required: true })
     @IsOptional()
@@ -54,6 +60,11 @@ export class UpdateCommunicationDto {
     @IsOptional()
     assignedTo?: Types.ObjectId;
     
+    @ApiProperty({ type: Boolean, example: 'false', required: true })
+    @IsOptional()
+    @IsString()
+    Status?: boolean;
+
     @ApiProperty({ type: String, example: '123456789', required: true })
     @IsOptional()
     id?: string;
