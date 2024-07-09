@@ -30,9 +30,8 @@ export class ClientController {
     }
 
     @Put()
-    @ApiBody({ type: UpdateClientDto })
-    async updateClient(@Body() updateClientDto: UpdateClientDto): Promise<Client> {
-        return await this.clientService.updateClient(updateClientDto._id, updateClientDto);
+    async updateClient(@Body(new ValidationPipe()) updateClientDto: UpdateClientDto): Promise<Client> {
+        return await this.clientService.updateClient(updateClientDto);
     }
 
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
