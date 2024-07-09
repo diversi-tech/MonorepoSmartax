@@ -3,6 +3,7 @@
   <input id="password" type="password" formControlName="password">
   <button (click)="onSubmit()">שלח</button>
 </div>
+
 <div *ngIf="sensitiveDataVisible">
   <p>{{ sensitiveData }}</p>
 </div>
