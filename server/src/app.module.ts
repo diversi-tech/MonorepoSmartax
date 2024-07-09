@@ -23,7 +23,7 @@ import { HttpErrorFilter } from './common/filters/http-error.filter';
 import { ClientController } from './controller/clients/clients.controller';
 import { Client, ClientModel } from './Models/client.model';
 import { ClientService } from './services/client.service';
-import { Documents, DocumentsModel } from './Models/documents.model';
+import { Docs, DocumentsModel } from './Models/doc.model';
 import { BillingsService } from './services/billing.service';
 import { Billing, BillingModel } from './Models/billing.model';
 import { BillingStatus, BillingStatusModel } from './Models/billingStatus.model';
@@ -54,7 +54,7 @@ import { TagController } from './controller/tag/tag.controller';
 import { TagService } from './services/tag.service';
 import express from 'express';
 import * as path from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
+ import { ServeStaticModule } from '@nestjs/serve-static';
 import { Status, StatusModel } from './Models/status.model';
 import { Priority, PriorityModel } from './Models/priority.model';
 import { StatusController } from './controller/status/status.controller';
@@ -63,6 +63,12 @@ import { PriorityService } from './services/priority.service';
 import { CommunicationArchiveController } from './controller/communicationArchive/communicationArchive.controler';
 import { CommunicationArchive, communicationArchiveModel } from './Models/communicationArchive.model';
 import { CommunicationArchiveService } from './services/communicationArchive.service';
+import { DocTypeController } from './controller/docTypes/docTypes.controller';
+import { DocTypeService } from './services/docTypes.service';
+import { DocType, docTypeModel } from './Models/docType.model';
+import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
+import { CallTopicService } from './services/callTopicSchema.service';
+import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -78,12 +84,14 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
   MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel }]),
   MongooseModule.forFeature([{ name: Communication.name, schema: communicationModel }]),
   MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
-  MongooseModule.forFeature([{ name: Documents.name, schema: DocumentsModel }]),
+  MongooseModule.forFeature([{ name: Docs.name, schema: DocumentsModel }]),
+  MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
   MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
   MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+ MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
  ServeStaticModule.forRoot({
    rootPath: path.join(__dirname, '../uploads'),
    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -91,7 +99,7 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
-  controllers: [AppController,ClientTypeController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController],  
+  controllers: [AppController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
 
 
   providers: [
@@ -113,7 +121,9 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
     BillingStatusService,
     RoleService,
     MeetService,
+    CallTopicService,
     CommunicationArchiveService,
+    DocTypeService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
