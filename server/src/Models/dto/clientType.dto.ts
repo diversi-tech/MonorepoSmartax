@@ -1,10 +1,11 @@
 
 import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'
-import { Field } from 'multer';
+
 import { Task } from '../task.model';
 import mongoose from 'mongoose';
 import { CreateTaskDto, UpdateTaskDto } from './task.dto';
+import { Field } from '../field.model';
 
 
 
@@ -17,11 +18,11 @@ export class CreateClientTypeDto {
 
     @ApiProperty({ type: Array<String>, required: true })
     @IsOptional()
-    tasks?:Array<String>;
+    tasks?:string[];
 
     @ApiProperty({ type: Array<String>, required: true })
     @IsOptional()
-    fields?: Array<String>;
+    fields?:Field[];
 
    
 }
@@ -40,12 +41,10 @@ export class UpdateClientTypeDto {
     @ApiProperty({ type: Array<String>, required: true })
     @IsOptional()
     @IsString()
-    tasks?:Array<String>;
-
+    tasks?:string[];
     @ApiProperty({ type: Array<String>, required: true })
     @IsOptional()
-    @IsString()
-    fields?:Array<String>;
+    fields?: Field[];
 
     
 
