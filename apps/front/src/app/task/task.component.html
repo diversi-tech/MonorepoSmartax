@@ -136,7 +136,11 @@
               ></p-checkbox>
             </div>
           </p-inputGroupAddon>
-            <p style="height: 20px;" >{{currentTask && currentTask.dueDate && currentTask.dueDate | date}}</p>
+          <p style="height: 20px">
+            {{
+              currentTask && currentTask.dueDate && currentTask.dueDate | date
+            }}
+          </p>
         </p-inputGroup>
       </div>
     </div>
@@ -351,7 +355,7 @@
         Client
       </p>
       <div style="margin-left: 85px; width: 32%">
-        <!-- <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
           <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"
             ><span
               (click)="showClients = !showClients"
@@ -364,8 +368,8 @@
               [userName]="selectedClient.name"
             ></app-icon-profile>
           </div>
-        </p-inputGroup> -->
-        <p-multiSelect
+        </p-inputGroup>
+        <!-- <p-multiSelect
           [options]="clients"
           [(ngModel)]="selectedClients"
           name="selectedClients"
@@ -397,7 +401,7 @@
               </div>
             </div>
           </ng-template>
-        </p-multiSelect>
+        </p-multiSelect> -->
       </div>
     </div>
     <!-- pop -->
@@ -472,9 +476,10 @@
         </p-inputGroup>
       </div>
     </div>
+    <!-- array id -->
     <app-upload-doc-task
       *ngIf="showDoc"
-      [idClient]="selectedClient && selectedClient._id"
+      [idClient]="selectedClients[0] && selectedClients[0]._id"
       (responseReceived)="handleResponse($event)"
     >
     </app-upload-doc-task>
@@ -485,6 +490,31 @@
         <!-- <button>Download</button> -->
       </a>
     </div>
+    <p-divider></p-divider>
+    <!--  -->
+    <!-- <p-tabMenu 
+    [model]="additionTask" 
+    [activeItem]="activeItem" 
+    (activeItemChange)="onActiveItemChange($event)" />
+    <div *ngIf="activeItem && activeItem.id === '1'">
+      <app-task-check-list></app-task-check-list>
+    </div> -->
+
+    <div class="card">
+      <p-tabView>
+          <p-tabPanel header="SubTask">
+            <div>
+              <app-sub-task></app-sub-task>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="Check List">
+            <div>
+              <app-task-check-list></app-task-check-list>
+            </div>
+          </p-tabPanel>
+      </p-tabView>
+    </div>
+    <!--  -->
     <!-- footer -->
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1" style="margin-left: 70%">
@@ -510,5 +540,8 @@
 </div>
 
 <button (click)="scheduleMeeting()">meet</button>
+
+
+
 
 <!--  -->

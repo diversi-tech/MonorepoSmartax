@@ -9,7 +9,7 @@ import { Status } from './status.model';
 @Schema()
 export class Task extends Document {
     @Prop()//{ type: mongoose.Schema.Types.ObjectId, ref: 'Client' }
-    client: Client[];
+    client: Client;
 
     @Prop()
     taskName: string;
