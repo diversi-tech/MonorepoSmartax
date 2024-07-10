@@ -3,6 +3,7 @@ export const AUTH_ENDPOINT = `${API_URL}/auth`;
 export const USER_ENDPOINT = `${API_URL}/users`;
 export const TASK_ENDPOINT = `${API_URL}/tasks`;
 export const DOCS_ENDPOINT = `${API_URL}/docs`;
+export const DOCS_TYPES_ENDPOINT = `${API_URL}/doctypes`;
 export const ROLE_ENDPOINT = `${API_URL}/role`;
 export const MEET_ENDPOINT = `${API_URL}/meet`;
 export const CLIENT_ENDPOINT = `${API_URL}/clients`;

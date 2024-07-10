@@ -1,6 +1,14 @@
 import { PriorityService } from './../_services/priority.service';
 import { Priority } from './../_models/priority.module';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  EventEmitter,
+} from '@angular/core';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/user.module';
 import {
@@ -47,10 +55,10 @@ import { EditorModule } from 'primeng/editor';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
 import { StatusService } from '../_services/status.service';
+import { GoogleAuthService } from '../_services/google-calendar.service';
+import { MultiSelect, MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
-
-
   selector: 'app-task',
   standalone: true,
   templateUrl: './task.component.html',
@@ -80,13 +88,12 @@ import { StatusService } from '../_services/status.service';
     ColorPickerModule,
     AutoCompleteModule,
     IconProfileComponent,
-    // UploadDocComponent,
     TabMenuModule,
     EditorComponent,
     UploadDocTaskComponent,
+    MultiSelectModule,
   ],
   providers: [DocumentService],
-
 })
 export class TaskComponent implements OnInit {
   users: User[] = [];
@@ -105,6 +112,7 @@ export class TaskComponent implements OnInit {
   buttons: { color: string; text: string; id: string }[] = [];
   htmlContent: string = '';
   images: string[] = [];
+  tags: Tag[] = [];
 
   //
   showStatus: boolean = false;
@@ -114,6 +122,7 @@ export class TaskComponent implements OnInit {
   showDescription: boolean = false;
   showPriority: boolean = false;
   showDoc: boolean = false;
+  showTagsList: boolean = false;
   //
   selectedCity!: any;
   selectedClient!: any;
@@ -122,11 +131,17 @@ export class TaskComponent implements OnInit {
   selectedColor: string = '#1976d2'; // default color
   selectedTags: Tag[] = [];
   selectedPriority!: Priority;
+  // array
+  selectedClients: Client[] = [];
+  selectedUsers: User[] = [];
   //
   formGroupClient!: FormGroup;
   formGroupUser!: FormGroup;
   formGroupStatus!: FormGroup;
   formGroupTags!: FormGroup;
+  //
+  @Input() taskId: string | null = null;
+  @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
   //
   constructor(
     private userSErvice: UserService,
@@ -136,12 +151,13 @@ export class TaskComponent implements OnInit {
     private statusService: StatusService,
     private priorityService: PriorityService,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private googleCalendarService: GoogleAuthService
   ) {}
 
   ngOnInit(): void {
-
     this.id = this.route.snapshot.paramMap.get('id')!;
+    if (this.taskId) this.id = this.taskId;
     console.log(this.id);
     if (this.id != 'create') {
       this.tasksService.searchTask(this.id!).subscribe({
@@ -150,11 +166,13 @@ export class TaskComponent implements OnInit {
           this.currentTask = data;
           this.selectStatus = this.currentTask.status;
           this.selectedPriority = this.currentTask.priority;
-          this.selectedClient = this.currentTask.client;
-          this.selectedUser = this.currentTask.assignedTo;
+          // this.selectedClient = this.currentTask.client;
+          // this.selectedUser = this.currentTask.assignedTo;
+          this.selectedUsers = this.currentTask.assignedTo;
+          this.selectedClients = this.currentTask.client;
           this.rangeDates = [new Date(), new Date()];
-          this.rangeDates![0] = new Date(this.currentTask.startDate); //
-          this.rangeDates![1] = new Date(this.currentTask.dueDate); //
+          this.rangeDates![0] = new Date(this.currentTask.startDate);
+          this.rangeDates![1] = new Date(this.currentTask.deadline);
           this.htmlContent = this.currentTask.description;
           console.log(this.rangeDates);
 
@@ -212,6 +230,16 @@ export class TaskComponent implements OnInit {
         console.log(err);
       },
     });
+    // tags
+    this.tagService.getAllTags().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.tags = data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
     //from group
     this.formGroupClient = new FormGroup({
       selectedClient: new FormControl<any | null>(null),
@@ -222,31 +250,27 @@ export class TaskComponent implements OnInit {
     this.formGroupStatus = new FormGroup({
       selectStatus: new FormControl<any | null>(null),
     });
-    //description
-    // this.text2 =
-    //   '<div>Hello World!</div><div>PrimeNG <b>Editor</b> Rocks</div><div><br></div>';
-    // this.text =
-    //   '<p>fgfjgklvjghlikj;<span style="background-color: rgb(230, 0, 0);">kjbll;</span><span style="background-color: rgb(230, 0, 0); color: rgb(0, 138, 0);">jlkl</span><span style="color: rgb(0, 138, 0);">gvhbjln;k</span></p>';
-    // this.editor!.writeValue(this.htmlContent);
   }
 
   //functions
   save() {
     //create task
     const newTask: Task = {
-      client: this.selectedClient,
+      // client: this.selectedClient,
+      client: this.selectedClients,
       description: this.htmlContent,
       status: this.selectStatus,
       tags: this.buttons,
-      assignedTo: this.selectedUser,
+      // assignedTo: this.selectedUser,
+      assignedTo: this.selectedUsers,
       taskName: this.taskName,
-      dueDate: this.rangeDates[1]!,
+      deadline: this.rangeDates[1]!,
       startDate: this.rangeDates[0]!,
       images: this.images,
       priority: this.selectedPriority,
+      dueDate: this.currentTask.dueDate,
     };
     if (this.id == 'create') {
-
       this.tasksService.createTask(newTask).subscribe({
         next: (dataClients) => {
           console.log(dataClients);
@@ -259,6 +283,7 @@ export class TaskComponent implements OnInit {
       this.tasksService.updateTask(this.id!, newTask).subscribe({
         next: (dataClients) => {
           console.log(dataClients);
+          if (this.taskId) this.closeModal.emit();
         },
         error: (errClients) => {
           console.log(errClients);
@@ -276,6 +301,7 @@ export class TaskComponent implements OnInit {
     for (let i = 0; i < this.listStatus.length; i++) {
       if (this.listStatus[i].name === 'COMPLETE') {
         this.selectStatus = this.listStatus[i];
+        this.currentTask!.dueDate = new Date();
       }
     }
   }
@@ -315,13 +341,21 @@ export class TaskComponent implements OnInit {
   }
 
   status(s: Status) {
+    if (s.name === 'COMPLETE') this.currentTask!.dueDate = new Date();
     this.selectStatus = s;
     console.log(this.selectStatus);
+    console.log(this.currentTask!.dueDate);
+    
   }
 
   priority(s: Priority) {
     this.selectedPriority = s;
     console.log(this.selectedPriority);
+  }
+  tag(s: Tag) {
+    this.selectedTags.push(s);
+    this.buttons.push({ color: s.color, text: s.text, id: s._id! });
+    this.showTagsList = !this.showTagsList;
   }
   // date
   onDateSelect(event: any) {
@@ -356,4 +390,27 @@ export class TaskComponent implements OnInit {
     this.editorComponent.initialContent = newContent;
   }
   // ========================================
+
+  // add to google-meeting
+  scheduleMeeting() {
+    let appointmentTime = new Date();
+    const startTime = appointmentTime.toISOString().slice(0, 18) + '-07:00';
+    const endTime = appointmentTime.toISOString().slice(0, 18) + '-08:00';
+    const eventDetails = {
+      nameT: 'פגישה חשובה',
+      description: 'פגישה על פרויקט חדש',
+      startTime: '2024-07-15T10:00:00',
+      endTime: '2024-07-15T11:00:00',
+      email: ['sh0548487958@gmail.com', 'tzwine974@gmail.com'],
+      // emails:['sh0548487958@gmail.com','tzwine974@gmail.com'],
+    };
+    console.info(eventDetails);
+    this.googleCalendarService.createGoogleEvent(eventDetails);
+  }
+
+  //
+
+  onUserChange(event: any) {
+    // this.form.usersId = event.value.map((user: User) => user._id);
+  }
 }

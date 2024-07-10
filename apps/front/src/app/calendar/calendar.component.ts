@@ -3,11 +3,14 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { MeetService } from '../_services/meet.service';
 import { Meet } from '../_models/meet.module';
 import { MeetComponent } from '../meet/meet.component';
+import { TaskComponent } from '../task/task.component';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import { DialogModule } from 'primeng/dialog';
+import { TaskService } from '../_services/task.service';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
@@ -15,7 +18,7 @@ import { DialogModule } from 'primeng/dialog';
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css',
   standalone: true,
-  imports: [FullCalendarModule, AsyncPipe, DatePipe, DialogModule]
+  imports: [FullCalendarModule, AsyncPipe, DatePipe, DialogModule, ButtonModule]
 })
 export class CalendarComponent {
 
@@ -23,18 +26,20 @@ export class CalendarComponent {
 
     plugins: [dayGridPlugin, interactionPlugin],
     dateClick: (arg) => this.handleDateClick(arg),
-    eventClick: (arg) => this.handleEventClick(arg)
+    eventClick: (arg) => this.handleEventClick(arg),
   };
 
   eventsPromise: Promise<EventInput[]> = Promise.resolve([]);
+  eventsTasksPromise: Promise<EventInput[]> = Promise.resolve([]);
   allMeetings: Meet[] = []
   currentDate: string = ""
 
-  visible: boolean = false;
+  modal: boolean = false;
+  add: boolean = false;
   selectedEvent: EventInput | null = null;
   @ViewChild('modalContent', { read: ViewContainerRef }) modalContent: ViewContainerRef | undefined;
 
-  constructor(private meetService: MeetService, private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(private meetService: MeetService,private taskService:TaskService, private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
   ngOnInit() {
@@ -58,34 +63,81 @@ export class CalendarComponent {
               start: startDate.toISOString()
             };
           });
-          resolve(events);
+
+          this.taskService.getAllTasks().subscribe(
+            tasks => {
+              tasks.forEach(task => {
+                events.push({
+                  id: task._id,
+                  title: 'task',
+                  start: task.startDate
+                });
+              });
+              resolve(events);
+            },
+            error => {
+              console.error('Error loading tasks:', error);
+              resolve(events);
+            }
+          );
         },
         error => {
-          console.log(error);
+          console.error('Error loading meetings:', error);
+          resolve([]);
         }
       )
     })
   }
 
+  // בעת לחיצה על יום 
   handleDateClick(arg: any) {
-    this.currentDate = arg.dateStr
-    this.loadMeetComponent('null');
-    this.showDialog();
+    this.add = true;
+    this.currentDate=arg.dateStr
   };
-  handleEventClick(arg: any) {
-    // כאשר נלחץ על אירוע בלוח השנה, נשמור אותו ונפתח את המודל
-    this.selectedEvent = arg.event;
-    this.loadMeetComponent(arg.event.id);
-    this.showDialog();
+
+  addType(type:string){
+    if(type=='meeting')
+      this.loadMeetComponent('null');
+
+    if(type=='task')
+        this.loadTaskComponent('create');
+      
+      this.showDialog();
+      this.add = false
+
   }
 
+  // בעת לחיצה על אירוע
+  handleEventClick(arg: any) {
+    if(arg.event.title==='meeting')
+      this.loadMeetComponent(arg.event.id);
+
+    if(arg.event.title==='task')
+        this.loadTaskComponent(arg.event.id);
+
+      this.showDialog();
+  }
+  
+
   showDialog() {
-    this.visible = true;
+    this.modal = true;
   }
 
   hideDialog() {
-    this.visible = false;
+    this.modal = false;
     this.loadEvents();
+  }
+
+  loadTaskComponent(taskId: string) {
+    if (this.modalContent) {
+      this.modalContent.clear();
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TaskComponent);
+      const componentRef = this.modalContent.createComponent(componentFactory);
+      componentRef.instance.taskId = taskId;
+      componentRef.instance.closeModal.subscribe(() => {
+        this.hideDialog();
+      });
+    }
   }
 
   loadMeetComponent(meetingId: string) {
