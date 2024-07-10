@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Meet } from '../_models/meet.module';
 import { MeetService } from '../_services/meet.service';
 import { ActivatedRoute } from '@angular/router';
@@ -21,6 +21,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class MeetComponent implements OnInit {
 
+  @Input() meetingId: string | null = null;
+  @Input() selectedDate: string | null = null;
+  @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
+  meeting: Meet | null = null;
+
   selectedClients: Client[] = [];
   clients: Client[] = [];
 
@@ -39,6 +44,8 @@ export class MeetComponent implements OnInit {
   meetId: string = ""
   currentMeet!: Meet;
 
+  // minEndTime: string = '';
+  // maxEndTime: string = '';
 
   constructor(
     private meetService: MeetService,
@@ -48,14 +55,12 @@ export class MeetComponent implements OnInit {
     private primengConfig: PrimeNGConfig) { }
 
   ngOnInit(): void {
-
-    this.activatedRoute.params.subscribe(
-      id => {
-        this.meetId = id['id']
-        this.getMeetById(this.meetId)
-      }
-    )
-    this.primengConfig.ripple = true;
+    if (this.meetingId) {
+      this.getMeetById(this.meetingId);
+    }
+    this.form.date=this.selectedDate
+    this.meetId = this.meetingId!
+    // this.primengConfig.ripple = true;
     this.getAllClients()
     this.getAllUsers()
   }
@@ -142,6 +147,36 @@ export class MeetComponent implements OnInit {
     return url.protocol === "http:" || url.protocol === "https:";
   }
 
+  onBeginningTimeChange() {
+    // if (this.form.beginningTime) {
+    //   const beginningHour = parseInt(this.form.beginningTime.split(':')[0], 10);
+    //   const beginningMinute = parseInt(this.form.beginningTime.split(':')[1], 10);
+
+    //   // Calculate max end time based on beginning time + 5 hours
+    //   const maxEndTimeHour = (beginningHour + 5) % 24;
+    //   this.maxEndTime = `${String(maxEndTimeHour).padStart(2, '0')}:${String(beginningMinute).padStart(2, '0')}`;
+
+    //   // Set min end time as beginning time
+    //   this.minEndTime = this.form.beginningTime;
+    // }
+  }
+
+  // updateEndTimeConstraints() {
+  //   if (this.form.beginningTime) {
+  //     const endTimeInput = document.querySelector('input[name="endTime"]') as HTMLInputElement;
+  //     endTimeInput.setAttribute('min', this.form.beginningTime);
+  //     endTimeInput.setAttribute('max', this.maxEndTime || '');
+  //   }
+  // }
+
+  restrictTimeOptions(event: Event) {
+    // debugger  
+    // const input = event.target as HTMLInputElement;
+    // input.focus();
+    // input.click();
+}
+
+
   onSubmit(): void {
 
     const beginningTime = this.form.beginningTime;
@@ -169,6 +204,7 @@ export class MeetComponent implements OnInit {
 
       this.meetService.createMeet(this.currentMeet).subscribe(
         meet => {
+          this.closeModal.emit();
         },
         error => {
         }
@@ -177,9 +213,9 @@ export class MeetComponent implements OnInit {
 
     else {
       this.currentMeet.date = new Date(this.form.date)
-
       this.meetService.updateMeet(this.meetId, this.currentMeet).subscribe(
         meet => {
+          this.closeModal.emit();
         },
         error => {
         })

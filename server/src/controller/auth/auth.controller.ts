@@ -6,6 +6,7 @@ import { hashPasswordService } from 'server/src/services/hash-password';
 import { TokenService } from 'server/src/services/jwt.service';
 import { UserService } from 'server/src/services/user.service';
 import { RoleService } from 'server/src/services/role.service';
+import { Role } from 'server/src/Models/role.modle';
 
 
 @ApiTags('auth')
@@ -51,6 +52,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'the token is invalid' })
   async currentRole(@Request() req) {
     const token = req.headers.authorization.split(' ')[1];
+    console.log("auth controller token:\n"+token);
     const role = await this.jwtToken.validatePolicy(token);
     const response = this.roleService.getRole(role);
 
@@ -62,14 +64,14 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'the token is valid and policy is current' })
   @ApiResponse({ status: 401, description: 'the token is invalid' })
   @ApiResponse({ status: 403, description: 'the policy is not current' })
-  async validatePolicy(@Body() body: { policy: number }, @Request() req) {
+  async validatePolicy(@Body() body: { policy: Role }, @Request() req) {
     const token = req.headers.authorization.split(' ')[1];
     const policy = body.policy;
 
     try {
       const tokenPolicy = await this.jwtToken.validatePolicy(token);
 
-      if (tokenPolicy > policy) {
+      if (tokenPolicy.level > policy.level) {
         throw new HttpException('Not an admin', HttpStatus.FORBIDDEN);
       }
       return { message: 'Token is valid and policy is valid' };

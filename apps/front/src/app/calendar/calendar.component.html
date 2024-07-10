@@ -4,8 +4,39 @@
 [deepChangeDetection]="true"
 >
 <ng-template #eventContent let-arg>
-    <b>{{ arg.event.title }}</b>
-    <br>
-    <small>{{ arg.event.start | date:'shortTime' }}</small>
+  @if(arg.event.title=='task'){
+    <b style="color: rgb(232, 66, 160);">{{ arg.event.title }}</b>
+  }
+    @if(arg.event.title=='meeting'){
+      <b style="color: rgb(28, 173, 209);">{{ arg.event.title }}</b>
+      <br>
+      <small style="color: rgb(28, 173, 209);">{{ getAdjustedTime(arg.event.start) }}</small>
+    }
   </ng-template>
 </full-calendar>
+
+<div class="card flex justify-content-center">
+  <p-dialog 
+    [modal]="true"
+    [(visible)]="modal" 
+    [style]="{ width: '50rem' }" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    
+    <ng-template #modalContent></ng-template>
+  
+  </p-dialog>
+</div>
+
+<!-- header="Meeting Details"  -->
+
+<!-- <p-button (click)="showDialogAdd()" label="Show" /> -->
+<p-dialog header="Add Type" [modal]="true" [(visible)]="add" [style]="{ width: '25rem' }">
+    <span class="p-text-secondary block mb-5">What type of add are you interested in?</span>
+    
+    
+    <div class="flex justify-content-end gap-2">
+        <!-- <p-button label="Meeting" severity="secondary" (click)="add = false" /> -->
+        <p-button label="meeting" (click)="addType('meeting')" />
+        <p-button label="task" class="taskBtn" (click)="addType('task')" />
+    </div>
+</p-dialog>
