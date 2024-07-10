@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { FieldsTC } from './fieldsCT.model';
+import { Field } from './field.model';
 
 @Schema()
 export class ClientType extends Document {
@@ -10,8 +10,8 @@ export class ClientType extends Document {
     @Prop()
     tasks:string[];
     
-    @Prop({type:Array<FieldsTC>})
-    fields:FieldsTC[];
+    @Prop({type:Array<Field>})
+    fields:Field[];
 
    
 }
