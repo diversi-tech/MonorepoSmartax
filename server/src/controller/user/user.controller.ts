@@ -153,7 +153,7 @@ async delete (@Query('id') id: string): Promise < User > {
 async ChangePassword(@Body() body: { newPassword: string }, @Request() req) {
 
   const token = req.headers.authorization.split(' ')[1];
-  this.jwtToken.validatePolicy(token)
+  this.jwtToken.getRoleFromToken(token)
   const email = await this.jwtToken.FindEmail(token)
   const user = await this.userService.findByEmail(email)
   if (!user) {
@@ -170,7 +170,7 @@ async ChangePassword(@Body() body: { newPassword: string }, @Request() req) {
   await this.userService.updateUser(user.id, userDto)
 
   try {
-    const role = await this.jwtToken.validatePolicy(token);
+    const role = await this.jwtToken.getRoleFromToken(token);
     const newToken = await this.jwtToken.createToken({email:userDto.email, role:role, _id:userDto.id});
     // if (!isAdmin && policy === "admin") {
     //   throw new HttpException('Not an admin', HttpStatus.FORBIDDEN);

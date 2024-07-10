@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Request, HttpStatus, Post, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Request, HttpStatus, Post, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
 import { User } from 'server/src/Models/user.model';
@@ -7,6 +7,8 @@ import { TokenService } from 'server/src/services/jwt.service';
 import { UserService } from 'server/src/services/user.service';
 import { RoleService } from 'server/src/services/role.service';
 import { Role } from 'server/src/Models/role.modle';
+import { AuthGuard } from 'server/src/guards/auth.guard';
+import { RoleGuard } from 'server/src/guards/role.guard';
 
 
 @ApiTags('auth')
@@ -53,7 +55,7 @@ export class AuthController {
   async currentRole(@Request() req) {
     const token = req.headers.authorization.split(' ')[1];
     console.log("auth controller token:\n"+token);
-    const role = await this.jwtToken.validatePolicy(token);
+    const role = await this.jwtToken.getRoleFromToken(token);
     const response = this.roleService.getRole(role);
 
     return response
@@ -64,16 +66,18 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'the token is valid and policy is current' })
   @ApiResponse({ status: 401, description: 'the token is invalid' })
   @ApiResponse({ status: 403, description: 'the policy is not current' })
-  async validatePolicy(@Body() body: { policy: Role }, @Request() req) {
-    const token = req.headers.authorization.split(' ')[1];
-    const policy = body.policy;
-
+  @UseGuards(AuthGuard)
+  async validateRole(@Body() body: { role: number }, @Request() req) {
+    // const token = req.headers.authorization.split(' ')[1];
+    // const policy = body.policy;
+  
     try {
-      const tokenPolicy = await this.jwtToken.validatePolicy(token);
-
-      if (tokenPolicy.level > policy.level) {
-        throw new HttpException('Not an admin', HttpStatus.FORBIDDEN);
-      }
+      RoleGuard(body.role)
+    //   const tokenPolicy = await this.jwtToken.getRoleFromToken(token);
+  
+    //   if (tokenPolicy.level > policy.level) {
+    //     throw new HttpException('Not an admin', HttpStatus.FORBIDDEN);
+    //   }
       return { message: 'Token is valid and policy is valid' };
     } catch (error) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
