@@ -87,7 +87,7 @@ export class ClientAddCommunicationComponent implements OnInit {
 
   createCommunication(): void {
     this.newCommunication.Subject=this.thisSubject;
-    alert( this.thisSubject)
+    
     console.log('Creating communication:', this.newCommunication);
     this.communicationService.createCommunication(this.newCommunication)
       .subscribe(
@@ -124,7 +124,9 @@ export class ClientAddCommunicationComponent implements OnInit {
   add(){
     this.newcallTopicSchema.name=this.thisSubject2
     this.calltopicservice.createCallTopic(this.newcallTopicSchema).subscribe(response => {
-      this.callTopics.push(response);  // הוספת הנושא החדש לרשימה המקומית
+      this.callTopics.push(response); 
+      alert( response.name+" "+"נוסף בהצלחה")
+       // הוספת הנושא החדש לרשימה המקומית
     });
   }
   filterByNameCallTopic(value: string): void {
@@ -152,7 +154,6 @@ export class ClientAddCommunicationComponent implements OnInit {
     
   }
   select(event:  AutoCompleteSelectEvent): void {
-   
       const callTopic = event.value as callTopicSchema;
       this.thisSubject=callTopic.name
     }
