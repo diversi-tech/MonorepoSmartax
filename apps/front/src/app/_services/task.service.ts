@@ -53,8 +53,9 @@ export class TaskService {
 
   // Delete a Task by ID
   deleteTask(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}/delete`, { ...this.httpOptions, body: { id } })
+    return this.http.delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
       .pipe(
+        
         catchError(this.handleError<boolean>('deleteTask', false))
       );
   }
