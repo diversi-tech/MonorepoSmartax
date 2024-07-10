@@ -6,6 +6,7 @@ import { Task } from '../task.model';
 import mongoose from 'mongoose';
 import { CreateTaskDto, UpdateTaskDto } from './task.dto';
 import { FieldsTC } from '../fieldsCT.model';
+import { CreateFieldsTCDto } from './fieldsCT.dto';
 
 
 
@@ -20,9 +21,9 @@ export class CreateClientTypeDto {
     @IsOptional()
     tasks?:string[];
 
-    @ApiProperty({ type: Array<String>, required: true })
+    @ApiProperty({ type: [CreateFieldsTCDto], required: true })
     @IsOptional()
-    fields?:FieldsTC[];
+    fields?: CreateFieldsTCDto[];;
 
    
 }
@@ -42,7 +43,7 @@ export class UpdateClientTypeDto {
     @IsOptional()
     @IsString()
     tasks?:string[];
-    @ApiProperty({ type: Array<String>, required: true })
+    @ApiProperty({ type: Array<FieldsTC>, required: true })
     @IsOptional()
     fields?: FieldsTC[];
 
