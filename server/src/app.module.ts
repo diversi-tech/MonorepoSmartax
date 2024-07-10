@@ -69,6 +69,9 @@ import { DocType, docTypeModel } from './Models/docType.model';
 import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
 import { CallTopicService } from './services/callTopicSchema.service';
 import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
+import { FieldsTCService } from './services/fieldsTC.service';
+import { FieldsTCController } from './controller/fieldsTC/fieldsTC.controller';
+import { FieldsTC, FieldsTCModell } from './Models/fieldsCT.model';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -76,7 +79,7 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
 @Module({
 //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
-
+    MongooseModule.forFeature([{ name: FieldsTC.name, schema: FieldsTCModell }]),
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
  MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
@@ -99,7 +102,7 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
-  controllers: [AppController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
+  controllers: [AppController,FieldsTCController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
 
 
   providers: [
@@ -111,6 +114,7 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
     JwtService,
     ClientService,
     ClientTypeService,
+    FieldsTCService,
     TaskService,
     TagService,
     StatusService,
