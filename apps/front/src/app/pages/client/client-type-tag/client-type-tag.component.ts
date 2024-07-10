@@ -6,6 +6,7 @@ import { ClientType } from '../../../_models/clientType.module';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-type-tag',
@@ -25,9 +26,15 @@ export class ClientTypeTagComponent implements OnInit {
   showTags: boolean = false;
   clientTypes: ClientType[] = [];
   buttons: { text: string; id: string }[] = [];
+  selectedClientType: ClientType | null = null;
 
-  constructor(@Inject(ClientTypeService) private clientTypeTagService: ClientTypeService) {}
 
+  constructor(
+    @Inject(ClientTypeService) private clientTypeTagService: ClientTypeService,
+    @Inject(Router) private router: Router,
+
+  ) {}
+  
   ngOnInit() {
     this.getAllClientTypes();
   }
@@ -35,12 +42,12 @@ export class ClientTypeTagComponent implements OnInit {
   getAllClientTypes(): void {
     this.clientTypeTagService.getAllClientTypes().subscribe(types => {
       this.clientTypes = types;
-      this.createType();
+      this.createTag();
       console.log(this.clientTypes);
     });
   }
 
-  createType(): void {
+  createTag(): void {
     this.buttons = this.clientTypes.map((type: ClientType) => ({
       text: type.name,
       id: type._id!,
@@ -60,7 +67,14 @@ export class ClientTypeTagComponent implements OnInit {
     return color;
   }
 
-  removeButton(index: number): void {
-    this.buttons.splice(index, 1);
+  removeButton(button: any) {
+    const index = this.buttons.indexOf(button);
+    if (index !== -1) {
+      this.buttons.splice(index, 1);
+    }
   }
+
+
+ 
+
 }

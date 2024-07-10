@@ -1,14 +1,21 @@
+
+.button-list {
+    display: flex;
+    flex-direction: column;
+  }
 .custom-button {
     margin: 5px;
-    padding: 5px 10px; /* Smaller padding */
+    padding: 5px 20px; /* Smaller padding */
     border: none;
     border-radius: 5px;
     position: relative;
     display: inline-block;
     color: white;
     cursor: pointer;
-    font-size: 14px; /* Smaller font size */
-    line-height: 1.2; /* Adjust line height if needed */
+    line-height: 1.2;
+    font-size: 1.2em;
+    height: 35px;
+
   }
   
   .custom-button .delete-button {
