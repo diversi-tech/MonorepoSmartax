@@ -34,7 +34,11 @@ import { icons } from './icons';
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
-// import { customfieldComponent } from './custom-field/custom-field.component';
+
+import { ClientTypeTagComponent } from './pages/client/client-type-tag/client-type-tag.component';
+import { ClientTypeTabComponent } from './pages/client/client-type-tab/client-type-tab.component';
+import { ClientFieldComponent } from './pages/client/client-field/client-field.component';
+import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -92,7 +96,7 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
   { path: 'clientSearch', component: ClientSearchComponent , data: { authType: 6, forToolbar: true, label: 'Clients', icon: icons.clients }},
   { path: 'clientSearch/clientManagement', component: ClientManagementComponent , data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' }},
-  // {path:'custom-field',component:customfieldComponent,data:{authType:3,forToolbar:true,label:'fields',icon:''}},
+  
   { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' } },
   {
     path: 'clientSearch/clientManagement/clientNavbar', component: ClientNavbarComponent,
@@ -107,10 +111,15 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       { path: 'clientTaskManagement', component: ClientTaskManagementComponent },
       { path: 'clientBillings', component: ClientBillingsComponent },
+      { path: 'clientTypeTab' , component:ClientTypeTabComponent},
+      { path: 'clientType' , component:ClientTypeComponent},
+      { path: 'clientTypeTag' , component:ClientTypeTagComponent},
     ]
   },
   { path: 'a', component: AllCommunicationComponent },
   { path: 'ae', component: ClientAddCommunicationComponent },
+  { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } },
+  
   {path:'fieldManagement', component: FieldManagementComponent,data:{authType:6,forToolbar:true,label:'ניהול שדות',icon:''}}
 
 ];
