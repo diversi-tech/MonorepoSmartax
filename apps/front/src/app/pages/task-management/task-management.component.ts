@@ -220,7 +220,7 @@ export class TaskManagementComponent implements OnInit {
       const deadlineMatch = !this.filter.deadlineRange ||
         (task.dueDate >= this.filter.deadlineRange[0] && task.dueDate <= this.filter.deadlineRange[1]);
 
-        const clientMatch = !this.filter.client || task.client.some(client => client.name.includes(this.filter.client.name));
+        const clientMatch = !this.filter.client || task.client.name.includes(this.filter.client.name);
 
       const userMatch = !this.filter.user || task.assignedTo.some(user => user.userName.includes(this.filter.user.userName));
 
