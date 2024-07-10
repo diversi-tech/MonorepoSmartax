@@ -44,5 +44,4 @@ Thumbs.db
 .angular
 service-account.json
 
-package.json
 package-lock.json
