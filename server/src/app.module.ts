@@ -69,9 +69,9 @@ import { DocType, docTypeModel } from './Models/docType.model';
 import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
 import { CallTopicService } from './services/callTopicSchema.service';
 import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
-import { FieldsTCService } from './services/fieldsTC.service';
-import { FieldsTCController } from './controller/fieldsTC/fieldsTC.controller';
-import { FieldsTC, FieldsTCModell } from './Models/fieldsCT.model';
+import { FieldService } from './services/field.service';
+import { FieldController } from './controller/field/field.controller';
+import { Field, FieldModell } from './Models/field.model';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -79,7 +79,7 @@ import { FieldsTC, FieldsTCModell } from './Models/fieldsCT.model';
 @Module({
 //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
-    MongooseModule.forFeature([{ name: FieldsTC.name, schema: FieldsTCModell }]),
+    MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
  MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
@@ -95,6 +95,7 @@ import { FieldsTC, FieldsTCModell } from './Models/fieldsCT.model';
  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
  MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
+
  ServeStaticModule.forRoot({
    rootPath: path.join(__dirname, '../uploads'),
    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -102,7 +103,7 @@ import { FieldsTC, FieldsTCModell } from './Models/fieldsCT.model';
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
-  controllers: [AppController,FieldsTCController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
+  controllers: [AppController,FieldController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
 
 
   providers: [
@@ -114,7 +115,7 @@ import { FieldsTC, FieldsTCModell } from './Models/fieldsCT.model';
     JwtService,
     ClientService,
     ClientTypeService,
-    FieldsTCService,
+    FieldService,
     TaskService,
     TagService,
     StatusService,

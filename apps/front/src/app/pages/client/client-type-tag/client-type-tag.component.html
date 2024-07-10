@@ -1,0 +1,45 @@
+
+<div style="margin-left: 100px">
+    <p-inputGroup class="w-full md:w-30rem flex-container">
+        <div class="button-list">
+        <button
+        *ngFor="let button of buttons; let i = index"
+        
+        [style]="{
+          'background-color': getColor(button.text),
+          color: '#fff'
+        }"
+        class="custom-button"
+        (click)="removeButton(i)"
+      >
+        {{ button.text }}
+        <span
+          (click)="buttons.splice(i, 1)"
+          class="delete-button"
+        >
+          x
+        </span>
+      </button>
+    </div>
+
+    </p-inputGroup>
+  </div>
+
+  <!-- <div *ngIf="showClientType">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div *ngFor="let field of selectedClientType?.fields">
+        <label [for]="field.name">{{ field.name }}</label>
+        <p-inputText
+          *ngIf="field.type === 'STRING'"
+          [formControlName]="field.name"
+          [id]="field.name"
+        ></p-inputText>
+        <p-calendar
+          *ngIf="field.type === 'DATE'"
+          [formControlName]="field.name"
+          [id]="field.name"
+        ></p-calendar>
+      </div>
+      <button pButton type="submit" label="Submit"></button>
+    </form>
+  </div> -->
