@@ -34,6 +34,7 @@ import { icons } from './icons';
 import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report.component';
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
+import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -67,6 +68,7 @@ import { PaymentsReportsComponent } from './reports/payments-reports/payments-re
   { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'Admin', icon: icons.admin } },
   { path: 'tasks', component: TaskManagementComponent, children: [{ path: 'task-in-list', component: TaskInListComponent }], canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'Tasks', icon: icons.tasks } },
   { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
+  { path: 'taskRpe', component: TaskRepeatableListComponent },
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'Forget-Password', icon: '' } },
   { path: 'restartPassword', component: RestartPasswordComponent, data: { forToolbar: false, label: 'Restart-Password', icon: '' } },
   { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
