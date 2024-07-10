@@ -34,6 +34,7 @@ import { icons } from './icons';
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
+import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -107,7 +108,8 @@ import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeata
     ]
   },
   { path: 'a', component: AllCommunicationComponent },
-  { path: 'ae', component: ClientAddCommunicationComponent }
+  { path: 'ae', component: ClientAddCommunicationComponent },
+  { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } }
 ];
 
 
