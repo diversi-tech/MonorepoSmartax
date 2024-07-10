@@ -89,37 +89,53 @@ export class TaskCheckListComponent {
   // }
 
   // =========================================
-  cont = 1;
-  days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-  date: Date = new Date()
-  constructor() {
+  // cont = 1;
+  // days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  // months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  // date: Date = new Date()
+  // constructor() {
+  // }
+
+  // addNode(checked: boolean = false) {
+  //   const newNode = document.createElement('article');
+  //   // newNode.innerHTML = `<input type='checkbox' id='t${this.cont}' ${checked ? 'checked' : ''}/> <label for='t${this.cont}'></label><span contenteditable='true'>Task #${this.cont}</span>`;
+  //   newNode.innerHTML = `<input type='checkbox' id='t${this.cont}' ${checked ? 'checked' : ''} onchange='updateText(this)'/> <label for='t${this.cont}'></label><span contenteditable='true' id='span${this.cont}'>${checked ? 'Task #' + this.cont + ':' : 'Task #' + this.cont}</span>`;
+
+  //   newNode.id = `article${this.cont}`;
+  //   newNode.ondblclick = this.onDblClick;
+  //   this.cont++;
+  //   const main_sec = document.getElementById('main_sec');
+  //   main_sec.appendChild(newNode);
+  //   main_sec.scrollTop = main_sec.scrollHeight;
+  // }
+
+  // updateText(checkbox:any) {
+  //   var span = document.getElementById('span' + checkbox.id.substring(1));
+  //   if (checkbox.checked) {
+  //     span.innerHTML = 'Task #' + checkbox.id.substring(1) + ':';
+  //   } else {
+  //     span.innerHTML = 'Task #' + checkbox.id.substring(1);
+  //   }
+  // }
+
+  // onDblClick(event: any) {
+  //   document.getElementById(event.target.id).remove();
+  // }
+
+  tasks = [
+    { title: 'A default item', done: false },
+    { title: 'A completed default item', done: true }
+  ];
+
+  newTask: string;
+
+  addTask() {
+    this.tasks.push({ title: this.newTask, done: false });
+    this.newTask = '';
   }
 
-  addNode(checked: boolean = false) {
-    const newNode = document.createElement('article');
-    // newNode.innerHTML = `<input type='checkbox' id='t${this.cont}' ${checked ? 'checked' : ''}/> <label for='t${this.cont}'></label><span contenteditable='true'>Task #${this.cont}</span>`;
-    newNode.innerHTML = `<input type='checkbox' id='t${this.cont}' ${checked ? 'checked' : ''} onchange='updateText(this)'/> <label for='t${this.cont}'></label><span contenteditable='true' id='span${this.cont}'>${checked ? 'Task #' + this.cont + ':' : 'Task #' + this.cont}</span>`;
-
-    newNode.id = `article${this.cont}`;
-    newNode.ondblclick = this.onDblClick;
-    this.cont++;
-    const main_sec = document.getElementById('main_sec');
-    main_sec.appendChild(newNode);
-    main_sec.scrollTop = main_sec.scrollHeight;
-  }
-
-  updateText(checkbox:any) {
-    var span = document.getElementById('span' + checkbox.id.substring(1));
-    if (checkbox.checked) {
-      span.innerHTML = 'Task #' + checkbox.id.substring(1) + ':';
-    } else {
-      span.innerHTML = 'Task #' + checkbox.id.substring(1);
-    }
-  }
-
-  onDblClick(event: any) {
-    document.getElementById(event.target.id).remove();
+  clearCompleted() {
+    this.tasks = this.tasks.filter(task => !task.done);
   }
   
 }

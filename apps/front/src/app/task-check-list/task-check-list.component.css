@@ -1,158 +1,266 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700');
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400);
 
-html, body{
-	height: 100%;
-	margin:0;
-	background-color: #F0EFEA;
-	font-family: 'Open Sans Condensed', sans-serif;
-}
+/* צבעים ישירים */
+:root {
+  --green: #66B266;
+  --gray: #ccc;
+  --gray-lite: #ededed;
 
-body{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
+  --color-body: #D9EAD3; /* דוגמה לצבע גוף עם צבע ישיר */
+  --color-border: var(--gray-lite);
+  --color-button: var(--green);
+  --color-button-text: white;
+  --color-button-disabled: #c2c2c2; /* דוגמה לצבע כפתור מנוטרל */
+  --color-complete: var(--gray);
+  --color-checkbox: #a3cca3; /* דוגמה לצבע צ'קבוקס */
+  --color-checkbox-checked: var(--green);
+  --color-item: #3d7a3d; /* דוגמה לצבע פריט */
 
-#app{
-	max-width: 300px;
-	width: calc(40% - 80px);
-	height: calc(80% - 80px);
-	background-color: #fff;
-	box-shadow: 0 0 10px rgba(0,0,0,0.1); 
-	padding: 40px;
-}
+  --margin-element: 24px;
 
-#app header, #day-field{
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  --font: 'Montserrat', sans-serif;
 }
 
-#app header{
-	margin-top: -10px;
-	margin-bottom: 20px;
+/* סגנונות כלליים */
+* {
+  box-sizing: border-box;
 }
 
-#month{
-	display: flex;
-	flex-flow: column wrap;
+html {
+  height: 100%;
 }
 
-#month *{
-	margin: 0;
-	/* paggin: 0; */
+body {
+  position: relative;
+  height: 100%;
+  padding: 8%;
+  margin: 0;
+  background: var(--color-body);
+  box-shadow: inset rgba(0, 0, 0, 0.2) 0 0 100px;
 }
 
-#day{
-	font-size: 3em;
-	font-weight: bold;
-	padding-right: 5px;
+main {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  padding: var(--margin-element);
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 22px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 20px 20px -12px;
 }
 
-#week{
-	font-weight: bold;
+p {
+  font-size: 14px;
+  margin-bottom: var(--margin-element);
 }
 
-#app section{
-	overflow: auto;
-	height: calc(100% - 80px);
-}
-#app section article{
-	padding: 2px;
-	display: flex;
-	flex-direction: row-reverse;
-	justify-content: space-between;
-	margin-bottom: 20px;
-	align-items: center;
+form > div {
+  display: block;
+  margin-bottom: var(--margin-element);
 }
 
-input[type=checkbox]{
-	display:none;
+form > div input {
+  width: 100%;
+  margin-bottom: 6px;
 }
 
-label{
-	display: block;
-	border: 2px solid #E0E0E0;
-	width: 12px;
-	height: 12px;
-	border-radius: 100%;
-	cursor: pointer;
-	cursor: hand;
-}
-
-article span{
-	padding: 5px;
-}
-
-article span:focus{
-	outline: 1px solid #36E3AA;
-}
-input[type=checkbox]:checked + label{
-	border: 2px solid #36E3AA;
-	background-color: #36E3AA;
-}
-
-input[type=checkbox]:checked ~ span{
-	color: #e0e0e0;
-	text-decoration: line-through;
-}
-
-section footer{
-	display: flex;
-	justify-content: center;
-}
-
-section footer button{
-	font-weight: bold;
-	border: none;
-	background-color: #36E3AA;
-	padding: 5px;
-	font-size: 2em;
-	color: #fff;
-	border-radius: 100%;
-	width: 60px;
-	height: 60px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-	cursor: hand;
-	margin-top: 14px;
-	outline: none;
-	user-select: none;
-}
-
-#credits{
-    position: fixed;
-    bottom:0;
-    width: 100%;
-}
-
-#credits img{
-    border-radius: 100%;
-    width: 30px;
-    height: 30px;
-    margin-left: 10px;
-}
-#credits span{
-    display: block;
-    padding: 10px;
+@media (min-width: 440px) {
+  form > div {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-	user-select: none;
+  }
+  
+  form > div input {
+    width: auto;
+    flex-grow: 2;
+    margin-right: 6px;
+    margin-bottom: 0;
+  }
 }
 
-#instructions{
-	position: fixed;
-	top:0;
-	left:0;
-	background-color: #36E3AA;
-	padding: 0 20px;
-	font-size: 0.9em;
-	user-select: none;
+button {
+  padding: 12px 20px;
+  font-family: var(--font);
+  font-size: 14px;
+  text-transform: uppercase;
+  border: none;
+  background: var(--color-button);
+  color: var(--color-button-text);
+  box-shadow: inset #4c924c 0 -2px 0; /* דוגמה לצל כפתור */
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s ease-out;
+  border-radius: 0;
 }
 
-#instructions a{
-	color: #000;
+button:disabled {
+  background: var(--color-button-disabled);
+  box-shadow: inset #b3b3b3 0 -2px 0; /* דוגמה לצל כפתור מנוטרל */
+}
+
+button:hover {
+  background: #59a059; /* דוגמה לצבע רקע כאשר העכבר מעל */
+}
+
+button:active {
+  box-shadow: inset #338033 0 0 0; /* דוגמה לאנימציה כאשר הכפתור נלחץ */
+  transform: translateY(2px);
+}
+
+input {
+  padding: 10px;
+  font-family: var(--font);
+  font-size: 18px;
+  outline: none;
+  border: 1px solid var(--color-border);
+  transition: border 0.2s ease-out;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+input::placeholder {
+  color: #e6e6e6; /* דוגמה לצבע הטקסט הריק */
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+input:focus {
+  border: 1px solid var(--color-button);
+  ::placeholder {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  display: none;
+}
+
+input[type="checkbox"] + label {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 24px;
+  height: 24px;
+  background: #d9e3d9; /* דוגמה לצבע רקע תו צ'קבוקס */
+  border-radius: 100%;
+  cursor: pointer;
+  box-shadow: inset #d9e3d9 0 0 0 2px, inset white 0 0 0 4px; /* דוגמה לצל וקצה */
+  transition: box-shadow 0.1s ease-out;
+}
+
+input[type="checkbox"] + label:hover {
+  box-shadow: inset #a3cca3 0 0 0 12px, inset white 0 0 0 12px; /* דוגמה לצבע רקע כאשר העכבר מעל */
+}
+
+input[type="checkbox"]:checked + label {
+  background: transparent;
+  box-shadow: none;
+  animation: bounce 0.4s linear; /* דוגמה לאנימציה כאשר מסומן */
+}
+
+input[type="checkbox"]:checked + label:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  background: var(--color-checkbox-checked); /* דוגמה לצבע הצ'קבוקס כאשר מסומן */
+  border-radius: 100%;
+}
+
+input[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  border-bottom: 3px solid white; /* דוגמה לאנימציה כאשר מסומן */
+  transform: rotate(45deg);
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+ul li {
+  color: var(--color-item);
+  position: relative;
+  padding: 16px 24px 16px 0;
+  background: white;
+  border-bottom: 1px solid var(--color-border);
+  transition: color 0.1s ease-out;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: var(--color-complete);
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(0.8);
+  }
+  25% {
+    transform: scale(1.4);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* התעלמות מסגנון הדמיה נסתר */
+.fade, .fade span {
+  transition: 0.2s ease-out;
+}
+
+.fade.all-complete {
+  transition-delay: 0.3s;
+}
+
+.fade.ng-enter {
+  opacity: 0;
+  transform: translateX(-24px);
+}
+
+.fade.ng-enter.ng-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade.ng-leave {
+  opacity: 1;
+}
+
+.fade.ng-leave.ng-leave-active {
+  opacity: 0;
+  transform: translateX(24px);
+}
+
+.fade.ng-hide {
+  opacity: 0;
+  transition: 0s;
+}
+
+.fade.ng-show {
+  opacity: 1;
 }

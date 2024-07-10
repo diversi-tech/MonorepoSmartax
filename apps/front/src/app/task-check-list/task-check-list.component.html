@@ -1,4 +1,4 @@
-<section id="app">
+<!-- <section id="app">
   <header>
     <div id="day-field">
       <div id="day">{{date.getDate().toString()}}</div>
@@ -12,7 +12,7 @@
   <footer>
     <button id="add_but" (click)="addNode()">+</button>
   </footer>
-</section>
+</section> -->
 
 
 <!-- <footer id="credits">
@@ -25,3 +25,26 @@
     /></a>
   </span>
 </footer> -->
+
+
+<div ng-app="TaskList" ng-controller="taskController">
+    <form name="form" ng-submit="addTask()">
+      <div>
+        <input type="text" name="task" placeholder="Add a new task" ng-model="newTask" required>
+        <button ng-disabled="form.$invalid">Add task</button>
+      </div>
+    </form>
+  
+    <ul>
+      <li *ngFor="task in tasks track by $index" ng-class="{'completed': task.done}">
+        <span>{{ task.title }}</span>
+        <input type="checkbox" id="{{ 'task-' + $index }}" ng-model="task.done">
+        <label for="{{ 'task-' + $index }}"></label>
+      </li>
+    </ul>
+  
+    <p ng-show="!(tasks | filter: { title: '' }).length" class="all-complete">All tasks have been completed.</p>
+  
+    <button ng-click="clearCompleted()">Clear completed tasks</button>
+  </div>
+  

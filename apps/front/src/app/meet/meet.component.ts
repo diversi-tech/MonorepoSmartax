@@ -59,6 +59,8 @@ export class MeetComponent implements OnInit {
   private eventDataSubscription: Subscription;
   public eventId: string;
   public conferenceLink: string;
+  d1:Date = new Date();
+  d2:Date = new Date();
   //
   visible: boolean = false;
 
@@ -116,6 +118,17 @@ export class MeetComponent implements OnInit {
           this.conferenceLink = eventData.conferenceLink;
         }
       });
+  }
+
+  // Function to unsubscribe from event data
+  unsubscribeFromEventData() {
+    if (this.eventDataSubscription) {
+      this.eventDataSubscription.unsubscribe();
+    }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeFromEventData();
   }
 
   cancel() {
@@ -203,15 +216,48 @@ export class MeetComponent implements OnInit {
   // add to google-meeting
   scheduleMeeting() {
     this.visible = false;
+    debugger
+    
     let appointmentTime = new Date();
-    const startTime = appointmentTime.toISOString().slice(0, 18) + '-07:00';
-    const endTime = appointmentTime.toISOString().slice(0, 18) + '-08:00';
+    const startTime3 = appointmentTime.toISOString().slice(0, 18) + '-'+this.form.beginningTime;
+    const endTime3 = appointmentTime.toISOString().slice(0, 18) + '-'+this.form.endTime;
+    // חיבור התאריך והשעה לפורמט ISO
+  // המרת תאריך ושעה לפורמט ISO
+  // this.d1=this.form.date
+  // this.d2=this.form.date
+  
+  // const b=this.form.beginningTime
+  // const[h,m]=b.split(':')
+  // this.form.beginningTime=new Date()
+  // this.form.beginningTime.setHours(+h + 3, +m, 0, 0);
+
+  // const e=this.form.endTime
+
+  
+  const startDateTime2 = new Date(
+    this.form.date.getFullYear(),
+    this.form.date.getMonth(),
+    this.form.date.getDate(),
+    this.d1.getHours(),
+    this.d1.getMinutes()
+  ).toISOString();
+
+  const endDateTime2 = new Date(
+    this.form.date.getFullYear(),
+    this.form.date.getMonth(),
+    this.form.date.getDate(),
+    this.d2.getHours(),
+    this.d2.getMinutes()
+  ).toISOString();
+    const em=this.getEmailById(this.form.usersId)
+    
+   
     const eventDetails = {
       nameT: 'פגישה חשובה',
       description: 'פגישה על פרויקט חדש',
-      startTime: '2024-07-15T10:00:00',
-      endTime: '2024-07-15T11:00:00',
-      emails: ['rbn9574@gmail.com'],
+      startTime: startTime3,//'2024-07-15T10:00:00'
+      endTime: endTime3,
+      emails: em,
     };
     console.info(eventDetails);
     this.googleCalendarService.createGoogleEvent(eventDetails);
@@ -219,6 +265,15 @@ export class MeetComponent implements OnInit {
     this.subscribeToEventData();
     
     this.save();
+  }
+
+  getEmailById(idArray: string[]) {
+    const emails = idArray.map(id => {
+      const item = this.users.find(item => item._id === id);
+      return item ? item.email : null;
+    });
+  
+    return emails.filter(email => email !== null); // מסיר את הקיום
   }
 
   save(): void {
