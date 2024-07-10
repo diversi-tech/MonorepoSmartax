@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 
 
 
-export class CreateFieldsTCDto {
+export class CreateFieldDto {
 
     @ApiProperty({ type: String })
     @IsNotEmpty()
@@ -25,7 +25,7 @@ export class CreateFieldsTCDto {
    
 }
 
-export class UpdateFieldsCTDto {
+export class UpdateFieldDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
