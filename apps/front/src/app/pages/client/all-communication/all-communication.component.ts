@@ -83,7 +83,6 @@ export class AllCommunicationComponent {
 
   selectCommunication(communication: Communication): void {
     this.selectedCommunication = { ...communication }; // Clone the communication for editing
-    
   }
   updateCommunication(): void {
     this.selectedCommunication.Subject=this.thisSubject
@@ -116,7 +115,6 @@ export class AllCommunicationComponent {
   }
   onSelectionChange(event: Event) {
     debugger
-    this.filteredCommunicatio = this.communications;
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.isSelected = Number(selectedValue.substring(6));
   }
@@ -124,7 +122,7 @@ export class AllCommunicationComponent {
     this.filterCallTopic=(event.target as HTMLSelectElement).value
     if ( this.filterCallTopic != "")
       this.filteredCommunicatio = this.communications.filter(communication => communication.Subject.includes(this.filterCallTopic));
-  else
+    else
       this.filteredCommunicatio = this.communications;  
   }
   filterClientsByname(): void {
@@ -132,7 +130,6 @@ export class AllCommunicationComponent {
       this.filteredCommunicatio = this.communications.filter(communication => communication.client.includes(this.filtername));
     else
       this.filteredCommunicatio = this.communications;
-     
   }
   filterByStatus(): void {
     if(this.filterstatus=="ליד")
@@ -200,7 +197,3 @@ export class AllCommunicationComponent {
       });
     }
 }
-function filterByCallTopi(filterCallTopic: string) {
-  throw new Error('Function not implemented.');
-}
-

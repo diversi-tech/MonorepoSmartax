@@ -2,7 +2,6 @@
 
 <h1>filter by</h1>
 <select (change)="onSelectionChange($event)">
-  <option value="option"></option>
   <option value="option1">כל השיחות</option>
   <option value="option5">נושא שיחה </option>
   <option value="option2">שם לקוח</option>
@@ -18,7 +17,6 @@
 (input)="filterByStatus()" />
 <div *ngIf="isSelected == 5 ">
   <select [(ngModel)]="selectedCallTopic" (change)="filterByCallTopic($event)">
-    <option ></option>
     <option *ngFor="let topic of callTopics" [value]="topic.name">{{ topic.name }}</option>
   </select>
 </div>
