@@ -10,15 +10,10 @@ import { User } from '../_models/user.module';
 import { IconProfileComponent } from '../share/icon-profile/icon-profile.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { NgClass, NgIf, NgFor } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { GoogleAuthService } from '../_services/google-calendar.service';
-import { Subscription } from 'rxjs';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
 import {
   FormControl,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -26,6 +21,11 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { CalendarModule } from 'primeng/calendar';
 import { ListboxModule } from 'primeng/listbox';
+import { GoogleAuthService } from '../_services/google-calendar.service';
+import { Subscription } from 'rxjs';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-meet',
@@ -86,9 +86,6 @@ export class MeetComponent implements OnInit {
   meetId: string = '';
   currentMeet!: Meet;
 
-  // minEndTime: string = '';
-  // maxEndTime: string = '';
-
   constructor(
     private meetService: MeetService,
     private activatedRoute: ActivatedRoute,
@@ -102,8 +99,9 @@ export class MeetComponent implements OnInit {
     if (this.meetingId) {
       this.getMeetById(this.meetingId);
     }
-    this.form.date = this.selectedDate;
-    this.meetId = this.meetingId!;
+    debugger
+    this.form.date = new Date(this.selectedDate)
+    this.meetId = this.meetingId!
     // this.primengConfig.ripple = true;
     this.getAllClients();
     this.getAllUsers();
@@ -133,17 +131,11 @@ export class MeetComponent implements OnInit {
 
         const beginningTime = new Date(this.currentMeet.beginningTime);
         const endTime = new Date(this.currentMeet.endTime);
-
         const meetDate = new Date(this.currentMeet.date);
-        const formattedDate = `${meetDate.getFullYear()}-${(
-          meetDate.getMonth() + 1
-        )
-          .toString()
-          .padStart(2, '0')}-${meetDate.getDate().toString().padStart(2, '0')}`;
 
         this.form = {
           address: this.currentMeet.address,
-          date: formattedDate,
+          date: meetDate,
           beginningTime: beginningTime.toISOString().substring(11, 16), // פורמט HH:mm
           endTime: endTime.toISOString().substring(11, 16), // פורמט HH:mm
           usersId: this.currentMeet.usersId,
@@ -207,32 +199,7 @@ export class MeetComponent implements OnInit {
     return url.protocol === 'http:' || url.protocol === 'https:';
   }
 
-  onBeginningTimeChange() {
-    // if (this.form.beginningTime) {
-    //   const beginningHour = parseInt(this.form.beginningTime.split(':')[0], 10);
-    //   const beginningMinute = parseInt(this.form.beginningTime.split(':')[1], 10);
-    //   // Calculate max end time based on beginning time + 5 hours
-    //   const maxEndTimeHour = (beginningHour + 5) % 24;
-    //   this.maxEndTime = `${String(maxEndTimeHour).padStart(2, '0')}:${String(beginningMinute).padStart(2, '0')}`;
-    //   // Set min end time as beginning time
-    //   this.minEndTime = this.form.beginningTime;
-    // }
-  }
 
-  // updateEndTimeConstraints() {
-  //   if (this.form.beginningTime) {
-  //     const endTimeInput = document.querySelector('input[name="endTime"]') as HTMLInputElement;
-  //     endTimeInput.setAttribute('min', this.form.beginningTime);
-  //     endTimeInput.setAttribute('max', this.maxEndTime || '');
-  //   }
-  // }
-
-  restrictTimeOptions(event: Event) {
-    // debugger
-    // const input = event.target as HTMLInputElement;
-    // input.focus();
-    // input.click();
-  }
   // add to google-meeting
   scheduleMeeting() {
     this.visible = false;
