@@ -1,7 +1,18 @@
-<input type="text" placeholder="שם השדה"><br>
-<input type="text" pInputText />
-<select (change)="onSelect($event.target.value)">
-    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
-  </select><br>
-<button>צור</button>
+<div>
+<input class="buttons" id="float-input" pInputText type="text" placeholder="field name" >
+<br>
 
+<!-- <select (change)="onSelect($event.target.value)">
+    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+</select><br> -->
+<p-dropdown 
+    [options]="whatType" 
+    [(ngModel)]="selectedCity" 
+    optionLabel="name" 
+    placeholder="Select a City" />
+ 
+
+ <br>
+<p-button class="buttons"  id="fieldN" type="button" icon="pi pi-plus"
+ label="Add Task"></p-button>
+</div>
