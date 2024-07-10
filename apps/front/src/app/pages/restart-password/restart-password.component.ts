@@ -51,7 +51,7 @@ export class RestartPasswordComponent {
           Swal.fire({
             icon: 'success',
             title: 'Success!',
-            text: 'success to send email',
+            text: 'success to change password',
             timer: 4000,
             showConfirmButton: false,
           });
@@ -61,7 +61,7 @@ export class RestartPasswordComponent {
           Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: 'error to send email, please try again',
+            text: 'error to change password, please try again',
             timer: 4000,
             showConfirmButton: false,
           });
