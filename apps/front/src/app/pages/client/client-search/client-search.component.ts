@@ -63,25 +63,20 @@ export class ClientSearchComponent implements OnInit  {
   }
 
   selectClient(event: AutoCompleteSelectEvent): void {
-    debugger
     const client = event.value as Client;
     this.router.navigate(['/clientSearch/clientManagement'], { state: { client } });
   }
 
   selectClientFromList(client: Client): void {
-    
-    debugger
     this.router.navigate(['/clientSearch/clientManagement'], { state: { client } });
   }
 
   onSelectionChange(event: Event) {
-    debugger
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.isSelected = Number(selectedValue.substring(6));
   }
 
   filterClientsByNameAndBusinessName(value: string): void {
-    debugger
     if (value !== "") {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
@@ -93,7 +88,6 @@ export class ClientSearchComponent implements OnInit  {
   }
 
   filterClientsByNumber(): void {
-    debugger
     if (this.filterNumber != "")
       this.filteredClients = this.clients.filter(client => client.contactInfo.includes(this.filterNumber));
     else
