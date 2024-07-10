@@ -31,6 +31,7 @@ import { ClientTaskManagementComponent } from './pages/client/client-task-manage
 import { ClientBillingsComponent } from './pages/client/client-billings/client-billings.component';
 import { TaskInListComponent } from './task-in-list/task-in-list.component';
 import { icons } from './icons';
+import { customfieldComponent } from './custom-field/custom-field.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -76,6 +77,7 @@ import { icons } from './icons';
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
   { path: 'clientSearch', component: ClientSearchComponent , data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' }},
   { path: 'clientSearch/clientManagement', component: ClientManagementComponent , data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' }},
+  {path:'custom-field',component:customfieldComponent,data:{authType:3,forToolbar:true,label:'fields',icon:''}},
   { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' } },
   {
     path: 'clientSearch/clientManagement/clientNavbar', component: ClientNavbarComponent,

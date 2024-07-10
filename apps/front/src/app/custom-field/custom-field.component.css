@@ -1,0 +1,9 @@
+select {
+    padding: 8px;
+    font-size: 16px;
+   
+  }
+.dropList{
+    justify-content: center;
+    align-items: center;
+}
