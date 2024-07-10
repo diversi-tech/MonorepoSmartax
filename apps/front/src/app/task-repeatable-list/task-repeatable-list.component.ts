@@ -1,37 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { TaskService } from '../../_services/task.service';
-import { Task } from '../../_models/task.module';
-import { UserService } from '../../_services/user.service';
-import { ClientService } from '../../_services/client.service';
-import { TagService } from '../../_services/tag.service';
-import { User } from '../../_models/user.module';
-import { Client } from '../../_models/client.module';
-import { Tag } from '../../_models/tag.module';
-import { Confirmation, ConfirmationService, MessageService, Footer, PrimeTemplate } from 'primeng/api';
-import { Status } from '../../_models/status.module';
-import { StatusService } from '../../_services/status.service';
-import { every } from 'rxjs';
-import { ToastModule } from 'primeng/toast';
-import { TableModule } from 'primeng/table';
-import { PanelModule } from 'primeng/panel';
-import { InputTextModule } from 'primeng/inputtext';
-import { RouterLink } from '@angular/router';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { IconProfileComponent } from '../../share/icon-profile/icon-profile.component';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { Component } from '@angular/core';
+import { CommonModule, DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { ConfirmationService, Footer, MessageService, PrimeTemplate } from 'primeng/api';
+import { Tag } from '../_models/tag.module';
+import {Task} from '../_models/task.module'
+import { Client } from '../_models/client.module';
+import { Status } from '../_models/status.module';
+import { User } from '../_models/user.module';
+import { ClientService } from '../_services/client.service';
+import { StatusService } from '../_services/status.service';
+import { TagService } from '../_services/tag.service';
+import { TaskService } from '../_services/task.service';
+import { UserService } from '../_services/user.service';
 import { FormsModule } from '@angular/forms';
-import { CalendarModule } from 'primeng/calendar';
-import { NgIf, NgFor, NgStyle, NgClass, DatePipe } from '@angular/common';
-import { SidebarModule } from 'primeng/sidebar';
+import { RouterLink } from '@angular/router';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonDirective, Button } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { PanelModule } from 'primeng/panel';
+import { SidebarModule } from 'primeng/sidebar';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { IconProfileComponent } from '../share/icon-profile/icon-profile.component';
+
 @Component({
-    selector: 'app-task-management',
-    templateUrl: './task-management.component.html',
-    styleUrls: ['./task-management.component.css'],
-    standalone: true,
-    imports: [
-        ConfirmDialogModule,
+  selector: 'app-task-repeatable-list',
+  standalone: true,
+  imports: [
+    ConfirmDialogModule,
         Footer,
         ButtonDirective,
         SidebarModule,
@@ -52,10 +50,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         NgClass,
         ToastModule,
         DatePipe,
-    ],
+  ],
+  templateUrl: './task-repeatable-list.component.html',
+  styleUrl: './task-repeatable-list.component.css',
 })
-export class TaskManagementComponent implements OnInit {
-
+export class TaskRepeatableListComponent {
   statuses: Status[] = []
 
   tasks: Task[] = [];
@@ -238,6 +237,4 @@ export class TaskManagementComponent implements OnInit {
       return deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch;
     });
   }
-
-
 }
