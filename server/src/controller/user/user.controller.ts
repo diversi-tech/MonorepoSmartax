@@ -149,13 +149,8 @@ async delete (@Query('id') id: string): Promise < User > {
   description: 'Object containing the new password',
   type: String,
 })
-@ApiBearerAuth()
-async ChangePassword(@Body() body: { newPassword: string }, @Request() req) {
-
-  const token = req.headers.authorization.split(' ')[1];
-  this.jwtToken.validatePolicy(token)
-  const email = await this.jwtToken.FindEmail(token)
-  const user = await this.userService.findByEmail(email)
+async ChangePassword(@Body() body: { newPassword: string, emailFront: string }, @Request() req) {
+  const user = await this.userService.findByEmail(body.emailFront)
   if (!user) {
     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
   }
@@ -167,18 +162,10 @@ async ChangePassword(@Body() body: { newPassword: string }, @Request() req) {
     passwordHash: await newPasswordHash,
     role: user.role,
   };
-  await this.userService.updateUser(user.id, userDto)
+  const e= await this.userService.updateUser(user.id, userDto)
 
   try {
-    const role = await this.jwtToken.validatePolicy(token);
-    const newToken = await this.jwtToken.createToken({email:userDto.email, role:role, _id:userDto.id});
-    // if (!isAdmin && policy === "admin") {
-    //   throw new HttpException('Not an admin', HttpStatus.FORBIDDEN);
-    // }
-    return {
-      message: 'Password changed successfully',
-      token: newToken.access_token,
-    };
+    return user.id
   }
   catch (error) {
     throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);

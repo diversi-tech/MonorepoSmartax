@@ -70,7 +70,7 @@ import { ClientTypeComponent } from './pages/client/client-type/client-type.comp
   { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
   { path: 'taskRpe', component: TaskRepeatableListComponent },
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'Forget-Password', icon: '' } },
-  { path: 'restartPassword', component: RestartPasswordComponent, data: { forToolbar: false, label: 'Restart-Password', icon: '' } },
+  { path: 'restartPassword/:email', component: RestartPasswordComponent, data: { forToolbar: false, label: 'Restart-Password', icon: '' } },
   { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   {
