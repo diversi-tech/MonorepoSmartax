@@ -2,7 +2,7 @@
 <tr>
   <td>{{ task.taskName }}</td>
   <td>
-    <app-icon-profile [userName]="task.assignedTo.userName" [email]="task.assignedTo.email"></app-icon-profile>
+    <app-icon-profile [userName]="task.assignedTo[0].userName" [email]="task.assignedTo[0].email"></app-icon-profile>
   </td>
   <td>{{ task.dueDate | date:'shortDate' }}</td>
   <td>
