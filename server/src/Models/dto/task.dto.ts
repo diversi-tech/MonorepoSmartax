@@ -8,7 +8,7 @@ import { Status } from '../status.model';
 
 export class CreateTaskDto {
     @IsNotEmpty()
-    client: Client[];
+    client: Client;
 
     @IsNotEmpty()
     @IsString()
@@ -54,7 +54,7 @@ export class UpdateTaskDto {
     id: string;
 
     @IsOptional()
-    client?: Client[];
+    client?: Client;
 
     @IsOptional()
     @IsString()
