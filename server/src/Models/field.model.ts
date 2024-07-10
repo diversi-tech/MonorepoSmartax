@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
 @Schema()
-export class FieldsTC extends Document {
+export class Field extends Document {
     @Prop()
     key: string;
     
@@ -11,4 +11,4 @@ export class FieldsTC extends Document {
     
 }
 
-export const FieldsTCModell = SchemaFactory.createForClass(FieldsTC);
+export const FieldModell = SchemaFactory.createForClass(Field);

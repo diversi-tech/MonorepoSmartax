@@ -5,8 +5,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Task } from '../task.model';
 import mongoose from 'mongoose';
 import { CreateTaskDto, UpdateTaskDto } from './task.dto';
-import { FieldsTC } from '../fieldsCT.model';
-import { CreateFieldsTCDto } from './fieldsCT.dto';
+import { Field } from '../field.model';
 
 
 
@@ -45,7 +44,7 @@ export class UpdateClientTypeDto {
     tasks?:string[];
     @ApiProperty({ type: Array<FieldsTC>, required: true })
     @IsOptional()
-    fields?: FieldsTC[];
+    fields?: Field[];
 
     
 
