@@ -9,13 +9,14 @@ import { Status } from './status.model';
 @Schema()
 export class Task extends Document {
     @Prop()//{ type: mongoose.Schema.Types.ObjectId, ref: 'Client' }
-    client: Client;
+    client: Client[];
 
     @Prop()
     taskName: string;
 
     @Prop()
     description: string;
+
     @Prop()
     dueDate: Date;
 
@@ -23,10 +24,13 @@ export class Task extends Document {
     startDate: Date;
 
     @Prop()
+    deadline: Date;
+
+    @Prop()
     status: Status;
 
     @Prop()//{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-    assignedTo: User;
+    assignedTo: User[];
 
     @Prop()//{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }
     tags:Tag[];
