@@ -1,0 +1,11 @@
+
+<div class="card flex justify-content-center">
+    <p-button (click)="showDialog()" label="Show" />
+    <p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+        <app-custom-field></app-custom-field>
+        
+        <div class="flex justify-content-end gap-2">
+           
+        </div>
+    </p-dialog>
+</div>

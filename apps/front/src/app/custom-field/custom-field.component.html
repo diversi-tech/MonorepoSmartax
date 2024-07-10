@@ -1,18 +1,14 @@
 <div>
-<input class="buttons" id="float-input" pInputText type="text" placeholder="field name" >
+<input class="buttons" id="float-input" pInputText type="text" placeholder="שם השדה" >
 <br>
-
-<!-- <select (change)="onSelect($event.target.value)">
-    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
-</select><br> -->
 <p-dropdown 
     [options]="whatType" 
-    [(ngModel)]="selectedCity" 
+    [(ngModel)]="selectedType" 
     optionLabel="name" 
-    placeholder="Select a City" />
+    placeholder="סוג השדה" />
  
 
  <br>
 <p-button class="buttons"  id="fieldN" type="button" icon="pi pi-plus"
- label="Add Task"></p-button>
+ label="הוסף"></p-button>
 </div>
