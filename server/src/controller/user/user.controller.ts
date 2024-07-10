@@ -162,10 +162,14 @@ async ChangePassword(@Body() body: { newPassword: string, emailFront: string }, 
     passwordHash: await newPasswordHash,
     role: user.role,
   };
-  const e= await this.userService.updateUser(user.id, userDto)
+  await this.userService.updateUser(user.id, userDto)
 
   try {
-    return user.id
+    return {
+      status: HttpStatus.OK,
+      message: 'Password changed successfully',
+      userId: user.id
+    };
   }
   catch (error) {
     throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
