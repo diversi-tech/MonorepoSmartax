@@ -31,6 +31,7 @@ import { ClientTaskManagementComponent } from './pages/client/client-task-manage
 import { ClientBillingsComponent } from './pages/client/client-billings/client-billings.component';
 import { TaskInListComponent } from './task-in-list/task-in-list.component';
 import { icons } from './icons';
+import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -92,6 +93,7 @@ import { icons } from './icons';
       { path: 'clientBillings', component: ClientBillingsComponent },
     ]
   },
+  { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } }
 ];
 
 

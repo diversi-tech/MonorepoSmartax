@@ -6,7 +6,7 @@ import { debounceTime } from 'rxjs/operators';
 import { PrimeNGConfig, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { CommonModule, NgIf } from '@angular/common';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet,RouterLink, } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
@@ -26,6 +26,7 @@ import { Button } from 'primeng/button';
         AddClientComponent,
         RouterOutlet,
         Button,
+        RouterLink,
     ],
 })
 export class ClientSearchComponent implements OnInit  {

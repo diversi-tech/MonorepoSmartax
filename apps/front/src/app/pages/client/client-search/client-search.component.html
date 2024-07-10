@@ -2,14 +2,16 @@
     <div class="row">
       <div class="col">
         <label for="searchName">Search by Name & businessName:</label>
-        <p-button label="סוגי לקוח" routerLink="clientCommunicationLogs" routerLinkActive="active"></p-button>
+       
         <p-autoComplete [(ngModel)]="selectedClient" [suggestions]="filteredClients"
           (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
           [minLength]="1" placeholder="Search clients" field="name" [dropdown]="true">
+
           <ng-template let-client pTemplate="item">
             client name - {{ client.name }} | client.businessName - {{ client.businessName }}
           </ng-template>
         </p-autoComplete>
+        <p-button  label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
       </div>
     </div>
   
