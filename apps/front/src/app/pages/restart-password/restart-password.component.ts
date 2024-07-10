@@ -46,7 +46,6 @@ export class RestartPasswordComponent {
       this.errorMessage = "Passwords do not match";
     }
     else {
-debugger
       this.userService.changPassword(this.form.password,this.email).subscribe(
         success => {
           Swal.fire({
@@ -60,9 +59,9 @@ debugger
         },
         error => {
           Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: 'success to send email',
+            icon: 'error',
+            title: 'Error!',
+            text: 'error to send email, please try again',
             timer: 4000,
             showConfirmButton: false,
           });
