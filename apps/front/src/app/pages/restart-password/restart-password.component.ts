@@ -33,17 +33,18 @@ export class RestartPasswordComponent {
     private routeActive: ActivatedRoute,) { }
 
   ngOnInit(): void {
-    if (this.storageService.isLoggedIn()) {
-      this.isLoggedIn = true;
-    }
+    // if (this.storageService.isLoggedIn()) {
+    //   this.isLoggedIn = true;
+    // }
     this.email = this.routeActive.snapshot.paramMap.get('email')!;
+    console.log(this.email)
   }
 
   onSubmit(): void {
 
     if (this.form.password !== this.form.passwordAuthentication) {
       this.isLoginFailed = true;
-      this.errorMessage = "Passwords do not match";
+      this.errorMessage = "הסיסמאות אינן תואמות";
     }
     else {
       this.userService.changPassword(this.form.password,this.email).subscribe(
