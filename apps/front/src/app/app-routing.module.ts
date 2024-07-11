@@ -34,6 +34,9 @@ import { icons } from './icons';
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
+import { ClientTypeTagComponent } from './pages/client/client-type-tag/client-type-tag.component';
+import { ClientTypeTabComponent } from './pages/client/client-type-tab/client-type-tab.component';
+import { ClientFieldComponent } from './pages/client/client-field/client-field.component';
 import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
 import { TaskCheckListComponent } from './task-check-list/task-check-list.component';
 // import { MeetComponent } from './meet/meet.component';
@@ -71,7 +74,7 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
   { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
   { path: 'taskRpe', component: TaskRepeatableListComponent },
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'שכחתי סיסמה', icon: '' } },
-  { path: 'restartPassword', component: RestartPasswordComponent, data: { forToolbar: false, label: 'איפוס סיסמה', icon: '' } },
+  { path: 'restartPassword/:email', component: RestartPasswordComponent, data: { forToolbar: false, label: 'איפוס סיסמה', icon: '' } },
   { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   {
@@ -106,6 +109,9 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       { path: 'clientTaskManagement', component: ClientTaskManagementComponent },
       { path: 'clientBillings', component: ClientBillingsComponent },
+      { path: 'clientTypeTab' , component:ClientTypeTabComponent},
+      { path: 'clientType' , component:ClientTypeComponent},
+      { path: 'clientTypeTag' , component:ClientTypeTagComponent},
     ]
   },
   { path: 'a', component: AllCommunicationComponent },

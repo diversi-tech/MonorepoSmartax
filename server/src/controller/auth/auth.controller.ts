@@ -22,6 +22,8 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Email and password are required' })
   @ApiResponse({ status: 404, description: 'User not found' })
   async signin(@Body() loginDto: any) {
+    try{
+      
     const { email, passwordHash } = loginDto;
     if (!(email && passwordHash)) {
       throw new HttpException('Email and password are required', HttpStatus.BAD_REQUEST);
@@ -40,6 +42,10 @@ export class AuthController {
     const token = await this.jwtToken.createToken(payload);
 
     return token;
+    }catch(error){
+console.log(error);
+throw new HttpException(error.message, error);
+    }
   }
 
   @Post('signout')

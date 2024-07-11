@@ -201,6 +201,10 @@ export class MeetComponent implements OnInit {
       (client: Client) => client._id
     );
   }
+  cancelDialog() {
+    this.visible = false;
+    this.save();
+  }
 
   isValidURL(value: string): boolean {
     let url;
