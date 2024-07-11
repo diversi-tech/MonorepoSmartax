@@ -31,7 +31,7 @@
 
   <button *ngIf="!isChoosedAllClient" pButton (click)="chooseAllClients()" label="בחר הכל"></button>
   <button *ngIf="isChoosedAllClient" pButton (click)="removeAllClients()" label="הסר הכל"></button>
-  <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="להוספה למועדפים" (click)="isFavoriteCliet()"></button>
+  <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים" (click)="isFavoriteClient()"></button>
   <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה" class="p-button-danger" (click)="showConfirmation()"></button>
   
   <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
@@ -52,6 +52,7 @@
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th></th>
+        <th></th>
         <th>name</th>
         <th>tag</th>
         <th>contactInfo</th>
@@ -66,6 +67,9 @@
         <td>
           <input type="checkbox" [checked]="isClientChoosed(client)"
             (click)="$event.stopPropagation(); updateChoosedClients(client, $event.target.checked)">
+        </td>
+        <td>
+          <i *ngIf="isInFavorite(client)" class="pi pi-star"(click)="$event.stopPropagation();"></i>
         </td>
         <td>{{client.name}}</td>
         <td>

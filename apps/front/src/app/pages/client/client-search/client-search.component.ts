@@ -54,8 +54,8 @@ export class ClientSearchComponent implements OnInit {
     private router: Router,
     private primengConfig: PrimeNGConfig,
     private route: ActivatedRoute,
-    private confirmationService: ConfirmationService,
-  ) { }
+    private confirmationService: ConfirmationService
+  ) {}
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
@@ -141,35 +141,52 @@ export class ClientSearchComponent implements OnInit {
         this.choosedClients.splice(index, 1);
       }
     }
-    console.log(this.choosedClients)
+    console.log(this.choosedClients);
   }
 
   chooseAllClients(): void {
-    debugger
-    this.filteredClients.forEach(client => this.updateChoosedClients(client, true));
+    debugger;
+    this.filteredClients.forEach((client) =>
+      this.updateChoosedClients(client, true)
+    );
     this.isChoosedAllClient = true;
   }
 
   removeAllClients(): void {
-    debugger
-    this.filteredClients.forEach(client => this.updateChoosedClients(client, false));
+    debugger;
+    this.filteredClients.forEach((client) =>
+      this.updateChoosedClients(client, false)
+    );
     this.isChoosedAllClient = false;
   }
 
   isClientChoosed(client: Client): boolean {
     return this.choosedClients.includes(client);
   }
-
-  isFavoriteCliet() {
+isInFavorite(client:Client){
+  console.log();
+  
+  return this.user.favorites.includes(client);
+}
+  isFavoriteClient() {
     this.user.favorites = this.choosedClients;
-    this.userService.update(
-      this.user._id,
-      this.user.userName,
-      this.user.email,
-      this.user.passwordHash,
-      this.user.role,
-      this.user.favorites
-    );
+    this.userService
+      .update(
+        this.user._id,
+        this.user.userName,
+        this.user.email,
+        this.user.passwordHash,
+        this.user.role,
+        this.user.favorites
+      )
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+        },
+        error: (err) => {
+          console.error('Error add to favorite', err);
+        },
+      });
   }
 
   showConfirmation(): void {
@@ -177,7 +194,7 @@ export class ClientSearchComponent implements OnInit {
       message: 'Are you sure you want to delete this clients?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
-    })
+    });
   }
 
   confirmDelete(): void {
@@ -185,17 +202,17 @@ export class ClientSearchComponent implements OnInit {
   }
 
   deleteTask(): void {
-    this.choosedClients.forEach(c => {
+    this.choosedClients.forEach((c) => {
       this.clientService.deleteClient(c._id).subscribe({
         next: () => {
           window.location.reload();
         },
-        error: err => console.error('Error deleting client: ', err)
+        error: (err) => console.error('Error deleting client: ', err),
       });
-    })
+    });
   }
 
   cancelDelete(): void {
-    this.confirmationService.close()
+    this.confirmationService.close();
   }
 }
