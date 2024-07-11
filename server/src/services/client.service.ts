@@ -11,15 +11,14 @@ export class ClientService {
 
     constructor(@InjectModel('Client') private readonly clientModel: Model<Client>) {}
 
-    async createClient(createClientDto: CreateClientDto): Promise<Client> {
-        // const { name, contactInfo, businessName, source, status, createdDate, tag } = createClientDto;
-
-        // if (!name || !contactInfo || !businessName || !source || !status || !createdDate || !tag) {
-        //   throw new ValidationException('Missing required fields');
-        // }
-        
-        const createdClient = new this.clientModel(createClientDto);
-        return await createdClient.save();
+    async createClient(createClientDto: CreateClientDto): Promise<Client> { 
+        try{
+            const createdClient = new this.clientModel( createClientDto);
+            return await createdClient.save();
+        }
+        catch(err){
+           console.log(err);
+        }     
     }
 
     async getAllClients(): Promise<Client[]> {

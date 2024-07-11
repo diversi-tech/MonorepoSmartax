@@ -72,8 +72,8 @@ export class CreateClientDto {
     @IsDateString()
     dateOfBirth: Date;
 
-    @ApiProperty({})
-    payment: ObjectId;
+    // @ApiProperty({})
+    // payment: ObjectId;
 
     @ApiProperty({ example: true })
     @IsBoolean()

@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, ObjectId, Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { SensitiveData } from './sensitiveData';
 import { User } from './user.model';
+// import { CounterService } from '../services/counter.ervice';
 
 export enum ReportType {
   Monthly = 'מדווח חודשי',
@@ -9,10 +10,8 @@ export enum ReportType {
   SemiAnnual = 'חצי שנתי',
   NotReporting = 'לא מדווח',
 }
-
 @Schema()
 export class Client extends Document {
-
   @Prop()
   companyName: string;
 
@@ -58,21 +57,11 @@ export class Client extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   assignTo: User[];
 
-  static clientId = 1000;
-
-  // @Prop({ default: Client.generateClientId, })
-  // clientID: number;
-
-  // static generateClientId() {
-  //   let newClientId = this.clientId + 1;
-  //   return newClientId;
-  // }
+  @Prop({ default:'1000', unique: true, })
+  clientID: string;
 
   @Prop()
   dateOfBirth: Date;
-
-  @Prop()
-  payment: ObjectId;
 
   @Prop()
   isEmploysWorkers: boolean;
@@ -107,5 +96,19 @@ export class Client extends Document {
   @Prop()
   isOpenAccountWithUs: boolean;
 }
+
+// ClientSchema.pre<Client>('save', async function (next) {
+//   if (this.isNew) {
+//     const counter = await CounterModel.findOneAndUpdate(
+//       { collectionName: 'Client' },
+//       { $inc: { seq: 1 } },
+//       { new: true, upsert: true }
+//     );
+//     this.clientID = (1000 + counter.seq).toString(); // התחלת 1000 והמשך במספרים הסידוריים
+//   }
+//   next();
+// });
+
+
 
 export const ClientModel = SchemaFactory.createForClass(Client);
