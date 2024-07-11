@@ -105,6 +105,8 @@ import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeata
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       { path: 'clientTaskManagement', component: ClientTaskManagementComponent },
       { path: 'clientBillings', component: ClientBillingsComponent },
+      { path: 'yearlyReport', component: YearlyReportComponent },
+
     ]
   },
   {path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},

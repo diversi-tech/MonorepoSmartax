@@ -75,6 +75,9 @@ import { StepFieldService } from './services/stepField.service';
 import { YearlyReportService } from './services/yearlyReport.service';
 import { StepField, stepFieldModel } from './Models/stepField.model';
 import { YearlyReport, YearlyReportstModel } from './Models/yearlyReports.model';
+import { Year, YearModel } from './Models/year.model';
+import { YearService } from './services/year.service';
+import { YearController } from './controller/year/year.controller';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -108,10 +111,11 @@ import { YearlyReport, YearlyReportstModel } from './Models/yearlyReports.model'
   MongooseModule.forFeature([{name: StepField.name, schema:stepFieldModel }]),
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema: communicationArchiveModel}]),
  MongooseModule.forFeature([{name:YearlyReport.name, schema: YearlyReportstModel}]),
+ MongooseModule.forFeature([{name: Year.name, schema: YearModel}]),
 
   ],
   
-  controllers: [AppController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,CommunicationArchiveController,StepFieldController,YearlyReportController],  
+  controllers: [AppController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,CommunicationArchiveController,StepFieldController,YearlyReportController,YearController],  
 
 
   providers: [
@@ -144,6 +148,7 @@ import { YearlyReport, YearlyReportstModel } from './Models/yearlyReports.model'
     
     StepFieldService,
     YearlyReportService,
+    YearService,
     
 
   ],

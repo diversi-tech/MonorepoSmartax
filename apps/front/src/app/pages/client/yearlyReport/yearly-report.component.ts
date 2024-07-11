@@ -1,10 +1,12 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StepperModule } from 'primeng/stepper';
 import { stepFieldService } from '../../../_services/step_field.service';
 import { StepField } from '../../../_models/stepField.module';
 import { CheckboxModule } from 'primeng/checkbox';
 import { Observable } from 'rxjs';
+import { YearlyReport } from '../../../_models/yearlyReport.module';
+import { YearlyReportService } from '../../../_services/yearlyReport.service';
 
 
 
@@ -19,10 +21,37 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root' // Ensure it's provided in root or a specific module
 })
-export class YearlyReportComponent  {
-  constructor(private stepFieldsService: stepFieldService) {
+export class YearlyReportComponent implements OnInit {
+  constructor(private stepFieldsService: stepFieldService,private yearlyReportService: YearlyReportService) {
      this.loadTasks();
   }
+  steps: any[];
+  allYearlyReport: YearlyReport[]=[];
+  ngOnInit(): void {
+   this.getYearlyReportsForClient();
+  }
+
+
+  getYearlyReportsForClient(): void {
+    const clientId = history.state.client.id; // Assuming the client ID is passed via the state
+    this.yearlyReportService.getYearlyReportsForClient(clientId).subscribe(
+      (reports) => {
+        this.allYearlyReport = reports;
+      },
+      (error) => {
+        console.error('Error fetching yearly reports for client', error);
+      }
+    );
+  }
+ 
+  activeIndex: number = 0;
+  selectedYear: Date;
+  selectedType: string;
+  typeOptions: any[] = [
+    { label: 'פיצול לעצמאי', value: 'עצמאי' },
+    { label: 'עמותה', value: 'עמותה' },
+    { label: 'חברה', value: 'חברה' }
+  ];
   tasksStep1: StepField[] = [];
   tasksStep2: StepField[] = [];
   tasksStep3: StepField[] = [];
