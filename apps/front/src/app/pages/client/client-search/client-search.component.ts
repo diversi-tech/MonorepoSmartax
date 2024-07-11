@@ -41,6 +41,7 @@ export class ClientSearchComponent implements OnInit {
   searchName = new FormControl('');
   selectedClient: Client | null = null;
   displayDialog: boolean = false;
+  choosedClients: Client[] = [];
   user: User;
 
   constructor(
@@ -118,8 +119,42 @@ export class ClientSearchComponent implements OnInit {
   closeDialog() {
     this.displayDialog = false;
   }
-  addFavorite(){
-this.user.favorites
-this.userService.update(this.user._id,this.user.userName, this.user.email,this.user.passwordHash,this.user.role,this.user.favorites,)
+
+  updateChoosedClients(client: Client, isChecked: boolean) {
+    debugger;
+    if (isChecked && !this.choosedClients.includes(client)) {
+      this.choosedClients.push(client);
+    } else if (!isChecked) {
+      const index = this.choosedClients.indexOf(client);
+      if (index !== -1) {
+        this.choosedClients.splice(index, 1);
+      }
+    }
+    console.log(this.choosedClients);
+  }
+
+  chooseAllClient(): void {
+    debugger;
+    this.filteredClients.forEach((item) =>
+      this.updateChoosedClients(item, true)
+    );
+    console.log(this.choosedClients);
+  }
+
+  isClientChoosed(client: Client): boolean {
+    return this.choosedClients.includes(client);
+  }
+
+  isPreferredCliet() {}
+  addFavorite() {
+    this.user.favorites = this.choosedClients;
+    this.userService.update(
+      this.user._id,
+      this.user.userName,
+      this.user.email,
+      this.user.passwordHash,
+      this.user.role,
+      this.user.favorites
+    );
   }
 }
