@@ -7,14 +7,14 @@ import { Field } from 'multer';
 export class ClientType extends Document {
     @Prop()
     name: string;
-    
-    @Prop({type:Array<String>})
-    tasks:Array<String>;
-    
-    @Prop({ type: Array<String>  })
-    fields:Array<String>;
 
-   
+    @Prop({ type: Array<String>})
+    tasks: Array<String>;
+
+    @Prop({ type: Array<String>  })
+    fields: Array<String>;
+
+
 }
 
 export const ClientTypeModel = SchemaFactory.createForClass(ClientType);

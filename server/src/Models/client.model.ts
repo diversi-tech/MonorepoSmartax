@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, ObjectId, Types } from 'mongoose';
 import { SensitiveData } from './sensitiveData';
 import { User } from './user.model';
 
@@ -12,6 +12,7 @@ export enum ReportType {
 
 @Schema()
 export class Client extends Document {
+
   @Prop()
   companyName: string;
 
@@ -57,18 +58,21 @@ export class Client extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   assignTo: User[];
 
-  @Prop({
-    required: true,
-    unique: true,
-    default: 1000,
-    validate: {
-      validator: function (v) {
-        return Number.isInteger(v) && v >= 1000 && v <= 9999;
-      },
-      message: props => `${props.value} is not a valid customerID!`
-    }
-  })
-  _id: number;
+  static clientId = 1000;
+
+  // @Prop({ default: Client.generateClientId, })
+  // clientID: number;
+
+  // static generateClientId() {
+  //   let newClientId = this.clientId + 1;
+  //   return newClientId;
+  // }
+
+  @Prop()
+  dateOfBirth: Date;
+
+  @Prop()
+  payment: ObjectId;
 
   @Prop()
   isEmploysWorkers: boolean;
@@ -78,6 +82,9 @@ export class Client extends Document {
 
   @Prop()
   incomeTaxFileNumber: string;
+
+  @Prop()
+  incomeTaxDeductions_registerID: string;
 
   @Prop()
   VATFileNumber: string;

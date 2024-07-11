@@ -23,7 +23,13 @@ export class SensitiveData extends Document {
   password: string;
 
   @Prop()
-  creditCard: string;
+  creditCardCNumber: string;
+
+  @Prop()
+  creditCardCValidity: string;
+
+  @Prop()
+  digitsOnTheBack: string;
 
   @Prop({ required: true })
   isCreditCard: boolean;

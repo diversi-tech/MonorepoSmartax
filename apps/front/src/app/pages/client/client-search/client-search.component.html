@@ -7,7 +7,7 @@
           (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
           [minLength]="1" placeholder="Search clients" field="name" [dropdown]="true">
           <ng-template let-client pTemplate="item">
-            client name - {{ client.name }} | client.businessName - {{ client.businessName }}
+            client name - {{ client.firstName }} | client.companyName - {{ client.companyName }}
           </ng-template>
         </p-autoComplete>
       </div>
@@ -43,12 +43,12 @@
       </ng-template>
       <ng-template pTemplate="body" let-client let-columns="columns">
         <tr (click)="selectClientFromList(client)">
-          <td>{{client.name}}</td>
+          <td>{{client.firstName}}</td>
           <td>
             <span class="pi pi-tag" [style.color]="client.tag?.color || '#000'"></span>
           </td>
-          <td>{{client.contactInfo}}</td>
-          <td>{{client.businessName}}</td>
+          <td>{{client.phone}}</td>
+          <td>{{client.companyName}}</td>
           <td>{{client.source}}</td>
           <td>{{client.status}}</td>
           <td>{{client.createdDate}}</td>

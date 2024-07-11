@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { SensitiveData } from '../sensitiveData';
 import { User } from '../user.model';
 import { ReportType } from '../client.model';
+import { ObjectId } from 'mongoose';
 
 export class CreateClientDto {
     @ApiProperty({ example: 'ACME Corporation' })
@@ -37,6 +38,10 @@ export class CreateClientDto {
     @IsString()
     phone: string;
 
+    @ApiProperty({ example: '555-555-5555' })
+    @IsString()
+    whatsapp: string;
+
     @ApiProperty({ example: 'john.doe@example.com' })
     @IsString()
     email: string;
@@ -59,9 +64,16 @@ export class CreateClientDto {
     @ApiProperty({ example: ['<user_id_1>', '<user_id_2>'] })
     assignTo: User[];
 
-    @ApiProperty({ example: 1001 })
-    @IsNumber()
-    _id: number;
+    // @ApiProperty({ example: 1001 })
+    // @IsNumber()
+    // clientID: number;
+
+    @ApiProperty({ example: '1969-01-01' })
+    @IsDateString()
+    dateOfBirth: Date;
+
+    @ApiProperty({})
+    payment: ObjectId;
 
     @ApiProperty({ example: true })
     @IsBoolean()
@@ -74,6 +86,10 @@ export class CreateClientDto {
     @ApiProperty({ example: '789012' })
     @IsString()
     incomeTaxFileNumber: string;
+
+    @ApiProperty({ example: '901234' })
+    @IsString()
+    incomeTaxDeductions_registerID: string;
 
     @ApiProperty({ example: '345678' })
     @IsString()
@@ -104,6 +120,11 @@ export class CreateClientDto {
 }
 
 export class UpdateClientDto {
+    @ApiProperty({ example: '123456789', required: false })
+    @IsOptional()
+    @IsString()
+    id?: string;
+
     @ApiProperty({ example: 'ACME Corporation' })
     @IsString()
     @IsOptional()
@@ -144,6 +165,11 @@ export class UpdateClientDto {
     @IsString()
     phone?: string;
 
+    @ApiProperty({ example: '555-555-5555' })
+    @IsOptional()
+    @IsString()
+    whatsapp: string;
+
     @ApiProperty({ example: 'john.doe@example.com' })
     @IsOptional()
     @IsString()
@@ -172,10 +198,19 @@ export class UpdateClientDto {
     @IsOptional()
     assignTo?: User[];
 
-    @ApiProperty({ example: 1001 })
+    // @ApiProperty({ example: 1001 })
+    // @IsOptional()
+    // @IsNumber()
+    // clientId?: number;
+
+    @ApiProperty({ example: '1969-01-01' })
     @IsOptional()
-    @IsNumber()
-    _id?: number;
+    @IsDateString()
+    dateOfBirth: Date;
+
+    @ApiProperty({})
+    @IsOptional()
+    payment: ObjectId;
 
     @ApiProperty({ example: true })
     @IsOptional()
@@ -191,6 +226,10 @@ export class UpdateClientDto {
     @IsOptional()
     @IsString()
     incomeTaxFileNumber?: string;
+
+    @ApiProperty({ example: '901234' })
+    @IsString()
+    incomeTaxDeductions_registerID: string;
 
     @ApiProperty({ example: '345678' })
     @IsOptional()

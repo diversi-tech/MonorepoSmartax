@@ -22,8 +22,8 @@
             (completeMethod)="searchClients($event)" field="name">
             <ng-template let-client pTemplate="item">
               <div class="client-item">
-                <app-icon-profile [userName]="client.name" [email]="client.email"></app-icon-profile>
-                <span>{{client.name}}</span>
+                <app-icon-profile [userName]="client.firstName" [email]="client.email"></app-icon-profile>
+                <span>{{client.firstName}}</span>
               </div>
             </ng-template>
           </p-autoComplete>

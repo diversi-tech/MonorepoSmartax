@@ -21,7 +21,13 @@ export class CreateSensitiveDataDto {
   password: string;
 
   @IsString()
-  creditCard: string;
+  creditCardCNumber: string;
+
+  @IsString()
+  creditCardCValidity: string;
+
+  @IsString()
+  digitsOnTheBack: string;
 
   @IsBoolean()
   isCreditCard: boolean;
@@ -48,7 +54,13 @@ export class UpdateSensitiveDataDto {
   password: string;
 
   @IsString()
-  creditCard: string;
+  creditCardCNumber: string;
+
+  @IsString()
+  creditCardCValidity: string;
+
+  @IsString()
+  digitsOnTheBack: string;
 
   @IsBoolean()
   isCreditCard: boolean;

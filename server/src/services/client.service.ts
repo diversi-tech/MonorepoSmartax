@@ -27,17 +27,17 @@ export class ClientService {
     }
 
     async searchClient(id:string): Promise<Client> {
-        const client= await this.clientModel.findOne({"_id":id}).exec();
+        const client= await this.clientModel.findOne({"id":id}).exec();
         if (!client) {
             throw new NotFoundException('Client not found');
           }
           return client;
     }
 
-    async updateClient(_id: number, updateClientDto: UpdateClientDto): Promise<Client> {
-        const updatedClient = await this.clientModel.findByIdAndUpdate(_id, updateClientDto, { new: true }).exec();
+    async updateClient(id: string, updateClientDto: UpdateClientDto): Promise<Client> {
+        const updatedClient = await this.clientModel.findByIdAndUpdate(id, updateClientDto, { new: true }).exec();
         if (!updatedClient) {
-            throw new NotFoundException(`Client with customerID ${_id} not found`);
+            throw new NotFoundException(`Client with customerID ${id} not found`);
         }
         return updatedClient;
     }

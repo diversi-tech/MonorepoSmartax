@@ -84,8 +84,8 @@ export class ClientSearchComponent implements OnInit  {
     if (value !== "") {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
-        (client.name && client.name.toLowerCase().includes(query)) ||
-        (client.businessName && client.businessName.toLowerCase().includes(query))
+        (client.firstName && client.firstName.toLowerCase().includes(query)) ||
+        (client.companyName && client.companyName.toLowerCase().includes(query))
       );
     }
     this.selectedClient = null;
@@ -94,7 +94,7 @@ export class ClientSearchComponent implements OnInit  {
   filterClientsByNumber(): void {
     debugger
     if (this.filterNumber != "")
-      this.filteredClients = this.clients.filter(client => client.contactInfo.includes(this.filterNumber));
+      this.filteredClients = this.clients.filter(client => client.phone.includes(this.filterNumber));
     else
       this.filteredClients = this.clients;
   }
