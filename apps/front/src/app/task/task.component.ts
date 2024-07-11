@@ -190,6 +190,7 @@ export class TaskComponent implements OnInit {
           this.rangeDates![0] = new Date(this.currentTask.startDate);
           this.rangeDates![1] = new Date(this.currentTask.deadline);
           this.htmlContent = this.currentTask.description;
+          this.dueDate = new Date(this.currentTask.dueDate);
           console.log(this.rangeDates);
 
           this.images = this.currentTask.images;
