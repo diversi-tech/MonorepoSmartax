@@ -122,8 +122,15 @@ import { YearController } from './controller/year/year.controller';
   MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel }]),
   MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel }]),
   MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
-
-
+  ServeStaticModule.forRoot({
+    rootPath: path.join(__dirname, '../uploads'),
+    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+  }),
+  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
+   MongooseModule.forFeature([{name: StepField.name, schema:stepFieldModel }]),
+  MongooseModule.forFeature([{name: CommunicationArchive.name, schema: communicationArchiveModel}]),
+  MongooseModule.forFeature([{name:YearlyReport.name, schema: YearlyReportstModel}]),
+  MongooseModule.forFeature([{name: Year.name, schema: YearModel}]),
   ServeStaticModule.forRoot({
     rootPath: path.join(__dirname, '../uploads'),
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -152,21 +159,9 @@ import { YearController } from './controller/year/year.controller';
     FrequencyController,
     PaymentMethodController,
     PaymentDetailsController,
-    PaymentController],
- ServeStaticModule.forRoot({
-   rootPath: path.join(__dirname, '../uploads'),
-   serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
- }),
- MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
-  JwtModule,
-  MongooseModule.forFeature([{name: StepField.name, schema:stepFieldModel }]),
- MongooseModule.forFeature([{name: CommunicationArchive.name, schema: communicationArchiveModel}]),
- MongooseModule.forFeature([{name:YearlyReport.name, schema: YearlyReportstModel}]),
- MongooseModule.forFeature([{name: Year.name, schema: YearModel}]),
-
+    PaymentController,
   ],
   
-  controllers: [AppController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,CommunicationArchiveController,StepFieldController,YearlyReportController,YearController],  
 
 
   providers: [
