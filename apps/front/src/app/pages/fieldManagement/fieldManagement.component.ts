@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component ,ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -12,9 +12,13 @@ import { customfieldComponent } from '../../custom-field/custom-field.component'
   styleUrl: './fieldManagement.component.css',
 })
 export class FieldManagementComponent {
+  
   visible: boolean = false;
 
     showDialog() {
         this.visible = true;
+}
+onClosePopup() {
+  this.visible= false;
 }
 }

@@ -3,11 +3,12 @@
     <p-button label="show"></p-button><br>
     <p-button (click)="showDialog()" label="צור שדה חדש" />
 
-    <p-dialog header="ערוך שדה" [modal]="true" [(visible)]="visible" [style]="{ width: '20 rem' ,height: '400px' }">
-        <app-custom-field></app-custom-field>
+    <p-dialog header="ערוך שדה" 
+              [modal]="true"
+              [(visible)]="visible" 
+              [style]="{ width: '20 rem' ,height: '400px' }">
+        <app-custom-field (closePopup)="onClosePopup()"></app-custom-field>
         
-        <div class="flex justify-content-end gap-2">
-           
-        </div>
+       
     </p-dialog>
 </div>

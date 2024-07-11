@@ -1,5 +1,5 @@
 <div>
-<input class="buttons" id="float-input" pInputText type="text" placeholder="שם השדה" >
+<input class="buttons" id="float-input" pInputText type="text" placeholder="שם השדה" [(ngModel)]="fieldName" >
 <br>
 <p-dropdown 
     [options]="whatType" 
@@ -10,5 +10,5 @@
 
  <br>
 <p-button class="buttons"  id="fieldN" type="button" icon="pi pi-plus"
- label="הוסף"></p-button>
+ label="הוסף" (click)="createField()"></p-button>
 </div>

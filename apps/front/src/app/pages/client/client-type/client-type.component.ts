@@ -37,5 +37,7 @@ export class ClientTypeComponent implements OnInit{
     this.clientTypeService.getAllClientTypes().subscribe(clientTypes => {
       this.clientTypes = clientTypes;
     });
+    
   }
+  
 }
