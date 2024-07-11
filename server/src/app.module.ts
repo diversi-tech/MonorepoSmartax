@@ -69,6 +69,9 @@ import { DocType, docTypeModel } from './Models/docType.model';
 import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
 import { CallTopicService } from './services/callTopicSchema.service';
 import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
+import { FieldService } from './services/field.service';
+import { FieldController } from './controller/field/field.controller';
+import { Field, FieldModell } from './Models/field.model';
 import { StepFieldController } from './controller/yearlyReport/stepField.controller';
 import { YearlyReportController } from './controller/yearlyReport/yearlyReport.controller';
 import { StepFieldService } from './services/stepField.service';
@@ -85,7 +88,7 @@ import { YearController } from './controller/year/year.controller';
 @Module({
 //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
-
+    MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
  MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
@@ -102,6 +105,7 @@ import { YearController } from './controller/year/year.controller';
  
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
  MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
+
  ServeStaticModule.forRoot({
    rootPath: path.join(__dirname, '../uploads'),
    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -127,6 +131,7 @@ import { YearController } from './controller/year/year.controller';
     JwtService,
     ClientService,
     ClientTypeService,
+    FieldService,
     TaskService,
     TagService,
     StatusService,

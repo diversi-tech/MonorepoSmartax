@@ -1,1 +1,4 @@
-@import '../app/pages/client/yearlyReport/yearly-report.component.css'
+body{
+    text-align: right;
+    direction: rtl;
+}

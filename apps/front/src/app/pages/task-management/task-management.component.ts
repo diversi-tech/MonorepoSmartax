@@ -89,7 +89,7 @@ export class TaskManagementComponent implements OnInit {
   taskSuggestions: any[] = [];
   tagSuggestions: Tag[] = [];
   display: any;
-
+  filterFirstStatus=true
 
   constructor(
     private taskService: TaskService,
@@ -169,8 +169,6 @@ export class TaskManagementComponent implements OnInit {
   deleteTask(task: Task): void {
     this.taskService.deleteTask(task._id!).subscribe({
       next: () => {
-        this.tasks = this.tasks.filter(task => task._id !== task._id);
-        // this.categorizeTasks();
         this.reloadPage();
       },
       error: err => console.error('Error deleting task: ', err)
@@ -191,13 +189,13 @@ export class TaskManagementComponent implements OnInit {
 
   searchClients(event: any): void {
     this.clientService.getAllClients().subscribe((clients: Client[]) => {
-      this.clientSuggestions = clients.filter(client => client["name"].toLowerCase().includes(event.query.toLowerCase()));
+      this.clientSuggestions = clients.filter(client => client.name && client["name"].toLowerCase().includes(event.query.toLowerCase()));
     });
   }
 
   searchUsers(event: any): void {
     this.userService.getAllUsers().subscribe((users: any[]) => {
-      this.userSuggestions = (users.filter(user => user["userName"].toLowerCase().includes(event.query.toLowerCase())))
+      this.userSuggestions = (users.filter(user => user.userName && user["userName"].toLowerCase().includes(event.query.toLowerCase())))
     });
   }
 
@@ -217,12 +215,14 @@ export class TaskManagementComponent implements OnInit {
 
   applyFilter() {
     this.filteredTasks = this.tasks.filter(task => {
+      this.filterFirstStatus=false;
+
       const deadlineMatch = !this.filter.deadlineRange ||
         (task.dueDate >= this.filter.deadlineRange[0] && task.dueDate <= this.filter.deadlineRange[1]);
 
-      const clientMatch = !this.filter.client || task.client[0].name.includes(this.filter.client.name);
+        const clientMatch = !this.filter.client || task.client.name.includes(this.filter.client.name);
 
-      const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
+      const userMatch = !this.filter.user || task.assignedTo.some(user => user.userName.includes(this.filter.user.userName));
 
       const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
 
@@ -232,6 +232,7 @@ export class TaskManagementComponent implements OnInit {
           return task.tags.some(taskTag => taskTag.text.includes(filterTag.text));
         });
       }
+      
       console.log(deadlineMatch, clientMatch, userMatch, taskNameMatch, tagsMatch);
 
 
