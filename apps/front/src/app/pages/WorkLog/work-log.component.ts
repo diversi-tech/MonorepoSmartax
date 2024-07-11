@@ -98,11 +98,16 @@ export class WorkLogComponent implements OnInit {
 
   saveEditedWorkLog(): void {
     if (this.editedWorkLog) {
+      if (this.editedCheckIn >= this.editedCheckOut) {
+        alert('שעת הכניסה חייבת להיות לפני שעת היציאה.');
+        return;
+      }
+
       this.editedWorkLog.checkIn = this.editedCheckIn;
       this.editedWorkLog.checkOut = this.editedCheckOut;
       this.editedWorkLog.hoursWorked = this.calculateHours(this.editedCheckIn, this.editedCheckOut);
 
-      this.workLogService.updateWorkLog(this.editedWorkLog._id, this.editedWorkLog.checkIn, this.editedWorkLog.checkOut)
+      this.workLogService.updateWorkLog(this.editedWorkLog._id, this.editedWorkLog.checkIn, this.editedWorkLog.checkOut, this.editedWorkLog.hoursWorked)
         .subscribe(updatedLog => {
           const index = this.workLogs.findIndex(log => log._id === updatedLog._id);
           if (index !== -1) {
@@ -150,5 +155,3 @@ export class WorkLogComponent implements OnInit {
     return roundedHours;
   }
 }
-
-
