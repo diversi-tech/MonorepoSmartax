@@ -5,30 +5,30 @@ import { FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { PrimeNGConfig, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
-import { CommonModule, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 
 @Component({
-    // standalone:true,
-    selector: 'app-client-search',
-    templateUrl: './client-search.component.html',
-    styleUrls: ['./client-search.component.scss'],
-    standalone: true,
-    imports: [
-        AutoCompleteModule,
-        FormsModule,
-        PrimeTemplate,
-        NgIf,
-        TableModule,
-        AddClientComponent,
-        RouterOutlet,
-        Button,
-    ],
+  // standalone:true,
+  selector: 'app-client-search',
+  templateUrl: './client-search.component.html',
+  styleUrls: ['./client-search.component.scss'],
+  standalone: true,
+  imports: [
+    AutoCompleteModule,
+    FormsModule,
+    PrimeTemplate,
+    NgIf,
+    TableModule,
+    AddClientComponent,
+    RouterOutlet,
+    Button,
+  ],
 })
-export class ClientSearchComponent implements OnInit  {
+export class ClientSearchComponent implements OnInit {
   filterNumber: string = "";
   isSelected: number = 0;
   clients: Client[] = [];
@@ -36,6 +36,7 @@ export class ClientSearchComponent implements OnInit  {
   searchName = new FormControl('');
   selectedClient: Client | null = null;
   displayDialog: boolean = false;
+  choosedClients: Client[] = [];
 
   constructor(
     private clientService: ClientService,
@@ -100,5 +101,33 @@ export class ClientSearchComponent implements OnInit  {
 
   closeDialog() {
     this.displayDialog = false;
+  }
+
+  updateChoosedClients(client: Client, isChecked: boolean) {
+    debugger
+    if (isChecked && !this.choosedClients.includes(client)) {
+      this.choosedClients.push(client);
+    }
+    else if(!isChecked) {
+      const index = this.choosedClients.indexOf(client);
+      if (index !== -1) {
+        this.choosedClients.splice(index, 1);
+      }
+    }
+    console.log(this.choosedClients);
+  }
+
+  chooseAllClient(): void {
+    debugger
+    this.filteredClients.forEach(item => this.updateChoosedClients(item, true));
+    console.log(this.choosedClients);
+  }
+
+  isClientChoosed(client: Client): boolean {
+    return this.choosedClients.includes(client);
+  }
+
+  isPreferredCliet(){
+
   }
 }
