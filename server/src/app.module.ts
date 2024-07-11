@@ -39,7 +39,7 @@ import { hashPasswordService } from './services/hash-password';
 import { AuthController } from './controller/auth/auth.controller';
 import { RoleService } from './services/role.service';
 import { RoleController } from './controller/role/role.controller';
-import { Role ,RoleModel } from './Models/role.modle';
+import { Role, RoleModel } from './Models/role.modle';
 import { ClientTypeController } from './controller/clientTypes/clientTypes.controller';
 import { ClientType, ClientTypeModel } from './Models/clientType.model';
 import { ClientTypeService } from './services/clientType.service';
@@ -66,6 +66,15 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
 import { FrequencyController } from './controller/frequency/frequency.controller';
 import { Frequency, frequencyModel } from './Models/frequency.model';
 import { FrequencyService } from './services/frequency.service';
+import { PaymentMethodController } from './controller/paymentMethod/paymentMethod.controller';
+import { PaymentMethodService } from './services/PaymentMethod.service';
+import { PaymentMethod, PaymentMethodModel } from './Models/paymentMethod.model';
+import { PaymentDetailsController } from './controller/paymentDetails/paymentDetails.controller';
+import { PaymentDetailsService } from './services/paymentDetails.service';
+import { PaymentDetails, PaymentDetailsModel } from './Models/paymentDetails.model';
+import { PaymentsService } from './services/payment.service';
+import {PaymentsController } from './controller/payment/payment.controller';
+import { Payment, PaymentModel } from './Models/payment.model';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -75,7 +84,7 @@ import { FrequencyService } from './services/frequency.service';
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
 
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
- MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
+  MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
   MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
   MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel }]),
@@ -88,6 +97,11 @@ import { FrequencyService } from './services/frequency.service';
   MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
   MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
   MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
+  MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel }]),
+  MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel }]),
+  MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
+
+
   ServeStaticModule.forRoot({
     rootPath: path.join(__dirname, '../uploads'),
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -113,7 +127,10 @@ import { FrequencyService } from './services/frequency.service';
     TagController,
     MeetController,
     StatusController,
-    FrequencyController],
+    FrequencyController,
+    PaymentMethodController,
+    PaymentDetailsController,
+    PaymentsController],
 
 
   providers: [
@@ -137,6 +154,9 @@ import { FrequencyService } from './services/frequency.service';
     MeetService,
     CommunicationArchiveService,
     FrequencyService,
+    PaymentMethodService,
+    PaymentDetailsService,
+    PaymentsService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,

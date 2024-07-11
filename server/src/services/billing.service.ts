@@ -41,12 +41,12 @@ export class BillingsService {
     return this.BillingModel.find().exec();
   }
 
-  async getBillingsByClientId(clientId: string): Promise<Billing[]> {
-    console.log('Searching for Billings with client ID:', clientId);
-    const Billings = await this.BillingModel.find({ 'client._id': clientId })
-    .populate('client').populate('status').populate('assignedTo').exec();
-    console.log('Billings found:', Billings);
-    return Billings;
-  }
+  // async getBillingsByClientId(clientId: string): Promise<Billing[]> {
+  //   console.log('Searching for Billings with client ID:', clientId);
+  //   const Billings = await this.BillingModel.find({ 'client._id': clientId })
+  //   .populate('client').populate('status').populate('assignedTo').exec();
+  //   console.log('Billings found:', Billings);
+  //   return Billings;
+  // }
 
 }

@@ -1,64 +1,55 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsDateString, IsNotEmpty } from 'class-validator';
-import { Types } from 'mongoose';
+import { PaymentMethod } from '../paymentMethod.model';
+import { User } from '../user.model';
 export class UpdateBillingDto {
-    @ApiProperty({ type: String, example: 'client_id', required: false })
+    @ApiProperty()
     @IsOptional()
-    client?: Types.ObjectId;
+    @IsString()
+    id?: string;
 
-    @ApiProperty({ type: String, example: '5000', required: false })
+    @ApiProperty()
+    @IsOptional()
+    @IsDateString()
+    date?: Date;
+  
+    @ApiProperty()
     @IsOptional()
     @IsString()
     amount?: string;
 
-    @ApiProperty({ type: String, example: 'status_id' , required: false })
+    @ApiProperty()
     @IsOptional()
-    @IsString()
-    status?:  Types.ObjectId;
+    paymentMethod?: PaymentMethod;
 
-    @ApiProperty({ type: Date, example: new Date(), required: false })
+    @ApiProperty()
     @IsOptional()
-    @IsDateString()
-    dueDate?: Date;
+    assignedTo?: User;
 
-    @ApiProperty({ type: Date, example: new Date(), required: false })
+    @ApiProperty()
     @IsOptional()
-    @IsDateString()
-    paidDate?: Date;
-
-    @ApiProperty({ type: String, example: 'user_id', required: false })
-    @IsOptional()
-    assignedTo?: Types.ObjectId;
-
-    @ApiProperty({ type: String, example: '123456789', required: false })
-    @IsOptional()
-    @IsString()
-    id?: string;
+    isReturn?: boolean;
 }
 export class CreateBillingDto {
-    @ApiProperty({ type: String, example: 'client_id' })
-    @IsNotEmpty()
-    client: Types.ObjectId;
-
-    @ApiProperty({ type: String, example: '5000' })
-    @IsNotEmpty()
+    @ApiProperty()
+    @IsOptional()
+    @IsDateString()
+    date: Date;
+  
+    @ApiProperty()
+    @IsOptional()
     @IsString()
     amount: string;
 
-    @ApiProperty({ type: String, example: 'status_id' })
-    @IsNotEmpty()
-    status:  Types.ObjectId;
+    @ApiProperty()
+    @IsOptional()
+    paymentMethod: PaymentMethod;
 
-    @ApiProperty({ type: Date, example: new Date() })
-    @IsNotEmpty()
-    @IsDateString()
-    dueDate: Date;
+    @ApiProperty()
+    @IsOptional()
+    assignedTo: User;
 
-    @ApiProperty({ type: Date, example: new Date() })
-    @IsDateString()
-    paidDate: Date;
-
-    @ApiProperty({ type: String, example: 'user_id' })
-    @IsNotEmpty()
-    assignedTo: Types.ObjectId;
+    @ApiProperty({ default: false })
+    @IsOptional()
+    isReturn?: boolean = false; 
 }

@@ -8,7 +8,7 @@ import { Priority } from "./priority.model";
 @Schema()
 export class repeatableTask extends Document {
     @Prop()//{ type: mongoose.Schema.Types.ObjectId, ref: 'Client' }
-    client: Client;
+    client: Client[];
 
     @Prop()
     taskName: string;
