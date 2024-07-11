@@ -14,9 +14,11 @@ export interface Task {
 
   startDate?:Date;
 
+
   status?: Status;
   assignedTo?: User[];
   tags?: Tag[];
   images?:string[];
   priority?: Priority;
 }
+

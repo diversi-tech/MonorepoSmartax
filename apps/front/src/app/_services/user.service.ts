@@ -79,13 +79,12 @@ export class UserService {
     return this.http.get(this.apiUrl +`/findOne?id=${userId}`)
   }
 
-  changPassword(newPassword: string): Observable<any> {
-    const token = JSON.parse(sessionStorage.getItem('auth-user') + '')?.access_token;
-    const headers = {
-      'Authorization': `Bearer ${token}`
-    };
-    const body = { newPassword: this.hashService.encryptPassword(newPassword) };
-    return this.http.put<any>(this.apiUrl + '/changePassword', body, { headers })
+  changPassword(newPassword: string, email:string): Observable<any> {
+    const body = {
+       newPassword: this.hashService.encryptPassword(newPassword),
+       emailFront:email
+     };
+     return this.http.put<any>(this.apiUrl + '/changePassword', body)
   }
   deleteUser(id: string) {
     console.log('delete user in service');
