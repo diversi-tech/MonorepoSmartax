@@ -3,7 +3,7 @@ import { Client } from '../../../_models/client.module';
 import { ClientService } from '../../../_services/client.service';
 import { FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
-import { PrimeNGConfig, PrimeTemplate } from 'primeng/api';
+import { ConfirmationService, PrimeNGConfig, PrimeTemplate } from 'primeng/api';
 import {
   AutoCompleteModule,
   AutoCompleteSelectEvent,
@@ -16,6 +16,7 @@ import { Button } from 'primeng/button';
 import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-client-search',
@@ -23,6 +24,7 @@ import { TokenService } from '../../../_services/token.service';
   styleUrls: ['./client-search.component.scss'],
   standalone: true,
   imports: [
+    ConfirmDialogModule,
     AutoCompleteModule,
     FormsModule,
     PrimeTemplate,
@@ -43,6 +45,7 @@ export class ClientSearchComponent implements OnInit {
   displayDialog: boolean = false;
   choosedClients: Client[] = [];
   user: User;
+  isChoosedAllClient: boolean = false;
 
   constructor(
     private clientService: ClientService,
@@ -50,8 +53,9 @@ export class ClientSearchComponent implements OnInit {
     private tokenService: TokenService,
     private router: Router,
     private primengConfig: PrimeNGConfig,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private confirmationService: ConfirmationService,
+  ) { }
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
@@ -137,14 +141,19 @@ export class ClientSearchComponent implements OnInit {
         this.choosedClients.splice(index, 1);
       }
     }
-    console.log(this.choosedClients);
+    console.log(this.choosedClients)
   }
 
-  chooseAllClient(): void {
-    this.filteredClients.forEach((item) =>
-      this.updateChoosedClients(item, true)
-    );
-    console.log(this.choosedClients);
+  chooseAllClients(): void {
+    debugger
+    this.filteredClients.forEach(client => this.updateChoosedClients(client, true));
+    this.isChoosedAllClient = true;
+  }
+
+  removeAllClients(): void {
+    debugger
+    this.filteredClients.forEach(client => this.updateChoosedClients(client, false));
+    this.isChoosedAllClient = false;
   }
 
   isClientChoosed(client: Client): boolean {
@@ -161,5 +170,32 @@ export class ClientSearchComponent implements OnInit {
       this.user.role,
       this.user.favorites
     );
+  }
+
+  showConfirmation(): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this clients?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+    })
+  }
+
+  confirmDelete(): void {
+    this.deleteTask();
+  }
+
+  deleteTask(): void {
+    this.choosedClients.forEach(c => {
+      this.clientService.deleteClient(c._id).subscribe({
+        next: () => {
+          window.location.reload();
+        },
+        error: err => console.error('Error deleting client: ', err)
+      });
+    })
+  }
+
+  cancelDelete(): void {
+    this.confirmationService.close()
   }
 }

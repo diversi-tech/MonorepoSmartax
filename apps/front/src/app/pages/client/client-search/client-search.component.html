@@ -29,10 +29,23 @@
   <input *ngIf="isSelected == 5" type="text" placeholder="createdDate" />
   <br />
 
-  <button (click)="chooseAllClient()">בחר הכל</button>
-  <button *ngIf="this.choosedClients.length > 0" (click)="isFavoriteCliet()">להוספה למועדפים</button>
-  <button *ngIf="this.choosedClients.length > 0">למחיקה</button>
+  <button *ngIf="!isChoosedAllClient" pButton (click)="chooseAllClients()" label="בחר הכל"></button>
+  <button *ngIf="isChoosedAllClient" pButton (click)="removeAllClients()" label="הסר הכל"></button>
+  <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="להוספה למועדפים" (click)="isFavoriteCliet()"></button>
+  <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה" class="p-button-danger" (click)="showConfirmation()"></button>
+  
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
+    <p-footer>
+      <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+      (click)="cancelDelete()"></button>
+      <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+      (click)="confirmDelete()"></button>
+    </p-footer>
+  </p-confirmDialog>
 
+
+
+  
   <h3>Clients List</h3>
   <p-table [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients "
     [tableStyle]="{'min-width': '80rem'}">
