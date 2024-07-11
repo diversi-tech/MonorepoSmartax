@@ -39,7 +39,7 @@ import { hashPasswordService } from './services/hash-password';
 import { AuthController } from './controller/auth/auth.controller';
 import { RoleService } from './services/role.service';
 import { RoleController } from './controller/role/role.controller';
-import { Role ,RoleModel } from './Models/role.modle';
+import { Role, RoleModel } from './Models/role.modle';
 import { ClientTypeController } from './controller/clientTypes/clientTypes.controller';
 import { ClientType, ClientTypeModel } from './Models/clientType.model';
 import { ClientTypeService } from './services/clientType.service';
@@ -72,6 +72,18 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
+import { FrequencyController } from './controller/frequency/frequency.controller';
+import { Frequency, frequencyModel } from './Models/frequency.model';
+import { FrequencyService } from './services/frequency.service';
+import { PaymentMethodController } from './controller/paymentMethod/paymentMethod.controller';
+import { PaymentMethodService } from './services/PaymentMethod.service';
+import { PaymentMethod, PaymentMethodModel } from './Models/paymentMethod.model';
+import { PaymentDetailsController } from './controller/paymentDetails/paymentDetails.controller';
+import { PaymentDetailsService } from './services/paymentDetails.service';
+import { PaymentDetails, PaymentDetailsModel } from './Models/paymentDetails.model';
+import { PaymentService } from './services/payment.service';
+import {PaymentController } from './controller/payment/payment.controller';
+import { Payment, PaymentModel } from './Models/payment.model';
 import { StepFieldController } from './controller/yearlyReport/stepField.controller';
 import { YearlyReportController } from './controller/yearlyReport/yearlyReport.controller';
 import { StepFieldService } from './services/stepField.service';
@@ -86,11 +98,11 @@ import { YearController } from './controller/year/year.controller';
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
 
 @Module({
-//add
+  //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
     MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
- MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
+  MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
   MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
   MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel }]),
@@ -100,12 +112,47 @@ import { YearController } from './controller/year/year.controller';
   MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
   MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
   MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
- MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
- MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
- 
+  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+  
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
  MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
 
+  MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
+  MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel }]),
+  MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel }]),
+  MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
+
+
+  ServeStaticModule.forRoot({
+    rootPath: path.join(__dirname, '../uploads'),
+    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+  }),
+  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
+    JwtModule
+  ],
+  controllers: [
+    AppController,FieldController,
+    ClientTypeController,CallTopicController,
+    UserController,
+    PriorityController,
+    ClientController,
+    TasksController,
+    CommunicationsController,
+    BillingController,
+    BillingStatusController,
+    MailController,
+    GoogleDriveController,
+    AuthController,
+    RoleController,
+    TasksController,
+    TagController,
+    MeetController,
+    StatusController,DocTypeController,
+    FrequencyController,
+    PaymentMethodController,
+    PaymentDetailsController,
+    PaymentController],
  ServeStaticModule.forRoot({
    rootPath: path.join(__dirname, '../uploads'),
    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -145,6 +192,10 @@ import { YearController } from './controller/year/year.controller';
     CallTopicService,
     CommunicationArchiveService,
     DocTypeService,
+    FrequencyService,
+    PaymentMethodService,
+    PaymentDetailsService,
+    PaymentService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
@@ -158,7 +209,7 @@ import { YearController } from './controller/year/year.controller';
 
   ],
 })
-export class AppModule {}
+export class AppModule { }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
