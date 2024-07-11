@@ -120,7 +120,6 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
   { path: 'ae', component: ClientAddCommunicationComponent },
   { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } },
   
-  {path:'fieldManagement', component: FieldManagementComponent,data:{authType:6,forToolbar:true,label:'ניהול שדות',icon:''}}
 
 ];
 
