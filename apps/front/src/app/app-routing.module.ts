@@ -34,6 +34,7 @@ import { icons } from './icons';
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 import { SensitiveDetailsComponent } from './pages/client/sensitive-details/sensitive-details.component';
+import { WorkLogComponent } from './pages/WorkLog/work-log.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -107,7 +108,8 @@ import { SensitiveDetailsComponent } from './pages/client/sensitive-details/sens
   },
   { path: 'allCommunication', component: AllCommunicationComponent },
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent },
-  { path: 'sensitiveDetails', component: SensitiveDetailsComponent }
+  { path: 'sensitiveDetails', component: SensitiveDetailsComponent },
+  { path: 'workLogComponent', component: WorkLogComponent },
 
 ];
 
