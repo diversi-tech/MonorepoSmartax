@@ -35,6 +35,7 @@ import { AllCommunicationComponent } from './pages/client/all-communication/all-
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
 import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
+import { TaskCheckListComponent } from './task-check-list/task-check-list.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -109,7 +110,8 @@ import { ClientTypeComponent } from './pages/client/client-type/client-type.comp
   },
   { path: 'a', component: AllCommunicationComponent },
   { path: 'ae', component: ClientAddCommunicationComponent },
-  { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } }
+  { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } },
+  {path:'checklist', component:TaskCheckListComponent}
 ];
 
 
