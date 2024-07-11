@@ -55,16 +55,17 @@ export class ClientSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
-    this.userService.findOne(this.tokenService.getCurrentDetail("_id")).subscribe({
-      next:(response: any) => {
-        this.user=response;
-        console.log(this.user);
-        
-      },
-      error: (err) => {
-        console.error('Error get current user', err);
-      }
-    });
+    this.userService
+      .findOne(this.tokenService.getCurrentDetail('_id'))
+      .subscribe({
+        next: (response: any) => {
+          this.user = response;
+          console.log(this.user);
+        },
+        error: (err) => {
+          console.error('Error get current user', err);
+        },
+      });
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
       if (value !== null) {
         this.filterClientsByNameAndBusinessName(value); // Pass the value directly to filterClients
@@ -150,8 +151,7 @@ export class ClientSearchComponent implements OnInit {
     return this.choosedClients.includes(client);
   }
 
-  isPreferredCliet() {}
-  addFavorite() {
+  isPreferredCliet() {
     this.user.favorites = this.choosedClients;
     this.userService.update(
       this.user._id,
