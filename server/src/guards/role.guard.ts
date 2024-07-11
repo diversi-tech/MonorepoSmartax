@@ -11,7 +11,7 @@ export const RoleGuard = (requiredLevel: number) => {
       const token = request.headers.authorization.split(' ')[1]; // Assuming token is present in the 'Authorization' header
 
       try {
-        const roleLevel = await this.tokenService.validatePolicy(token);
+        const roleLevel = await this.tokenService.getRoleFromToken(token);
         if (roleLevel.level <= requiredLevel) {
           return true;
         } else {
