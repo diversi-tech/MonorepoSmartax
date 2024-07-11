@@ -86,7 +86,7 @@ import { PaymentDetailsController } from './controller/paymentDetails/paymentDet
 import { PaymentDetailsService } from './services/paymentDetails.service';
 import { PaymentDetails, PaymentDetailsModel } from './Models/paymentDetails.model';
 import { PaymentService } from './services/payment.service';
-import {PaymentController } from './controller/payment/payment.controller';
+import { PaymentController } from './controller/payment/payment.controller';
 import { Payment, PaymentModel } from './Models/payment.model';
 import { StepFieldController } from './controller/yearlyReport/stepField.controller';
 import { YearlyReportController } from './controller/yearlyReport/yearlyReport.controller';
@@ -104,7 +104,7 @@ import { YearController } from './controller/year/year.controller';
 @Module({
   //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
-    MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
+  MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
   MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
@@ -123,9 +123,9 @@ import { YearController } from './controller/year/year.controller';
   MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel }]),
   MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
   MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
-  
- MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
- MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
+
+  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+  MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel }]),
 
   MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
   MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel }]),
@@ -135,11 +135,11 @@ import { YearController } from './controller/year/year.controller';
     rootPath: path.join(__dirname, '../uploads'),
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
   }),
-  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
-   MongooseModule.forFeature([{name: StepField.name, schema:stepFieldModel }]),
-  MongooseModule.forFeature([{name: CommunicationArchive.name, schema: communicationArchiveModel}]),
-  MongooseModule.forFeature([{name:YearlyReport.name, schema: YearlyReportstModel}]),
-  MongooseModule.forFeature([{name: Year.name, schema: YearModel}]),
+  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
+  MongooseModule.forFeature([{ name: StepField.name, schema: stepFieldModel }]),
+  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
+  MongooseModule.forFeature([{ name: YearlyReport.name, schema: YearlyReportstModel }]),
+  MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]),
   ServeStaticModule.forRoot({
     rootPath: path.join(__dirname, '../uploads'),
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -148,8 +148,10 @@ import { YearController } from './controller/year/year.controller';
     JwtModule
   ],
   controllers: [
-    AppController,FieldController,
-    ClientTypeController,CallTopicController,
+    WorkLogController,
+    AppController,
+    FieldController,
+    ClientTypeController, CallTopicController,
     UserController,
     PriorityController,
     ClientController,
@@ -164,13 +166,13 @@ import { YearController } from './controller/year/year.controller';
     TasksController,
     TagController,
     MeetController,
-    StatusController,DocTypeController,
+    StatusController, DocTypeController,
     FrequencyController,
     PaymentMethodController,
     PaymentDetailsController,
     PaymentController,
   ],
-  
+
 
 
   providers: [
@@ -206,11 +208,11 @@ import { YearController } from './controller/year/year.controller';
       useClass: HttpErrorFilter,
     },
     CommunicationArchiveService,
-    
+
     StepFieldService,
     YearlyReportService,
     YearService,
-    
+
 
   ],
 })
