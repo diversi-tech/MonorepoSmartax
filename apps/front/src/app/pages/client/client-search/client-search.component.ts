@@ -151,7 +151,7 @@ export class ClientSearchComponent implements OnInit {
     return this.choosedClients.includes(client);
   }
 
-  isPreferredCliet() {
+  isFavoriteCliet() {
     this.user.favorites = this.choosedClients;
     this.userService.update(
       this.user._id,
