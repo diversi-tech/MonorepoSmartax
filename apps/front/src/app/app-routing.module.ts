@@ -74,7 +74,7 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
   { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'מנהל', icon: icons.admin } },
   { path: 'tasks', component: TaskManagementComponent, children: [{ path: 'task-in-list', component: TaskInListComponent }], canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'משימות', icon: icons.tasks } },
   { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
-  { path: 'taskRpe', component: TaskRepeatableListComponent },
+  // { path: 'taskRpe', component: TaskRepeatableListComponent },
 
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'שכחתי סיסמה', icon: '' } },
   { path: 'restartPassword/:email', component: RestartPasswordComponent, data: { forToolbar: false, label: 'איפוס סיסמה', icon: '' } },
@@ -114,16 +114,14 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
       { path: 'clientBillings', component: ClientBillingsComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
       { path: 'clientTypeTab' , component:ClientTypeTabComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
       { path: 'clientType' , component:ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
-      { path: 'clientTypeTag' , component:ClientTypeTagComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
     ]
   },
-  {path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
-  { path: 'allCommunication', component: AllCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'Communications', icon: icons.communications  } },
+  { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
+  { path: 'allCommunication', component: AllCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:true, label: 'כלל השיחות', icon: icons.communications  } },
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
-  { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'workLog', icon: icons.clock  }},
-  { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } },
-  {path:'checklist', component:TaskCheckListComponent}
+  { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
+  { path:'checklist', component:TaskCheckListComponent}
 ];
 
   @NgModule({

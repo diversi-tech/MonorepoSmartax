@@ -8,7 +8,7 @@ export const RoleGuard = (requiredLevel: number) => {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
       const request = context.switchToHttp().getRequest();
-      const token = request.headers.authorization.split(' ')[1]; // Assuming token is present in the 'Authorization' header
+      const token = request.headers.authorization!.split(' ')[1]; // Assuming token is present in the 'Authorization' header
 
       try {
         const roleLevel = await this.tokenService.getRoleFromToken(token);
