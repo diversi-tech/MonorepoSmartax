@@ -72,12 +72,9 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
-import { WorkLogService } from './services/workLog.service';
-import { WorkLogModel, WorkLog } from './Models/workLog.model';
 import { WorkLogController } from './controller/workLog/workLog.controller';
 import { WorkLogService } from './services/workLog.service';
 import { WorkLogModel, WorkLog } from './Models/workLog.model';
-import { WorkLogController } from './controller/workLog/workLog.controller';
 
 
 

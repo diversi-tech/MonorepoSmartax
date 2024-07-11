@@ -97,37 +97,31 @@ import { ClientTypeComponent } from './pages/client/client-type/client-type.comp
   { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' } },
   {
     path: 'clientSearch/clientManagement/clientNavbar', component: ClientNavbarComponent,
-    data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' },
+    data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
     children: [
       {
         path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent,
-        children: [{ path: 'clientAddCommunication', component: ClientAddCommunicationComponent }
+        children: [{ path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }}
         ]
       },
-      { path: 'clientAddCommunicationComponent', component: ClientAddCommunicationComponent },
-      { path: 'clientUploadDoc', component: ClientUploadDocComponent },
+      { path: 'clientAddCommunicationComponent', component: ClientAddCommunicationComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } },
+      { path: 'clientUploadDoc', component: ClientUploadDocComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
       { path: 'clientTaskManagement', component: ClientTaskManagementComponent },
-      { path: 'clientBillings', component: ClientBillingsComponent },
-      { path: 'clientTypeTab' , component:ClientTypeTabComponent},
-      { path: 'clientType' , component:ClientTypeComponent},
-      { path: 'clientTypeTag' , component:ClientTypeTagComponent},
+      { path: 'clientBillings', component: ClientBillingsComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+      { path: 'clientTypeTab' , component:ClientTypeTabComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+      { path: 'clientType' , component:ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+      { path: 'clientTypeTag' , component:ClientTypeTagComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
     ]
   },
-  { path: 'allCommunication', component: AllCommunicationComponent },
-  { path: 'clientAddCommunication', component: ClientAddCommunicationComponent },
-  { path: 'sensitiveDetails', component: SensitiveDetailsComponent },
-  { path: 'workLogComponent', component: WorkLogComponent },
+  { path: 'allCommunication', component: AllCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'Communications', icon: icons.communications  } },
+  { path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+  { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+  { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'workLog', icon: icons.clock  }},
   { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } }
 ];
 
-
-
-
-
-  
   @NgModule({
     imports: [RouterModule.forRoot(routes)], 
     exports: [RouterModule]
   })
   export class AppRoutingModule { }
-  
