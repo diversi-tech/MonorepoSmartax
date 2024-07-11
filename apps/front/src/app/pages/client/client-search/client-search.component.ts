@@ -54,10 +54,17 @@ export class ClientSearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.primengConfig.ripple = true; // Enable Ripple effect globally
-    // this.userService.findOne(this.tokenService.getCurrentDetail("role")._id).subscribe({
-    //   //next(res:User):this.user=res
-    // });
+    this.primengConfig.ripple = true;
+    this.userService.findOne(this.tokenService.getCurrentDetail("_id")).subscribe({
+      next:(response: any) => {
+        this.user=response;
+        console.log(this.user);
+        
+      },
+      error: (err) => {
+        console.error('Error get current user', err);
+      }
+    });
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
       if (value !== null) {
         this.filterClientsByNameAndBusinessName(value); // Pass the value directly to filterClients
@@ -121,7 +128,6 @@ export class ClientSearchComponent implements OnInit {
   }
 
   updateChoosedClients(client: Client, isChecked: boolean) {
-    debugger;
     if (isChecked && !this.choosedClients.includes(client)) {
       this.choosedClients.push(client);
     } else if (!isChecked) {
@@ -134,7 +140,6 @@ export class ClientSearchComponent implements OnInit {
   }
 
   chooseAllClient(): void {
-    debugger;
     this.filteredClients.forEach((item) =>
       this.updateChoosedClients(item, true)
     );
