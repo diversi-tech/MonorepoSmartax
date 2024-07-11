@@ -44,7 +44,6 @@
           placeholder="Select Users"
           defaultLabel="Select Users"
           [style]="{ height: '50px', width: '100%' }"
-          (onChange)="onUserChange($event)"
         >
           <ng-template let-user pTemplate="item">
             <div class="avatar-item">
@@ -539,7 +538,6 @@
   </p-card>
 </div>
 
-<button (click)="scheduleMeeting()">meet</button>
 
 
 
