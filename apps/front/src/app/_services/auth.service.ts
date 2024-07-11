@@ -59,14 +59,11 @@ export class AuthService {
 
 
   checkTokenAndPolicyValidity(policy: number): Observable<boolean> {
-    const token = JSON.parse(sessionStorage.getItem('auth-user') + '')?.access_token;
-    const headers = {
-      'Authorization': `Bearer ${token}`
-    };
+
 
     const body = { policy };
 
-    return this.http.post<any>(this.apiUrl + '/validate-token', body, { headers }).pipe(
+    return this.http.post<any>(this.apiUrl + '/validate-token', body).pipe(
       // map(response => {
       //   if (response.message !== 'Token is valid and policy is valid') {
       //     return false;

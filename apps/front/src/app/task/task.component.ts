@@ -114,7 +114,7 @@ export class TaskComponent implements OnInit {
   newTask: Task | undefined;
   taskName!: string;
   rangeDates: Date[] = [];
-  dueDate:Date | undefined;
+  dueDate: Date | undefined;
   id: string | undefined;
   checked: boolean = false;
   text: string | undefined; //description of task
@@ -415,30 +415,6 @@ export class TaskComponent implements OnInit {
 
   updateEditorContent(newContent: string) {
     this.editorComponent.initialContent = newContent;
-  }
-  // ========================================
-
-  // add to google-meeting
-  scheduleMeeting() {
-    let appointmentTime = new Date();
-    const startTime = appointmentTime.toISOString().slice(0, 18) + '-07:00';
-    const endTime = appointmentTime.toISOString().slice(0, 18) + '-08:00';
-    const eventDetails = {
-      nameT: 'פגישה חשובה',
-      description: 'פגישה על פרויקט חדש',
-      startTime: '2024-07-15T10:00:00',
-      endTime: '2024-07-15T11:00:00',
-      emails: ['sh0548487958@gmail.com', 'tzwine974@gmail.com'],
-      // emails:['sh0548487958@gmail.com','tzwine974@gmail.com'],
-    };
-    console.info(eventDetails);
-    this.googleCalendarService.createGoogleEvent(eventDetails);
-  }
-
-  //
-
-  onUserChange(event: any) {
-    // this.form.usersId = event.value.map((user: User) => user._id);
   }
 
   try() {
