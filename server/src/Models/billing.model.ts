@@ -1,28 +1,24 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document, Types } from 'mongoose';
-import { BillingStatus } from './billingStatus.model';
-import { Client } from './client.model';
+import { Date, Document, Types } from 'mongoose';
 import { User } from '../Models/user.model';
+import { PaymentMethod } from './paymentMethod.model';
 //add Malka comment git merge
 @Schema()
 export class Billing extends Document {
 
-    @Prop({ type: Types.ObjectId, ref: 'Client' , required: true})
-    client: Client;
+    @Prop()
+    date: Date;
 
     @Prop()
     amount: string;
 
-    @Prop({ type: Types.ObjectId, ref: 'BillingStatus' })
-    status: Types.ObjectId;
+    @Prop()
+    paymentMethod: PaymentMethod;
 
     @Prop()
-    dueDate: Date;
+    ifRreturn: boolean;
 
     @Prop()
-    paidDate: Date;
-
-    @Prop({ type: Types.ObjectId, ref: 'User'  ,required: true})
     assignedTo: User;
 }
 

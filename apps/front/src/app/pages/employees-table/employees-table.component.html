@@ -7,35 +7,38 @@
     </p-footer>
 </p-confirmDialog>
 
-
+<p-button (click)="addUser()" label="הוספת משתמש" />
 
 <p-table [value]="users" [tableStyle]="{'min-width': '50rem'}">
     <ng-template pTemplate="header" let-columns>
         <tr>
-            <th>userName </th>
-            <th>email</th>
-            <th>role</th>
+            <th></th>
+            <th></th>
+            <th>רמת הרשאה</th>
+            <th>מייל</th>
+            <th>שם משתמש </th>
+
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-user let-columns="columns">
         <tr>
             <td>
-                {{user.userName && user.userName}}
+                <p-button (click)="editDetails(user)" label="עריכת פרטי המשתמש" />
+            </td>
+            <td>
+                <p-button (click)="showConfirmation(user)" label="מחיקת משתמש זה"></p-button>
+            </td>
+
+            <td>
+                {{user.role && user.role.name}}
             </td>
             <td>
                 {{user.email && user.email}}
             </td>
             <td>
-                {{user.role && user.role.name}}
+                {{user.userName && user.userName}}
             </td>
-            <td>
-                <p-button (click)="editDetails(user)" label="edit details" />
-            </td>
-            <td>
-                <p-button (click)="showConfirmation(user)" label="delete this user"></p-button>
-            </td>
-
+            
         </tr>
     </ng-template>
 </p-table>
-<p-button (click)="addUser()" label="addUser" />
