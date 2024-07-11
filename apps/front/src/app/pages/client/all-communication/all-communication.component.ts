@@ -72,7 +72,7 @@ export class AllCommunicationComponent {
       this.callTopicService.getAll().subscribe(callTopic => {
       this.callTopics = callTopic ;
     });
-    console.log("שלום ",this.callTopics)
+   
   }
   getAllCommunications(): void {
     this.communicationService.getAllCommunications()
@@ -85,6 +85,7 @@ export class AllCommunicationComponent {
     this.selectedCommunication = { ...communication }; // Clone the communication for editing
   }
   updateCommunication(): void {
+    if(this.thisSubject!="")
     this.selectedCommunication.Subject=this.thisSubject
     if (this.selectedCommunication) {
       this.communicationService.updateCommunication(this.selectedCommunication._id!, this.selectedCommunication)
@@ -117,6 +118,7 @@ export class AllCommunicationComponent {
     debugger
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.isSelected = Number(selectedValue.substring(6));
+    this.filteredCommunicatio = this.communications;  
   }
   filterByCallTopic(event: Event){
     this.filterCallTopic=(event.target as HTMLSelectElement).value
@@ -193,7 +195,8 @@ export class AllCommunicationComponent {
     add(){
       this.newcallTopicSchema.name=this.thisSubject2
       this.callTopicService.createCallTopic(this.newcallTopicSchema).subscribe(response => {
-        this.callTopics.push(response);  // הוספת הנושא החדש לרשימה המקומית
+        this.callTopics.push(response);
+      // הוספת הנושא החדש לרשימה המקומית
       });
     }
 }

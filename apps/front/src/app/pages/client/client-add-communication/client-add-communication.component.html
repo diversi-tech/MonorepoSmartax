@@ -18,7 +18,7 @@
                   <div>
                     callTopics - {{ callTopicSchema.name }} 
                     <ng-container *ngIf="is">
-                      <button (click)="add()">{{thisSubject2}} רוצה להוסיף את הנושא שיחה הזה</button>
+                      <button (click)="add()"> רוצה להוסיף נושא שיחה הזה</button>
                     </ng-container>
                   </div>
                 </ng-template>
@@ -33,7 +33,7 @@
         <textarea class="p-textarea" id="summary" [(ngModel)]="newCommunication.summary" name="summary" rows="3" required></textarea>
       </div>
       <div class="p-field">
-        <label for="status">סטטוס שיחה</label>
+        <label for="status">סוג שיחה</label>
         <select (change)="onStatusChange($event.target.value)" [(ngModel)]="newCommunication.Status" name="status">
           <option [ngValue]="true">ליד</option>
           <option [ngValue]="false">מעקב</option>

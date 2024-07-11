@@ -35,6 +35,10 @@ import { AllCommunicationComponent } from './pages/client/all-communication/all-
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 import { SensitiveDetailsComponent } from './pages/client/sensitive-details/sensitive-details.component';
 import { WorkLogComponent } from './pages/WorkLog/work-log.component';
+import { ClientTypeTagComponent } from './pages/client/client-type-tag/client-type-tag.component';
+import { ClientTypeTabComponent } from './pages/client/client-type-tab/client-type-tab.component';
+import { ClientFieldComponent } from './pages/client/client-field/client-field.component';
+import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -69,7 +73,7 @@ import { WorkLogComponent } from './pages/WorkLog/work-log.component';
   { path: 'tasks', component: TaskManagementComponent, children: [{ path: 'task-in-list', component: TaskInListComponent }], canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'Tasks', icon: icons.tasks } },
   { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'Forget-Password', icon: '' } },
-  { path: 'restartPassword', component: RestartPasswordComponent, data: { forToolbar: false, label: 'Restart-Password', icon: '' } },
+  { path: 'restartPassword/:email', component: RestartPasswordComponent, data: { forToolbar: false, label: 'Restart-Password', icon: '' } },
   { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard], data: { authType: 6 } },
   {
@@ -104,14 +108,20 @@ import { WorkLogComponent } from './pages/WorkLog/work-log.component';
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       { path: 'clientTaskManagement', component: ClientTaskManagementComponent },
       { path: 'clientBillings', component: ClientBillingsComponent },
+      { path: 'clientTypeTab' , component:ClientTypeTabComponent},
+      { path: 'clientType' , component:ClientTypeComponent},
+      { path: 'clientTypeTag' , component:ClientTypeTagComponent},
     ]
   },
   { path: 'allCommunication', component: AllCommunicationComponent },
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent },
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent },
   { path: 'workLogComponent', component: WorkLogComponent },
-
+  { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } }
 ];
+
+
+
 
 
   
