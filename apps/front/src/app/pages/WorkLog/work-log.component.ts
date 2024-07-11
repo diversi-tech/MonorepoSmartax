@@ -37,6 +37,7 @@ export class WorkLogComponent implements OnInit {
   displayDialog: boolean = false;
   editedCheckIn: Date;
   editedCheckOut: Date;
+  userRole: number;
 
   constructor(
     private workLogService: WorkLogService,
@@ -44,6 +45,7 @@ export class WorkLogComponent implements OnInit {
     private tokenService: TokenService
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('email');
+    this.userRole = this.tokenService.getCurrentDetail('role').level;
   }
 
   ngOnInit(): void {
@@ -51,7 +53,11 @@ export class WorkLogComponent implements OnInit {
   }
 
   getWorkLogs(): void {
-    this.workLogService.getWorkLogs().subscribe(workLogs => this.workLogs = workLogs);
+    if (this.userRole === 3) {
+      this.workLogService.getWorkLogs(this.employeeId).subscribe(workLogs => this.workLogs = workLogs);
+    } else if (this.userRole === 6) {
+      this.workLogService.getWorkLogs().subscribe(workLogs => this.workLogs = workLogs);
+    }
   }
 
   checkIn(): void {
@@ -98,16 +104,11 @@ export class WorkLogComponent implements OnInit {
 
   saveEditedWorkLog(): void {
     if (this.editedWorkLog) {
-      if (this.editedCheckIn >= this.editedCheckOut) {
-        alert('שעת הכניסה חייבת להיות לפני שעת היציאה.');
-        return;
-      }
-
       this.editedWorkLog.checkIn = this.editedCheckIn;
       this.editedWorkLog.checkOut = this.editedCheckOut;
       this.editedWorkLog.hoursWorked = this.calculateHours(this.editedCheckIn, this.editedCheckOut);
 
-      this.workLogService.updateWorkLog(this.editedWorkLog._id, this.editedWorkLog.checkIn, this.editedWorkLog.checkOut, this.editedWorkLog.hoursWorked)
+      this.workLogService.updateWorkLog(this.editedWorkLog._id, this.editedWorkLog.checkIn, this.editedWorkLog.checkOut)
         .subscribe(updatedLog => {
           const index = this.workLogs.findIndex(log => log._id === updatedLog._id);
           if (index !== -1) {

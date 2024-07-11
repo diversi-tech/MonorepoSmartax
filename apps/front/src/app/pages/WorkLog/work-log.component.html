@@ -40,23 +40,23 @@
     <input pInputText type="number" [(ngModel)]="exportMonth" placeholder="חודש">
     <label>שנה</label>
     <input pInputText type="number" [(ngModel)]="exportYear" placeholder="שנה">
-    
-    <p-button label="ייצא לאקסל" icon="pi pi-file-excel" (click)="exportWorkLogs(exportMonth, exportYear)"></p-button>
+    <p-button label="ייצוא" icon="pi pi-file-excel" (click)="exportWorkLogs(exportMonth, exportYear)"></p-button>
   </div>
 
-  <!-- דיאלוג עריכת שעות עבודה -->
-  <p-dialog header="עריכת שעות עבודה" [(visible)]="displayDialog" [modal]="true">
-    <div>
-      <label>כניסה</label>
-      <p-calendar [(ngModel)]="editedCheckIn" [showTime]="true"></p-calendar>
+  <p-dialog header="עריכת שעות עבודה" [(visible)]="displayDialog" [modal]="true" [closable]="false" [style]="{width: '50vw', height: '100vh'}">
+    <div class="p-grid p-fluid">
+      <div class="p-field">
+        <label for="checkIn">כניסה</label>
+        <p-calendar [(ngModel)]="editedCheckIn" dateFormat="dd/mm/yy" showTime="true" hourFormat="24"></p-calendar>
+      </div>
+      <div class="p-field">
+        <label for="checkOut">יציאה</label>
+        <p-calendar [(ngModel)]="editedCheckOut" dateFormat="dd/mm/yy" showTime="true" hourFormat="24"></p-calendar>
+      </div>
     </div>
-    <div>
-      <label>יציאה</label>
-      <p-calendar [(ngModel)]="editedCheckOut" [showTime]="true"></p-calendar>
-    </div>
-    <div>
+    <p-footer>
       <p-button label="שמור" icon="pi pi-check" (click)="saveEditedWorkLog()"></p-button>
-      <p-button label="בטל" icon="pi pi-times" (click)="cancelEdit()"></p-button>
-    </div>
+      <p-button label="ביטול" icon="pi pi-times" (click)="cancelEdit()"></p-button>
+    </p-footer>
   </p-dialog>
 </div>
