@@ -19,9 +19,9 @@ export class WorkLogService {
     return this.http.post<WorkLog>(this.apiUrl, workLog);
   }
 
-  updateWorkLog(id: string, checkIn: Date, checkOut: Date): Observable<WorkLog> {
+  updateWorkLog(id: string, checkIn: Date, checkOut: Date, hoursWorked: number): Observable<WorkLog> {
     const url = `${this.apiUrl}/${id}`;
-    const updateDto = { id, checkIn, checkOut };
+    const updateDto = { id, checkIn, checkOut, hoursWorked };
     return this.http.put<WorkLog>(url, updateDto);
   }
 
