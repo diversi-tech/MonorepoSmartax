@@ -72,6 +72,9 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
+import { ClientField, ClientFieldModel } from './Models/clientField.model';
+import { ClientFieldController } from './controller/clientField/clientField.controller';
+import { ClientFieldService } from './services/clientField.service';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -79,6 +82,7 @@ import { Field, FieldModell } from './Models/field.model';
 @Module({
 //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
+    MongooseModule.forFeature([{ name: ClientField.name, schema: ClientFieldModel }]),
     MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
  MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
@@ -103,7 +107,7 @@ import { Field, FieldModell } from './Models/field.model';
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
-  controllers: [AppController,FieldController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
+  controllers: [AppController,FieldController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController,ClientFieldController],  
 
 
   providers: [
@@ -129,6 +133,7 @@ import { Field, FieldModell } from './Models/field.model';
     CallTopicService,
     CommunicationArchiveService,
     DocTypeService,
+    ClientFieldService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,

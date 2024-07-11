@@ -70,13 +70,13 @@ export class TaskManagementComponent implements OnInit {
   showFilter: boolean = false;
 
   filter: {
-    deadlineRange: [Date, Date] | null;
+    deadline: Date | null;
     client: Client | null;
     user: User | null;
     task: Task | null;
     tags: Tag[];
   } = {
-      deadlineRange: null,
+    deadline: null,
       client: null,
       user: null,
       task: null,
@@ -217,10 +217,9 @@ export class TaskManagementComponent implements OnInit {
     this.filteredTasks = this.tasks.filter(task => {
       this.filterFirstStatus=false;
 
-      const deadlineMatch = !this.filter.deadlineRange ||
-        (task.dueDate >= this.filter.deadlineRange[0] && task.dueDate <= this.filter.deadlineRange[1]);
+      const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
-        const clientMatch = !this.filter.client || task.client.some(client => client.name.includes(this.filter.client.name));
+        const clientMatch = !this.filter.client || (task.client && task.client.name && task.client.name.includes(this.filter.client.name));
 
       const userMatch = !this.filter.user || task.assignedTo.some(user => user.userName.includes(this.filter.user.userName));
 

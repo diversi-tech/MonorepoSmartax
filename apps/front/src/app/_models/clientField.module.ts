@@ -1,7 +1,7 @@
 
 export interface ClientField {
     _id: string;
-    fieldId: string;
+    // field: Field;
     value: string;
 
   }

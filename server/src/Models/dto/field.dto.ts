@@ -19,9 +19,6 @@ export class CreateFieldDto {
     @IsOptional()
     @IsString()
     type?:string;
-
-
-
    
 }
 

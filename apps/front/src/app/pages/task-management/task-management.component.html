@@ -7,14 +7,14 @@
   </p-footer>
 </p-confirmDialog>
 
-<p-sidebar [(visible)]="display" position="left">
+<p-sidebar [(visible)]="display" position="left" style="width: 800px; max-width: 100vw;">
   <!-- Filter Form -->
   <div *ngIf="showFilter" style="margin-top: 10px;">
     <div class="filter-panel">
       <div class="filter-container">
         <div>
-          <label for="deadlineRange">Deadline Range:</label>
-          <p-calendar id="deadlineRange" [(ngModel)]="filter.deadlineRange" selectionMode="range"></p-calendar>
+          <label for="deadline">Deadline:</label>
+          <p-calendar id="deadline" [(ngModel)]="filter.deadline" dateFormat="yy-mm-dd" ></p-calendar>
         </div>
         <div>
           <label for="client">Client:</label>
@@ -65,7 +65,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="filteredTasks.length === 0&&!filterFirstStatus">
+  <div *ngIf="filteredTasks.length === 0 && !filterFirstStatus">
     <p>No Result Find</p>
   </div>
 </p-sidebar>
@@ -97,7 +97,7 @@
                   <tr>
                     <th>Name</th>
                     <th>assignedTo</th>
-                    <th>Due Date</th>
+                    <th>Deadline</th>
                     <th>Tags</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -117,7 +117,7 @@
                       </div>
                     </td>
                     
-                    <td>{{ task.dueDate | date:'shortDate' }}</td>
+                    <td>{{ task.deadline | date:'shortDate' }}</td>
                     <td>
                       <button *ngFor="let tag of task.tags; let i = index"
                         [ngStyle]="{ backgroundColor: tag.color, color: 'white' }" class="custom-button">
@@ -141,7 +141,7 @@
                 <tr>
                   <th>Name</th>
                   <th>assignedTo</th>
-                  <th>Due Date</th>
+                  <th>Deadline </th>
                   <th>Tags</th>
                   <th>Edit</th>
                   <th>Delete</th>
@@ -159,7 +159,7 @@
                         </ng-container>
                       </div>
                   </td>
-                  <td>{{ task.dueDate | date:'shortDate' }}</td>
+                  <td>{{ task.deadline | date:'shortDate' }}</td>
                   <td>
                     <button *ngFor="let tag of task.tags; let i = index"
                       [ngStyle]="{ backgroundColor: tag.color, color: 'white' }" class="custom-button">

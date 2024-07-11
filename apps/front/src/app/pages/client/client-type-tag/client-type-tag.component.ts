@@ -30,9 +30,9 @@ export class ClientTypeTagComponent implements OnInit {
 
 
   constructor(
-    @Inject(ClientTypeService) private clientTypeTagService: ClientTypeService,
+    @Inject(ClientTypeService) private clientTypeService: ClientTypeService,
     @Inject(Router) private router: Router,
-
+    //  private fieldService :FieldService
   ) {}
   
   ngOnInit() {
@@ -40,7 +40,7 @@ export class ClientTypeTagComponent implements OnInit {
   }
 
   getAllClientTypes(): void {
-    this.clientTypeTagService.getAllClientTypes().subscribe(types => {
+    this.clientTypeService.getAllClientTypes().subscribe(types => {
       this.clientTypes = types;
       this.createTag();
       console.log(this.clientTypes);
@@ -74,6 +74,19 @@ export class ClientTypeTagComponent implements OnInit {
     }
   }
 
+  // getFields(buttonId:string){
+  //   // button.fieldes
+  //   // this.clientTypeService.
+  //   const clientType = this.clientTypes.find(ct => ct._id === buttonId);
+  //   if (clientType) {
+  //     // this.selectedFields = [];
+  //     clientType.fieldes.forEach(field => {
+  //       this.fieldService.getFieldById(field).subscribe((data: Field) => {
+  //         // this.selectedFields?.push(data);
+  //       });
+  //     });
+  //   }
+  // }
 
  
 

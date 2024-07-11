@@ -38,4 +38,10 @@ export class ClientTypeComponent implements OnInit{
       this.clientTypes = clientTypes;
     });
   }
+
+  
+  getField(){
+    this.clientTypes.forEach
+  }
+
 }
