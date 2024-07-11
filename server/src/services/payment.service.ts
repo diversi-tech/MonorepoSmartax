@@ -1,51 +1,49 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
-import { Payment } from '../Models/payment.model';
-import { CreatePaymentDto, UpdatePaymentDto } from '../Models/dto/payment.dto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Payment } from "../Models/payment.model";
+import { CreatePaymentDto, UpdatePaymentDto } from "../Models/dto/payment.dto";
+import { ValidationException } from "../common/exceptions/validation.exception";
 
 @Injectable()
-export class PaymentsService {
-  constructor(@InjectModel('Payment') private readonly PaymentModel: Model<Payment>) {}
+export class PaymentService {
 
-  async createPayment(createPaymentDto: CreatePaymentDto): Promise<Payment> {
-    const createdPayment = new this.PaymentModel(createPaymentDto);
-    return createdPayment.save();
-  }
+    // constructor(@InjectModel('Payment') private readonly PaymentModel: Model<Payment>) {}
 
-  async getAllPayments(): Promise<Payment[]> {
-    return this.PaymentModel.find().exec();
-  }
+    // async createPayment(createPaymentDto: CreatePaymentDto): Promise<Payment> {
+    //     const { paymentDetails,totalPayment,paymentMethod } = createPaymentDto;
 
-  async getPaymentById(id: string): Promise<Payment> {
-    const payment = await this.PaymentModel.findById(id).exec();
-    if (!payment) {
-      throw new NotFoundException('Payment not found');
-    }
-    return payment;
-  }
+    //     if (!color || !name ) {
+    //       throw new ValidationException('Missing required fields');
+    //     }
+    //     const createdPayment = new this.PaymentModel({ color,name });
+    //     return await createdPayment.save();
+    // }
 
-  async updatePayment(id: string, updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
-    const updatedPayment = await this.PaymentModel.findByIdAndUpdate(
-      id,
-      updatePaymentDto,
-      { new: true }
-    ).exec();
+    // async getAllFrequencies(): Promise<Payment[]> {
+    //     return await this.PaymentModel.find().exec();
+    // }
+    // async searchPayment(id:string): Promise<Payment[]> {
+    //     const Payment= await this.PaymentModel.find({"_id":id}).exec();
+    //     if (!Payment || Payment.length === 0) {
+    //         throw new NotFoundException('Payment not found');
+    //       }
+    //       return Payment;
+    // }
+    // async updatePayment(updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
+    //     const {id, ...updateData } = updatePaymentDto;
+    //     const updatedPayment = await this.PaymentModel.findByIdAndUpdate(id, updateData, { new: true });
+    //     if (!updatedPayment) {
+    //         throw new NotFoundException(`Payment with ID ${id} not found`);
+    //     }
+    //     return updatedPayment;
+    // }
 
-    if (!updatedPayment) {
-      throw new NotFoundException('Payment not found');
-    }
-
-    return updatedPayment;
-  }
-
-  async deletePayment(id: string): Promise<Payment> {
-    const deletedPayment = await this.PaymentModel.findByIdAndDelete(id).exec();
-
-    if (!deletedPayment) {
-      throw new NotFoundException('Payment not found');
-    }
-
-    return deletedPayment;
-  }
+    // async deletePayment(id: string): Promise<boolean> {
+    //     const deletedPayment = await this.PaymentModel.findByIdAndDelete(id);
+    //     if (!deletedPayment) {
+    //         throw new NotFoundException(`Payment with ID ${id} not found`);
+    //     }
+    //     return !!deletedPayment;
+    // }
 }

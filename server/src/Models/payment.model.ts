@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
 import { PaymentMethod } from "./paymentMethod.model";
-import { Billing } from "./billing.model";
 import { PaymentDetails } from "./paymentDetails.model";
 
 @Schema()

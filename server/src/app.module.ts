@@ -81,8 +81,8 @@ import { PaymentMethod, PaymentMethodModel } from './Models/paymentMethod.model'
 import { PaymentDetailsController } from './controller/paymentDetails/paymentDetails.controller';
 import { PaymentDetailsService } from './services/paymentDetails.service';
 import { PaymentDetails, PaymentDetailsModel } from './Models/paymentDetails.model';
-import { PaymentsService } from './services/payment.service';
-import {PaymentsController } from './controller/payment/payment.controller';
+import { PaymentService } from './services/payment.service';
+import {PaymentController } from './controller/payment/payment.controller';
 import { Payment, PaymentModel } from './Models/payment.model';
 
 
@@ -142,7 +142,7 @@ import { Payment, PaymentModel } from './Models/payment.model';
     FrequencyController,
     PaymentMethodController,
     PaymentDetailsController,
-    PaymentsController],
+    PaymentController],
 
 
   providers: [
@@ -171,7 +171,7 @@ import { Payment, PaymentModel } from './Models/payment.model';
     FrequencyService,
     PaymentMethodService,
     PaymentDetailsService,
-    PaymentsService,
+    PaymentService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
