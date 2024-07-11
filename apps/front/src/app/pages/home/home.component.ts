@@ -2,17 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../_services/user.service';
 import { AuthService } from '../../_services/auth.service';
-
+import { icons } from '../../icons';
+import { NgClass } from '@angular/common';
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css'],
-    standalone: true
+    styleUrls: ['./home.component.css', '../../app.component.css'],
+    standalone: true,
+    imports:[NgClass]
 })
 export class HomeComponent implements OnInit {
   content?: string;
 
   constructor(private router:Router,private userService: UserService, private authService:AuthService) { }
+
 
   ngOnInit(): void {
     // this.userService.getPublicContent().subscribe({

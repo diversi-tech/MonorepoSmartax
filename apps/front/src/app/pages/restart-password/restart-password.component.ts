@@ -43,7 +43,7 @@ export class RestartPasswordComponent {
 
     if (this.form.password !== this.form.passwordAuthentication) {
       this.isLoginFailed = true;
-      this.errorMessage = "Passwords do not match";
+      this.errorMessage = "הסיסמאות אינן תואמות";
     }
     else {
       this.userService.changPassword(this.form.password,this.email).subscribe(

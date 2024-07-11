@@ -76,6 +76,27 @@ import { WorkLogController } from './controller/workLog/workLog.controller';
 import { WorkLogService } from './services/workLog.service';
 import { WorkLogModel, WorkLog } from './Models/workLog.model';
 
+import { FrequencyController } from './controller/frequency/frequency.controller';
+import { Frequency, frequencyModel } from './Models/frequency.model';
+import { FrequencyService } from './services/frequency.service';
+import { PaymentMethodController } from './controller/paymentMethod/paymentMethod.controller';
+import { PaymentMethodService } from './services/PaymentMethod.service';
+import { PaymentMethod, PaymentMethodModel } from './Models/paymentMethod.model';
+import { PaymentDetailsController } from './controller/paymentDetails/paymentDetails.controller';
+import { PaymentDetailsService } from './services/paymentDetails.service';
+import { PaymentDetails, PaymentDetailsModel } from './Models/paymentDetails.model';
+import { PaymentService } from './services/payment.service';
+import {PaymentController } from './controller/payment/payment.controller';
+import { Payment, PaymentModel } from './Models/payment.model';
+import { StepFieldController } from './controller/yearlyReport/stepField.controller';
+import { YearlyReportController } from './controller/yearlyReport/yearlyReport.controller';
+import { StepFieldService } from './services/stepField.service';
+import { YearlyReportService } from './services/yearlyReport.service';
+import { StepField, stepFieldModel } from './Models/stepField.model';
+import { YearlyReport, YearlyReportstModel } from './Models/yearlyReports.model';
+import { Year, YearModel } from './Models/year.model';
+import { YearService } from './services/year.service';
+import { YearController } from './controller/year/year.controller';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -100,7 +121,25 @@ import { WorkLogModel, WorkLog } from './Models/workLog.model';
   MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
   MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel }]),
   MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel }]),
+  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+  
+ MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+ MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
 
+  MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
+  MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel }]),
+  MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel }]),
+  MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
+  ServeStaticModule.forRoot({
+    rootPath: path.join(__dirname, '../uploads'),
+    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+  }),
+  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
+   MongooseModule.forFeature([{name: StepField.name, schema:stepFieldModel }]),
+  MongooseModule.forFeature([{name: CommunicationArchive.name, schema: communicationArchiveModel}]),
+  MongooseModule.forFeature([{name:YearlyReport.name, schema: YearlyReportstModel}]),
+  MongooseModule.forFeature([{name: Year.name, schema: YearModel}]),
   ServeStaticModule.forRoot({
     rootPath: path.join(__dirname, '../uploads'),
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -108,7 +147,30 @@ import { WorkLogModel, WorkLog } from './Models/workLog.model';
   MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
     JwtModule
   ],
-  controllers: [AppController,FieldController, ClientTypeController, CallTopicController, UserController, PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController, MailController, GoogleDriveController, AuthController, RoleController, TasksController, TagController, MeetController, StatusController, DocTypeController, WorkLogController],
+  controllers: [
+    AppController,FieldController,
+    ClientTypeController,CallTopicController,
+    UserController,
+    PriorityController,
+    ClientController,
+    TasksController,
+    CommunicationsController,
+    BillingController,
+    BillingStatusController,
+    MailController,
+    GoogleDriveController,
+    AuthController,
+    RoleController,
+    TasksController,
+    TagController,
+    MeetController,
+    StatusController,DocTypeController,
+    FrequencyController,
+    PaymentMethodController,
+    PaymentDetailsController,
+    PaymentController,
+  ],
+  
 
 
   providers: [
@@ -135,10 +197,21 @@ import { WorkLogModel, WorkLog } from './Models/workLog.model';
     CallTopicService,
     CommunicationArchiveService,
     DocTypeService,
+    FrequencyService,
+    PaymentMethodService,
+    PaymentDetailsService,
+    PaymentService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
     },
+    CommunicationArchiveService,
+    
+    StepFieldService,
+    YearlyReportService,
+    YearService,
+    
+
   ],
 })
 export class AppModule { }

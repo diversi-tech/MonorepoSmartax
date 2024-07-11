@@ -36,7 +36,39 @@
               class="pi pi-user-plus"
             ></span>
           </p-inputGroupAddon>
-        </p-inputGroup>
+        </p-inputGroup> -->
+        <p-multiSelect
+          [options]="users"
+          [(ngModel)]="selectedUsers"
+          name="selectedUsers"
+          placeholder="Select Users"
+          defaultLabel="Select Users"
+          [style]="{ height: '50px', width: '100%' }"
+        >
+          <ng-template let-user pTemplate="item">
+            <div class="avatar-item">
+              <app-icon-profile
+                class="avatar"
+                [userName]="user.userName"
+              ></app-icon-profile>
+              <span>{{ user.userName }}</span>
+            </div>
+          </ng-template>
+          <ng-template let-user pTemplate="selectedItems">
+            <div class="selected-items-container">
+              <div
+                *ngFor="let selectedUser of selectedUsers"
+                class="selected-item"
+                style="margin-right: 10px"
+              >
+                <app-icon-profile
+                  class="avatar"
+                  [userName]="selectedUser.userName"
+                ></app-icon-profile>
+              </div>
+            </div>
+          </ng-template>
+        </p-multiSelect>
       </div>
       <div (click)="showAssignees = !showAssignees">
         <app-icon-profile
@@ -451,7 +483,6 @@
   </p-card>
 </div>
 
-<button (click)="scheduleMeeting()">meet</button>
 
 
 
