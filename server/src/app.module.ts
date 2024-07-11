@@ -23,7 +23,7 @@ import { HttpErrorFilter } from './common/filters/http-error.filter';
 import { ClientController } from './controller/clients/clients.controller';
 import { Client, ClientModel } from './Models/client.model';
 import { ClientService } from './services/client.service';
-import { Documents, DocumentsModel } from './Models/documents.model';
+import { Docs, DocumentsModel } from './Models/doc.model';
 import { BillingsService } from './services/billing.service';
 import { Billing, BillingModel } from './Models/billing.model';
 import { BillingStatus, BillingStatusModel } from './Models/billingStatus.model';
@@ -54,7 +54,7 @@ import { TagController } from './controller/tag/tag.controller';
 import { TagService } from './services/tag.service';
 import express from 'express';
 import * as path from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
+ import { ServeStaticModule } from '@nestjs/serve-static';
 import { Status, StatusModel } from './Models/status.model';
 import { Priority, PriorityModel } from './Models/priority.model';
 import { StatusController } from './controller/status/status.controller';
@@ -63,6 +63,15 @@ import { PriorityService } from './services/priority.service';
 import { CommunicationArchiveController } from './controller/communicationArchive/communicationArchive.controler';
 import { CommunicationArchive, communicationArchiveModel } from './Models/communicationArchive.model';
 import { CommunicationArchiveService } from './services/communicationArchive.service';
+import { DocTypeController } from './controller/docTypes/docTypes.controller';
+import { DocTypeService } from './services/docTypes.service';
+import { DocType, docTypeModel } from './Models/docType.model';
+import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
+import { CallTopicService } from './services/callTopicSchema.service';
+import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
+import { FieldService } from './services/field.service';
+import { FieldController } from './controller/field/field.controller';
+import { Field, FieldModell } from './Models/field.model';
 import { FrequencyController } from './controller/frequency/frequency.controller';
 import { Frequency, frequencyModel } from './Models/frequency.model';
 import { FrequencyService } from './services/frequency.service';
@@ -82,7 +91,7 @@ import { Payment, PaymentModel } from './Models/payment.model';
 @Module({
   //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
-
+    MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
   MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
@@ -90,12 +99,15 @@ import { Payment, PaymentModel } from './Models/payment.model';
   MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel }]),
   MongooseModule.forFeature([{ name: Communication.name, schema: communicationModel }]),
   MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
-  MongooseModule.forFeature([{ name: Documents.name, schema: DocumentsModel }]),
+  MongooseModule.forFeature([{ name: Docs.name, schema: DocumentsModel }]),
+  MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
   MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
   MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
   MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
   MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
   MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+ MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
+
   MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
   MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel }]),
   MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel }]),
@@ -110,8 +122,8 @@ import { Payment, PaymentModel } from './Models/payment.model';
     JwtModule
   ],
   controllers: [
-    AppController,
-    ClientTypeController,
+    AppController,FieldController,
+    ClientTypeController,CallTopicController,
     UserController,
     PriorityController,
     ClientController,
@@ -126,7 +138,7 @@ import { Payment, PaymentModel } from './Models/payment.model';
     TasksController,
     TagController,
     MeetController,
-    StatusController,
+    StatusController,DocTypeController,
     FrequencyController,
     PaymentMethodController,
     PaymentDetailsController,
@@ -142,6 +154,7 @@ import { Payment, PaymentModel } from './Models/payment.model';
     JwtService,
     ClientService,
     ClientTypeService,
+    FieldService,
     TaskService,
     TagService,
     StatusService,
@@ -152,7 +165,9 @@ import { Payment, PaymentModel } from './Models/payment.model';
     BillingStatusService,
     RoleService,
     MeetService,
+    CallTopicService,
     CommunicationArchiveService,
+    DocTypeService,
     FrequencyService,
     PaymentMethodService,
     PaymentDetailsService,

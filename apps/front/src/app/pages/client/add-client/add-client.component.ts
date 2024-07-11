@@ -70,8 +70,8 @@ export class AddClientComponent {
       this.newClient.contactInfo=this.savedData.phoneNumber
       this.newClient.source=this.savedData.source
       this.newClient.status=this.savedData.status
-      console.log("נתונים",this.savedData);
-      console.log("ים",this.newClient);
+      this.newClient.tag.color="black"
+      this.newClient.tag.text=""
       this.ClientServic.createClient(this.newClient).subscribe(
         response => {
           console.log('Client created successfully:', response);})

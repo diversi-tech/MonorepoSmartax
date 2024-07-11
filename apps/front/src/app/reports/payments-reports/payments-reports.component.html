@@ -1,0 +1,39 @@
+<div>
+    <h2>Customers who do not have a HOC</h2>
+    <p-table [value]="clientsWithoutHOC" [style]="{ width: '400px' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Service start date</th>
+          <th>Total debt amount</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-client>
+        <tr (click)="openClientPayment()">
+          <td>{{ client.name }}</td>
+          <td>{{ client.serviceStartDate }}</td>
+          <td>{{ client.totalDebtAmount }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  
+  <div>
+    <h2>Customers who have returned HOC</h2>
+    <p-table [value]="clientsWithReturnedHOC" [style]="{ width: '400px' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Returned HOC number</th>
+          <th>Total debt amount</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-client>
+        <tr (click)="openClientPaymentHistory()">
+          <td>{{ client.name }}</td>
+          <td>{{ client.returnedHOCNumber }}</td>
+          <td>{{ client.totalDebtAmount }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>

@@ -40,7 +40,17 @@ export class TokenService {
     try {
       const decode = this.decodeToken(token);
       
-      return decode.policy;
+      return decode.role;
+    } catch (error) {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
+  }
+
+  async validateToken(token: string) {
+    try {
+      const decode = this.decodeToken(token);
+      
+      return true;
     } catch (error) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
@@ -59,3 +69,5 @@ export class TokenService {
 
   }
 }
+
+export { JwtService };

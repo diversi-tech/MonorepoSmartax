@@ -1,7 +1,10 @@
 <app-client-profile></app-client-profile>
+<p-button label="שיחות" (click)="navigateTo('clientCommunicationLogs')"></p-button>
+<p-button label="מסמכים" (click)="navigateTo('clientUploadDoc')"></p-button>
+<p-button label="משימות" (click)="navigateTo('clientTaskManagement')"></p-button>
+<p-button label="תשלום" (click)="navigateTo('clientBillings')"></p-button>
+<p-button label="פרטי לקוח" routerLink="clientTypeTab" routerLinkActive="active"></p-button>
 
-<p-button label="שיחות" routerLink="clientCommunicationLogs" routerLinkActive="active"></p-button>
-<p-button label="מסמכים" routerLink="clientUploadDoc" routerLinkActive="active"></p-button>
-<p-button label="משימות" routerLink="clientTaskManagement" routerLinkActive="active"></p-button>
-<p-button label="תשלום" routerLink="clientBillings" routerLinkActive="active"></p-button>
 <router-outlet></router-outlet>
+
+

@@ -85,6 +85,14 @@
   padding: 10px;
 }
 
+.selected-items-container {
+  display: flex;
+}
+
+.selected-item {
+  margin-right: 10px; /* Adjust spacing between icons */
+}
+
 
 /*  */
 /* .card {

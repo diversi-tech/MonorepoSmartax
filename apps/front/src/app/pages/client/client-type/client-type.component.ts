@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-//import { Router } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 import { ClientType } from '../../../_models/clientType.module';
-import { FormControl, FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, NgModel } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { DropdownModule } from 'primeng/dropdown';
 import { ClientTypeService } from '../../../_services/clientType.service';
-
 
 
 @Component({
@@ -14,7 +12,7 @@ import { ClientTypeService } from '../../../_services/clientType.service';
   templateUrl: './client-type.component.html',
   styleUrl: './client-type.component.css',
   standalone:true,
-  imports:[DropdownModule]
+  imports:[DropdownModule,FormsModule ],
    
 })
 export class ClientTypeComponent implements OnInit{
@@ -27,7 +25,7 @@ export class ClientTypeComponent implements OnInit{
     private primengConfig: PrimeNGConfig
   ) 
   {
-        
+       
     this.loadAllClientTypes();
       
   }
