@@ -38,6 +38,10 @@ import { ClientTypeTagComponent } from './pages/client/client-type-tag/client-ty
 import { ClientTypeTabComponent } from './pages/client/client-type-tab/client-type-tab.component';
 import { ClientFieldComponent } from './pages/client/client-field/client-field.component';
 import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
+import { YearlyReportComponent } from './pages/client/yearly-report/yearly-report.component';
+import { MonthlyReportComponent } from './pages/client/monthly-report/monthly-report.component';
+import { TaxRefundsComponent } from './pages/client/tax-refunds/tax-refunds.component';
+import { FinancialStatementComponent } from './pages/client/financial-statement/financial-statement.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -111,6 +115,13 @@ import { ClientTypeComponent } from './pages/client/client-type/client-type.comp
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
+      { path: 'yearlyReport' , component:YearlyReportComponent},
+      { path: 'monthlyReport' , component:MonthlyReportComponent},
+      { path: 'taxRefunds ' , component:TaxRefundsComponent},
+      { path: 'financialStatement' , component:FinancialStatementComponent},
+
+
+
     ]
   },
   { path: 'a', component: AllCommunicationComponent },
