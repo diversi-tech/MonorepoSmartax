@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Client } from '../../../_models/client.module';
 import { ClientService } from '../../../_services/client.service';
 import { FormControl, FormsModule } from '@angular/forms';
@@ -17,6 +17,7 @@ import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { cl } from '@fullcalendar/core/internal-common';
 
 @Component({
   selector: 'app-client-search',
@@ -64,7 +65,7 @@ export class ClientSearchComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.user = response;
-          console.log(this.user);
+          this.loadAllClients();
         },
         error: (err) => {
           console.error('Error get current user', err);
@@ -75,7 +76,6 @@ export class ClientSearchComponent implements OnInit {
         this.filterClientsByNameAndBusinessName(value); // Pass the value directly to filterClients
       }
     });
-    this.loadAllClients();
   }
 
   loadAllClients(): void {
@@ -145,7 +145,6 @@ export class ClientSearchComponent implements OnInit {
   }
 
   chooseAllClients(): void {
-    debugger;
     this.filteredClients.forEach((client) =>
       this.updateChoosedClients(client, true)
     );
@@ -153,7 +152,6 @@ export class ClientSearchComponent implements OnInit {
   }
 
   removeAllClients(): void {
-    debugger;
     this.filteredClients.forEach((client) =>
       this.updateChoosedClients(client, false)
     );
@@ -163,13 +161,14 @@ export class ClientSearchComponent implements OnInit {
   isClientChoosed(client: Client): boolean {
     return this.choosedClients.includes(client);
   }
-isInFavorite(client:Client){
-  console.log();
-  
-  return this.user.favorites.includes(client);
+isFavoriteClient(client:Client){
+  return this.user.favorites.find(c=>c._id===client._id)!=undefined;
 }
-  isFavoriteClient() {
-    this.user.favorites = this.choosedClients;
+  addFavoritesClient() {
+    this.user.favorites.push(...this.choosedClients.filter(c=>!this.isFavoriteClient(c)))
+    this.updateFavorite();
+  }
+  updateFavorite(){
     this.userService
       .update(
         this.user._id,
@@ -188,7 +187,14 @@ isInFavorite(client:Client){
         },
       });
   }
-
+removeFromFavorite(client:Client){
+  this.user.favorites=this.user.favorites.filter(c=>c._id!=client._id);
+  this.updateFavorite();
+}
+addToFavorite(client:Client){
+  this.user.favorites.push(client);
+  this.updateFavorite();
+}
   showConfirmation(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this clients?',
@@ -214,5 +220,9 @@ isInFavorite(client:Client){
 
   cancelDelete(): void {
     this.confirmationService.close();
+  }
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.choosedClients=[];
   }
 }
