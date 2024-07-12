@@ -8,11 +8,15 @@ import { WorkLog } from '../_models/workLog.model';
 })
 export class WorkLogService {
   private apiUrl = `http://localhost:8080/work-log`;
-  
+
   constructor(private http: HttpClient) {}
 
-  getWorkLogs(): Observable<WorkLog[]> {
-    return this.http.get<WorkLog[]>(this.apiUrl);
+  getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
+    let url = this.apiUrl;
+    if (employeeId) {
+      url += `?employeeId=${employeeId}`;
+    }
+    return this.http.get<WorkLog[]>(url);
   }
 
   createWorkLog(workLog: WorkLog): Observable<WorkLog> {
