@@ -31,9 +31,7 @@ label {
   border-radius: 50%;
 }
 
-#forgotBox{
-  text-align: center;
-}
+
 #forgotLink{
   color: rgb(99, 99, 249);
   cursor: pointer;
@@ -41,4 +39,17 @@ label {
 }
 app-forgot-password{
   margin: 3px;
+}
+
+#formText{
+  text-align: right;
+  align-self: center;
+  align-content: center;
+}
+
+
+#forgotBox{
+  text-align: center !important;
+  vertical-align: middle  !important;
+  direction: rtl;
 }

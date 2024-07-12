@@ -2,11 +2,11 @@
   <div class="row">
     <div class="col">
       <label for="searchName">Search by Name & businessName:</label>
-      <p-button
+      <!-- <p-button
         label="סוגי לקוח"
         routerLink="clientCommunicationLogs"
         routerLinkActive="active"
-      ></p-button>
+      ></p-button> -->
       <p-autoComplete
         [(ngModel)]="selectedClient"
         [suggestions]="filteredClients"
@@ -22,6 +22,8 @@
           {{ client.businessName }}
         </ng-template>
       </p-autoComplete>
+      <p-button  label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
+
     </div>
   </div>
 

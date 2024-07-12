@@ -5,7 +5,7 @@
     @if (!isLoggedIn) {
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a href="/login" class="nav-link" routerLink="login">Login</a>
+        <a href="/login" class="nav-link" routerLink="login">התחברות</a>
       </li>
     </ul>
     } @else {
@@ -14,7 +14,7 @@
         <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
       </li>
       <li class="nav-item">
-        <a href class="nav-link" (click)="logout()">LogOut</a>
+        <a href class="nav-link" (click)="logout()">יציאה</a>
       </li>
     </ul>
     }
