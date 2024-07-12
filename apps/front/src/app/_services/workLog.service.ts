@@ -8,7 +8,7 @@ import { WorkLog } from '../_models/workLog.model';
 })
 export class WorkLogService {
   private apiUrl = `http://localhost:8080/work-log`;
-  
+
   constructor(private http: HttpClient) {}
 
   getWorkLogs(): Observable<WorkLog[]> {
