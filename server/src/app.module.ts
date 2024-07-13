@@ -136,7 +136,8 @@ import { YearController } from './controller/year/year.controller';
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
   }),
   MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
-    JwtModule
+    JwtModule,
+    MongooseModule.forFeature([{name:Year.name, schema:YearModel}]),
   ],
   controllers: [
     AppController,FieldController,
@@ -160,6 +161,12 @@ import { YearController } from './controller/year/year.controller';
     PaymentMethodController,
     PaymentDetailsController,
     PaymentController,
+    CommunicationArchiveController,
+    YearController,
+    YearlyReportController,
+    StepFieldController,
+
+
   ],
   
 

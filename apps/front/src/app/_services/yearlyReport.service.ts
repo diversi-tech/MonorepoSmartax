@@ -4,7 +4,7 @@ import { YearlyReport } from '../_models/yearlyReport.module';
 import { USER_ENDPOINT, YEARLYREPORT } from '../api-urls';
 import { catchError, map, Observable, of } from 'rxjs';
 
-const API_URL = 'http://localhost:8080/api/yearlyReport/';
+const API_URL = 'http://localhost:8080/api/yearly-reports/';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ export class YearlyReportService {
 
  // Create a new yearly report
  createYearlyReport(yearlyReport: YearlyReport): Observable<YearlyReport> {
-    return this.http.post<YearlyReport>(this.apiUrl, yearlyReport)
+    return this.http.post<YearlyReport>(`${this.apiUrl}/create`, yearlyReport)
       .pipe(
         catchError(this.handleError<YearlyReport>('createYearlyReport'))
       );

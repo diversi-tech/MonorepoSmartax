@@ -7,13 +7,14 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { Observable } from 'rxjs';
 import { YearlyReport } from '../../../_models/yearlyReport.module';
 import { YearlyReportService } from '../../../_services/yearlyReport.service';
-
-
+import { Button } from 'primeng/button';
+import { Route, Router, RouterOutlet } from '@angular/router';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-yearly-report',
   standalone: true,
-  imports: [CommonModule,StepperModule,CheckboxModule],
+  imports: [CommonModule,StepperModule,CheckboxModule,Button,RouterOutlet,TableModule],
   templateUrl: './yearly-report.component.html',
   styleUrl: './yearly-report.component.css',
 })
@@ -22,13 +23,15 @@ import { YearlyReportService } from '../../../_services/yearlyReport.service';
   providedIn: 'root' // Ensure it's provided in root or a specific module
 })
 export class YearlyReportComponent implements OnInit {
-  constructor(private stepFieldsService: stepFieldService,private yearlyReportService: YearlyReportService) {
+  constructor(private stepFieldsService: stepFieldService,private yearlyReportService: YearlyReportService,private router: Router) {
      this.loadTasks();
   }
   steps: any[];
   allYearlyReport: YearlyReport[]=[];
+  employeName: string;
   ngOnInit(): void {
    this.getYearlyReportsForClient();
+   this.employeName=history.state.user.name;
   }
 
 
@@ -42,6 +45,10 @@ export class YearlyReportComponent implements OnInit {
         console.error('Error fetching yearly reports for client', error);
       }
     );
+  }
+  createReprtTag():void{
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/createYearlyReport']);
+    
   }
  
   activeIndex: number = 0;

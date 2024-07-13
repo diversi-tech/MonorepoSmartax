@@ -40,6 +40,8 @@ import { ClientTypeTabComponent } from './pages/client/client-type-tab/client-ty
 import { ClientFieldComponent } from './pages/client/client-field/client-field.component';
 import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
 import { TaskCheckListComponent } from './task-check-list/task-check-list.component';
+import { CreateYearlyReportComponent } from './pages/client/create-yearly-report/create-yearly-report.component';
+import { YearlyReportStepsComponent } from './pages/client/yearly-report-steps/yearly-report-steps.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -113,15 +115,28 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
-      { path: 'yearlyReport', component: YearlyReportComponent },
+      { path: 'yearlyReport', component: YearlyReportComponent, 
+        children:[
+          {
+            path: 'createYearlyReport', component:CreateYearlyReportComponent,
+        
+          },
+          {path: 'steps', component:YearlyReportStepsComponent},
+        ]
+      },
+      
 
     ]
+  },
+  {
+    path: 'createYearlyReport', component:CreateYearlyReportComponent
   },
   {path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
   { path: 'a', component: AllCommunicationComponent },
   { path: 'ae', component: ClientAddCommunicationComponent },
   { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } },
-  {path:'checklist', component:TaskCheckListComponent}
+  {path:'checklist', component:TaskCheckListComponent},
+  
 ];
 
 
