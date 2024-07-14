@@ -21,7 +21,9 @@
         </span>
       </button>
     </div>
-
+    <div *ngIf="selectedFields.length >0">
+      <app-client-field *ngFor="let field of selectedFields" [key]="field.key" [type]="field.type"></app-client-field>
+    </div>
     </p-inputGroup>
   </div>
 

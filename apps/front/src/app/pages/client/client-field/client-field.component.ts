@@ -4,6 +4,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-client-field',
+  template: `
+    <div>
+      <label>{{ key }}</label>
+      <input *ngIf="type === 'string'" type="text">
+      <input *ngIf="type === 'date'" type="date">
+      <!-- Add more input types as needed -->
+    </div>
+  `,
   standalone: true,
   imports: [CommonModule],
   templateUrl: './client-field.component.html',
@@ -11,7 +19,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ClientFieldComponent {
 
-  @Input() fieldIds: string[] = [];
+  @Input() key: string;
+  @Input() type: string;
+
+
+  // @Input() fieldIds: string[] = [];
   // fields: Field[] = [];
   // form: FormGroup;
 

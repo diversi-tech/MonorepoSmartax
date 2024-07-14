@@ -7,6 +7,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
+import { Field } from '../../../_models/field.module';
 
 @Component({
   selector: 'app-client-type-tag',
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
     CommonModule,
     CardModule,
     InputGroupModule,
-    ButtonModule
+    ButtonModule,
   ],
   templateUrl: './client-type-tag.component.html',
   styleUrls: ['./client-type-tag.component.css'],
@@ -27,12 +28,11 @@ export class ClientTypeTagComponent implements OnInit {
   clientTypes: ClientType[] = [];
   buttons: { text: string; id: string }[] = [];
   selectedClientType: ClientType | null = null;
-
+  selectedFields: Field[] = [];
 
   constructor(
     @Inject(ClientTypeService) private clientTypeService: ClientTypeService,
     @Inject(Router) private router: Router,
-    //  private fieldService :FieldService
   ) {}
   
   ngOnInit() {
@@ -75,19 +75,29 @@ export class ClientTypeTagComponent implements OnInit {
   }
 
   // getFields(buttonId:string){
-  //   // button.fieldes
-  //   // this.clientTypeService.
   //   const clientType = this.clientTypes.find(ct => ct._id === buttonId);
   //   if (clientType) {
   //     // this.selectedFields = [];
-  //     clientType.fieldes.forEach(field => {
-  //       this.fieldService.getFieldById(field).subscribe((data: Field) => {
-  //         // this.selectedFields?.push(data);
-  //       });
+  //     clientType.fields.forEach(field => {
+  //     console.log(field);
+
   //     });
   //   }
   // }
+  getFields(buttonId: string) {
+    const clientType = this.clientTypes.find(ct => ct._id === buttonId);
+    if (clientType) {
+      this.selectedFields = clientType.fields.map(field => ({
+        key: field.key,
+        type: field.type
+      }));
+      console.log(this.selectedFields);
+      
+    }
+  }
 
- 
 
 }
+ 
+
+
