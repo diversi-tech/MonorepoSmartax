@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
 import * as ExcelJS from 'exceljs';
+
+import { from } from 'rxjs';
+import { CreateWorkLogDto, UpdateWorkLogDto } from '../Models/dto/workLog.dto';
 import { WorkLog, WorkLogDocument } from '../Models/workLog.model';
-import { CreateWorkLogDto ,UpdateWorkLogDto} from '../Models/dto/workLog.dto';
 
 @Injectable()
 export class WorkLogService {
@@ -42,16 +45,18 @@ export class WorkLogService {
       { header: 'תאריך', key: 'date', width: 20 },
       { header: 'שעת כניסה', key: 'checkIn', width: 15 },
       { header: 'שעת יציאה', key: 'checkOut', width: 15 },
-      { header: 'מס שעות עבודה ', key: 'hoursWorked', width: 15 },
+      { header: 'מס שעות עבודה', key: 'hoursWorked', width: 15 },
     ];
 
     workLogs.forEach((log) => {
-      worksheet.addRow({
-        employeeId: log.employeeId,
-        date: log.date.toLocaleDateString('he-IL'), // הפורמט הנכון לתאריך
-        checkIn: log.checkIn ? log.checkIn.toLocaleTimeString('he-IL') : '', // הפורמט הנכון לשעת כניסה
-        checkOut: log.checkOut ? log.checkOut.toLocaleTimeString('he-IL') : '', // הפורמט הנכון לשעת יציאה
-        hoursWorked: log.hoursWorked,
+      log.timeEntries.forEach((entry) => {
+        worksheet.addRow({
+          employeeId: log.employeeId,
+          date: log.date.toLocaleDateString('he-IL'),
+          checkIn: entry.checkIn.toLocaleTimeString('he-IL'),
+          checkOut: entry.checkOut ? entry.checkOut.toLocaleTimeString('he-IL') : '',
+          hoursWorked: entry.hoursWorked,
+        });
       });
     });
 
