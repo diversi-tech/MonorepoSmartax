@@ -20,7 +20,6 @@ export class Task extends Document {
 
     @Prop()
     description: string;
-
     @Prop()
     dueDate: Date;
 
@@ -28,12 +27,9 @@ export class Task extends Document {
     startDate: Date;
 
     @Prop()
-    deadline: Date;
-
-    @Prop()
     status: Status;
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+    @Prop()
     assignedTo: User[];
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }] })

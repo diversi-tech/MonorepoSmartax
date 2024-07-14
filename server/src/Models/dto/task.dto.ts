@@ -19,13 +19,9 @@ export class CreateTaskDto {
     @IsString()
     description: string;
 
-    // @IsNotEmpty()
-    @IsDateString()
-    dueDate: Date;
-
     @IsNotEmpty()
     @IsDateString()
-    deadline: Date;
+    dueDate: Date;
 
     @IsNotEmpty()
     @IsDateString()
@@ -36,7 +32,7 @@ export class CreateTaskDto {
     status: Status;
 
     @IsNotEmpty()
-    assignedTo: User[];
+    assignedTo: User;
 
     @IsNotEmpty()
     tags: Tag[];
@@ -72,19 +68,11 @@ export class UpdateTaskDto {
     dueDate?: Date;
 
     @IsOptional()
-    @IsDateString()
-    deadline?: Date;
-
-    @IsOptional()
-    @IsDateString()
-    startDate?: Date;
-
-    @IsOptional()
     @IsString()
     status?: string;
 
     @IsOptional()
-    assignedTo?: User[];
+    assignedTo?: User;
 
     @IsOptional()
     tags: Tag[];
