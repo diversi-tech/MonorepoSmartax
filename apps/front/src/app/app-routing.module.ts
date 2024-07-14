@@ -40,6 +40,8 @@ import { ClientTypeTabComponent } from './pages/client/client-type-tab/client-ty
 import { ClientFieldComponent } from './pages/client/client-field/client-field.component';
 import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
 import { TaskCheckListComponent } from './task-check-list/task-check-list.component';
+import { CreateYearlyReportComponent } from './pages/client/create-yearly-report/create-yearly-report.component';
+import { YearlyReportStepsComponent } from './pages/client/yearly-report-steps/yearly-report-steps.component';
 import { MonthlyReportComponent } from './pages/client/monthly-report/monthly-report.component';
 import { TaxRefundsComponent } from './pages/client/tax-refunds/tax-refunds.component';
 import { FinancialStatementComponent } from './pages/client/financial-statement/financial-statement.component';
@@ -118,6 +120,17 @@ import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
+      { path: 'yearlyReport', component: YearlyReportComponent ,
+       children: [
+        {path:  'createYearlyReport', component:CreateYearlyReportComponent},
+        {path: 'steps', component:YearlyReportStepsComponent}
+       ]
+      },
+
+      { path: 'clientBillings', component: ClientBillingsComponent },
+      { path: 'clientTypeTab' , component:ClientTypeTabComponent},
+      { path: 'clientType' , component:ClientTypeComponent},
+      { path: 'clientTypeTag' , component:ClientTypeTagComponent},
       { path: 'monthlyReport' , component:MonthlyReportComponent},
       { path: 'taxRefunds ' , component:TaxRefundsComponent},
       { path: 'financialStatement' , component:FinancialStatementComponent},
@@ -131,7 +144,8 @@ import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
-  { path:'checklist', component:TaskCheckListComponent}
+  { path:'checklist', component:TaskCheckListComponent},
+  
 ];
 
   @NgModule({
