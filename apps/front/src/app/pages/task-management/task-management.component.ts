@@ -26,33 +26,33 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ButtonDirective, Button } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
-    selector: 'app-task-management',
-    templateUrl: './task-management.component.html',
-    styleUrls: ['./task-management.component.css'],
-    standalone: true,
-    imports: [
-        ConfirmDialogModule,
-        Footer,
-        ButtonDirective,
-        SidebarModule,
-        NgIf,
-        CalendarModule,
-        FormsModule,
-        AutoCompleteModule,
-        PrimeTemplate,
-        IconProfileComponent,
-        MultiSelectModule,
-        Button,
-        RouterLink,
-        InputTextModule,
-        NgFor,
-        PanelModule,
-        TableModule,
-        NgStyle,
-        NgClass,
-        ToastModule,
-        DatePipe,
-    ],
+  selector: 'app-task-management',
+  templateUrl: './task-management.component.html',
+  styleUrls: ['./task-management.component.css'],
+  standalone: true,
+  imports: [
+    ConfirmDialogModule,
+    Footer,
+    ButtonDirective,
+    SidebarModule,
+    NgIf,
+    CalendarModule,
+    FormsModule,
+    AutoCompleteModule,
+    PrimeTemplate,
+    IconProfileComponent,
+    MultiSelectModule,
+    Button,
+    RouterLink,
+    InputTextModule,
+    NgFor,
+    PanelModule,
+    TableModule,
+    NgStyle,
+    NgClass,
+    ToastModule,
+    DatePipe,
+  ],
 })
 export class TaskManagementComponent implements OnInit {
 
@@ -126,7 +126,7 @@ export class TaskManagementComponent implements OnInit {
     // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter(task => {
       // console.log('Task status:', task.status); // הדפסת המצב של המשימה
-     {return task.status && task.status.name === status.name;}
+      { return task.status && task.status.name === status.name; }
     });
   }
 

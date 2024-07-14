@@ -100,16 +100,10 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
   { path: 'clientSearch/clientManagement', component: ClientManagementComponent , data: { authType: 6, forToolbar: false, label: 'ניהול לקוחות', icon: '' }},
   { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'פרופיל לקוח', icon: '' } },
   {
-    path: 'clientSearch/clientManagement/clientNavbar', component: ClientNavbarComponent,
-    data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+    path: 'clientSearch/clientManagement/clientNavbar', component: ClientNavbarComponent, data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' },
     children: [
-      {
-        path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent,
-        children: [{ path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }}
-        ]
-      },
-      { path: 'clientAddCommunicationComponent', component: ClientAddCommunicationComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } },
-      { path: 'clientUploadDoc', component: ClientUploadDocComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+      { path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent },
+      { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       { path: 'clientTaskManagement', component: ClientTaskManagementComponent },
       { path: 'clientBillings', component: ClientBillingsComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
       { path: 'clientTypeTab' , component:ClientTypeTabComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
