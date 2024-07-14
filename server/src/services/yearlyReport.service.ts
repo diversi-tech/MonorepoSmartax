@@ -27,14 +27,14 @@ export class YearlyReportService {
       const updatedYearlyReport = await this.YearlyReportModel.findByIdAndUpdate(
         id,
         updateYearlyReportDto,
-        { new: true }
+        // { new: true }
       ).exec();
   
       if (!updatedYearlyReport) {
         throw new NotFoundException('Yearly Report not found');
       }
   
-      return updatedYearlyReport;
+      return updatedYearlyReport.save();
     }
 
     async deleteYearlyReport(id: string): Promise<void> {

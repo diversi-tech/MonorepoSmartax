@@ -34,7 +34,8 @@ import { icons } from './icons';
 import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report.component';
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
-import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
+import { SensitiveDetailsComponent } from './pages/client/sensitive-details/sensitive-details.component';
+import { WorkLogComponent } from './pages/WorkLog/work-log.component';
 import { ClientTypeTagComponent } from './pages/client/client-type-tag/client-type-tag.component';
 import { ClientTypeTabComponent } from './pages/client/client-type-tab/client-type-tab.component';
 import { ClientFieldComponent } from './pages/client/client-field/client-field.component';
@@ -75,7 +76,8 @@ import { YearlyReportStepsComponent } from './pages/client/yearly-report-steps/y
   { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'מנהל', icon: icons.admin } },
   { path: 'tasks', component: TaskManagementComponent, children: [{ path: 'task-in-list', component: TaskInListComponent }], canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'משימות', icon: icons.tasks } },
   { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
-  { path: 'taskRpe', component: TaskRepeatableListComponent },
+  // { path: 'taskRpe', component: TaskRepeatableListComponent },
+
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'שכחתי סיסמה', icon: '' } },
   { path: 'restartPassword/:email', component: RestartPasswordComponent, data: { forToolbar: false, label: 'איפוס סיסמה', icon: '' } },
   { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
@@ -101,49 +103,40 @@ import { YearlyReportStepsComponent } from './pages/client/yearly-report-steps/y
   { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'פרופיל לקוח', icon: '' } },
   {
     path: 'clientSearch/clientManagement/clientNavbar', component: ClientNavbarComponent,
-    data: { authType: 6, forToolbar: false, label: 'ניווט לקוח', icon: '' },
+    data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
     children: [
       {
         path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent,
-        children: [{ path: 'clientAddCommunication', component: ClientAddCommunicationComponent }
+        children: [{ path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }}
         ]
       },
-      { path: 'clientAddCommunicationComponent', component: ClientAddCommunicationComponent },
-      { path: 'clientUploadDoc', component: ClientUploadDocComponent },
+      { path: 'clientAddCommunicationComponent', component: ClientAddCommunicationComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } },
+      { path: 'clientUploadDoc', component: ClientUploadDocComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
       { path: 'clientTaskManagement', component: ClientTaskManagementComponent },
       { path: 'clientBillings', component: ClientBillingsComponent },
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
-      { path: 'yearlyReport', component: YearlyReportComponent, 
-        children:[
-          {
-            path: 'createYearlyReport', component:CreateYearlyReportComponent,
-        
-          },
-          {path: 'steps', component:YearlyReportStepsComponent},
-        ]
+      { path: 'yearlyReport', component: YearlyReportComponent ,
+       children: [
+        {path:  'createYearlyReport', component:CreateYearlyReportComponent},
+        {path: 'steps', component:YearlyReportStepsComponent}
+       ]
       },
-      
 
     ]
   },
-  {
-    path: 'createYearlyReport', component:CreateYearlyReportComponent
-  },
-  {path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
-  { path: 'a', component: AllCommunicationComponent },
-  { path: 'ae', component: ClientAddCommunicationComponent },
-  { path: 'clientTypes', component: ClientTypeComponent,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' } },
-  {path:'checklist', component:TaskCheckListComponent},
+  { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
+  { path: 'allCommunication', component: AllCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:true, label: 'כלל השיחות', icon: icons.communications  } },
+  { path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+  { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+  { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
+  { path:'checklist', component:TaskCheckListComponent},
   
 ];
 
-
-  
   @NgModule({
     imports: [RouterModule.forRoot(routes)], 
     exports: [RouterModule]
   })
   export class AppRoutingModule { }
-  

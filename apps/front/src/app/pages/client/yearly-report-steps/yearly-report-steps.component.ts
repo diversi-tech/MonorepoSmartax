@@ -45,7 +45,7 @@ export class YearlyReportStepsComponent implements OnInit{
     this.allStep=this.responseData.stepsList
     console.log(this.allStep); // בדיקת הנתונים שהתקבלו
     this.loadData();
-    console.log(this.stepsByNumber)
+    // console.log(this.stepsByNumber)
   }
 
   loadData(){
@@ -71,6 +71,35 @@ export class YearlyReportStepsComponent implements OnInit{
   isStepComplete(stepNumber: number): boolean {
     return this.getStepsByNumber(stepNumber).every(task => task.isComplete);
   }
-  
+  update(task: StepField) {
+    console.log("before", task);
+
+    // מצא את המשימה באובייקט responseData ועדכן אותה ישירות
+    const taskIndex = this.responseData.stepsList.findIndex(t => t._id === task._id);
+    if (taskIndex !== -1) {
+        console.log("index", taskIndex);
+        this.responseData.stepsList[taskIndex].isComplete = ! this.responseData.stepsList[taskIndex].isComplete;
+    }
+
+    console.log("after", this.responseData.stepsList[taskIndex]);
+
+    this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData).subscribe(response => {
+        console.log("response from server", response);
+        // עדכון responseData באובייקט שהוחזר מהשרת
+        this.responseData = response;
+        
+    },
+    error => {
+        console.log(error);
+    });
+}
+isAllTasksCompleted(stepNumber: number): boolean {
+  const tasks = this.getStepsByNumber(stepNumber);
+  return tasks.every(task => task.isComplete);
+}
+
+
+
+    
   
 }

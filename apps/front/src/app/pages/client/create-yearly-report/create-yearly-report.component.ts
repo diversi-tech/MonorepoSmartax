@@ -16,6 +16,8 @@ import { InputOtpModule } from 'primeng/inputotp';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Client } from '../../../_models/client.module';
+import { TokenService } from '../../../_services/token.service';
 
 
 @Component({
@@ -42,11 +44,15 @@ export class CreateYearlyReportComponent implements OnInit {
     private stepFieldsService: stepFieldService,
     private yearlyReportService: YearlyReportService,
     private yearService: YearService,
+    private tokenService:TokenService,
     private router: Router) {
     this.loadData();
   }
 
   yearlyReportForm: FormGroup;
+   userId: string; // Assuming the client ID is passed via the state
+   client: any | undefined = undefined;
+
   formSubmitted = false;
   yearList: Year[];
   typeOptions: any[] = [
@@ -67,6 +73,12 @@ export class CreateYearlyReportComponent implements OnInit {
         console.log(error);
       },
     });
+   
+     this.userId=this.tokenService.getCurrentDetail('_id')
+      this.client=history.state.client
+    console.log("client",this.client)
+    console.log("user",this.userId)
+
   }
 
 
@@ -95,9 +107,9 @@ export class CreateYearlyReportComponent implements OnInit {
   createYearlyReport(yearlyReport: any) {
 
     const yearly: YearlyReport = {
-      idUser: history.state.client?._id!,
-      assignee: history.state.user?._id!,
-      idEmploye: history.state.user?._id!,
+      idUser: '668fcded825c236f54567dd5',
+      assignee:[...this.userId],
+      idEmploye:this.userId,
       yearReport: yearlyReport.year.yearNUm,
       dateTime: new Date(),
       price: yearlyReport.price,
