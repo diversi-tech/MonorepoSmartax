@@ -44,6 +44,8 @@ import { MonthlyReportComponent } from './pages/client/monthly-report/monthly-re
 import { TaxRefundsComponent } from './pages/client/tax-refunds/tax-refunds.component';
 import { FinancialStatementComponent } from './pages/client/financial-statement/financial-statement.component';
 import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report.component';
+import { CreateYearlyReportComponent } from './pages/client/create-yearly-report/create-yearly-report.component';
+import { YearlyReportStepsComponent } from './pages/client/yearly-report-steps/yearly-report-steps.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -118,11 +120,12 @@ import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
-      { path: 'monthlyReport' , component:MonthlyReportComponent},
-      { path: 'taxRefunds ' , component:TaxRefundsComponent},
-      { path: 'financialStatement' , component:FinancialStatementComponent},
-
-
+      { path: 'yearlyReport', component: YearlyReportComponent ,
+       children: [
+        {path:  'createYearlyReport', component:CreateYearlyReportComponent},
+        {path: 'steps', component:YearlyReportStepsComponent}
+       ]
+      },
 
     ]
   },
@@ -131,7 +134,8 @@ import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
-  { path:'checklist', component:TaskCheckListComponent}
+  { path:'checklist', component:TaskCheckListComponent},
+  
 ];
 
   @NgModule({
