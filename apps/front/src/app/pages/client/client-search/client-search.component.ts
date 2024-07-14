@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Client } from '../../../_models/client.module';
 import { ClientService } from '../../../_services/client.service';
 import { FormControl, FormsModule } from '@angular/forms';
@@ -9,7 +9,7 @@ import {
   AutoCompleteSelectEvent,
 } from 'primeng/autocomplete';
 import { CommonModule, NgIf } from '@angular/common';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet,RouterLink, } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
@@ -17,6 +17,7 @@ import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { cl } from '@fullcalendar/core/internal-common';
 
 @Component({
   selector: 'app-client-search',
@@ -33,6 +34,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     AddClientComponent,
     RouterOutlet,
     Button,
+    RouterLink
   ],
 })
 export class ClientSearchComponent implements OnInit {
@@ -54,8 +56,8 @@ export class ClientSearchComponent implements OnInit {
     private router: Router,
     private primengConfig: PrimeNGConfig,
     private route: ActivatedRoute,
-    private confirmationService: ConfirmationService,
-  ) { }
+    private confirmationService: ConfirmationService
+  ) {}
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
@@ -64,7 +66,7 @@ export class ClientSearchComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.user = response;
-          console.log(this.user);
+          this.loadAllClients();
         },
         error: (err) => {
           console.error('Error get current user', err);
@@ -75,7 +77,6 @@ export class ClientSearchComponent implements OnInit {
         this.filterClientsByNameAndBusinessName(value); // Pass the value directly to filterClients
       }
     });
-    this.loadAllClients();
   }
 
   loadAllClients(): void {
@@ -141,43 +142,66 @@ export class ClientSearchComponent implements OnInit {
         this.choosedClients.splice(index, 1);
       }
     }
-    console.log(this.choosedClients)
+    console.log(this.choosedClients);
   }
 
   chooseAllClients(): void {
-    debugger
-    this.filteredClients.forEach(client => this.updateChoosedClients(client, true));
+    this.filteredClients.forEach((client) =>
+      this.updateChoosedClients(client, true)
+    );
     this.isChoosedAllClient = true;
   }
 
   removeAllClients(): void {
-    debugger
-    this.filteredClients.forEach(client => this.updateChoosedClients(client, false));
+    this.filteredClients.forEach((client) =>
+      this.updateChoosedClients(client, false)
+    );
     this.isChoosedAllClient = false;
   }
 
   isClientChoosed(client: Client): boolean {
     return this.choosedClients.includes(client);
   }
-
-  isFavoriteCliet() {
-    this.user.favorites = this.choosedClients;
-    this.userService.update(
-      this.user._id,
-      this.user.userName,
-      this.user.email,
-      this.user.passwordHash,
-      this.user.role,
-      this.user.favorites
-    );
+isFavoriteClient(client:Client){
+  return this.user.favorites.find(c=>c._id===client._id)!=undefined;
+}
+  addFavoritesClient() {
+    this.user.favorites.push(...this.choosedClients.filter(c=>!this.isFavoriteClient(c)))
+    this.updateFavorite();
   }
-
+  updateFavorite(){
+    this.userService
+      .update(
+        this.user._id,
+        this.user.userName,
+        this.user.email,
+        this.user.passwordHash,
+        this.user.role,
+        this.user.favorites
+      )
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+        },
+        error: (err) => {
+          console.error('Error add to favorite', err);
+        },
+      });
+  }
+removeFromFavorite(client:Client){
+  this.user.favorites=this.user.favorites.filter(c=>c._id!=client._id);
+  this.updateFavorite();
+}
+addToFavorite(client:Client){
+  this.user.favorites.push(client);
+  this.updateFavorite();
+}
   showConfirmation(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this clients?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
-    })
+    });
   }
 
   confirmDelete(): void {
@@ -185,17 +209,21 @@ export class ClientSearchComponent implements OnInit {
   }
 
   deleteTask(): void {
-    this.choosedClients.forEach(c => {
+    this.choosedClients.forEach((c) => {
       this.clientService.deleteClient(c._id).subscribe({
         next: () => {
           window.location.reload();
         },
-        error: err => console.error('Error deleting client: ', err)
+        error: (err) => console.error('Error deleting client: ', err),
       });
-    })
+    });
   }
 
   cancelDelete(): void {
-    this.confirmationService.close()
+    this.confirmationService.close();
+  }
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.choosedClients=[];
   }
 }
