@@ -62,7 +62,8 @@ export class Client extends Document {
 
   @Prop()
   dateOfBirth: Date;
-
+  @Prop()
+  payment: Types.ObjectId;
   @Prop()
   isEmploysWorkers: boolean;
 

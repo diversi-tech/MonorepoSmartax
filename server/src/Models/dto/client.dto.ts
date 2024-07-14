@@ -64,16 +64,14 @@ export class CreateClientDto {
     @ApiProperty({ example: ['<user_id_1>', '<user_id_2>'] })
     assignTo: User[];
 
-    // @ApiProperty({ example: 1001 })
-    // @IsNumber()
-    // clientID: number;
 
     @ApiProperty({ example: '1969-01-01' })
     @IsDateString()
     dateOfBirth: Date;
 
-    // @ApiProperty({})
-    // payment: ObjectId;
+    @ApiProperty({})
+    @IsOptional()
+    payment: ObjectId;
 
     @ApiProperty({ example: true })
     @IsBoolean()
@@ -198,10 +196,10 @@ export class UpdateClientDto {
     @IsOptional()
     assignTo?: User[];
 
-    // @ApiProperty({ example: 1001 })
-    // @IsOptional()
-    // @IsNumber()
-    // clientId?: number;
+    @ApiProperty({ example: 1001 })
+    @IsOptional()
+    @IsNumber()
+    clientId?: string;
 
     @ApiProperty({ example: '1969-01-01' })
     @IsOptional()

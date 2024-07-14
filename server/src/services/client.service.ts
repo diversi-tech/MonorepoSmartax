@@ -29,7 +29,6 @@ export class ClientService {
     try {
       return await this.clientModel
         .find()
-        .populate('encryptedPasswords')
         .exec();
     } catch (error) {
       console.log(error);
