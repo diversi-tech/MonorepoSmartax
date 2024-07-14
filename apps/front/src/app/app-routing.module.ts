@@ -40,12 +40,12 @@ import { ClientTypeTabComponent } from './pages/client/client-type-tab/client-ty
 import { ClientFieldComponent } from './pages/client/client-field/client-field.component';
 import { ClientTypeComponent } from './pages/client/client-type/client-type.component';
 import { TaskCheckListComponent } from './task-check-list/task-check-list.component';
-import { CreateYearlyReportComponent } from './pages/client/create-yearly-report/create-yearly-report.component';
-import { YearlyReportStepsComponent } from './pages/client/yearly-report-steps/yearly-report-steps.component';
 import { MonthlyReportComponent } from './pages/client/monthly-report/monthly-report.component';
 import { TaxRefundsComponent } from './pages/client/tax-refunds/tax-refunds.component';
 import { FinancialStatementComponent } from './pages/client/financial-statement/financial-statement.component';
 import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report.component';
+import { CreateYearlyReportComponent } from './pages/client/create-yearly-report/create-yearly-report.component';
+import { YearlyReportStepsComponent } from './pages/client/yearly-report-steps/yearly-report-steps.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
