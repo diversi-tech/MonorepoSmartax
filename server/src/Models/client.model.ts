@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import  { Document, Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { SensitiveData } from './sensitiveData.model';
 import { User } from './user.model';
 import { decrypt } from '../services/encrypt.service';
@@ -46,7 +46,7 @@ export class Client extends Document {
   address: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'SensitiveData' }] })
-  encryptedPasswords: SensitiveData[]; 
+  encryptedPasswords: [{ type: Types.ObjectId; ref: 'SensitiveData' }];
 
   @Prop()
   comments: string;
@@ -57,7 +57,7 @@ export class Client extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   assignTo: User[];
 
-  @Prop({ default:'1000', unique: true, })
+  @Prop({ unique: true })
   clientID: string;
 
   @Prop()
@@ -96,4 +96,4 @@ export class Client extends Document {
   @Prop()
   isOpenAccountWithUs: boolean;
 }
-export const ClientModel = SchemaFactory.createForClass(Client); 
+export const ClientModel = SchemaFactory.createForClass(Client);
