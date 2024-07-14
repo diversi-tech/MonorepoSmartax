@@ -92,22 +92,16 @@ import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeata
   { path: 'clientSearch/clientManagement', component: ClientManagementComponent , data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' }},
   { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' } },
   {
-    path: 'clientSearch/clientManagement/clientNavbar', component: ClientNavbarComponent,
-    data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' },
+    path: 'clientSearch/clientManagement/clientNavbar', component: ClientNavbarComponent, data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' },
     children: [
-      {
-        path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent,
-        children: [{ path: 'clientAddCommunication', component: ClientAddCommunicationComponent }
-        ]
-      },
-      { path: 'clientAddCommunicationComponent', component: ClientAddCommunicationComponent },
+      { path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent },
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       { path: 'clientTaskManagement', component: ClientTaskManagementComponent },
       { path: 'clientBillings', component: ClientBillingsComponent },
     ]
   },
-  { path: 'a', component: AllCommunicationComponent },
-  { path: 'ae', component: ClientAddCommunicationComponent }
+  { path: 'allCommunication', component: AllCommunicationComponent },
+  { path: 'clientAddCommunication', component: ClientAddCommunicationComponent }
 ];
 
 
