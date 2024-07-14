@@ -6,4 +6,5 @@ export interface WorkLog {
   checkOut: Date | null;
   hoursWorked: number;
   overtimeHours?: number;
+  overtimeHours150?: number;
 }

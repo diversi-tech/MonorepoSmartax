@@ -30,6 +30,11 @@ export class CreateWorkLogDto {
   @IsOptional()
   @IsNumber()
   overtimeHours?: number; 
+
+  @ApiProperty({ description: 'The overtime hours', required: false })
+  @IsOptional()
+  @IsNumber()
+  overtimeHours150:number;
 }
 
 export class UpdateWorkLogDto {
