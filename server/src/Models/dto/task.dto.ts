@@ -5,6 +5,7 @@ import { User } from '../../Models/user.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { Priority } from '../priority.model';
 import { Status } from '../status.model';
+import { CheckList } from '../checkList.model';
 
 export class CreateTaskDto {
     @IsNotEmpty()
@@ -44,6 +45,8 @@ export class CreateTaskDto {
     @IsString()
     priority: Priority;
     
+    @IsOptional()
+    checkList: CheckList[];
 }
 
 export class UpdateTaskDto {
@@ -88,4 +91,8 @@ export class UpdateTaskDto {
 
     @IsOptional()
     priority?: Priority;
+
+    @IsOptional()
+    checkList?: CheckList[];
+
 }

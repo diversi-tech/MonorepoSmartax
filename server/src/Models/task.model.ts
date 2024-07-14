@@ -5,10 +5,14 @@ import { User } from '../Models/user.model';
 import { Tag } from './tag.model';
 import { Priority } from './priority.model';
 import { Status } from './status.model';
+import { CheckList } from './checkList.model';
 
 @Schema()
 export class Task extends Document {
-    @Prop()//{ type: mongoose.Schema.Types.ObjectId, ref: 'Client' }
+    // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }) // מפתח זר למשימה-אב
+    // parentTask: Task;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Client' })
     client: Client;
 
     @Prop()
@@ -29,17 +33,23 @@ export class Task extends Document {
     @Prop()
     status: Status;
 
-    @Prop()//{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
     assignedTo: User[];
 
-    @Prop()//{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }
-    tags:Tag[];
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }] })
+    tags: Tag[];
 
     @Prop()
     priority: Priority;
 
     @Prop()
     images: string[];
+
+    // @Prop({ type: [{ type: 'ObjectId', ref: 'Task' }] }) // רשימת תתי משימות
+    // subTasks: Task[];
+
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CheckList' }] })
+    checkList: CheckList[];
 }
 
 export const TaskModel = SchemaFactory.createForClass(Task);

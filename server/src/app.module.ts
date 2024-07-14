@@ -72,6 +72,12 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
+import { CheckListItem, CheckListItemModel } from './Models/checkListItem.model';
+import { CheckList, CheckListModel } from './Models/checkList.model';
+import { CheckListService } from './services/checkList.service';
+import { CheckListItemService } from './services/checkListItem.service';
+import { CheckListItemController } from './controller/checkListItem/checkListItem.controller';
+import { CheckListController } from './controller/checkList/checkList.controller';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -95,6 +101,8 @@ import { Field, FieldModell } from './Models/field.model';
  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
  MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
+ MongooseModule.forFeature([{ name: CheckListItem.name, schema:CheckListItemModel }]),
+ MongooseModule.forFeature([{ name: CheckList.name, schema:CheckListModel }]),
 
  ServeStaticModule.forRoot({
    rootPath: path.join(__dirname, '../uploads'),
@@ -103,7 +111,7 @@ import { Field, FieldModell } from './Models/field.model';
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
-  controllers: [AppController,FieldController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
+  controllers: [AppController,CheckListItemController, CheckListController, FieldController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
 
 
   providers: [
@@ -128,6 +136,8 @@ import { Field, FieldModell } from './Models/field.model';
     MeetService,
     CallTopicService,
     CommunicationArchiveService,
+    CheckListService,
+    CheckListItemService,
     DocTypeService,
     {
       provide: APP_FILTER,
