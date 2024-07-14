@@ -14,7 +14,7 @@ export class FieldController {
     constructor(private readonly fieldservice: FieldService) { }
 
     @Post()
-    async createFieldsTC(@Body(new ValidationPipe()) createFieldDto: CreateFieldDto): Promise<Field> {
+    async createField(@Body(new ValidationPipe()) createFieldDto: CreateFieldDto): Promise<Field> {
         return await this.fieldservice.createField(createFieldDto);
     }
 
@@ -36,7 +36,7 @@ export class FieldController {
 
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
     @Delete()
-    async deleteFieldsTC(@Body(new ValidationPipe()) id: {"id": string}): Promise<boolean> {
+    async deleteField(@Body(new ValidationPipe()) id: {"id": string}): Promise<boolean> {
         return await this.fieldservice.deleteField(id.id);
     }
 }

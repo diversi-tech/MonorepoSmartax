@@ -37,7 +37,7 @@ export class FieldService {
         const {id, ...updateData } = updateFieldDto;
         const updatedField = await this.fieldModel.findByIdAndUpdate(id, updateData, { new: true });
         if (!updatedField) {
-            throw new NotFoundException(`FieldsTC with ID ${id} not found`);
+            throw new NotFoundException(`Field with ID ${id} not found`);
         }
         return updatedField;
     }
@@ -45,7 +45,7 @@ export class FieldService {
     async deleteField(id: string): Promise<boolean> {
         const deletedField = await this.fieldModel.findByIdAndDelete(id);
         if (!deletedField) {
-            throw new NotFoundException(`FieldsTC with ID ${id} not found`);
+            throw new NotFoundException(`Field with ID ${id} not found`);
         }
         return !!deletedField;
     }
