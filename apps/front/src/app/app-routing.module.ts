@@ -31,7 +31,6 @@ import { ClientTaskManagementComponent } from './pages/client/client-task-manage
 import { ClientBillingsComponent } from './pages/client/client-billings/client-billings.component';
 import { TaskInListComponent } from './task-in-list/task-in-list.component';
 import { icons } from './icons';
-import { YearlyReportComponent } from './pages/client/yearly-report/yearly-report.component';
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 import { SensitiveDetailsComponent } from './pages/client/sensitive-details/sensitive-details.component';
@@ -44,6 +43,7 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
 import { MonthlyReportComponent } from './pages/client/monthly-report/monthly-report.component';
 import { TaxRefundsComponent } from './pages/client/tax-refunds/tax-refunds.component';
 import { FinancialStatementComponent } from './pages/client/financial-statement/financial-statement.component';
+import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -118,7 +118,6 @@ import { FinancialStatementComponent } from './pages/client/financial-statement/
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
-      { path: 'yearlyReport' , component:YearlyReportComponent},
       { path: 'monthlyReport' , component:MonthlyReportComponent},
       { path: 'taxRefunds ' , component:TaxRefundsComponent},
       { path: 'financialStatement' , component:FinancialStatementComponent},
