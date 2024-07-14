@@ -20,14 +20,15 @@ export class TaskService {
   
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    const {  client, taskName, description,dueDate,status,assignedTo,tags } = createTaskDto;
-
+    //const {  client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority } = createTaskDto;
+    const task = new this.taskModel(createTaskDto);
+    return task.save()
     // if (!client || !assignedTo) {
     //   throw new ValidationException('Missing required fields');
     // }
 
-    const createTask = new this.taskModel({ client, taskName, description,dueDate,status,assignedTo,tags  });
-    return await createTask.save();
+    //const createTask = new this.taskModel({ client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority });
+    //return await createTask.save();
   }
 
   async findAll(): Promise<Task[]> {

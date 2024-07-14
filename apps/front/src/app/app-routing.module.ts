@@ -77,14 +77,14 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
   // { path: 'taskRpe', component: TaskRepeatableListComponent },
 
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'שכחתי סיסמה', icon: '' } },
-  { path: 'restartPassword/:email', component: RestartPasswordComponent, data: { forToolbar: false, label: 'איפוס סיסמה', icon: '' } },
+  { path: 'RestartPassword/:email', component: RestartPasswordComponent },
   { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
-  { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard], data: { authType: 6 } },
+  { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard], data: { authType: 6 ,forToolbar: true, label: ' לוח שנה', icon:'pi-calendar' } },
   {
     path: 'reports',
     component: ReportsComponent,
     canActivate: [AuthGuard],
-    data: { authType: 3, forToolbar: true, label: 'דוחות', icon: icons.reports },
+    data: { authType: 3, forToolbar: true, label: 'דוחות', icon: icons.reports, list:true },
     children: [
       // { path: '', redirectTo: 'task-report', pathMatch: 'full' },
       { path: 'task-report', component: TaskReportComponent,data: { authType: 10, forToolbar: false, label: 'דוח משימות', icon: icons.reports } },

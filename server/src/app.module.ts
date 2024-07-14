@@ -100,6 +100,12 @@ import { YearlyReport, YearlyReportstModel } from './Models/yearlyReports.model'
 import { Year, YearModel } from './Models/year.model';
 import { YearService } from './services/year.service';
 import { YearController } from './controller/year/year.controller';
+import { CheckListItem, CheckListItemModel } from './Models/checkListItem.model';
+import { CheckList, CheckListModel } from './Models/checkList.model';
+import { CheckListService } from './services/checkList.service';
+import { CheckListItemService } from './services/checkListItem.service';
+import { CheckListItemController } from './controller/checkListItem/checkListItem.controller';
+import { CheckListController } from './controller/checkList/checkList.controller';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -143,7 +149,9 @@ import { YearController } from './controller/year/year.controller';
   MongooseModule.forFeature([{ name: StepField.name, schema: stepFieldModel }]),
   MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
   MongooseModule.forFeature([{ name: YearlyReport.name, schema: YearlyReportstModel }]),
-  MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]),
+  MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]), MongooseModule.forFeature([{ name: CheckListItem.name, schema:CheckListItemModel }]),
+ MongooseModule.forFeature([{ name: CheckList.name, schema:CheckListModel }]),
+
   ServeStaticModule.forRoot({
     rootPath: path.join(__dirname, '../uploads'),
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -154,7 +162,7 @@ import { YearController } from './controller/year/year.controller';
   controllers: [
     WorkLogController,
     AppController,
-    FieldController,
+    CheckListItemController, CheckListController, FieldController,
     ClientTypeController, CallTopicController,
     UserController,
     PriorityController,
@@ -203,6 +211,8 @@ import { YearController } from './controller/year/year.controller';
     MeetService,
     CallTopicService,
     CommunicationArchiveService,
+    CheckListService,
+    CheckListItemService,
     DocTypeService,
     TimerService,
     FrequencyService,
