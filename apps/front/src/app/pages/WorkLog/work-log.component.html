@@ -78,6 +78,7 @@
           <th>כניסה</th>
           <th>יציאה</th>
           <th>שעות עבודה</th>
+          <th>שעות נוספות</th>
           <th>פעולות</th>
         </tr>
       </ng-template>
@@ -88,6 +89,9 @@
           <td>{{ log.checkIn | date: 'HH:mm' }}</td>
           <td>{{ log.checkOut ? (log.checkOut | date: 'HH:mm') : '---' }}</td>
           <td>{{ log.hoursWorked ? log.hoursWorked.toFixed(2) : '---' }}</td>
+          <td>
+            {{ log.hoursWorked && log.hoursWorked > 8.4 ? (log.hoursWorked - 8.4).toFixed(2) : '0.00' }}
+          </td>
           <td>
             <p-button label="עריכה" icon="pi pi-pencil" (click)="editWorkLog(log)"></p-button>
           </td>

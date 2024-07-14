@@ -19,6 +19,11 @@ export class WorkLog {
 
   @Prop()
   hoursWorked: number;
+
+
+  @Prop()
+  overtimeHours: number; 
+  
 }
 
 export const WorkLogModel = SchemaFactory.createForClass(WorkLog);

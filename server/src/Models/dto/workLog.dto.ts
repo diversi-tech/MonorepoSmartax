@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsOptional, IsDate } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsDate, IsNumber } from 'class-validator';
 
 export class CreateWorkLogDto {
   @ApiProperty({ description: 'The employee ID' })
@@ -25,6 +25,11 @@ export class CreateWorkLogDto {
   @ApiProperty({ description: 'The total hours worked', required: false })
   @IsOptional()
   hoursWorked?: number;
+
+  @ApiProperty({ description: 'The overtime hours', required: false })
+  @IsOptional()
+  @IsNumber()
+  overtimeHours?: number; 
 }
 
 export class UpdateWorkLogDto {
