@@ -1,5 +1,5 @@
 <div class="col-md-12">
-  <div class="card card-container">
+  <div id="formText" class="card card-container">
     <img
       id="profile-img"
       src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -13,7 +13,7 @@
       novalidate
     >
       <div class="form-group">
-        <label for="email">email</label>
+        <label for="email">אימייל </label>
         <input
           type="text"
           class="form-control"
@@ -24,11 +24,11 @@
           [ngClass]="{ 'is-invalid': f.submitted && email.errors }"
         />
         @if (email.errors && f.submitted) {
-        <div class="invalid-feedback">email is required!</div>
+        <div class="invalid-feedback">חובה למלא אימייל!</div>
         }
       </div>
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">סיסמה</label>
         <input
           type="password"
           class="form-control"
@@ -43,19 +43,19 @@
         @if (password.errors && f.submitted) {
         <div class="invalid-feedback">
           @if (password.errors['required']) {
-          <div>Password is required</div>
+          <div>חובה למלא סיסמה</div>
           }
           @if (password.errors['minlength']) {
-          <div>Password must be at least 6 characters</div>
+          <div>הסיסמה חייבת להיות לפחות מ-6 תווים</div>
           }
           @if (password.errors['pattern']) {
-            <div>Password must contain at least one uppercase letter and one lowercase letter</div>
+            <div>הסיסמה חייבת להיות מספר או אותיות</div>
             }
         </div>
         }
       </div>
       <div class="form-group">
-        <button class="btn btn-primary btn-block">Login</button>
+        <button class="btn btn-primary btn-block">התחברות</button>
       </div>
       <div class="form-group">
         @if (f.submitted && isLoginFailed) {
@@ -66,14 +66,14 @@
       </div>
     </form>
     } @else {
-    <div class="alert alert-success">Logged in as {{ role }}</div>
+    <div class="alert alert-success">מחובר כ- {{ role }}</div>
     }
   </div>
   @if (!isLoggedIn) {
-    <div id="forgotBox">
-      <div>
-        <a>forgot your password?</a>
-        <br><a id="forgotLink" (click)="forgotPassword()">please click here</a>
+    <div id="forgotBox"  class="col-md-12">
+      <div >
+        <a id="forgotText">שכחת סיסמה?</a>
+        <br><a id="forgotLink" (click)="forgotPassword()">לחץ כאן</a>
       </div>
       <app-forgot-password *ngIf="forgot"></app-forgot-password>
     </div>

@@ -6,6 +6,7 @@ import { CreateUserDto, UpdateUserDto } from '../Models/dto/user.dto';
 import { ValidationException } from '../common/exceptions/validation.exception';
 import { TokenService } from './jwt.service';
 import * as bcrypt from 'bcryptjs';
+import { Client } from '../Models/client.model';
 
 
 @Injectable()
@@ -26,8 +27,8 @@ export class UserService {
     if (!userName || !email || !passwordHash || !role) {
       throw new ValidationException('Missing required fields');
     }
-
-    const createdUser = new this.userModel({ userName, email, passwordHash, role });
+    const favorites: Client[]=[];
+    const createdUser = new this.userModel({ userName, email, passwordHash, role,favorites });
     
     return await createdUser.save();
   }
@@ -45,11 +46,11 @@ export class UserService {
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const { userName, email, passwordHash, role } = updateUserDto;
+    const { userName, email, passwordHash, role,favorites } = updateUserDto;
 
     const updatedUser = await this.userModel.findByIdAndUpdate(
       id,
-      { userName, email, passwordHash, role },
+      { userName, email, passwordHash, role, favorites },
       { new: true }
     ).exec();
 

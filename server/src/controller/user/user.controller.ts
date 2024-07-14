@@ -161,6 +161,7 @@ async ChangePassword(@Body() body: { newPassword: string, emailFront: string }, 
     email: user.email,
     passwordHash: await newPasswordHash,
     role: user.role,
+    favorites:user.favorites
   };
   await this.userService.updateUser(user.id, userDto)
 
