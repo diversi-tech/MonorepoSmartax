@@ -72,6 +72,9 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
+import { Timer, TimerModel } from './Models/timer';
+import { TimerController } from './controller/timer/timer.controller';
+import { TimerService } from './services/timer';
 import { WorkLogController } from './controller/workLog/workLog.controller';
 import { WorkLogService } from './services/workLog.service';
 import { WorkLogModel, WorkLog } from './Models/workLog.model';
@@ -131,6 +134,7 @@ import { YearController } from './controller/year/year.controller';
   MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel }]),
   MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel }]),
   MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
+  MongooseModule.forFeature([{ name: Timer.name, schema:TimerModel }]),
   ServeStaticModule.forRoot({
     rootPath: path.join(__dirname, '../uploads'),
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -171,6 +175,7 @@ import { YearController } from './controller/year/year.controller';
     PaymentMethodController,
     PaymentDetailsController,
     PaymentController,
+    TimerController,
   ],
 
 
@@ -199,6 +204,7 @@ import { YearController } from './controller/year/year.controller';
     CallTopicService,
     CommunicationArchiveService,
     DocTypeService,
+    TimerService,
     FrequencyService,
     PaymentMethodService,
     PaymentDetailsService,
