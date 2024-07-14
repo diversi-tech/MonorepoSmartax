@@ -72,6 +72,9 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
+import { Timer, TimerModel } from './Models/timer';
+import { TimerController } from './controller/timer/timer.controller';
+import { TimerService } from './services/timer';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -95,6 +98,7 @@ import { Field, FieldModell } from './Models/field.model';
  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
  MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
+ MongooseModule.forFeature([{ name: Timer.name, schema:TimerModel }]),
 
  ServeStaticModule.forRoot({
    rootPath: path.join(__dirname, '../uploads'),
@@ -103,7 +107,7 @@ import { Field, FieldModell } from './Models/field.model';
  MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
   JwtModule
   ],
-  controllers: [AppController,FieldController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
+  controllers: [AppController,FieldController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController, TimerController],  
 
 
   providers: [
@@ -129,6 +133,7 @@ import { Field, FieldModell } from './Models/field.model';
     CallTopicService,
     CommunicationArchiveService,
     DocTypeService,
+    TimerService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
