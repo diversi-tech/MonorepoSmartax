@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Role } from '../Models/role.modle';
+import { Client } from './client.model';
 
 @Schema()
 export class User extends Document {
@@ -15,6 +16,8 @@ export class User extends Document {
 
     @Prop({ type: Types.ObjectId, ref: 'Role', required: true })
     role: Role;
+    @Prop({ type: Types.ObjectId, ref: 'Client', required: true })
+    favorites: Client[]
 }
 
 export const UserModel = SchemaFactory.createForClass(User);

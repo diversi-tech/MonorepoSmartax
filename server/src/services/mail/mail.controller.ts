@@ -7,9 +7,9 @@ export class MailController {
 
   @Post('send-email')
   async sendEmail(@Body() t: string) {
-    await this.mailService.sendMail(
+    return await this.mailService.sendMail(
       t, // The recipient's email
     );
-    return { email: `email sent to ${t}` };
+    // return { email: `email sent to ${t}` };
   }
 }
