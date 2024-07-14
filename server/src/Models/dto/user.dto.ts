@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsEmail, IsOptional, MinLength, MaxLength, Matches } from 'class-validator';
 import { Role } from '../../Models/role.modle';
+import { Client } from '../client.model';
 
 export class CreateUserDto {
     @ApiProperty({ description: 'The user name' })
@@ -26,6 +27,8 @@ export class CreateUserDto {
     @ApiProperty({ description: 'The role of the user', required: false })
     @IsOptional()
     role?: Role;
+    @ApiProperty({ description: 'The favorites clients' })
+    favorites: Client[]
 }
 
 export class UpdateUserDto {
@@ -53,4 +56,8 @@ export class UpdateUserDto {
     @ApiProperty({ description: 'The role of the user', required: false })
     @IsOptional()
     role?: Role;
+
+    @ApiProperty({ description: 'The favorites clients', required: false })
+    @IsOptional()
+    favorites: Client[]
 }

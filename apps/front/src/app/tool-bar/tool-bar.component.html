@@ -1,13 +1,13 @@
-<p-tabMenu [model]="items">
+<p-tabMenu [model]="items" style="direction: rtl;">
     <ng-template pTemplate="item" let-item>
-        <ng-container *ngIf="item.route;" >
+        <ng-container *ngIf="item.route;">
             <a tabindex="0" role="presentation" [routerLink]="item.route" class="p-menuitem-link"
                 style="text-decoration: none;">
-                <span [class]="item.icon"></span>
                 <span class="ml-2">
                     {{ item.label }}
                 </span>
-                <span class="p-ink" style="height: 100px; width: 100px; top: -2px; left: 17px;"></span>
+                <span [class]="item.icon"></span>
+                <span class="p-ink" style="height: 100px; width: 100px; top: -2px; right: 17px;"></span>
             </a>
         </ng-container>
     </ng-template>
