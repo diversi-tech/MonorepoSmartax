@@ -1,39 +1,39 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString, IsBoolean } from 'class-validator';
 
-// DTO for creating new SensitiveData
 export class CreateSensitiveDataDto {
+  @ApiProperty()
   @IsNumber()
   number: number;
-
+  @ApiProperty()
   @IsString()
   name: string;
-
+  @ApiProperty()
   @IsString()
   clientId: string;
-
+  @ApiProperty()
   @IsString()
   bankDetail: string;
-
+  @ApiProperty()
   @IsString()
   userName: string;
-
+  @ApiProperty()
   @IsString()
   password: string;
-
+  @ApiProperty()
   @IsString()
   creditCardCNumber: string;
-
+  @ApiProperty()
   @IsString()
   creditCardCValidity: string;
-
+  @ApiProperty()
   @IsString()
   digitsOnTheBack: string;
-
+  @ApiProperty()
   @IsBoolean()
   isCreditCard: boolean;
 }
 
-// DTO for updating existing SensitiveData
 export class UpdateSensitiveDataDto {
   @IsNumber()
   number: number;

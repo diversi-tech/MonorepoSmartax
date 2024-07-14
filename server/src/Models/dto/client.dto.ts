@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, ValidateNested, IsBoolean, IsNumber, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { SensitiveData } from '../sensitiveData';
+import { SensitiveData } from '../sensitiveData.model';
 import { User } from '../user.model';
 import { ReportType } from '../client.model';
 import { ObjectId } from 'mongoose';

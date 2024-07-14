@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-import { SensitiveData } from './sensitiveData';
+import  { Document, Types } from 'mongoose';
+import { SensitiveData } from './sensitiveData.model';
 import { User } from './user.model';
-// import { CounterService } from '../services/counter.ervice';
+import { decrypt } from '../services/encrypt.service';
 
 export enum ReportType {
   Monthly = 'מדווח חודשי',
@@ -45,8 +45,8 @@ export class Client extends Document {
   @Prop()
   address: string;
 
-  @Prop()
-  encryptedPasswords: SensitiveData[];
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'SensitiveData' }] })
+  encryptedPasswords: SensitiveData[]; 
 
   @Prop()
   comments: string;
@@ -96,19 +96,4 @@ export class Client extends Document {
   @Prop()
   isOpenAccountWithUs: boolean;
 }
-
-// ClientSchema.pre<Client>('save', async function (next) {
-//   if (this.isNew) {
-//     const counter = await CounterModel.findOneAndUpdate(
-//       { collectionName: 'Client' },
-//       { $inc: { seq: 1 } },
-//       { new: true, upsert: true }
-//     );
-//     this.clientID = (1000 + counter.seq).toString(); // התחלת 1000 והמשך במספרים הסידוריים
-//   }
-//   next();
-// });
-
-
-
-export const ClientModel = SchemaFactory.createForClass(Client);
+export const ClientModel = SchemaFactory.createForClass(Client); 

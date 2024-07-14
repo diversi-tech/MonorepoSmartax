@@ -8,7 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TasksController } from './controller/tasks/tasks.controller';
 import { CommunicationsController } from './controller/communications/communications.controller';
 import { BillingController } from './controller/billing/billing.controller';
-import { MongooseModule } from '@nestjs/mongoose';
+import { getConnectionToken, MongooseModule } from '@nestjs/mongoose';
 import { UserService } from './services/user.service';
 import { User, UserModel } from './Models/user.model';
 import { GoogleDriveController } from './controller/google-drive/google-drive.controller';
@@ -26,7 +26,10 @@ import { ClientService } from './services/client.service';
 import { Documents, DocumentsModel } from './Models/documents.model';
 import { BillingsService } from './services/billing.service';
 import { Billing, BillingModel } from './Models/billing.model';
-import { BillingStatus, BillingStatusModel } from './Models/billingStatus.model';
+import {
+  BillingStatus,
+  BillingStatusModel,
+} from './Models/billingStatus.model';
 import { BillingStatusService } from './services/billingStatus';
 import { BillingStatusController } from './controller/billingStatus/billingStatus.controller';
 //add
@@ -39,7 +42,7 @@ import { hashPasswordService } from './services/hash-password';
 import { AuthController } from './controller/auth/auth.controller';
 import { RoleService } from './services/role.service';
 import { RoleController } from './controller/role/role.controller';
-import { Role ,RoleModel } from './Models/role.modle';
+import { Role, RoleModel } from './Models/role.modle';
 import { ClientTypeController } from './controller/clientTypes/clientTypes.controller';
 import { ClientType, ClientTypeModel } from './Models/clientType.model';
 import { ClientTypeService } from './services/clientType.service';
@@ -61,38 +64,72 @@ import { StatusController } from './controller/status/status.controller';
 import { StatusService } from './services/status.service';
 import { PriorityService } from './services/priority.service';
 import { CommunicationArchiveController } from './controller/communicationArchive/communicationArchive.controler';
-import { CommunicationArchive, communicationArchiveModel } from './Models/communicationArchive.model';
+import {
+  CommunicationArchive,
+  communicationArchiveModel,
+} from './Models/communicationArchive.model';
 import { CommunicationArchiveService } from './services/communicationArchive.service';
-
-
-// @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
+import { SensitiveDataController } from './controller/sensitiveData/sensitiveData.controller';
+import { SensitiveData, SensitiveDataModel } from './Models/sensitiveData.model';
+import { SensitiveDataService } from './services/sensitiveData.service';
 
 @Module({
-//add
-  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
+  imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
 
-  MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
- MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
-  MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
-  MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
-  MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel }]),
-  MongooseModule.forFeature([{ name: Communication.name, schema: communicationModel }]),
-  MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
-  MongooseModule.forFeature([{ name: Documents.name, schema: DocumentsModel }]),
-  MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
-  MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
- MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
- MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
- MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
- ServeStaticModule.forRoot({
-   rootPath: path.join(__dirname, '../uploads'),
-   serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
- }),
- MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
-  JwtModule
+    MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
+    MongooseModule.forFeature([
+      { name: ClientType.name, schema: ClientTypeModel },
+    ]),
+    MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
+    MongooseModule.forFeature([{ name: SensitiveData.name, schema: SensitiveDataModel }]),
+
+    MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
+    MongooseModule.forFeature([
+      { name: BillingStatus.name, schema: BillingStatusModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: Communication.name, schema: communicationModel },
+    ]),
+    MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
+    MongooseModule.forFeature([
+      { name: Documents.name, schema: DocumentsModel },
+    ]),
+    MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
+    MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
+    MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+    MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+    MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '../uploads'),
+      serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+    }),
+    MongooseModule.forFeature([
+      { name: CommunicationArchive.name, schema: communicationArchiveModel },
+    ]),
+    JwtModule,
   ],
-  controllers: [AppController,ClientTypeController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController],  
-
+  controllers: [
+    AppController,
+    ClientTypeController,
+    UserController,
+    PriorityController,
+    ClientController,
+    TasksController,
+    CommunicationsController,
+    BillingController,
+    BillingStatusController,
+    MailController,
+    GoogleDriveController,
+    AuthController,
+    RoleController,
+    TasksController,
+    TagController,
+    MeetController,
+    StatusController,
+    SensitiveDataController
+  ],
 
   providers: [
     AppService,
@@ -114,6 +151,7 @@ import { CommunicationArchiveService } from './services/communicationArchive.ser
     RoleService,
     MeetService,
     CommunicationArchiveService,
+    SensitiveDataService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
