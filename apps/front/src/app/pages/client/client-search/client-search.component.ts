@@ -163,10 +163,10 @@ export class ClientSearchComponent implements OnInit {
     return this.choosedClients.includes(client);
   }
 isFavoriteClient(client:Client){
-  return this.user.favorites.find(c=>c._id===client._id)!=undefined;
+  return this.user.favoritesClient.find(c=>c._id===client._id)!=undefined;
 }
   addFavoritesClient() {
-    this.user.favorites.push(...this.choosedClients.filter(c=>!this.isFavoriteClient(c)))
+    this.user.favoritesClient.push(...this.choosedClients.filter(c=>!this.isFavoriteClient(c)))
     this.updateFavorite();
   }
   updateFavorite(){
@@ -177,7 +177,7 @@ isFavoriteClient(client:Client){
         this.user.email,
         this.user.passwordHash,
         this.user.role,
-        this.user.favorites
+        this.user.favoritesClient
       )
       .subscribe({
         next: (response: any) => {
@@ -189,11 +189,11 @@ isFavoriteClient(client:Client){
       });
   }
 removeFromFavorite(client:Client){
-  this.user.favorites=this.user.favorites.filter(c=>c._id!=client._id);
+  this.user.favoritesClient=this.user.favoritesClient.filter(c=>c._id!=client._id);
   this.updateFavorite();
 }
 addToFavorite(client:Client){
-  this.user.favorites.push(client);
+  this.user.favoritesClient.push(client);
   this.updateFavorite();
 }
   showConfirmation(): void {
