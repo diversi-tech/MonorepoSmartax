@@ -1,0 +1,19 @@
+/* סגנון בסיסי, ניתן לשפר לפי הצורך */
+div {
+    margin: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    margin-bottom: 10px;
+  }
+  
+  button {
+    display: block;
+    margin-top: 10px;
+  }
+  
