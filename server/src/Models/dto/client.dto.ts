@@ -1,9 +1,12 @@
-import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, ValidateNested, IsBoolean, IsNumber, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, Length, ValidateNested, IsBoolean, IsNumber, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateTagDto } from './tag.dto';
+import { UpdateTagDto } from './tag.dto';
+import { Type } from 'class-transformer';
+import { ObjectId } from 'mongoose';
 import { SensitiveData } from '../sensitiveData.model';
 import { User } from '../user.model';
 import { ReportType } from '../client.model';
-import { ObjectId } from 'mongoose';
 
 export class CreateClientDto {
     @ApiProperty({ example: 'ACME Corporation' })
@@ -34,8 +37,11 @@ export class CreateClientDto {
     @IsString()
     spouseTZ: string;
 
-    @ApiProperty({ example: '555-555-5555' })
+    @ApiProperty({ type: String ,example: '555-555-5555'})
+    @IsNotEmpty()
     @IsString()
+    @IsPhoneNumber('IL', { message: 'phone must be a valid Israeli phone number' })
+    @Length(10, 10, { message: 'phone must be exactly 10 digits' })
     phone: string;
 
     @ApiProperty({ example: '555-555-5555' })
@@ -115,6 +121,12 @@ export class CreateClientDto {
     @ApiProperty({ example: true })
     @IsBoolean()
     isOpenAccountWithUs: boolean;
+
+    @ApiProperty({ type: CreateTagDto, example: {text:"aaaa",color:"red"},required: true  })
+    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => CreateTagDto)
+    tag: CreateTagDto;
 }
 
 export class UpdateClientDto {
@@ -262,5 +274,10 @@ export class UpdateClientDto {
     @IsOptional()
     @IsBoolean()
     isOpenAccountWithUs?: boolean;
-}
 
+    @ApiProperty({ type: UpdateTagDto, example: {text:"aaaa",color:"red"},required: true  })
+    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => UpdateTagDto)
+    tag: UpdateTagDto;
+}

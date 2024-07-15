@@ -31,7 +31,7 @@
         <div>
           <label for="user">User:</label>
           <p-autoComplete id="user" [(ngModel)]="filter.user" [suggestions]="userSuggestions"
-            (completeMethod)="searchUsers($event)" field="name">
+            (completeMethod)="searchUsers($event)" field="userName">
             <ng-template let-user pTemplate="item">
               <div class="user-item">
                 <app-icon-profile [userName]="user.userName" [email]="user.email"></app-icon-profile>
@@ -40,6 +40,8 @@
             </ng-template>
           </p-autoComplete>
         </div>
+        
+        <!--  -->
         <div>
           <label for="taskName">Task Name:</label>
           <p-autoComplete id="taskName" [(ngModel)]="filter.task" [suggestions]="taskSuggestions"
@@ -63,7 +65,9 @@
       </div>
     </div>
   </div>
-
+  <div *ngIf="filteredTasks.length === 0&&!filterFirstStatus">
+    <p>No Result Find</p>
+  </div>
 </p-sidebar>
 
 <div class="p-grid">
@@ -104,9 +108,15 @@
                   <tr>
                     <td>{{ task.taskName }}</td>
                     <td>
-                      <app-icon-profile [userName]="task.assignedTo.userName"
-                        [email]="task.assignedTo.email"></app-icon-profile>
+                      <div style="display: flex; align-items: center;">
+                        <ng-container *ngFor="let u of task.assignedTo">
+                          <div style="margin-left: 10px;">
+                            <app-icon-profile [userName]="u.userName" [email]="u.email"></app-icon-profile>
+                          </div>
+                        </ng-container>
+                      </div>
                     </td>
+                    
                     <td>{{ task.dueDate | date:'shortDate' }}</td>
                     <td>
                       <button *ngFor="let tag of task.tags; let i = index"
@@ -141,8 +151,13 @@
                 <tr>
                   <td>{{ task.taskName }}</td>
                   <td>
-                    <app-icon-profile [userName]="task.assignedTo.userName"
-                      [email]="task.assignedTo.email"></app-icon-profile>
+                      <div style="display: flex; align-items: center;">
+                        <ng-container *ngFor="let u of task.assignedTo">
+                          <div style="margin-left: 10px;">
+                            <app-icon-profile [userName]="u.userName" [email]="u.email"></app-icon-profile>
+                          </div>
+                        </ng-container>
+                      </div>
                   </td>
                   <td>{{ task.dueDate | date:'shortDate' }}</td>
                   <td>
@@ -162,10 +177,7 @@
             </p-table>
           </p-panel>
         </div>
-    
-        <div *ngIf="filteredTasks.length === 0 && searchTerm.trim() !== ''">
-          <p-toast severity="info" summary="No tasks found" detail="No tasks found with the specified name."></p-toast>
-        </div>
+  
       </div>
     </div>
   </div>

@@ -4,19 +4,21 @@ import { JWT } from 'google-auth-library';
 import * as fs from 'fs';
 import * as path from 'path';
 import { InjectModel } from '@nestjs/mongoose';
-import { Documents } from '../Models/documents.model';
+import { Docs } from '../Models/doc.model';
 import { Model } from 'mongoose';
 import { ValidationException } from '../common/exceptions/validation.exception';
 import { Client ,ClientModel } from '../Models/client.model';
 import { ClientController } from '../controller/clients/clients.controller';
 import { ClientService } from './client.service';
+import { DocType, docTypeModel } from '../Models/docType.model';
+import { DocTypeService } from './docTypes.service';
 
 @Injectable()
 export class GoogleDriveService{
   private drive;
   private auth: JWT;
-  private readonly parentFolderId: string = '1iJFMZKQfhdWCTcW6taWqMZ19M9dpKabp';
-  constructor(@InjectModel('Documents') private readonly docModel: Model<Documents>,private readonly clientService: ClientService) {
+  private readonly rootFolderId: string = '1iJFMZKQfhdWCTcW6taWqMZ19M9dpKabp';
+  constructor(@InjectModel('Docs') private readonly docModel: Model<Docs>,private readonly clientService: ClientService,private readonly docTypeService: DocTypeService) {
     const keyPath = path.join('service-account.json');
     const keys = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
 
@@ -29,11 +31,11 @@ export class GoogleDriveService{
 
     this.drive = google.drive({ version: 'v3', auth: this.auth });
   }
-  async uploadFile(file: Express.Multer.File, clientId: string): Promise<any> {
+  async uploadFile(file: Express.Multer.File, clientId: string, docType:string): Promise<any> {
     try {
       const client=await this.clientService.searchClient(clientId);
-      // const folderId = await this.getOrCreateFolder(client.firstName);
-      const folderId = await this.getOrCreateFolder(client.firstName);
+      const clientfolderId = await this.getOrCreateFolder(client.firstName,this.rootFolderId);
+      const folderId = await this.getOrCreateFolder(docType,clientfolderId);
       const response = await this.drive.files.create({
         requestBody: {
           name: Buffer.from(file.originalname, 'latin1').toString('utf8'),
@@ -45,14 +47,16 @@ export class GoogleDriveService{
         },
       });
       fs.unlinkSync(file.path);
-      const name=response.data.name;
-      const fileId=response.data.id;
-     const viewLink = await this.generateViewLink(response.data.id);
-     const status="uploaded";
-     const date=Date.now();
-      const createdDoc = new this.docModel({name,fileId,viewLink,client,status,date});
+      const createdDoc = new this.docModel({
+        _id:response.data.id,
+        name:response.data.name,
+        viewLink:await this.generateViewLink(response.data.id),
+        client,
+        status:"uploaded",
+        date:Date.now(),
+        DocType:await this.docTypeService.getDocTypeByName(docType)});
        await createdDoc.save();  
-      return { fileId: fileId,viewLink:viewLink }
+      return { fileId: createdDoc._id,viewLink:createdDoc.viewLink }
     } catch (error) {
       console.error('Error uploading file:', error.response ? error.response.data : error.message);
       throw new Error('Failed to upload file');
@@ -70,8 +74,8 @@ export class GoogleDriveService{
       throw new Error('Failed to generate view link');
     }
   }
-  private async getOrCreateFolder(folderName: string): Promise<string> {
-    const query = `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and '${this.parentFolderId}' in parents`;
+  private async getOrCreateFolder(folderName: string,parentFolderId:string): Promise<string> {
+    const query = `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and '${parentFolderId}' in parents`;
 
     try {
       const response = await this.drive.files.list({
@@ -86,7 +90,7 @@ export class GoogleDriveService{
         const folderMetadata = {
           name: folderName,
           mimeType: 'application/vnd.google-apps.folder',
-          parents: [this.parentFolderId],
+          parents: [parentFolderId],
         };
 
         const folderResponse = await this.drive.files.create({
@@ -168,51 +172,14 @@ async getFile(fileId: string): Promise<any> {
       throw new Error('Failed to set file permissions');
     }
   }
+  async deleteFile(fileId: string): Promise<void> {
+    try {
+      await this.drive.files.delete({ fileId });
+      await this.docModel.deleteOne({_id:fileId});
+      console.log(`File with ID ${fileId} deleted successfully.`);
+    } catch (error) {
+      console.error('Error deleting file:', error.response ? error.response.data : error.message);
+      throw new Error('Failed to delete file');
+    }
+  }
 }
-
-
-
-
-
-
-
-
-  // async downloadFile(fileId: string, res: Response): Promise<void> {
-  //   try {
-  //     // Get file metadata to retrieve the original filename
-  //     const fileMetadata = await this.drive.files.get({
-  //       fileId,
-  //       fields: 'name',
-  //     });
-
-  //     const originalFilename = fileMetadata.data.name;
-  //     const dest = path.join(__dirname, '../../downloads', originalFilename);
-
-  //     const destStream = fs.createWriteStream(dest);
-  //     const response = await this.drive.files.get(
-  //       { fileId, alt: 'media' },
-  //       { responseType: 'stream' }
-  //     );
-
-  //     response.data
-  //       .on('end', () => {
-  //         res.download(dest, originalFilename, (err) => {
-  //           if (err) {
-  //             console.error('Error sending file:', err);
-  //             res.status(500).send({ error: 'Failed to download file' });
-  //           }
-  //           fs.unlinkSync(dest); // Clean up the file after sending
-  //         });
-  //       })
-  //       .on('error', (err) => {
-  //         console.error('Error downloading file:', err);
-  //         res.status(500).send({ error: 'Failed to download file' });
-  //         fs.unlinkSync(dest); // Clean up the file if there is an error
-  //       })
-  //       .pipe(destStream);
-  //   } catch (error) {
-  //     console.error('Error downloading file:', error.response ? error.response.data : error.message);
-  //     res.status(500).send({ error: 'Failed to download file' });
-  //   }
-  // }
-//}

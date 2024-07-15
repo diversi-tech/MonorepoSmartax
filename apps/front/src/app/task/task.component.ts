@@ -1,6 +1,14 @@
 import { PriorityService } from './../_services/priority.service';
 import { Priority } from './../_models/priority.module';
-import { AfterViewInit, Component, Input, OnInit, Output, ViewChild, EventEmitter} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  EventEmitter,
+} from '@angular/core';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/user.module';
 import {
@@ -47,10 +55,15 @@ import { EditorModule } from 'primeng/editor';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
 import { StatusService } from '../_services/status.service';
+import { GoogleAuthService } from '../_services/google-calendar.service';
+import { MultiSelect, MultiSelectModule } from 'primeng/multiselect';
+import { DividerModule } from 'primeng/divider';
+import { MenuItem } from 'primeng/api';
+import { TaskCheckListComponent } from '../task-check-list/task-check-list.component';
+import { TabViewModule } from 'primeng/tabview';
+import { SubTaskComponent } from '../sub-task/sub-task.component';
 
 @Component({
-
-
   selector: 'app-task',
   standalone: true,
   templateUrl: './task.component.html',
@@ -80,13 +93,16 @@ import { StatusService } from '../_services/status.service';
     ColorPickerModule,
     AutoCompleteModule,
     IconProfileComponent,
-    // UploadDocComponent,
     TabMenuModule,
     EditorComponent,
     UploadDocTaskComponent,
+    MultiSelectModule,
+    DividerModule,
+    TaskCheckListComponent,
+    TabViewModule,
+    SubTaskComponent,
   ],
   providers: [DocumentService],
-
 })
 export class TaskComponent implements OnInit {
   users: User[] = [];
@@ -98,6 +114,7 @@ export class TaskComponent implements OnInit {
   newTask: Task | undefined;
   taskName!: string;
   rangeDates: Date[] = [];
+  dueDate: Date | undefined;
   id: string | undefined;
   checked: boolean = false;
   text: string | undefined; //description of task
@@ -105,6 +122,13 @@ export class TaskComponent implements OnInit {
   buttons: { color: string; text: string; id: string }[] = [];
   htmlContent: string = '';
   images: string[] = [];
+  tags: Tag[] = [];
+  //
+  additionTask: MenuItem[] = [
+    { id: '1', label: 'Check List' },
+    { id: '2', label: 'SubTask' },
+  ];
+  activeItem: MenuItem | undefined;
 
   //
   showStatus: boolean = false;
@@ -114,6 +138,7 @@ export class TaskComponent implements OnInit {
   showDescription: boolean = false;
   showPriority: boolean = false;
   showDoc: boolean = false;
+  showTagsList: boolean = false;
   //
   selectedCity!: any;
   selectedClient!: any;
@@ -122,6 +147,9 @@ export class TaskComponent implements OnInit {
   selectedColor: string = '#1976d2'; // default color
   selectedTags: Tag[] = [];
   selectedPriority!: Priority;
+  // array
+  selectedClients: Client[] = [];
+  selectedUsers: User[] = [];
   //
   formGroupClient!: FormGroup;
   formGroupUser!: FormGroup;
@@ -139,14 +167,13 @@ export class TaskComponent implements OnInit {
     private statusService: StatusService,
     private priorityService: PriorityService,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private googleCalendarService: GoogleAuthService
   ) {}
 
   ngOnInit(): void {
-
     this.id = this.route.snapshot.paramMap.get('id')!;
-    if(this.taskId)
-      this.id=this.taskId
+    if (this.taskId) this.id = this.taskId;
     console.log(this.id);
     if (this.id != 'create') {
       this.tasksService.searchTask(this.id!).subscribe({
@@ -155,11 +182,13 @@ export class TaskComponent implements OnInit {
           this.currentTask = data;
           this.selectStatus = this.currentTask.status;
           this.selectedPriority = this.currentTask.priority;
+          // this.selectedClient = this.currentTask.client;
+          // this.selectedUser = this.currentTask.assignedTo;
+          this.selectedUsers = this.currentTask.assignedTo;
           this.selectedClient = this.currentTask.client;
-          this.selectedUser = this.currentTask.assignedTo;
           this.rangeDates = [new Date(), new Date()];
-          this.rangeDates![0] = new Date(this.currentTask.startDate); //
-          this.rangeDates![1] = new Date(this.currentTask.dueDate); //
+          this.rangeDates![0] = new Date(this.currentTask.startDate);
+          this.rangeDates![1] = new Date(this.currentTask.deadline);
           this.htmlContent = this.currentTask.description;
           console.log(this.rangeDates);
 
@@ -217,6 +246,16 @@ export class TaskComponent implements OnInit {
         console.log(err);
       },
     });
+    // tags
+    this.tagService.getAllTags().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.tags = data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
     //from group
     this.formGroupClient = new FormGroup({
       selectedClient: new FormControl<any | null>(null),
@@ -227,31 +266,39 @@ export class TaskComponent implements OnInit {
     this.formGroupStatus = new FormGroup({
       selectStatus: new FormControl<any | null>(null),
     });
-    //description
-    // this.text2 =
-    //   '<div>Hello World!</div><div>PrimeNG <b>Editor</b> Rocks</div><div><br></div>';
-    // this.text =
-    //   '<p>fgfjgklvjghlikj;<span style="background-color: rgb(230, 0, 0);">kjbll;</span><span style="background-color: rgb(230, 0, 0); color: rgb(0, 138, 0);">jlkl</span><span style="color: rgb(0, 138, 0);">gvhbjln;k</span></p>';
-    // this.editor!.writeValue(this.htmlContent);
   }
 
   //functions
   save() {
     //create task
     const newTask: Task = {
-      client: this.selectedClient,
-      description: this.htmlContent,
-      status: this.selectStatus,
-      tags: this.buttons,
-      assignedTo: this.selectedUser,
-      taskName: this.taskName,
-      dueDate: this.rangeDates[1]!,
-      startDate: this.rangeDates[0]!,
-      images: this.images,
-      priority: this.selectedPriority,
+      // client: this.selectedClient,
+      // client: this.selectedClients,
+      // description: this.htmlContent,
+      // status: this.selectStatus,
+      // tags: this.buttons,
+      // // assignedTo: this.selectedUser,
+      // assignedTo: this.selectedUsers,
+      // taskName: this.taskName,
+      // deadline: this.rangeDates[1]!,
+      // startDate: this.rangeDates[0]!,
+      // images: this.images,
+      // priority: this.selectedPriority,
+      // dueDate: this.currentTask.dueDate!,
     };
-    if (this.id == 'create') {
 
+    if (this.selectedClient) newTask.client = this.selectedClient;
+    if (this.htmlContent) newTask.description = this.htmlContent;
+    if (this.selectStatus) newTask.status = this.selectStatus;
+    if (this.buttons) newTask.tags = this.buttons;
+    if (this.selectedUsers) newTask.assignedTo = this.selectedUsers;
+    if (this.taskName) newTask.taskName = this.taskName;
+    if (this.rangeDates[1]) newTask.deadline = this.rangeDates[1];
+    if (this.rangeDates[0]) newTask.startDate = this.rangeDates[0];
+    if (this.images) newTask.images = this.images;
+    if (this.selectedPriority) newTask.priority = this.selectedPriority;
+    if (this.dueDate) newTask.dueDate = this.dueDate;
+    if (this.id == 'create') {
       this.tasksService.createTask(newTask).subscribe({
         next: (dataClients) => {
           console.log(dataClients);
@@ -264,8 +311,7 @@ export class TaskComponent implements OnInit {
       this.tasksService.updateTask(this.id!, newTask).subscribe({
         next: (dataClients) => {
           console.log(dataClients);
-          if(this.taskId)
-            this.closeModal.emit();
+          if (this.taskId) this.closeModal.emit();
         },
         error: (errClients) => {
           console.log(errClients);
@@ -283,6 +329,7 @@ export class TaskComponent implements OnInit {
     for (let i = 0; i < this.listStatus.length; i++) {
       if (this.listStatus[i].name === 'COMPLETE') {
         this.selectStatus = this.listStatus[i];
+        this.dueDate = new Date();
       }
     }
   }
@@ -322,13 +369,20 @@ export class TaskComponent implements OnInit {
   }
 
   status(s: Status) {
+    if (s.name === 'COMPLETE') this.dueDate = new Date();
     this.selectStatus = s;
     console.log(this.selectStatus);
+    console.log(this.dueDate);
   }
 
   priority(s: Priority) {
     this.selectedPriority = s;
     console.log(this.selectedPriority);
+  }
+  tag(s: Tag) {
+    this.selectedTags.push(s);
+    this.buttons.push({ color: s.color, text: s.text, id: s._id! });
+    this.showTagsList = !this.showTagsList;
   }
   // date
   onDateSelect(event: any) {
@@ -362,5 +416,12 @@ export class TaskComponent implements OnInit {
   updateEditorContent(newContent: string) {
     this.editorComponent.initialContent = newContent;
   }
-  // ========================================
+
+  try() {
+    console.log(this.activeItem);
+  }
+
+  onActiveItemChange(event: MenuItem) {
+    this.activeItem = event;
+  }
 }

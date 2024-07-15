@@ -5,6 +5,7 @@ import { HashPasswordService } from './hash-password.service';
 import { RoleServiceService } from './role-service.service';
 import { Role } from '../_models/role.module';
 import { USER_ENDPOINT } from '../api-urls';
+import { Client } from '../_models/client.module';
 
 const API_URL = 'http://localhost:8080/api/test/';
 const httpOptions = {
@@ -38,13 +39,14 @@ export class UserService {
       httpOptions
     );
   }
-  update(id: string, userName: string, email: string, passwordHash: string, role: Role) {
+  update(id: string, userName: string, email: string, passwordHash: string, role: Role,favorites:Client[]) {
     const user = {
       "id": id,
       "userName": userName,
       "passwordHash": passwordHash,
       "role": role,
-      "email": email
+      "email": email,
+      "favorites":favorites
     }
     console.log(user);
 
@@ -79,13 +81,12 @@ export class UserService {
     return this.http.get(this.apiUrl +`/findOne?id=${userId}`)
   }
 
-  changPassword(newPassword: string): Observable<any> {
-    const token = JSON.parse(sessionStorage.getItem('auth-user') + '')?.access_token;
-    const headers = {
-      'Authorization': `Bearer ${token}`
-    };
-    const body = { newPassword: this.hashService.encryptPassword(newPassword) };
-    return this.http.put<any>(this.apiUrl + '/changePassword', body, { headers })
+  changPassword(newPassword: string, email:string): Observable<any> {
+    const body = {
+       newPassword: this.hashService.encryptPassword(newPassword),
+       emailFront:email
+     };
+     return this.http.put<any>(this.apiUrl + '/changePassword', body)
   }
   deleteUser(id: string) {
     console.log('delete user in service');

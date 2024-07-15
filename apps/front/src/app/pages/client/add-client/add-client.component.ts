@@ -72,8 +72,8 @@ export class AddClientComponent {
     referrerName: "",
     joinDate: new Date(),
     isAccounter: false,
-    isOpenAccountWithUs: false
-    //tag:{color:"",text:""}
+    isOpenAccountWithUs: false,
+    tag:{color:"",text:""}
   }
 
   constructor(private formBuilder: FormBuilder, private ClientServic: ClientService
@@ -101,8 +101,8 @@ export class AddClientComponent {
       this.newClient.tz = this.savedData.tz
       this.newClient.spouseName = this.savedData.spouseName
       //...
-      console.log("נתונים", this.savedData);
-      console.log("ים", this.newClient);
+       this.newClient.tag.color="black"
+       this.newClient.tag.text=""
       this.ClientServic.createClient(this.newClient).subscribe(
         response => {
           console.log('Client created successfully:', response);

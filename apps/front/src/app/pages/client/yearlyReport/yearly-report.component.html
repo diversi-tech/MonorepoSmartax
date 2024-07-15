@@ -1,0 +1,53 @@
+
+
+
+
+
+
+
+
+<br><br>
+<p-button (click)="createReprtTag()" label="יצירת דוח שנתי חדש" />
+<router-outlet></router-outlet>
+
+<p-table [value]="allYearlyReport" [tableStyle]="{ 'max-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th></th>
+            <th>סטטוס</th>
+            <th>עובד מטפל</th>
+            <th>יתרה לתשלום</th>
+            <th>סכום ששולם</th>
+            <th>מחיר</th>
+            <th>תאריך יצירה</th>
+            <th>שנה</th>
+            
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product  >
+        <tr  *ngFor="let task of allYearlyReport">
+            <td><p-button (click)="goToSteps(task)" label="עדכן" />            </td>
+
+            <td>בטיפול</td>
+            <td>{{employeName.name }}</td>
+            <td>{{ task.balanceDue }}</td>
+            <td>{{ task.paymentAmountPaid }}</td>
+            <td>{{ task.price }}</td>
+            <td>{{ task.dateTime | date:'dd/MM/yyyy' }}</td>
+            <td>{{ task.yearReport }}</td>
+
+            <!-- <td>{{ employe.name }}</td> -->
+        </tr>
+    </ng-template>
+<!-- 
+    idUser: string;
+    assignee: string[];
+    idEmploye: string;
+    yearReport: string;
+    dateTime: Date;
+    price: number;
+    paymentAmountPaid: number;
+    balanceDue: number;
+    stepsList: StepField[];
+   -->
+</p-table>

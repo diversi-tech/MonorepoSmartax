@@ -10,6 +10,7 @@ export enum ReportType {
   SemiAnnual = 'חצי שנתי',
   NotReporting = 'לא מדווח',
 }
+
 @Schema()
 export class Client extends Document {
   @Prop()

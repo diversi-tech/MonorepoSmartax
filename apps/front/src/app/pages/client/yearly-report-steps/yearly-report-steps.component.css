@@ -1,0 +1,16 @@
+.flex {
+    direction: rtl; /* Right-to-left layout */
+}
+.checkbox-wrapper {
+    border: 1px solid #ccc; /* צבע מסגרת */
+    border-radius: 5px; /* עגלול את הפינות */
+    padding: 10px; /* רווח פנימי */
+    margin: 5px 0; /* רווח בין תיבות */
+    width: 100%; /* תן רוחב מלא */
+    text-align: right; /* טקסט מימין */
+}
+.completed {
+    background-color: green; /* Change to your desired color */
+    color: white; /* Change text color if needed */
+  }
+  

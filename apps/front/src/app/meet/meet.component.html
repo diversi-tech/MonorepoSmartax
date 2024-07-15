@@ -1,131 +1,166 @@
-<div class="col-md-12">
-    <div class="card card-container">
-        <h1>Meetings</h1>
-        <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+<div style="margin-top: 10%">
+  <p-card header="Meeting" subheader="Create and update your meet" [style]="{ width: '800px' }">
+    <ng-template pTemplate="header">
+      <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
+    </ng-template>
 
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" class="form-control" name="address" [(ngModel)]="form.address" required
-                    #address="ngModel" [ngClass]="{ 'is-invalid': f.submitted && address.errors }" />
-                    <div *ngIf="isValidURL(form.address)">
-                        <a [href]="form.address" target="_blank">Open Link</a>
-                    </div>
-                @if (address.errors && f.submitted) {
-                <div class="invalid-feedback">
-                    @if (address.errors['required']) {
-                    <div>Address is required</div>
-                    }
-                </div>
-                }
-            </div>
-
-            <div class="form-group">
-                <label for="date">Date</label>
-                <input type="date" class="form-control" name="date" [(ngModel)]="form.date" required #date="ngModel"
-                    [ngClass]="{ 'is-invalid': f.submitted && date.errors }" />
-                @if (date.errors && f.submitted) {
-                <div class="invalid-feedback">
-                    @if (date.errors['required']) {
-                    <div>Date is required</div>
-                    }
-                </div>
-                }
-            </div>
-
-            <div class="form-group">
-                <label for="beginningTime">Beginning Time</label>
-                <input type="time" class="form-control" name="beginningTime" [(ngModel)]="form.beginningTime" required
-                    #beginningTime="ngModel" (change)="onBeginningTimeChange()" [ngClass]="{ 'is-invalid': f.submitted && beginningTime.errors }" />
-                @if (beginningTime.errors && f.submitted) {
-                <div class="invalid-feedback">
-                    @if (beginningTime.errors['required']) {
-                    <div>Beginning Time is required</div>
-                    }
-                </div>
-                }
-            </div>
-
-            <div class="form-group">
-                <label for="endTime">End Time</label>
-                <input type="time" class="form-control" name="endTime" [(ngModel)]="form.endTime" required
-                    #endTime="ngModel"
-                    [disabled]="!form.beginningTime"
-                    min="11:30"
-                    max="12:45"
-                    (focus)="restrictTimeOptions($event)"
-                    [ngClass]="{ 'is-invalid': f.submitted && endTime.errors }" />
-                @if (endTime.errors && f.submitted) {
-                <div class="invalid-feedback">
-                    @if (endTime.errors['required']) {
-                    <div>End Time is required</div>
-                    }
-                </div>
-                }
-            </div>
-
-            <h5>Select Users</h5>
-            <p-multiSelect [options]="users"
-                           [(ngModel)]="selectedUsers"
-                           name="selectedUsers"
-                           placeholder="Select Users"
-                           defaultLabel="Select Users"
-                           [style]="{'height':'50px','width':'100%' }"
-                           (onChange)="onUserChange($event)">
-              <ng-template let-user pTemplate="item">
-                <div class="avatar-item">
-                  <app-icon-profile class="avatar" [userName]="user.userName"></app-icon-profile>
-                  <span>{{ user.userName }}</span>
-                </div>
-              </ng-template>
-              <ng-template let-user pTemplate="selectedItems">
-                <div *ngFor="let selectedUser of selectedUsers" class="selected-item">
-                  <app-icon-profile class="avatar" [userName]="selectedUser.userName"></app-icon-profile>
-                </div>
-              </ng-template>
-            </p-multiSelect>
-
-            <h5>Select Clients</h5>
-            <p-multiSelect [options]="clients"
-                        [(ngModel)]="selectedClients"
-                        name="selectedClients"
-                        defaultLabel="Select Clients"
-                        optionLabel="name"
-                        [style]="{'height':'50px','width':'100%' }"
-                        (onChange)="onClientChange($event)">
-            <ng-template let-client pTemplate="item">
-                <div class="avatar-item">
-                <app-icon-profile class="avatar" [userName]="client.firstName"></app-icon-profile>
-                <span>{{ client.firstName }}</span>
-                </div>
-            </ng-template>
-            <ng-template let-client pTemplate="selectedItems">
-                <div *ngFor="let selectedClient of selectedClients" class="selected-item">
-                <app-icon-profile class="avatar" [userName]="selectedclient.firstName"></app-icon-profile>
-                </div>
-            </ng-template>
-            </p-multiSelect>
-
-            <div class="form-group">
-                <button *ngIf="meetId=='null'" class="btn btn-primary btn-block">Add Meet</button>
-                <button *ngIf="meetId!='null'" class="btn btn-primary btn-block">Update Meet</button>
-            </div>
-
-        </form>
-
+    <!-- Address -->
+    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+      <p style="margin-top: 2%; margin-right: 5%">
+        <span class="pi pi-link"></span>
+        Address
+      </p>
+      <div style="margin-left: 50px">
+        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+          <input type="text" pInputText [(ngModel)]="form.address" />
+          <div *ngIf="isValidURL(form.address)">
+            <a [href]="form.address" target="_blank">Open Link</a>
+          </div>
+        </p-inputGroup>
+      </div>
     </div>
+    <br />
+
+    <!-- Date -->
+    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+      <p style="margin-top: 2%; margin-right: 5%">
+        <span class="pi pi-calendar-plus"></span>
+        Date
+      </p>
+      <div style="margin-left: 85px">
+        <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
+          <p-calendar [(ngModel)]="form.date" [style]="{ height: '20px', width: '250px' }" [iconDisplay]="'input'"
+            [showIcon]="true" inputId="icondisplay" />
+        </p-inputGroup>
+      </div>
+    </div>
+    <br /><br />
+
+    <!-- begining time -->
+    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+      <p style="margin-top: 2%; margin-right: 5%">
+        <span class="pi pi-clock"></span>
+        Begining Time
+      </p>
+      <div style="margin-left: 85px">
+        <input type="time" class="form-control" name="beginningTime" [(ngModel)]="form.beginningTime" required
+          #beginningTime="ngModel" />
+      </div>
+    </div>
+    <br /><br />
+    <!-- End time -->
+    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+      <p style="margin-top: 2%; margin-right: 5%">
+        <span class="pi pi-clock"></span>
+        End Time
+      </p>
+      <div style="margin-left: 85px">
+        <input type="time" class="form-control" name="endTime" [(ngModel)]="form.endTime" required
+        #endTime="ngModel"/>
+      </div>
+    </div>
+    <br /><br />
+
+    <!-- Select User -->
+    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+      <p style="margin-top: 2%; margin-right: 5%">
+        <span class="pi pi-user-plus"></span>
+        Select Users
+      </p>
+      <div style="margin-left: 60px">
+        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+        </p-inputGroup>
+      </div>
+      <ng-template let-user pTemplate="item">
+        <div>
+          <app-icon-profile [userName]="user.userName"></app-icon-profile>
+          <span>{{ user.userName }}</span>
+        </div>
+      </ng-template>
+    
+
+    <!-- pop -->
+    <p-multiSelect [options]="users" [(ngModel)]="selectedUsers" required name="selectedUsers"
+      placeholder="Select Users" defaultLabel="Select Users" [style]="{'height':'50px','width':'15rem' }"
+      (onChange)="onUserChange($event)">
+
+
+      <ng-template let-user pTemplate="item">
+        <div class="avatar-item">
+          <app-icon-profile class="avatar" [userName]="user.userName"></app-icon-profile>
+          <span>{{ user.userName }}</span>
+        </div>
+      </ng-template>
+      <ng-template let-user pTemplate="selectedItems">
+        <div *ngFor="let selectedUser of selectedUsers" class="selected-item">
+          <app-icon-profile class="avatar" [userName]="selectedUser.userName"></app-icon-profile>
+        </div>
+      </ng-template>
+    </p-multiSelect>
+  </div>
+
+    <!-- Clients -->
+    <div style="display: flex; align-items: center; height: 50px" id="divHover" class="clients">
+      <p style="margin-top: 2%; margin-right: 5%">
+        <span class="pi pi-users"></span>
+        Client
+      </p>
+      <div style="margin-left: 85px">
+        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+          <div>
+            <ng-template let-user pTemplate="item">
+              <div>
+                <app-icon-profile [userName]="user.userName"></app-icon-profile>
+                <span>{{ user.userName }}</span>
+              </div>
+            </ng-template>
+          </div>
+        </p-inputGroup>
+      </div>
+    
+    <!-- pop -->
+    <p-multiSelect [options]="clients" [(ngModel)]="selectedClients" required name="selectedClients"
+      defaultLabel="Select Clients" optionLabel="name" [style]="{'height':'50px','width':'15rem' }"
+      
+      (onChange)="onClientChange($event)">
+      <ng-template let-client pTemplate="item">
+        <div class="avatar-item">
+          <app-icon-profile class="avatar" [userName]="client.name"></app-icon-profile>
+          <span>{{ client.name }}</span>
+        </div>
+      </ng-template>
+      <ng-template let-client pTemplate="selectedItems">
+        <div *ngFor="let selectedClient of selectedClients" class="selected-item">
+          <app-icon-profile class="avatar" [userName]="selectedClient.name"></app-icon-profile>
+        </div>
+      </ng-template>
+    </p-multiSelect>
+  </div>
+  
+
+    <!-- footer -->
+    <ng-template pTemplate="footer">
+      <div class="flex gap-3 mt-1" style="margin-left: 70%">
+        <p-button label="Cancel" icon="pi pi-undo" [text]="true" [raised]="true" severity="secondary"
+          (click)="cancel()" />
+        <p-button label="Save" icon="pi pi-check" [text]="true" [raised]="true" severity="secondary" (click)="showDialog()" />
+      </div>
+    </ng-template>
+  </p-card>
 </div>
 
-
-
-<script>
-    function validateTime(event) {
-        const input = event.target;
-        const selectedTime = input.value;
-        
-        if (selectedTime < '11:30' || selectedTime > '12:45') {
-            input.setCustomValidity('Please select a time between 11:30 and 12:45.');
-        } else {
-            input.setCustomValidity('');
-        }
-    }
-</script>
+<p-dialog header="Google Calendar" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <span class="p-text-secondary block mb-5">Do you add the meeting to google calendar?</span>
+    <div class="card flex justify-content-center">
+        <p-checkbox 
+            [(ngModel)]="checked" 
+            [binary]="true" 
+            inputId="binary"
+            label="Would you like to join the meeting via google-meet?"
+             />
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="No" severity="secondary" (click)="cancelDialog()" />
+        <p-button label="Yes" (click)="scheduleMeeting()" />
+    </div>
+</p-dialog>
