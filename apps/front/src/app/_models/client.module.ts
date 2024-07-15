@@ -24,9 +24,9 @@ export interface Client {
   encryptedPasswords: SensitiveData[];
   comments: string; lastUserUpdate: User;
   assignTo: User[];
-  // customerID: number;
+  clientId: number;
   dateOfBirth: Date;
-  // payment: UrlObject???;
+  payment: string;
   isEmploysWorkers: boolean;
   isWorkData: boolean;
   incomeTaxFileNumber: string;
@@ -38,5 +38,5 @@ export interface Client {
   joinDate: Date;
   isAccounter: boolean;
   isOpenAccountWithUs: boolean;
-  //tag:Tag;
+  tag:Tag;
 }

@@ -57,10 +57,10 @@ export class AddClientComponent {
       userName: "",
       email: "",
       passwordHash: "",
-      role: ""
+      role: "",
+      favorites: []
     },
     assignTo: [],
-    // customerID: 0,
     dateOfBirth: new Date(),
     isEmploysWorkers: false,
     isWorkData: false,
@@ -73,7 +73,9 @@ export class AddClientComponent {
     joinDate: new Date(),
     isAccounter: false,
     isOpenAccountWithUs: false,
-    tag:{color:"",text:""}
+    tag: { color: "", text: "" },
+    clientId: 0,
+    payment: ''
   }
 
   constructor(private formBuilder: FormBuilder, private ClientServic: ClientService
