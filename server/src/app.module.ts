@@ -168,16 +168,10 @@ import { SensitiveDataService } from './services/sensitiveData.service';
   MongooseModule.forFeature([{ name: YearlyReport.name, schema: YearlyReportstModel }]),
   MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]), MongooseModule.forFeature([{ name: CheckListItem.name, schema:CheckListItemModel }]),
  MongooseModule.forFeature([{ name: CheckList.name, schema:CheckListModel }]),
-
-     ServeStaticModule.forRoot({
-       rootPath: path.join(__dirname, '../uploads'),
-       serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
-     }),
      MongooseModule.forFeature([
       {  name: CommunicationArchive.name, schema:  communicationArchiveModel  },
     ]),
-      JwtModule,,
-    MongooseModule.forFeature([{name:Year.name, schema:YearModel}]),
+      JwtModule,
   ],
   controllers: [
     WorkLogController,
