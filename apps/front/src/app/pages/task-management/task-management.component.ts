@@ -26,33 +26,33 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ButtonDirective, Button } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
-    selector: 'app-task-management',
-    templateUrl: './task-management.component.html',
-    styleUrls: ['./task-management.component.css'],
-    standalone: true,
-    imports: [
-        ConfirmDialogModule,
-        Footer,
-        ButtonDirective,
-        SidebarModule,
-        NgIf,
-        CalendarModule,
-        FormsModule,
-        AutoCompleteModule,
-        PrimeTemplate,
-        IconProfileComponent,
-        MultiSelectModule,
-        Button,
-        RouterLink,
-        InputTextModule,
-        NgFor,
-        PanelModule,
-        TableModule,
-        NgStyle,
-        NgClass,
-        ToastModule,
-        DatePipe,
-    ],
+  selector: 'app-task-management',
+  templateUrl: './task-management.component.html',
+  styleUrls: ['./task-management.component.css'],
+  standalone: true,
+  imports: [
+    ConfirmDialogModule,
+    Footer,
+    ButtonDirective,
+    SidebarModule,
+    NgIf,
+    CalendarModule,
+    FormsModule,
+    AutoCompleteModule,
+    PrimeTemplate,
+    IconProfileComponent,
+    MultiSelectModule,
+    Button,
+    RouterLink,
+    InputTextModule,
+    NgFor,
+    PanelModule,
+    TableModule,
+    NgStyle,
+    NgClass,
+    ToastModule,
+    DatePipe,
+  ],
 })
 export class TaskManagementComponent implements OnInit {
 
@@ -126,7 +126,7 @@ export class TaskManagementComponent implements OnInit {
     // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter(task => {
       // console.log('Task status:', task.status); // הדפסת המצב של המשימה
-     {return task.status && task.status.name === status.name;}
+      { return task.status && task.status.name === status.name; }
     });
   }
 
@@ -220,12 +220,11 @@ export class TaskManagementComponent implements OnInit {
       const deadlineMatch = !this.filter.deadlineRange ||
         (task.dueDate >= this.filter.deadlineRange[0] && task.dueDate <= this.filter.deadlineRange[1]);
 
-        const clientMatch = !this.filter.client || task.client.name.includes(this.filter.client.name);
+        const clientMatch = !this.filter.client || task.client[0].name.includes(this.filter.client.name);
 
-      const userMatch = !this.filter.user || task.assignedTo.some(user => user.userName.includes(this.filter.user.userName));
-
-      const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
-
+        const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
+        
+        const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
       let tagsMatch = true;
       if (this.filter.tags && this.filter.tags.length > 0) {
         tagsMatch = this.filter.tags.every(filterTag => {

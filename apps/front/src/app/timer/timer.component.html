@@ -1,0 +1,7 @@
+<section class="container">
+    <div class="parent-btn">
+      <button id="START" (click)="startTimer()" [disabled]="isStartDisabled">התחלה</button>
+      <button id="STOP" (click)="saveTimer()" [disabled]="isStopDisabled">שמירה</button>
+    </div>
+    <h2 id="count_up_timer">{{ timerDisplay }}</h2>
+  </section>
