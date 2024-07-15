@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
 import * as ExcelJS from 'exceljs';
-
-import { from } from 'rxjs';
 import { CreateWorkLogDto, UpdateWorkLogDto } from '../Models/dto/workLog.dto';
 import { WorkLog, WorkLogDocument } from '../Models/workLog.model';
 
@@ -18,15 +15,18 @@ export class WorkLogService {
   }
 
   async update(id: string, updateWorkLogDto: UpdateWorkLogDto): Promise<WorkLog> {
-    return this.workLogModel.findByIdAndUpdate(id, updateWorkLogDto, { new: true });
+    const updatedWorkLog = await this.workLogModel.findByIdAndUpdate(id, updateWorkLogDto, { new: true });
+    return updatedWorkLog;
   }
 
   async findOne(id: string): Promise<WorkLog> {
-    return this.workLogModel.findById(id).exec();
+    const workLog = await this.workLogModel.findById(id).exec();
+    return workLog;
   }
 
   async findAll(): Promise<WorkLog[]> {
-    return this.workLogModel.find().exec();
+    const workLogs = await this.workLogModel.find().exec();
+    return workLogs;
   }
 
   async exportWorkLogs(month: number, year: number): Promise<Buffer> {
