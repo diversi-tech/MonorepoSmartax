@@ -12,5 +12,6 @@
 .completed {
     background-color: green; /* Change to your desired color */
     color: white; /* Change text color if needed */
+    color: green;
   }
   

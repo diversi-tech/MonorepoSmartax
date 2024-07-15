@@ -11,6 +11,9 @@ import { Button, ButtonModule } from 'primeng/button';
 import { Route, Router, RouterOutlet } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { Client } from '../../../_models/client.module';
+import { TokenService } from '../../../_services/token.service';
+import { UserService } from '../../../_services/user.service';
+import { User } from '../../../_models/user.module';
 
 @Component({
   selector: 'app-yearly-report',
@@ -24,20 +27,22 @@ import { Client } from '../../../_models/client.module';
   providedIn: 'root' // Ensure it's provided in root or a specific module
 })
 export class YearlyReportComponent implements OnInit {
-  constructor(private stepFieldsService: stepFieldService,private yearlyReportService: YearlyReportService,private router: Router) {
-     this.loadTasks();
-  }
   steps: any[];
   allYearlyReport: YearlyReport[]=[];
-  employeName: Client;
+  client: Client;
+  employeName: User| undefined;
+
+  constructor(private stepFieldsService: stepFieldService,
+              private yearlyReportService: YearlyReportService,
+              private router: Router,
+              private tokenService: TokenService,
+              private userService:UserService
+              ) { }
+
   ngOnInit(): void {
    this.getYearlyReportsForClient();
-   this.employeName=history.state.client;
-   console.log(this.allYearlyReport)
-   console.log(this.employeName)
-
+   this.client=history.state.client;
   }
-
 
   getYearlyReportsForClient(): void {
     const clientId = history.state.client._id; // Assuming the client ID is passed via the state
@@ -51,49 +56,21 @@ export class YearlyReportComponent implements OnInit {
       }
     );
   }
+
   createReprtTag():void{
-    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/createYearlyReport']);
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/createYearlyReport'],{state:{client: this.client}});
     
   }
  
-  activeIndex: number = 0;
-  selectedYear: Date;
-  selectedType: string;
-  typeOptions: any[] = [
-    { label: 'פיצול לעצמאי', value: 'עצמאי' },
-    { label: 'עמותה', value: 'עמותה' },
-    { label: 'חברה', value: 'חברה' }
-  ];
-  tasksStep1: StepField[] = [];
-  tasksStep2: StepField[] = [];
-  tasksStep3: StepField[] = [];
-  tasksStep4: StepField[] = [];
-  tasksStep5: StepField[] = [];
- 
-
-  loadTasks() {
-    this.stepFieldsService.getAllStepField().subscribe(data => {
-      this.tasksStep1 = data.filter(task => task.stepNumber === 1);
-      this.tasksStep2 = data.filter(task => task.stepNumber === 2);
-      this.tasksStep3 = data.filter(task => task.stepNumber === 3);
-      this.tasksStep4 = data.filter(task => task.stepNumber === 4);
-      this.tasksStep5 = data.filter(task => task.stepNumber === 5);
-    });
-  
-  }
-
-  updateStepField(task: StepField): Observable<StepField> {
-    task.isComplete=!task.isComplete;
-    console.log('hjk')
-    return this.stepFieldsService.updateStepField(task);
-  }
-  // toggleTaskCompletion(task: Task) {
-  //   task.isCompleted = !task.isCompleted;
-  // }
-
   goToSteps(task: any){
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps'], { state: { data: task } });
 
   }
+  getEmployeName(userId: string): any {
+    return this.userService.findOne(userId);
+    
+  }
+  
+  
 
 }
