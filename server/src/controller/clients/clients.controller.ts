@@ -19,7 +19,7 @@ export class ClientController {
     async createClient(@Body(new ValidationPipe()) createClientDto: CreateClientDto): Promise<Client> {
         return await this.clientService.createClient(createClientDto);
     }
-    @UseGuards(AuthGuard, RoleGuard(3))
+    // @UseGuards(AuthGuard, RoleGuard(3))
     @Get()
     async getAllClients(): Promise<Client[]> {
         return await this.clientService.getAllClients();

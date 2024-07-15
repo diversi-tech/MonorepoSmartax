@@ -13,7 +13,7 @@ import { AuthGuard } from 'server/src/guards/auth.guard';
 @UseFilters(HttpErrorFilter)
 export class CommunicationsController {
     constructor(private readonly communicationsService: CommunicationsService) { }
-    @UseGuards(AuthGuard, RoleGuard(3))
+    // @UseGuards(AuthGuard, RoleGuard(3))
     @Post('create')
     @ApiOperation({ summary: 'Create a new communication' })
     @ApiBody({ type: CreateCommunicationDto })
@@ -44,13 +44,13 @@ export class CommunicationsController {
     async delete(@Body() body: { id: string }): Promise<Communication> {
         return this.communicationsService.deleteCommunication(body.id);
     }
-    @UseGuards(AuthGuard, RoleGuard(6))
+    // @UseGuards(AuthGuard, RoleGuard(6))
     @Post('all')
     @ApiOperation({ summary: 'Get all communications' })
     async getAllCommunications(): Promise<Communication[]> {
         return this.communicationsService.getAllCommunications();
     }
-    @UseGuards(AuthGuard, RoleGuard(3))
+    // @UseGuards(AuthGuard, RoleGuard(3))
     @Post('by-client')
     @ApiOperation({ summary: 'Get communications by Client ID' })
     @ApiBody({

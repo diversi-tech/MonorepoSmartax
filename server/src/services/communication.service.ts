@@ -1,11 +1,12 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateCommunicationDto, UpdateCommunicationDto } from '../Models/dto/communication.dto';
 import { Communication } from '../Models/communication.model';
 import { CommunicationArchiveService } from './communicationArchive.service';
 import { CommunicationArchive } from '../Models/communicationArchive.model';
 import { Client } from '../Models/client.model';
+import { ObjectId } from 'typeorm';
 
 @Injectable()
 export class CommunicationsService {
@@ -53,12 +54,15 @@ export class CommunicationsService {
     return this.communicationModel.find().exec();
   }
 
+  
   async getCommunicationsByClientId(clientId: string): Promise<Communication[]> {
     console.log('Searching for communications with client ID:', clientId);
-    const communications = await this.communicationModel.find({ 'client._id': clientId }).exec();
+    const communications = await this.communicationModel.find({ client: clientId }).exec();
     console.log('Communications found:', communications);
     return communications;
   }
+  
+  
 
   //Transferring old ommunicationד to an archive table
   async deletingOldCommunications(): Promise<Communication[]> {

@@ -81,13 +81,13 @@ export class WorkLogService {
       map(response => response.data)
     );
   }
-  
+
   createWorkLog(workLog: WorkLog): Observable<WorkLog> {
     return this.http.post<WorkLog>(this.apiUrl, workLog);
   }
 
   updateWorkLog(id: string, timeEntries: any[]): Observable<WorkLog> {
-    return this.http.put<WorkLog>(`${this.apiUrl}/${id}`, { id, timeEntries });
+    return this.http.put<WorkLog>(`${this.apiUrl}/${id}`, { timeEntries });
   }
 
   exportWorkLogs(month: number, year: number): Observable<Blob> {

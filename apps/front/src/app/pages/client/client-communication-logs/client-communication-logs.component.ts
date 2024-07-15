@@ -34,7 +34,7 @@ export class ClientCommunicationLogsComponent {
 
   ngOnInit(): void {
     this.client = history.state.client;
-  
+
   }
 
   navigateTo(route: string): void {
