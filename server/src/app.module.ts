@@ -54,7 +54,7 @@ import { TagController } from './controller/tag/tag.controller';
 import { TagService } from './services/tag.service';
 import express from 'express';
 import * as path from 'path';
- import { ServeStaticModule } from '@nestjs/serve-static';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { Status, StatusModel } from './Models/status.model';
 import { Priority, PriorityModel } from './Models/priority.model';
 import { StatusController } from './controller/status/status.controller';
@@ -72,6 +72,13 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
+import { Timer, TimerModel } from './Models/timer';
+import { TimerController } from './controller/timer/timer.controller';
+import { TimerService } from './services/timer';
+import { WorkLogController } from './controller/workLog/workLog.controller';
+import { WorkLogService } from './services/workLog.service';
+import { WorkLogModel, WorkLog } from './Models/workLog.model';
+
 import { FrequencyController } from './controller/frequency/frequency.controller';
 import { Frequency, frequencyModel } from './Models/frequency.model';
 import { FrequencyService } from './services/frequency.service';
@@ -82,8 +89,23 @@ import { PaymentDetailsController } from './controller/paymentDetails/paymentDet
 import { PaymentDetailsService } from './services/paymentDetails.service';
 import { PaymentDetails, PaymentDetailsModel } from './Models/paymentDetails.model';
 import { PaymentService } from './services/payment.service';
-import {PaymentController } from './controller/payment/payment.controller';
+import { PaymentController } from './controller/payment/payment.controller';
 import { Payment, PaymentModel } from './Models/payment.model';
+import { StepFieldController } from './controller/yearlyReport/stepField.controller';
+import { YearlyReportController } from './controller/yearlyReport/yearlyReport.controller';
+import { StepFieldService } from './services/stepField.service';
+import { YearlyReportService } from './services/yearlyReport.service';
+import { StepField, stepFieldModel } from './Models/stepField.model';
+import { YearlyReport, YearlyReportstModel } from './Models/yearlyReports.model';
+import { Year, YearModel } from './Models/year.model';
+import { YearService } from './services/year.service';
+import { YearController } from './controller/year/year.controller';
+import { CheckListItem, CheckListItemModel } from './Models/checkListItem.model';
+import { CheckList, CheckListModel } from './Models/checkList.model';
+import { CheckListService } from './services/checkList.service';
+import { CheckListItemService } from './services/checkListItem.service';
+import { CheckListItemController } from './controller/checkListItem/checkListItem.controller';
+import { CheckListController } from './controller/checkList/checkList.controller';
 
 
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
@@ -91,7 +113,7 @@ import { Payment, PaymentModel } from './Models/payment.model';
 @Module({
   //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
-    MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
+  MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
   MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
   MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
@@ -106,24 +128,43 @@ import { Payment, PaymentModel } from './Models/payment.model';
   MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
   MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
   MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
- MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
+  MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel }]),
+  MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel }]),
+  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+
+  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+  MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel }]),
 
   MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
   MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel }]),
   MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel }]),
   MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
-
+  MongooseModule.forFeature([{ name: Timer.name, schema:TimerModel }]),
+  ServeStaticModule.forRoot({
+    rootPath: path.join(__dirname, '../uploads'),
+    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+  }),
+  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
+  MongooseModule.forFeature([{ name: StepField.name, schema: stepFieldModel }]),
+  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
+  MongooseModule.forFeature([{ name: YearlyReport.name, schema: YearlyReportstModel }]),
+  MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]), MongooseModule.forFeature([{ name: CheckListItem.name, schema:CheckListItemModel }]),
+ MongooseModule.forFeature([{ name: CheckList.name, schema:CheckListModel }]),
 
   ServeStaticModule.forRoot({
     rootPath: path.join(__dirname, '../uploads'),
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
   }),
   MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
-    JwtModule
+    JwtModule,
+    MongooseModule.forFeature([{name:Year.name, schema:YearModel}]),
   ],
   controllers: [
-    AppController,FieldController,
-    ClientTypeController,CallTopicController,
+    WorkLogController,
+    AppController,
+    CheckListItemController, CheckListController, FieldController,
+    ClientTypeController, CallTopicController,
     UserController,
     PriorityController,
     ClientController,
@@ -138,14 +179,24 @@ import { Payment, PaymentModel } from './Models/payment.model';
     TasksController,
     TagController,
     MeetController,
-    StatusController,DocTypeController,
+    StatusController, DocTypeController,
     FrequencyController,
     PaymentMethodController,
     PaymentDetailsController,
-    PaymentController],
+    PaymentController,
+    TimerController,
+    CommunicationArchiveController,
+    YearController,
+    YearlyReportController,
+    StepFieldController,
+
+
+  ],
+
 
 
   providers: [
+    WorkLogService,
     AppService,
     UserService,
     MailService,
@@ -167,7 +218,10 @@ import { Payment, PaymentModel } from './Models/payment.model';
     MeetService,
     CallTopicService,
     CommunicationArchiveService,
+    CheckListService,
+    CheckListItemService,
     DocTypeService,
+    TimerService,
     FrequencyService,
     PaymentMethodService,
     PaymentDetailsService,
@@ -176,6 +230,13 @@ import { Payment, PaymentModel } from './Models/payment.model';
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
     },
+    CommunicationArchiveService,
+
+    StepFieldService,
+    YearlyReportService,
+    YearService,
+
+
   ],
 })
 export class AppModule { }

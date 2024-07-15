@@ -23,9 +23,15 @@ export class TokenService {
     return null;
   }
   getCurrentDetail(detail: string): any {
-    const payload = this.decodeToken(this.getToken().access_token);
-    return payload[detail];
+    const tokenData = this.getToken();
+    if (!tokenData || !tokenData.access_token) {
+      return null;  // Return null if the token is not available
+    }
+    const payload = this.decodeToken(tokenData.access_token);
+  
+    return payload ? payload[detail] : null;
   }
+
   decodeToken(token: string): any {
     try {
       const decoded = jwtDecode(token);

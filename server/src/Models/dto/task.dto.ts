@@ -5,6 +5,7 @@ import { User } from '../../Models/user.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { Priority } from '../priority.model';
 import { Status } from '../status.model';
+import { CheckList } from '../checkList.model';
 
 export class CreateTaskDto {
     @IsNotEmpty()
@@ -18,13 +19,9 @@ export class CreateTaskDto {
     @IsString()
     description: string;
 
-    // @IsNotEmpty()
-    @IsDateString()
-    dueDate: Date;
-
     @IsNotEmpty()
     @IsDateString()
-    deadline: Date;
+    dueDate: Date;
 
     @IsNotEmpty()
     @IsDateString()
@@ -35,7 +32,7 @@ export class CreateTaskDto {
     status: Status;
 
     @IsNotEmpty()
-    assignedTo: User[];
+    assignedTo: User;
 
     @IsNotEmpty()
     tags: Tag[];
@@ -44,6 +41,8 @@ export class CreateTaskDto {
     @IsString()
     priority: Priority;
     
+    @IsOptional()
+    checkList: CheckList[];
 }
 
 export class UpdateTaskDto {
@@ -69,23 +68,19 @@ export class UpdateTaskDto {
     dueDate?: Date;
 
     @IsOptional()
-    @IsDateString()
-    deadline?: Date;
-
-    @IsOptional()
-    @IsDateString()
-    startDate?: Date;
-
-    @IsOptional()
     @IsString()
     status?: string;
 
     @IsOptional()
-    assignedTo?: User[];
+    assignedTo?: User;
 
     @IsOptional()
     tags: Tag[];
 
     @IsOptional()
     priority?: Priority;
+
+    @IsOptional()
+    checkList?: CheckList[];
+
 }

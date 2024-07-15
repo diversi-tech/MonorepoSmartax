@@ -1,67 +1,165 @@
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <label for="searchName">Search by Name & businessName:</label>
-       
-        <p-autoComplete [(ngModel)]="selectedClient" [suggestions]="filteredClients"
-          (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
-          [minLength]="1" placeholder="Search clients" field="name" [dropdown]="true">
-
-          <ng-template let-client pTemplate="item">
-            client name - {{ client.name }} | client.businessName - {{ client.businessName }}
-          </ng-template>
-          
-        </p-autoComplete>
-        <p-button  label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
-      </div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <label for="searchName">Search by Name & businessName:</label>
+      <!-- <p-button
+        label="סוגי לקוח"
+        routerLink="clientCommunicationLogs"
+        routerLinkActive="active"
+      ></p-button> -->
+      <p-autoComplete
+        [(ngModel)]="selectedClient"
+        [suggestions]="filteredClients"
+        (completeMethod)="filterClientsByNameAndBusinessName($event.query)"
+        (onSelect)="selectClient($event)"
+        [minLength]="1"
+        placeholder="Search clients"
+        field="name"
+        [dropdown]="true"
+      >
+        <ng-template let-client pTemplate="item">
+          client name - {{ client.name }} | client.businessName -
+          {{ client.businessName }}
+        </ng-template>
+      </p-autoComplete>
+      
     </div>
-  
-    <h1>filter by</h1>
-    <select (change)="onSelectionChange($event)">
-      <option value="option1">all clients</option>
-      <option value="option2">contactInfo</option>
-      <option value="option3">source</option>
-      <option value="option4">status</option>
-      <option value="option5">createdDate</option>
-    </select>
-    <input *ngIf="isSelected == 2" type="text" placeholder="contactInfo" [(ngModel)]="filterNumber"
-      (input)="filterClientsByNumber()" />
-    <input *ngIf="isSelected == 3" type="text" placeholder="source" />
-    <input *ngIf="isSelected == 4" type="text" placeholder="status" />
-    <input *ngIf="isSelected == 5" type="text" placeholder="createdDate" />
-  
-    <h3>Clients List</h3>
-    <p-table [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients "
-      [tableStyle]="{'min-width': '80rem'}">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th>name</th>
-          <th>tag</th>
-          <th>contactInfo</th>
-          <th>businessName</th>
-          <th>source</th>
-          <th>status</th>
-          <th>createdDate</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-client let-columns="columns">
-        <tr (click)="selectClientFromList(client)">
-          <td>{{client.name}}</td>
-          <td>
-            <span class="pi pi-tag" [style.color]="client.tag?.color || '#000'"></span>
-          </td>
-          <td>{{client.contactInfo}}</td>
-          <td>{{client.businessName}}</td>
-          <td>{{client.source}}</td>
-          <td>{{client.status}}</td>
-          <td>{{client.createdDate}}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  
-    <button class="styleCliennt" (click)="openContactFormDialog()">הוספת לקוח חדש</button>
-    <app-add-client *ngIf="displayDialog" (close)="closeDialog()"></app-add-client>
-  
-    <router-outlet></router-outlet>
+    <p-button  label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
+
   </div>
-  
+
+  <h1>filter by</h1>
+  <select (change)="onSelectionChange($event)">
+    <option value="option1">all clients</option>
+    <option value="option2">contactInfo</option>
+    <option value="option3">source</option>
+    <option value="option4">status</option>
+    <option value="option5">createdDate</option>
+  </select>
+  <input
+    *ngIf="isSelected == 2"
+    type="text"
+    placeholder="contactInfo"
+    [(ngModel)]="filterNumber"
+    (input)="filterClientsByNumber()"
+  />
+  <input *ngIf="isSelected == 3" type="text" placeholder="source" />
+  <input *ngIf="isSelected == 4" type="text" placeholder="status" />
+  <input *ngIf="isSelected == 5" type="text" placeholder="createdDate" />
+  <br />
+
+  <button
+    *ngIf="!isChoosedAllClient"
+    pButton
+    (click)="$event.stopPropagation(); chooseAllClients()"
+    label="בחר הכל"
+  ></button>
+  <button
+    *ngIf="isChoosedAllClient"
+    pButton
+    (click)="removeAllClients()"
+    label="הסר הכל"
+  ></button>
+  <button
+    *ngIf="this.choosedClients.length > 0"
+    pButton
+    type="button"
+    icon="pi pi-star"
+    label="להוספה למועדפים"
+    (click)="$event.stopPropagation(); addFavoritesClient()"
+  ></button>
+  <button
+    *ngIf="this.choosedClients.length > 0"
+    pButton
+    type="button"
+    icon="pi pi-trash"
+    label="מחיקה"
+    class="p-button-danger"
+    (click)=" $event.stopPropagation(); showConfirmation()"
+  ></button>
+
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
+    <p-footer>
+      <button
+        type="button"
+        pButton
+        icon="pi pi-times"
+        label="Cancel"
+        class="p-button-text"
+        (click)="cancelDelete()"
+      ></button>
+      <button
+        type="button"
+        pButton
+        icon="pi pi-check"
+        label="Delete"
+        class="p-button-text"
+        (click)="confirmDelete()"
+      ></button>
+    </p-footer>
+  </p-confirmDialog>
+
+  <h3>Clients List</h3>
+  <p-table
+    [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients"
+    [tableStyle]="{ 'min-width': '80rem' }"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th></th>
+        <th></th>
+        <th>name</th>
+        <th>tag</th>
+        <th>contactInfo</th>
+        <th>businessName</th>
+        <th>source</th>
+        <th>status</th>
+        <th>createdDate</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-client let-columns="columns">
+      <tr (click)="selectClientFromList(client)">
+        <td>
+          <input
+            type="checkbox"
+            [checked]="isClientChoosed(client)"
+            (click)="
+              $event.stopPropagation();
+              updateChoosedClients(client, $event.target.checked)
+            "
+          />
+        </td>
+        <td>
+          <i
+            [style.color]="isFavoriteClient(client) ? 'yellow' : '#000'"
+            [ngClass]="'isFavoriteClient(client)' ? 'pi pi-star-fill' : ''"
+            class="pi pi-star"
+            (click)="$event.stopPropagation(); isFavoriteClient(client)?removeFromFavorite(client):addToFavorite(client)"
+          ></i>
+        </td>
+        <td>{{ client.name }}</td>
+        <td>
+          <span
+            class="pi pi-tag"
+            [style.color]="client.tag?.color || '#000'"
+          ></span>
+        </td>
+        <td>{{ client.contactInfo }}</td>
+        <td>{{ client.businessName }}</td>
+        <td>{{ client.source }}</td>
+        <td>{{ client.status }}</td>
+        <td>{{ client.createdDate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <button class="styleCliennt" (click)="openContactFormDialog()">
+    הוספת לקוח חדש
+  </button>
+  <app-add-client
+    *ngIf="displayDialog"
+    (close)="closeDialog()"
+  ></app-add-client>
+
+  <router-outlet></router-outlet>
+</div>
