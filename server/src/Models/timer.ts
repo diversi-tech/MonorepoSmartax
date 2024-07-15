@@ -9,10 +9,13 @@ export class Timer extends Document{
     userId: Types.ObjectId;
 
     @Prop()
-    start: Date;
+    hours: number;
 
     @Prop()
-    end: Date;
+    minutes: number;
+
+    @Prop()
+    seconds: number;
 }
 
 export const TimerModel = SchemaFactory.createForClass(Timer);
