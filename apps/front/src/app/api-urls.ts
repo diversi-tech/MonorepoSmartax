@@ -11,4 +11,5 @@ export const STATUS_ENDPOINT = `${API_URL}/Status`;
 export const TAG_ENDPOINT = `${API_URL}/tags`;
 export const YEARLYREPORT = `${API_URL}/yearly-reports`;
 export const YEAR = `${API_URL}/year`;
+export const TIMER_ENDPOINT = `${API_URL}/timer`;
 

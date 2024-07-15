@@ -31,20 +31,20 @@
     <form name="form" ng-submit="addTask()">
       <div>
         <input type="text" name="task" placeholder="Add a new task" ng-model="newTask" required>
-        <button ng-disabled="form.$invalid">Add task</button>
+        <button ng-disabled="form.invalid">הוספת משימה</button>
       </div>
     </form>
   
     <ul>
-      <li *ngFor="task in tasks track by $index" ng-class="{'completed': task.done}">
+      <li *ngFor="let task of tasks" ng-class="{'completed': task.done}">
         <span>{{ task.title }}</span>
-        <input type="checkbox" id="{{ 'task-' + $index }}" ng-model="task.done">
-        <label for="{{ 'task-' + $index }}"></label>
+        <input type="checkbox" id="{{ 'task-'}}" ng-model="task.done">
+        <label for="{{ 'task-' }}"></label>
       </li>
     </ul>
   
-    <p ng-show="!(tasks | filter: { title: '' }).length" class="all-complete">All tasks have been completed.</p>
+    <p ng-show="!(tasks | filter: { title: '' }).length" class="all-complete">כל המשימות הושלמו</p>
   
-    <button ng-click="clearCompleted()">Clear completed tasks</button>
+    <button ng-click="clearCompleted()">מחק משימות שהושלמו</button>
   </div>
   
