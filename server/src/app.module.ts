@@ -157,7 +157,8 @@ import { CheckListController } from './controller/checkList/checkList.controller
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
   }),
   MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
-    JwtModule
+    JwtModule,
+    MongooseModule.forFeature([{name:Year.name, schema:YearModel}]),
   ],
   controllers: [
     WorkLogController,
@@ -184,6 +185,12 @@ import { CheckListController } from './controller/checkList/checkList.controller
     PaymentDetailsController,
     PaymentController,
     TimerController,
+    CommunicationArchiveController,
+    YearController,
+    YearlyReportController,
+    StepFieldController,
+
+
   ],
 
 
