@@ -88,9 +88,8 @@ export class ClientSearchComponent implements OnInit {
 
   selectClient(event: AutoCompleteSelectEvent): void {
     const client = event.value as Client;
-    this.router.navigate(['/clientSearch/clientManagement'], {
-      state: { client },
-    });
+    this.router.navigate(['/clientSearch/clientManagement'], { state: { client } });
+    
   }
 
   selectClientFromList(client: Client): void {

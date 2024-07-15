@@ -18,6 +18,8 @@ export const RoleGuard = (requiredLevel: number) => {
           throw new HttpException('Forbidden - Insufficient Role Level', HttpStatus.FORBIDDEN);
         }
       } catch (error) {
+      console.log("error in roleGuard:\n"+error);
+
         throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
       }
     }

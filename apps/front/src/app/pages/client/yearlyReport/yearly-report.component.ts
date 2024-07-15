@@ -7,13 +7,15 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { Observable } from 'rxjs';
 import { YearlyReport } from '../../../_models/yearlyReport.module';
 import { YearlyReportService } from '../../../_services/yearlyReport.service';
-
-
+import { Button, ButtonModule } from 'primeng/button';
+import { Route, Router, RouterOutlet } from '@angular/router';
+import { TableModule } from 'primeng/table';
+import { Client } from '../../../_models/client.module';
 
 @Component({
   selector: 'app-yearly-report',
   standalone: true,
-  imports: [CommonModule,StepperModule,CheckboxModule],
+  imports: [CommonModule,StepperModule,CheckboxModule,Button,RouterOutlet,TableModule,ButtonModule],
   templateUrl: './yearly-report.component.html',
   styleUrl: './yearly-report.component.css',
 })
@@ -22,26 +24,36 @@ import { YearlyReportService } from '../../../_services/yearlyReport.service';
   providedIn: 'root' // Ensure it's provided in root or a specific module
 })
 export class YearlyReportComponent implements OnInit {
-  constructor(private stepFieldsService: stepFieldService,private yearlyReportService: YearlyReportService) {
+  constructor(private stepFieldsService: stepFieldService,private yearlyReportService: YearlyReportService,private router: Router) {
      this.loadTasks();
   }
   steps: any[];
   allYearlyReport: YearlyReport[]=[];
+  employeName: Client;
   ngOnInit(): void {
    this.getYearlyReportsForClient();
+   this.employeName=history.state.client;
+   console.log(this.allYearlyReport)
+   console.log(this.employeName)
+
   }
 
 
   getYearlyReportsForClient(): void {
-    const clientId = history.state.client.id; // Assuming the client ID is passed via the state
+    const clientId = history.state.client._id; // Assuming the client ID is passed via the state
     this.yearlyReportService.getYearlyReportsForClient(clientId).subscribe(
       (reports) => {
+        console.log(reports)
         this.allYearlyReport = reports;
       },
       (error) => {
         console.error('Error fetching yearly reports for client', error);
       }
     );
+  }
+  createReprtTag():void{
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/createYearlyReport']);
+    
   }
  
   activeIndex: number = 0;
@@ -78,5 +90,10 @@ export class YearlyReportComponent implements OnInit {
   // toggleTaskCompletion(task: Task) {
   //   task.isCompleted = !task.isCompleted;
   // }
+
+  goToSteps(task: any){
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps'], { state: { data: task } });
+
+  }
 
 }
