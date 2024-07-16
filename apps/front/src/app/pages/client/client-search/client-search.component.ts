@@ -4,12 +4,9 @@ import { ClientService } from '../../../_services/client.service';
 import { FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { ConfirmationService, PrimeNGConfig, PrimeTemplate } from 'primeng/api';
-import {
-  AutoCompleteModule,
-  AutoCompleteSelectEvent,
-} from 'primeng/autocomplete';
-import { CommonModule, NgIf } from '@angular/common';
-import { ActivatedRoute, Router, RouterOutlet,RouterLink, } from '@angular/router';
+import { AutoCompleteModule, AutoCompleteSelectEvent,} from 'primeng/autocomplete';
+import { NgIf } from '@angular/common';
+import { Router, RouterOutlet, RouterLink, } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
@@ -17,7 +14,6 @@ import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { cl } from '@fullcalendar/core/internal-common';
 
 @Component({
   selector: 'app-client-search',
@@ -55,9 +51,8 @@ export class ClientSearchComponent implements OnInit {
     private tokenService: TokenService,
     private router: Router,
     private primengConfig: PrimeNGConfig,
-    private route: ActivatedRoute,
     private confirmationService: ConfirmationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
@@ -158,14 +153,15 @@ export class ClientSearchComponent implements OnInit {
   isClientChoosed(client: Client): boolean {
     return this.choosedClients.includes(client);
   }
+  
 isFavoriteClient(client:Client){
-  return this.user.favorites.find(c=>c._id===client._id)!=undefined;
+  return this.user.favoritesClient.find(c=>c._id===client._id)!=undefined;
 }
   addFavoritesClient() {
-    this.user.favorites.push(...this.choosedClients.filter(c=>!this.isFavoriteClient(c)))
+    this.user.favoritesClient.push(...this.choosedClients.filter(c=>!this.isFavoriteClient(c)))
     this.updateFavorite();
   }
-  updateFavorite(){
+  updateFavorite() {
     this.userService
       .update(
         this.user._id,
@@ -173,7 +169,7 @@ isFavoriteClient(client:Client){
         this.user.email,
         this.user.passwordHash,
         this.user.role,
-        this.user.favorites
+        this.user.favoritesClient
       )
       .subscribe({
         next: (response: any) => {
@@ -185,14 +181,15 @@ isFavoriteClient(client:Client){
       });
   }
 removeFromFavorite(client:Client){
-  this.user.favorites=this.user.favorites.filter(c=>c._id!=client._id);
+  this.user.favoritesClient=this.user.favoritesClient.filter(c=>c._id!=client._id);
   this.updateFavorite();
 }
 addToFavorite(client:Client){
-  this.user.favorites.push(client);
+  this.user.favoritesClient.push(client);
   this.updateFavorite();
 }
   showConfirmation(): void {
+    debugger
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this clients?',
       header: 'Confirmation',
@@ -218,8 +215,9 @@ addToFavorite(client:Client){
   cancelDelete(): void {
     this.confirmationService.close();
   }
+
   @HostListener('document:click')
   onDocumentClick() {
-    this.choosedClients=[];
+    this.choosedClients = [];
   }
 }
