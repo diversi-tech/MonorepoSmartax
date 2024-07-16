@@ -7,5 +7,5 @@ export interface User {
   email: string;
   passwordHash: string;
   role: string;
-  favorites:Client[];
+  favoritesClient:Client[];
 }
