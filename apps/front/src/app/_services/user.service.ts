@@ -39,7 +39,7 @@ export class UserService {
       httpOptions
     );
   }
-  update(id: string, userName: string, email: string, passwordHash: string, role: Role,favorites:Client[]) {
+  update(id: string, userName: string, email: string, passwordHash: string, role: string,favorites:Client[]) {
     const user = {
       "id": id,
       "userName": userName,

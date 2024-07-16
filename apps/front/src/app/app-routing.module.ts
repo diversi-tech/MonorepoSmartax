@@ -43,9 +43,10 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
 import { MonthlyReportComponent } from './pages/client/monthly-report/monthly-report.component';
 import { TaxRefundsComponent } from './pages/client/tax-refunds/tax-refunds.component';
 import { FinancialStatementComponent } from './pages/client/financial-statement/financial-statement.component';
-import { YearlyReportComponent } from './pages/client/client-yearlyReport/yearly-report.component';
-import { CreateYearlyReportComponent } from './pages/client/client-create-yearly-report/create-yearly-report.component';
-import { YearlyReportStepsComponent } from './pages/client/client-yearly-report-steps/yearly-report-steps.component';
+import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report.component';
+import { CreateYearlyReportComponent } from './pages/client/create-yearly-report/create-yearly-report.component';
+import { YearlyReportStepsComponent } from './pages/client/yearly-report-steps/yearly-report-steps.component';
+import { PaymentComponent } from './pages/payment/payment.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -97,6 +98,8 @@ import { YearlyReportStepsComponent } from './pages/client/client-yearly-report-
     ]
   },
   { path: 'employeesTable', component: EmployeesTableComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'עובדים', icon: icons.employees } },
+  { path: 'payment', component: PaymentComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'כרטיס גביה', icon: icons.employees } },
+
   { path: '', redirectTo: 'home', pathMatch: 'full', data: { forToolbar: false, label: '#', icon: '' } },
  // { path: 'communicationLogs', component: CommunicationLogsComponent, data: { authType: 6, forToolbar: true, label: 'Communication Logs', icon: icons.comment } },
   { path: 'clientSearch', component: ClientSearchComponent, data: { authType: 3, forToolbar: false, label: 'חיפשו לקוח', icon: icons.search } },
