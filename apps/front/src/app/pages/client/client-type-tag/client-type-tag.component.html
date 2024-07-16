@@ -4,7 +4,7 @@
         <div class="button-list">
         <button
         *ngFor="let button of buttons; let i = index"
-        (click)="getFields(button.id)"
+        (click)="sendSelectedButton(button.id)"
         [style]="{
           'background-color': getColor(button.text),
           color: '#fff'
@@ -20,9 +20,6 @@
           x
         </span>
       </button>
-    </div>
-    <div *ngIf="selectedFields.length >0">
-      <app-client-field *ngFor="let field of selectedFields" [key]="field.key" [type]="field.type"></app-client-field>
     </div>
     </p-inputGroup>
   </div>

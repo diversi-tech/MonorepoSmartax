@@ -7,11 +7,11 @@ import { Field } from '../field.model';
 
 export class CreateClientFieldDto {
 
-    @ApiProperty({ type: Array<Field>, required: true })
+    @ApiProperty()//{ type: Field, required: true }
     @IsOptional()
     field?: Field;
 
-    @ApiProperty({ type: String })
+    @ApiProperty()
     @IsNotEmpty()
     @IsString()
     value: string;
@@ -26,7 +26,7 @@ export class UpdateClientFieldDto {
     id: string;
 
 
-    @ApiProperty({ type: Array<Field>, required: true })
+    @ApiProperty({ type: Field, required: true })
     @IsOptional()
     field?: Field;
 

@@ -10,3 +10,4 @@ export const CLIENT_ENDPOINT = `${API_URL}/clients`;
 export const STATUS_ENDPOINT = `${API_URL}/Status`;
 export const TAG_ENDPOINT = `${API_URL}/tags`;
 export const YEARLYREPORT = `${API_URL}/yearlyReport`;
+export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;

@@ -13,12 +13,25 @@ export class ClientFieldService {
     async createClientField(createClientFieldDto: CreateClientFieldDto): Promise<ClientField> {
         const { field , value} = createClientFieldDto;
 
-        if (!field || !value ) {
-          throw new ValidationException('Missing required fields');
-        }
+        // if (!field || !value ) {
+        //   throw new ValidationException('Missing required fields');
+        // }
+        console.log("service ClientField\n");
         
-        const createdClientField = new this.clientFieldModel({field , value });
-        return await createdClientField.save();
+        console.log(typeof(field));
+        console.log(JSON.stringify(field)+"\n");
+        
+        console.log(typeof(field.type_));
+
+        console.log(field.type_);
+        
+        
+        const ccf = new this.clientFieldModel(createClientFieldDto);
+        
+        return await ccf.save();
     }
 
+    async getALLClientFields(): Promise<ClientField[]> {
+      return await this.clientFieldModel.find().exec();
+  }
 }

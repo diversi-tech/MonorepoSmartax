@@ -113,6 +113,7 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
+      { path: 'clientField' , component:ClientFieldComponent},
       { path: 'yearlyReport', component: YearlyReportComponent },
 
     ]

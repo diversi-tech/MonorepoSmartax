@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClientTypeService } from '../../../_services/clientType.service';
 import { Observable } from 'rxjs';
@@ -84,16 +84,10 @@ export class ClientTypeTagComponent implements OnInit {
   //     });
   //   }
   // }
-  getFields(buttonId: string) {
-    const clientType = this.clientTypes.find(ct => ct._id === buttonId);
-    if (clientType) {
-      this.selectedFields = clientType.fields.map(field => ({
-        key: field.key,
-        type: field.type
-      }));
-      console.log(this.selectedFields);
-      
-    }
+  @Output() selectedButton = new EventEmitter<string>();
+
+  sendSelectedButton(buttonId: string) {
+    this.selectedButton.emit(buttonId);
   }
 
 
