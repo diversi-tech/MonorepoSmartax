@@ -11,7 +11,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-client>
         <tr (click)="openClientPayment()">
-          <td>{{ client.name }}</td>
+          <td>{{ client.firstName }}</td>
           <td>{{ client.serviceStartDate }}</td>
           <td>{{ client.totalDebtAmount }}</td>
         </tr>
@@ -31,7 +31,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-client>
         <tr (click)="openClientPaymentHistory()">
-          <td>{{ client.name }}</td>
+          <td>{{ client.firstName }}</td>
           <td>{{ client.returnedHOCNumber }}</td>
           <td>{{ client.totalDebtAmount }}</td>
         </tr>

@@ -312,7 +312,7 @@
           <div (click)="showClients = !showClients">
             <app-icon-profile
               *ngIf="selectedClient"
-              [userName]="selectedClient.name"
+              [userName]="selectedclient.firstName"
             ></app-icon-profile>
           </div>
         </p-inputGroup>
@@ -367,10 +367,10 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
               <app-icon-profile
-                [userName]="client.name"
+                [userName]="client.firstName"
                 [email]="client.email"
               ></app-icon-profile>
-              <span style="margin-left: 5%;">{{ client.name && client.name }}</span>
+              <span style="margin-left: 5%;">{{ client.firstName && client.firstName }}</span>
             </div>
           </div>
         </ng-template>
