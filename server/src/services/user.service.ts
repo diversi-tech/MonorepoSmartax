@@ -27,8 +27,8 @@ export class UserService {
     if (!userName || !email || !passwordHash || !role) {
       throw new ValidationException('Missing required fields');
     }
-    const favorites: Client[]=[];
-    const createdUser = new this.userModel({ userName, email, passwordHash, role,favorites });
+    const favoritesClient: Client[]=[];
+    const createdUser = new this.userModel({ userName, email, passwordHash, role,favoritesClient });
     
     return await createdUser.save();
   }
@@ -46,11 +46,11 @@ export class UserService {
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const { userName, email, passwordHash, role,favorites } = updateUserDto;
+    const { userName, email, passwordHash, role,favoritesClient } = updateUserDto;
 
     const updatedUser = await this.userModel.findByIdAndUpdate(
       id,
-      { userName, email, passwordHash, role, favorites },
+      { userName, email, passwordHash, role, favoritesClient: favoritesClient },
       { new: true }
     ).exec();
 

@@ -46,13 +46,16 @@ export class YearlyReportService {
   
  
 
-  // Update an existing yearly report
-  updateYearlyReport(id:string ,yearlyReport: YearlyReport): Observable<YearlyReport> {
-    return this.http.post<YearlyReport>(`${this.apiUrl}/update/${id}`, yearlyReport)
-      .pipe(
-        catchError(this.handleError<YearlyReport>('updateYearlyReport'))
-      );
- }
+// Update an existing yearly report
+async updateYearlyReport(id: string, yearlyReport: YearlyReport): Promise<YearlyReport> {
+  try {
+      const response = await this.http.post<YearlyReport>(`${this.apiUrl}/update/${id}`, yearlyReport).toPromise();
+      return response;
+  } catch (error) {
+      this.handleError<YearlyReport>('updateYearlyReport', error);
+      throw error; // Re-throw the error if needed
+  }
+}
 
     // Delete a yearly report by ID
   deleteYearlyReport(id: string): Observable<boolean> {

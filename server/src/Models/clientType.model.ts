@@ -13,7 +13,7 @@ export class ClientType extends Document {
     @Prop({type:Array<Field>})
     fields:Field[];
 
-   
+
 }
 
 export const ClientTypeModel = SchemaFactory.createForClass(ClientType);
