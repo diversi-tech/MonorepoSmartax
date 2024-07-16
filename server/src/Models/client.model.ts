@@ -3,6 +3,7 @@ import { Document, Types } from 'mongoose';
 import { SensitiveData } from './sensitiveData.model';
 import { User } from './user.model';
 import { decrypt } from '../services/encrypt.service';
+import { Tag } from './tag.model';
 
 export enum ReportType {
   Monthly = 'מדווח חודשי',
@@ -97,5 +98,7 @@ export class Client extends Document {
 
   @Prop()
   isOpenAccountWithUs: boolean;
+  @Prop()
+  tag: Tag;
 }
 export const ClientModel = SchemaFactory.createForClass(Client);

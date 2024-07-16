@@ -10,22 +10,27 @@ import { ReportType } from '../client.model';
 
 export class CreateClientDto {
     @ApiProperty({ example: 'ACME Corporation' })
+    @IsOptional()
     @IsString()
     companyName: string;
 
     @ApiProperty({ example: 'John' })
+    @IsOptional()
     @IsString()
     firstName: string;
 
     @ApiProperty({ example: 'Doe' })
+    @IsOptional()
     @IsString()
     lastName: string;
 
     @ApiProperty({ example: 'Jane Smith' })
+    @IsOptional()
     @IsString()
     contactPersonName: string;
 
     @ApiProperty({ example: '123456' })
+    @IsOptional()
     @IsString()
     tz: string;
 

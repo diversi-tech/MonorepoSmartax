@@ -74,7 +74,10 @@ import { DocTypeService } from './services/docTypes.service';
 import { DocType, docTypeModel } from './Models/docType.model';
 import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
 import { CallTopicService } from './services/callTopicSchema.service';
-import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
+import {
+  callTopicSchema,
+  callTopicSchemaModel,
+} from './Models/callTopicSchema.model';
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
@@ -90,10 +93,16 @@ import { Frequency, frequencyModel } from './Models/frequency.model';
 import { FrequencyService } from './services/frequency.service';
 import { PaymentMethodController } from './controller/paymentMethod/paymentMethod.controller';
 import { PaymentMethodService } from './services/PaymentMethod.service';
-import { PaymentMethod, PaymentMethodModel } from './Models/paymentMethod.model';
+import {
+  PaymentMethod,
+  PaymentMethodModel,
+} from './Models/paymentMethod.model';
 import { PaymentDetailsController } from './controller/paymentDetails/paymentDetails.controller';
 import { PaymentDetailsService } from './services/paymentDetails.service';
-import { PaymentDetails, PaymentDetailsModel } from './Models/paymentDetails.model';
+import {
+  PaymentDetails,
+  PaymentDetailsModel,
+} from './Models/paymentDetails.model';
 import { PaymentService } from './services/payment.service';
 import { PaymentController } from './controller/payment/payment.controller';
 import { Payment, PaymentModel } from './Models/payment.model';
@@ -102,31 +111,42 @@ import { YearlyReportController } from './controller/yearlyReport/yearlyReport.c
 import { StepFieldService } from './services/stepField.service';
 import { YearlyReportService } from './services/yearlyReport.service';
 import { StepField, stepFieldModel } from './Models/stepField.model';
-import { YearlyReport, YearlyReportstModel } from './Models/yearlyReports.model';
+import {
+  YearlyReport,
+  YearlyReportstModel,
+} from './Models/yearlyReports.model';
 import { Year, YearModel } from './Models/year.model';
 import { YearService } from './services/year.service';
 import { YearController } from './controller/year/year.controller';
-import { CheckListItem, CheckListItemModel } from './Models/checkListItem.model';
+import {
+  CheckListItem,
+  CheckListItemModel,
+} from './Models/checkListItem.model';
 import { CheckList, CheckListModel } from './Models/checkList.model';
 import { CheckListService } from './services/checkList.service';
 import { CheckListItemService } from './services/checkListItem.service';
 import { CheckListItemController } from './controller/checkListItem/checkListItem.controller';
 import { CheckListController } from './controller/checkList/checkList.controller';
 import { SensitiveDataController } from './controller/sensitiveData/sensitiveData.controller';
-import { SensitiveData, SensitiveDataModel } from './Models/sensitiveData.model';
+import {
+  SensitiveData,
+  SensitiveDataModel,
+} from './Models/sensitiveData.model';
 import { SensitiveDataService } from './services/sensitiveData.service';
 
 @Module({
-    imports: [
+  imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URI),
-  MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
+    MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
-     MongooseModule.forFeature([
+    MongooseModule.forFeature([
       { name: ClientType.name, schema: ClientTypeModel },
     ]),
     MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
-    MongooseModule.forFeature([{ name: SensitiveData.name, schema: SensitiveDataModel }]),
+    MongooseModule.forFeature([
+      { name: SensitiveData.name, schema: SensitiveDataModel },
+    ]),
 
     MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
     MongooseModule.forFeature([
@@ -136,48 +156,72 @@ import { SensitiveDataService } from './services/sensitiveData.service';
       { name: Communication.name, schema: communicationModel },
     ]),
     MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
-    MongooseModule.forFeature([
-      { name: Docs.name, schema: DocumentsModel },
-    ]),
-  MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
+    MongooseModule.forFeature([{ name: Docs.name, schema: DocumentsModel }]),
+    MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
     MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
     MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
-     MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
-     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
-     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-  MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel }]),
-  MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel }]),
-  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
-  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
-
-  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-  MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel }]),
-
-  MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
-  MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel }]),
-  MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel }]),
-  MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
-  MongooseModule.forFeature([{ name: Timer.name, schema:TimerModel }]),
-  ServeStaticModule.forRoot({
-    rootPath: path.join(__dirname, '../uploads'),
-    serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
-  }),
-  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
-  MongooseModule.forFeature([{ name: StepField.name, schema: stepFieldModel }]),
-  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
-  MongooseModule.forFeature([{ name: YearlyReport.name, schema: YearlyReportstModel }]),
-  MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]), MongooseModule.forFeature([{ name: CheckListItem.name, schema:CheckListItemModel }]),
- MongooseModule.forFeature([{ name: CheckList.name, schema:CheckListModel }]),
-     MongooseModule.forFeature([
-      {  name: CommunicationArchive.name, schema:  communicationArchiveModel  },
+    MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+    MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+    MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+    MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel }]),
+    MongooseModule.forFeature([
+      { name: callTopicSchema.name, schema: callTopicSchemaModel },
     ]),
-      JwtModule,
+    MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+    MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+
+    MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+    MongooseModule.forFeature([
+      { name: callTopicSchema.name, schema: callTopicSchemaModel },
+    ]),
+
+    MongooseModule.forFeature([
+      { name: Frequency.name, schema: frequencyModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: PaymentMethod.name, schema: PaymentMethodModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: PaymentDetails.name, schema: PaymentDetailsModel },
+    ]),
+    MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
+    MongooseModule.forFeature([{ name: Timer.name, schema: TimerModel }]),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '../uploads'),
+      serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+    }),
+    MongooseModule.forFeature([
+      { name: CommunicationArchive.name, schema: communicationArchiveModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: StepField.name, schema: stepFieldModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: CommunicationArchive.name, schema: communicationArchiveModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: YearlyReport.name, schema: YearlyReportstModel },
+    ]),
+    MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]),
+    MongooseModule.forFeature([
+      { name: CheckListItem.name, schema: CheckListItemModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: CheckList.name, schema: CheckListModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: CommunicationArchive.name, schema: communicationArchiveModel },
+    ]),
+    JwtModule,
   ],
   controllers: [
     WorkLogController,
     AppController,
-    CheckListItemController, CheckListController, FieldController,
-    ClientTypeController, CallTopicController,
+    CheckListItemController,
+    CheckListController,
+    FieldController,
+    ClientTypeController,
+    CallTopicController,
     UserController,
     PriorityController,
     ClientController,
@@ -192,7 +236,8 @@ import { SensitiveDataService } from './services/sensitiveData.service';
     TasksController,
     TagController,
     MeetController,
-    StatusController, DocTypeController,
+    StatusController,
+    DocTypeController,
     FrequencyController,
     PaymentMethodController,
     PaymentDetailsController,
@@ -202,11 +247,8 @@ import { SensitiveDataService } from './services/sensitiveData.service';
     YearController,
     YearlyReportController,
     StepFieldController,
-    SensitiveDataController
-
+    SensitiveDataController,
   ],
-
-
 
   providers: [
     WorkLogService,
@@ -249,11 +291,9 @@ import { SensitiveDataService } from './services/sensitiveData.service';
     StepFieldService,
     YearlyReportService,
     YearService,
-
-
   ],
 })
-export class AppModule { }
+export class AppModule {}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

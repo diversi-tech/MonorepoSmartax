@@ -22,7 +22,8 @@ export interface Client {
   email: string;
   address: string;
   encryptedPasswords: SensitiveData[];
-  comments: string; lastUserUpdate: User;
+  comments: string; 
+  lastUserUpdate: User;
   assignTo: User[];
   clientId: number;
   dateOfBirth: Date;
