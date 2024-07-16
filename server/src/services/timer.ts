@@ -15,18 +15,19 @@ export class TimerService {
     @InjectModel('Task') private readonly TaskModel: Model<Task>) { }
 
     async createTimer(createTimerDto: CreateTimerDto): Promise<Timer> {
-        const { taskId, userId, start, end } = createTimerDto;
+        const { taskId, userId, hours, minutes, seconds } = createTimerDto;
         await this.validateReferences(createTimerDto.userId, createTimerDto.taskId);
 
-        if (!taskId || !userId || !start || !end) {
+        if (!taskId || !userId) {
             throw new ValidationException('Missing required fields');
         }
         
         const createTimer = new this.TimerModel({
             taskId,
             userId,
-            start,
-            end});
+            hours,
+            minutes,
+            seconds});
 
         try{
             return await createTimer.save();

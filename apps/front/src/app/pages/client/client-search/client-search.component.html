@@ -22,12 +22,13 @@
           {{ client.businessName }}
         </ng-template>
       </p-autoComplete>
-      <p-button  label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
-
+      
     </div>
+    <p-button  label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
+
   </div>
 
-  <h1>filter by</h1>
+  <h1>מיין לפי</h1>
   <select (change)="onSelectionChange($event)">
     <option value="option1">all clients</option>
     <option value="option2">contactInfo</option>
@@ -47,118 +48,54 @@
   <input *ngIf="isSelected == 5" type="text" placeholder="createdDate" />
   <br />
 
-  <button
-    *ngIf="!isChoosedAllClient"
-    pButton
-    (click)="$event.stopPropagation(); chooseAllClients()"
-    label="בחר הכל"
-  ></button>
-  <button
-    *ngIf="isChoosedAllClient"
-    pButton
-    (click)="removeAllClients()"
-    label="הסר הכל"
-  ></button>
-  <button
-    *ngIf="this.choosedClients.length > 0"
-    pButton
-    type="button"
-    icon="pi pi-star"
-    label="להוספה למועדפים"
-    (click)="$event.stopPropagation(); addFavoritesClient()"
-  ></button>
-  <button
-    *ngIf="this.choosedClients.length > 0"
-    pButton
-    type="button"
-    icon="pi pi-trash"
-    label="מחיקה"
-    class="p-button-danger"
-    (click)=" $event.stopPropagation(); showConfirmation()"
-  ></button>
+  <button *ngIf="!isChoosedAllClient" pButton (click)="$event.stopPropagation(); chooseAllClients()"label="בחר הכל"></button>
+  <button *ngIf="isChoosedAllClient" pButton (click)="removeAllClients()" label="הסר הכל"></button>
+  <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים" (click)="$event.stopPropagation(); addFavoritesClient()" ></button>
+  <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה" class="p-button-danger" (click)=" $event.stopPropagation(); showConfirmation()" ></button>
 
   <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
     <p-footer>
-      <button
-        type="button"
-        pButton
-        icon="pi pi-times"
-        label="Cancel"
-        class="p-button-text"
-        (click)="cancelDelete()"
-      ></button>
-      <button
-        type="button"
-        pButton
-        icon="pi pi-check"
-        label="Delete"
-        class="p-button-text"
-        (click)="confirmDelete()"
-      ></button>
+      <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text" (click)="cancelDelete()" ></button>
+      <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text" (click)="confirmDelete()" ></button>
     </p-footer>
   </p-confirmDialog>
 
   <h3>Clients List</h3>
-  <p-table
+  <p-table dir="rtl"
     [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients"
-    [tableStyle]="{ 'min-width': '80rem' }"
-  >
+    [tableStyle]="{ 'min-width': '80rem' }">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th></th>
         <th></th>
-        <th>name</th>
-        <th>tag</th>
-        <th>contactInfo</th>
-        <th>businessName</th>
-        <th>source</th>
-        <th>status</th>
-        <th>createdDate</th>
+        <th></th>
+        <th>שם החברה</th>
+        <th>שם פרטי</th>
+        <th>שם משפחה</th>
+        <th>תעודת זהות</th>
+        <th>טלפון</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-client let-columns="columns">
       <tr (click)="selectClientFromList(client)">
         <td>
-          <input
-            type="checkbox"
-            [checked]="isClientChoosed(client)"
-            (click)="
-              $event.stopPropagation();
-              updateChoosedClients(client, $event.target.checked)
-            "
-          />
+          <input type="checkbox" [checked]="isClientChoosed(client)" (click)=" $event.stopPropagation(); updateChoosedClients(client, $event.target.checked)"/>
         </td>
         <td>
-          <i
-            [style.color]="isFavoriteClient(client) ? 'yellow' : '#000'"
-            [ngClass]="'isFavoriteClient(client)' ? 'pi pi-star-fill' : ''"
-            class="pi pi-star"
-            (click)="$event.stopPropagation(); isFavoriteClient(client)?removeFromFavorite(client):addToFavorite(client)"
-          ></i>
+          <i [style.color]="isFavoriteClient(client) ? 'yellow' : '#000'" [ngClass]="'isFavoriteClient(client)' ? 'pi pi-star-fill' : ''" class="pi pi-star" (click)="$event.stopPropagation(); isFavoriteClient(client)?removeFromFavorite(client):addToFavorite(client)"></i>
         </td>
-        <td>{{ client.name }}</td>
-        <td>
-          <span
-            class="pi pi-tag"
-            [style.color]="client.tag?.color || '#000'"
-          ></span>
-        </td>
-        <td>{{ client.contactInfo }}</td>
-        <td>{{ client.businessName }}</td>
-        <td>{{ client.source }}</td>
-        <td>{{ client.status }}</td>
-        <td>{{ client.createdDate }}</td>
+        <td><i class="pi pi-tag" [style.color]="client.tag?.color || '#000'"></i></td>
+        <td>{{client.companyName}}</td>
+        <td>{{client.firstName}}</td>
+        <td>{{client.lastName}}</td>
+        <td>{{client.tz}}</td>
+        <td>{{client.phone}}</td>
       </tr>
     </ng-template>
   </p-table>
 
-  <button class="styleCliennt" (click)="openContactFormDialog()">
-    הוספת לקוח חדש
-  </button>
-  <app-add-client
-    *ngIf="displayDialog"
-    (close)="closeDialog()"
-  ></app-add-client>
+  <button pButton class="styleCliennt" (click)="openContactFormDialog()">הוספת לקוח חדש</button>
+  <app-add-client *ngIf="displayDialog" (close)="closeDialog()"></app-add-client>
 
   <router-outlet></router-outlet>
 </div>

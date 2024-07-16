@@ -102,4 +102,9 @@ export class UpdateYearlyReportDto  {
     @ApiProperty({ type: [StepField] })
     @IsNotEmpty()
     stepsList: StepField[];
+
+    @Prop()
+    @ApiProperty()
+    @IsNotEmpty()
+    entityType: string;
 }

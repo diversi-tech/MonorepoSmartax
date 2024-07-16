@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsString, Min } from "class-validator";
 
 export class CreateTimerDto {
     @ApiProperty({ description: 'task id' })
@@ -12,15 +12,23 @@ export class CreateTimerDto {
     @IsString()
     userId: string;
 
-    @ApiProperty({ description: 'start time' })
+    @ApiProperty({ description: 'hours' })
     @IsNotEmpty()
-    @IsString()
-    start: Date;
+    @IsInt()
+    @Min(0)
+    hours: number;
 
-    @ApiProperty({ description: 'end time' })
+    @ApiProperty({ description: 'minutes' })
     @IsNotEmpty()
-    @IsString()
-    end: Date;
+    @IsInt()
+    @Min(0)
+    minutes: number;
+
+    @ApiProperty({ description: 'seconds' })
+    @IsNotEmpty()
+    @IsInt()
+    @Min(0)
+    seconds: number;
 }
 
 export class UpdateTimerDto {
@@ -39,13 +47,21 @@ export class UpdateTimerDto {
     @IsString()
     userId: string;
 
-    @ApiProperty({ description: 'start time' })
+    @ApiProperty({ description: 'hours' })
     @IsNotEmpty()
-    @IsString()
-    start: Date;
+    @IsInt()
+    @Min(0)
+    hours: number;
 
-    @ApiProperty({ description: 'end time' })
+    @ApiProperty({ description: 'minutes' })
     @IsNotEmpty()
-    @IsString()
-    end: Date;
+    @IsInt()
+    @Min(0)
+    minutes: number;
+
+    @ApiProperty({ description: 'seconds' })
+    @IsNotEmpty()
+    @IsInt()
+    @Min(0)
+    seconds: number;
 }

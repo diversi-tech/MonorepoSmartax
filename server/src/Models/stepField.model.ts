@@ -19,6 +19,11 @@ export class StepField extends Document {
           message: 'Step number must be an integer'
     }})
     stepNumber: number;
+
+    @Prop()
+    type: string;
+
+
 }
 
 export const stepFieldModel = SchemaFactory.createForClass(StepField);

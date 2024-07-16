@@ -11,7 +11,7 @@ export class PaymentDetailsService {
     constructor(@InjectModel('PaymentDetails') private readonly PaymentDetailsModel: Model<PaymentDetails>) {}
 
     async createPaymentDetails(createPaymentDetailsDto: CreatePaymentDetailsDto): Promise<PaymentDetails> {
-        const { sumForMonth, dateStart, dateFinish, description } = createPaymentDetailsDto;
+        const { sumForMonth,maxHours,frequency, dateStart, dateFinish, description } = createPaymentDetailsDto;
 
         if (!sumForMonth || !dateStart) {
           throw new ValidationException('Missing required fields');
@@ -19,8 +19,10 @@ export class PaymentDetailsService {
 
         const createdPaymentDetails = new this.PaymentDetailsModel({ 
             sumForMonth, 
-            dateStart: new Date(dateStart), 
-            dateFinish: dateFinish ? new Date(dateFinish) : undefined, 
+            maxHours,
+            frequency,
+            dateStart, 
+            dateFinish, 
             description 
         });
 
