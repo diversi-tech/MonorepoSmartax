@@ -263,22 +263,24 @@
                       </button>
                     </td>
                     <td>
-                      <button
+                      <!-- <button
                         [routerLink]="['/taskSpe', task._id]"
                         pButton
                         icon="pi pi-pencil"
                         label="Edit"
-                      ></button>
+                      ></button> -->
+                      <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
                     </td>
                     <td>
-                      <button
+                      <!-- <button
                         pButton
                         type="button"
                         icon="pi pi-trash"
                         label="Delete"
                         class="p-button-danger"
                         (click)="showConfirmation(task)"
-                      ></button>
+                      ></button> -->
+                      <i (click)="showConfirmation(task)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
                     </td>
                   </tr>
                 </ng-template>
@@ -393,22 +395,24 @@
                     </button>
                   </td>
                   <td>
-                    <button
+                    <!-- <button
                       [routerLink]="['/taskSpe', task._id]"
                       pButton
                       icon="pi pi-pencil"
                       label="Edit"
-                    ></button>
+                    ></button> -->
+                    <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
                   </td>
                   <td>
-                    <button
+                    <!-- <button
                       pButton
                       type="button"
                       icon="pi pi-trash"
                       label="Delete"
                       class="p-button-danger"
                       (click)="showConfirmation(task)"
-                    ></button>
+                    ></button> -->
+                    <i (click)="showConfirmation(task)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
                   </td>
                 </tr>
               </ng-template>
