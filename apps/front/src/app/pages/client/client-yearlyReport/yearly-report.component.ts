@@ -14,6 +14,7 @@ import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { UserService } from '../../../_services/user.service';
 import { User } from '../../../_models/user.module';
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-yearly-report',
@@ -28,28 +29,40 @@ import { User } from '../../../_models/user.module';
 })
 export class YearlyReportComponent implements OnInit {
   steps: any[];
-  allYearlyReport: YearlyReport[]=[];
+  allYearlyReport: YearlyReport[]| null;
   client: Client;
-  employeName: User| undefined;
+  employeName: any| undefined;
+  allEmploye:User[]
 
   constructor(private stepFieldsService: stepFieldService,
               private yearlyReportService: YearlyReportService,
               private router: Router,
               private tokenService: TokenService,
-              private userService:UserService
+              private userService:UserService,
+              
               ) { }
 
   ngOnInit(): void {
-   this.getYearlyReportsForClient();
    this.client=history.state.client;
+   this.getYearlyReportsForClient();
+   console.log("report after",this.allYearlyReport)
+
+   this.userService.getAllUsers().subscribe(
+    (Employes) => {
+      this.allEmploye = Employes;
+    },
+    (error) => {
+      console.error('Error ', error);
+    }
+  )
   }
 
   getYearlyReportsForClient(): void {
-    const clientId = history.state.client._id; // Assuming the client ID is passed via the state
+    const clientId =this.client._id // Assuming the client ID is passed via the state
     this.yearlyReportService.getYearlyReportsForClient(clientId).subscribe(
       (reports) => {
-        console.log(reports)
         this.allYearlyReport = reports;
+        console.log("report",this.allYearlyReport)
       },
       (error) => {
         console.error('Error fetching yearly reports for client', error);
@@ -63,11 +76,14 @@ export class YearlyReportComponent implements OnInit {
   }
  
   goToSteps(task: any){
-    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps'], { state: { data: task } });
+    console.log(task)
+
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps',this.router], { state: { data: task } });
 
   }
-  getEmployeName(userId: string): any {
-    return this.userService.findOne(userId);
+  getEmployeName(idEmploye: string): any {
+
+    return this.allEmploye.find(x=>x._id==idEmploye)
     
   }
   

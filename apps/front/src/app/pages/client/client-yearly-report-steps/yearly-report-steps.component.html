@@ -1,4 +1,4 @@
-<div class="stepper-container">
+<div class="stepper-container" [(ngModel)]="responseData" >
     <p-stepper dir="rtl">
       <p-stepperPanel 
           [header]="isAllTasksCompleted(1) ? 'שלב I (הושלם)' : 'שלב I'" 

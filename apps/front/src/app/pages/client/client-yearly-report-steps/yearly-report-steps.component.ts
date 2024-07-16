@@ -29,20 +29,24 @@ export class YearlyReportStepsComponent implements OnInit{
   stepsByNumber: { [key: number]: StepField[] } = {};
   activeStep = 0; // מתחיל בשלב הראשון
 
-  constructor(private yearlyReportService: YearlyReportService){};
+  constructor(private yearlyReportService: YearlyReportService){
+    
+  };
 
 
   ngOnInit() {
     this.responseData = history.state.data;
     this.allStep=this.responseData.stepsList
-    this.loadData();
+    this.groupSteps();
+
   }
 
-  loadData(){
-    this.groupSteps();
-  }
+  // loadData(){
+  //   this.groupSteps();
+  // }
 
   groupSteps() {
+    // console.log("task",history.state.task)
     this.allStep.forEach((step) => {
       const stepNumber = step.stepNumber; // Assuming stepNumber is the property you want to group by
       if (!this.stepsByNumber[stepNumber]) {
@@ -129,6 +133,7 @@ nextStep() {
 prevStep() {
   this.activeStep--;
 }
+
 isAllTasksCompleted(stepNumber: number): boolean {
   const tasks = this.getStepsByNumber(stepNumber);
   return tasks.every(task => task.isComplete);
