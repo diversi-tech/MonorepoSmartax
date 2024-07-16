@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { TokenService } from '../../_services/token.service';
 import { UserService } from '../../_services/user.service';
-import {User} from '../../_models/user.module'
+import { User} from '../../_models/user.module'
 import { Client } from '../../_models/client.module';
 import { Router } from '@angular/router';
 
