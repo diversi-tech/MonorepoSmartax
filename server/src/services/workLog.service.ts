@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-import { WorkLog , WorkLogDocument} from '../Models/workLog.model';
-import * as ExcelJS from 'exceljs';
-import { CreateWorkLogDto, UpdateTimeEntryDto, UpdateWorkLogDto } from '../Models/dto/workLog.dto';
-import { Model } from 'mongoose';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { NotFoundException } from '@nestjs/common';
+import { Model } from 'mongoose';
+import * as ExcelJS from 'exceljs';
+import { CreateWorkLogDto, UpdateWorkLogDto } from '../Models/dto/workLog.dto';
+import { WorkLog, WorkLogDocument } from '../Models/workLog.model';
 
 @Injectable()
 export class WorkLogService {
@@ -20,26 +19,14 @@ export class WorkLogService {
     return updatedWorkLog;
   }
 
-  async updateTimeEntry(id: string, entryId: string, updateTimeEntryDto: UpdateTimeEntryDto): Promise<WorkLog> {
-    const workLog = await this.workLogModel.findById(id).exec();
-    if (!workLog) {
-      throw new NotFoundException('Work log not found');
-    }
-    const entryIndex = workLog.timeEntries.findIndex(entry => entry._id.toString() === entryId);
-    if (entryIndex === -1) {
-      throw new NotFoundException('Time entry not found');
-    }
-
-    workLog.timeEntries[entryIndex] = { ...workLog.timeEntries[entryIndex], ...updateTimeEntryDto };
-    return workLog.save();
-  }
-
   async findOne(id: string): Promise<WorkLog> {
-    return this.workLogModel.findById(id).exec();
+    const workLog = await this.workLogModel.findById(id).exec();
+    return workLog;
   }
 
   async findAll(): Promise<WorkLog[]> {
-    return this.workLogModel.find().exec();
+    const workLogs = await this.workLogModel.find().exec();
+    return workLogs;
   }
 
   async exportWorkLogs(month: number, year: number): Promise<Buffer> {
