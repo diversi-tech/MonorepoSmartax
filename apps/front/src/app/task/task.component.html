@@ -13,7 +13,7 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-clipboard"></span>
-        Task Name
+        שם המשימה
       </p>
       <div style="margin-left: 50px">
         <p-inputGroup class="w-full" [style]="{ height: '20px' }">
@@ -26,7 +26,7 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-user"></span>
-        Assignees
+        משוייך ל
       </p>
       <div style="margin-left: 60px">
         <p-inputGroup class="w-full" [style]="{ height: '20px' }">
@@ -36,7 +36,7 @@
               class="pi pi-user-plus"
             ></span>
           </p-inputGroupAddon>
-        </p-inputGroup> -->
+        </p-inputGroup> 
         <p-multiSelect
           [options]="users"
           [(ngModel)]="selectedUsers"
@@ -109,7 +109,7 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-spinner-dotted"></span>
-        Status
+        סטטוס
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
@@ -176,7 +176,7 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-spinner-dotted"></span>
-        Priority
+        עדיפות
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full" [style]="{ height: '20px' }">
@@ -220,7 +220,7 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-tag"></span>
-        Tags
+        תגים
       </p>
       <!-- buttons -->
       <div style="margin-left: 100px">
@@ -254,14 +254,14 @@
     <br /><br />
     <!-- pop -->
     <div style="width: 40%" *ngIf="showTags">
-      <p>Choose a color:</p>
+      <p>בחירת צבע:</p>
       <p-colorPicker
         [(ngModel)]="selectedColor"
         [style]="{ width: '250px' }"
         [inline]="true"
       ></p-colorPicker>
       <p-inputGroup>
-        <p-inputGroupAddon>Text</p-inputGroupAddon>
+        <p-inputGroupAddon>טקסט</p-inputGroupAddon>
         <input
           [style]="{ width: '10%' }"
           type="text"
@@ -278,7 +278,7 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-calendar-plus"></span>
-        Dates
+        תאריכים
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
@@ -299,7 +299,7 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-users"></span>
-        Client
+        לקוחות
       </p>
       <div style="margin-left: 85px; width: 32%">
         <p-inputGroup class="w-full" [style]="{ height: '20px' }">
@@ -410,7 +410,7 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-file-o"></span>
-        Upload Document
+        העלאת מסמכים
       </p>
       <div>
         <p-inputGroup class="w-full" [style]="{ height: '20px' }">
@@ -446,14 +446,14 @@
 
     <div class="card">
       <p-tabView>
-          <p-tabPanel header="SubTask">
+          <p-tabPanel header="משימות משניות">
             <div>
               <app-sub-task></app-sub-task>
             </div>
           </p-tabPanel>
-          <p-tabPanel header="Check List">
-            <div>
-              <app-task-check-list></app-task-check-list>
+          <p-tabPanel header="רשימה">
+            <div *ngFor="let list of checkList">
+              <app-task-check-list [checkList]="list"></app-task-check-list>
             </div>
           </p-tabPanel>
       </p-tabView>

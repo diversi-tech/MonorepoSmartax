@@ -62,6 +62,8 @@ import { MenuItem } from 'primeng/api';
 import { TaskCheckListComponent } from '../task-check-list/task-check-list.component';
 import { TabViewModule } from 'primeng/tabview';
 import { SubTaskComponent } from '../sub-task/sub-task.component';
+import { CheckList } from '../_models/checkList.model';
+import { CheckListService } from '../_services/checkList.service';
 
 @Component({
   selector: 'app-task',
@@ -123,6 +125,8 @@ export class TaskComponent implements OnInit {
   htmlContent: string = '';
   images: string[] = [];
   tags: Tag[] = [];
+  checkList: CheckList[] = [];
+
   //
   additionTask: MenuItem[] = [
     { id: '1', label: 'Check List' },
@@ -168,10 +172,12 @@ export class TaskComponent implements OnInit {
     private priorityService: PriorityService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private googleCalendarService: GoogleAuthService
+    private googleCalendarService: GoogleAuthService,
+    private checkListServise: CheckListService
   ) {}
 
   ngOnInit(): void {
+
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId) this.id = this.taskId;
     console.log(this.id);
@@ -194,17 +200,32 @@ export class TaskComponent implements OnInit {
 
           this.images = this.currentTask.images;
           this.taskName = this.currentTask.taskName;
-          this.buttons = this.currentTask.tags.map((tag: Tag) => ({
+          this.buttons = this.currentTask.tags?.map((tag: Tag) => ({
             color: tag.color,
             text: tag.text,
             id: tag._id!,
           }));
           this.selectedTags = this.currentTask.tags;
+          console.log("checkList", this.currentTask.checkList);
+          this.currentTask.checkList?.forEach((listId: string) => {
+            console.log("listId", listId);
+            
+            this.checkListServise.getCheckLists(listId).subscribe((data: CheckList) => {
+              this.checkList.push(data);
+            });
+          })
+          
         },
         error: (err) => {
           console.log(err);
         },
       });
+      console.log("checkList in task comp");
+    
+      this.checkList.forEach((check) => {
+        console.log("check", check);
+        console.log("*");
+      })
     }
     //users
     this.userSErvice.getAllUsers().subscribe({

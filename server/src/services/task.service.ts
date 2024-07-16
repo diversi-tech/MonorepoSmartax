@@ -45,11 +45,11 @@ export class TaskService {
 
 
   async updateTask(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    const {  client, taskName, description,dueDate,status,assignedTo,tags } = updateTaskDto;
+    const {  client, taskName, description,dueDate,status,assignedTo,tags, checkList } = updateTaskDto;
 
     const updatedTask = await this.taskModel.findByIdAndUpdate(
       id,
-      { client, taskName, description,dueDate,status,assignedTo,tags },
+      { client, taskName, description,dueDate,status,assignedTo,tags,checkList },
       { new: true }
     ).exec();
 
