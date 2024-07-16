@@ -17,7 +17,7 @@ export class TaskFilterPipe implements PipeTransform {
         new Date(task.dueDate).getTime() >= new Date(filter.deadlineRange[0]).getTime() && 
         new Date(task.dueDate).getTime() <= new Date(filter.deadlineRange[1]).getTime());
     
-      const matchesClient = !filter.client || (task.client && task.client.name === filter.client.name);
+      const matchesClient = !filter.client || (task.client && task.client.firstName === filter.client.firstName);
     
       const matchesUser = !filter.user || (task.assignedTo && task.assignedTo.userName === filter.user.userName);
     

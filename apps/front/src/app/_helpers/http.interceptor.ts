@@ -13,7 +13,6 @@ export class AuthAndCredentialsInterceptor implements HttpInterceptor {
 
     const token = this.tokenService.getToken()?.access_token;
     if (token) {
-      console.log(("token: "+token));
       
       req = req.clone({
         setHeaders: {

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseFilters } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, UseFilters } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
 import { CreateYearlyReportDto, UpdateYearlyReportDto } from "server/src/Models/dto/yearlyReport.dbo";
@@ -18,12 +18,12 @@ export class YearlyReportController{
     return this.yearlyReportService.createYearlyReport(createYearlyReportDto);
   }
 
-  @Post('update')
+  @Post('update/:id')
   @ApiOperation({ summary: 'Update a yearly report by ID' })
   @ApiBody({ type: UpdateYearlyReportDto })
-  async update(@Body('id') id: string, @Body() updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
+  async update(@Param('id') id: string, @Body() updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
     return this.yearlyReportService.updateYearlyReport(id, updateYearlyReportDto);
-  }
+  } 
 
   @Post('delete')
   @ApiOperation({ summary: 'Delete a yearly report by ID' })
@@ -43,7 +43,7 @@ export class YearlyReportController{
   }
 
   
-  @Post('all')
+  @Get('all')
   @ApiOperation({ summary: 'Get all yearly reports' })
   async getAllYearlyReports(): Promise<YearlyReport[]> {
     return this.yearlyReportService.getAllYearlyReports();
