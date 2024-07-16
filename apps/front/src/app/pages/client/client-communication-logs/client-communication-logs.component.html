@@ -1,24 +1,31 @@
-<!-- client-communication-logs.component.html -->
-<!-- <div> -->
-  <!-- <h2>רשימת שיחות עם לקוח {{ client?.name }}</h2> -->
-  <!-- <p-button label="הוספת שיחה" (click)="navigateTo('clientAddCommunication')" styleClass="p-button-raised p-button-success"></p-button> -->
-  <!-- כאן אפשר להוסיף רשימת שיחות או תוכן נוסף לפי הצורך -->
-<!-- </div> -->
- <br>
-<p-button label="שיחות" routerLink="clientAddCommunication" routerLinkActive="active"></p-button>
-
-
-
-<!-- <table>טבלת שיחות
+<h3>שיחות</h3>
+<p-table [value]="communications"
+  [tableStyle]="{'min-width': '80rem'}">
+  <ng-template pTemplate="header" let-columns>
     <tr>
-        <th>תאריך</th>
-        <th>סוג</th>
-        <th>תקציר</th>
-        <th>עובד מטפל</th>
+      <th>סוג השיחה </th>
+      <th>שם לקוח</th>
+      <th>תאריך</th>
+      <th>נושא שיחה</th>
+      <th>סיכום</th>
     </tr>
-    <tr *ngFor="let i of fruits">
-        <td> {{i}} </td>
-    </tr>
-</table>
-  -->
+  </ng-template>
+  <ng-template pTemplate="body" let-communication let-columns="columns">
+    <tr>
 
+      <td *ngIf="communication.Status === 'true'">ליד</td>
+      <td *ngIf="communication.Status === 'false'">מעקב</td>
+      <td>{{communication.client}}</td>
+      <td>{{communication.date | date: 'yyyy-MM-dd' }}</td>
+      <td>{{communication.Subject}}</td>
+      <td>{{communication.summary}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+
+<button class="p-button p-button-warning p-button-sm p-float-right p-ml-2">Edit</button>
+<button class="p-button p-button-danger p-button-sm p-float-right">Delete</button>
+
+<p-button label="להוספת שיחה" (click)="displayDialog = true"></p-button>
+<app-client-add-communication *ngIf="displayDialog" (close)="displayDialog = false"></app-client-add-communication>

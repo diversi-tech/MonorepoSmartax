@@ -1,0 +1,30 @@
+
+<h1 *ngIf="user.favorites.length == 0">אין לקוחות מועדפים</h1>
+<h3 *ngIf="user.favorites.length > 0">לקוחות מועדפים</h3>
+  <p-table *ngIf="user.favorites.length > 0" [value]="user.favorites" [tableStyle]="{ 'min-width': '80rem' }">
+    <h3>favorite clients List</h3>
+    <ng-template pTemplate="header" let-columns>
+      <tr (click)="selectClientFromList(client)">
+        <th>name</th>
+        <th>tag</th>
+        <th>contactInfo</th>
+        <th>businessName</th>
+        <th>source</th>
+        <th>status</th>
+        <th>createdDate</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-client let-columns="columns">
+      <tr (click)="selectClientFromList(client)">
+        <td>{{ client.name }}</td>
+        <td>
+          <span class="pi pi-tag" [style.color]="client.tag?.color || '#000'"></span>
+        </td>
+        <td>{{ client.contactInfo }}</td>
+        <td>{{ client.businessName }}</td>
+        <td>{{ client.source }}</td>
+        <td>{{ client.status }}</td>
+        <td>{{ client.createdDate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
