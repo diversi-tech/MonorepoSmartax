@@ -35,7 +35,6 @@ import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report
 import { AllCommunicationComponent } from './pages/client/all-communication/all-communication.component';
 import { PaymentsReportsComponent } from './reports/payments-reports/payments-reports.component';
 import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
-
 import { ClientTypeTagComponent } from './pages/client/client-type-tag/client-type-tag.component';
 import { ClientTypeTabComponent } from './pages/client/client-type-tab/client-type-tab.component';
 import { ClientFieldComponent } from './pages/client/client-field/client-field.component';
@@ -45,7 +44,7 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
 // import { icons } from './icons';
-
+import { customfieldComponent } from './custom-field/custom-field.component';
 // Example of navigation in the application
 // Parameters:
 // - path: The navigation path in the application
@@ -64,10 +63,11 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
 //dashboard, clients, tasks, payments, sessions, reports, users, schedule
 import { FieldManagementComponent } from './pages/fieldManagement/fieldManagement.component';
 // import * as path from 'path';
+// import * as path from 'path';
 
 //
  export const routes: Routes = [
-    { path: 'home', component: HomeComponent, data: { authType: 10, forToolbar: false, label: 'בית', icon: icons.home } }, 
+ { path: 'home', component: HomeComponent, data: { authType: 10, forToolbar: false, label: 'בית', icon: icons.home } }, 
   { path: 'login', component: LoginComponent, data: { authType: 10, forToolbar: false, label: 'התחברות', icon: '' } }, 
   { path: 'register/:type', component: RegisterComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: false, label: 'הוספת עובד', icon: icons.register } },
   { path: 'user', component: BoardUserComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'עובד', icon: icons.user } }, 
@@ -98,8 +98,8 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
   { path: 'clientSearch', component: ClientSearchComponent , data: { authType: 6, forToolbar: true, label: 'לקוחות', icon: icons.clients }},
   { path: 'clientSearch/clientManagement', component: ClientManagementComponent , data: { authType: 6, forToolbar: false, label: 'ניהול לקוחות', icon: '' }},
-  
-  { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'פרופיל לקוח', icon: '' } },
+
+  { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'פרופיל לקוח', icon: '' }},
   {
     path: 'clientSearch/clientManagement/clientNavbar', component: ClientNavbarComponent,
     data: { authType: 6, forToolbar: false, label: 'ניווט לקוח', icon: '' },

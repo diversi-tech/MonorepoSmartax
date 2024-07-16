@@ -5,10 +5,20 @@
     [options]="whatType" 
     [(ngModel)]="selectedType" 
     optionLabel="name" 
-    placeholder="סוג השדה" />
+    placeholder="סוג השדה" 
+    
+   
+/>
+<p-messages 
+    [(value)]="messages" 
+    [enableService]="false" 
+    [closable]="false" />
+
+
  
 
  <br>
+<p *ngIf="v==true">חסרים פרטים</p>
 <p-button class="buttons"  id="fieldN" type="button" icon="pi pi-plus"
  label="הוסף" (click)="createField()"></p-button>
 </div>

@@ -1,6 +1,6 @@
 
 <div class="card flex justify-content-center">
-    <p-button label="show"></p-button><br>
+    <!-- <p-button label="show"></p-button><br> -->
     <p-button (click)="showDialog()" label="צור שדה חדש" />
 
     <p-dialog header="ערוך שדה" 
@@ -11,4 +11,31 @@
         
        
     </p-dialog>
-</div>
+ 
+<p-table [value]="fields" [tableStyle]="{'min-width': '60rem'}"  >
+    <ng-template pTemplate="caption">
+       
+    </ng-template>
+    <ng-template pTemplate="header" dir="rtl" >
+        <tr >
+            <th >שם השדה</th>
+            <th >סוג השדה</th>
+            <td>           </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-field>
+        <tr>
+            <td>{{field.key}}</td>
+            <td >{{field.type}}</td>
+            <td><p-button styleClass="dbtn" severity="danger" (click)="onDeleteField(field._id)"> 
+                <span class="px-3">מחק</span> 
+                <i class="pi pi-trash"></i>
+            </p-button></td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between" id="text">
+            קיימים  {{fields ? fields.length : 0 }} שדות .
+        </div>
+    </ng-template>
+</p-table>
