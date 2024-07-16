@@ -27,6 +27,9 @@ export class Task extends Document {
     startDate: Date;
 
     @Prop()
+    deadline: Date;
+
+    @Prop()
     status: Status;
 
     @Prop()
@@ -46,6 +49,9 @@ export class Task extends Document {
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CheckList' }] })
     checkList: CheckList[];
+
+    @Prop()
+    googleId: string;
 }
 
 export const TaskModel = SchemaFactory.createForClass(Task);
