@@ -29,8 +29,24 @@ export class StepFieldController{
     return this.stepFieldService.updateStepFieldDto(id, updateStepFieldDto);
   }
 
+  // @Post('delete')
+  // @ApiOperation({ summary: 'Delete a step field by ID' })
+  // async delete(@Body('id') body: { id: string }): Promise<void> {
+  //   return this.stepFieldService.deleteStepField(body.id);
+  // }
   @Post('delete')
-  @ApiOperation({ summary: 'Delete a step field by ID' })
+  @ApiOperation({ summary: 'Delete a yearly report by ID' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          example: '667211d6c'
+        }
+      }
+    }
+  })
   async delete(@Body() body: { id: string }): Promise<void> {
     return this.stepFieldService.deleteStepField(body.id);
   }

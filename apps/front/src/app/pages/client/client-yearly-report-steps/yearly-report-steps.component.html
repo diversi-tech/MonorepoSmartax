@@ -1,0 +1,107 @@
+
+
+<div class="stepper-container" [(ngModel)]="responseData" >
+    <p-stepper dir="rtl">
+      <p-stepperPanel 
+          [header]="isAllTasksCompleted(1) ? 'שלב I (הושלם)' : 'שלב I'" 
+          [ngStyle]="{'color': isAllTasksCompleted(1) ? 'green' : 'inherit'}" 
+          [ngClass]="{'completed': isStepComplete(1)}">
+        <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+          <div class="flex flex-column h-12rem">
+            <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex flex-column align-items-center font-medium">
+              <div *ngFor="let task of getStepsByNumber(1)">
+                <div class="checkbox-wrapper">
+                  <label>
+                    <input type="checkbox" class="aa" [(ngModel)]="task.isCompleted" (change)="update(task)" />
+                    {{ task.value }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+        </ng-template>
+      </p-stepperPanel>
+  
+      <p-stepperPanel 
+          [header]="isAllTasksCompleted(2) ? 'שלב II (הושלם)' : 'שלב II'" 
+          [ngStyle]="{'color': isAllTasksCompleted(2) ? 'green' : 'inherit'}">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+          <div class="flex flex-column h-12rem">
+            <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex flex-column align-items-center font-medium">
+              <div *ngFor="let task of getStepsByNumber(2)">
+                <div class="checkbox-wrapper">
+                  <label>
+                    <input type="checkbox" class="aa" [(ngModel)]="task.isCompleted" (change)="update(task)" />
+                    {{ task.value }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        </ng-template>
+      </p-stepperPanel>
+  
+      <p-stepperPanel 
+          [header]="isAllTasksCompleted(3) ? 'שלב III (הושלם)' : 'שלב III'" 
+          [ngStyle]="{'color': isAllTasksCompleted(3) ? 'green' : 'inherit'}">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+          <div class="flex flex-column h-12rem">
+            <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex flex-column align-items-center font-medium">
+              <div *ngFor="let task of getStepsByNumber(3)">
+                <div class="checkbox-wrapper">
+                  <label>
+                    <input type="checkbox" [(ngModel)]="task.isCompleted" (change)="update(task)" />
+                    {{ task.value }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+        </ng-template>
+      </p-stepperPanel>
+  
+      <p-stepperPanel 
+          [header]="isAllTasksCompleted(4) ? 'שלב IV (הושלם)' : 'שלב IV'" 
+          [ngStyle]="{'color': isAllTasksCompleted(4) ? 'green' : 'inherit'}">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+          <div class="flex flex-column h-12rem">
+            <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex flex-column align-items-center font-medium">
+              <div *ngFor="let task of getStepsByNumber(4)">
+                <div class="checkbox-wrapper">
+                  <label>
+                    <input type="checkbox" [(ngModel)]="task.isCompleted" (change)="update(task)" />
+                    {{ task.value }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </ng-template>
+      </p-stepperPanel>
+  
+      <p-stepperPanel 
+          [header]="isAllTasksCompleted(5) ? 'שלב V (הושלם)' : 'שלב V'" 
+          [ngStyle]="{'color': isAllTasksCompleted(5) ? 'green' : 'inherit'}">
+        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+          <div class="flex flex-column h-12rem">
+            <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex flex-column align-items-center font-medium">
+              <div *ngFor="let task of getStepsByNumber(5)">
+                <div class="checkbox-wrapper">
+                  <label>
+                    <input type="checkbox" [(ngModel)]="task.isCompleted" (change)="update(task)" />
+                    {{ task.value }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+       
+        </ng-template>
+      </p-stepperPanel>
+    </p-stepper>
+  </div>
+  <p-button (click)="submitChanges()" label="שלח שינויים" />

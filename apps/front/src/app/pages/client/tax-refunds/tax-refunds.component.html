@@ -1,0 +1,3 @@
+<div *ngFor="let task of tasksStep">
+    <p-checkbox [(ngModel)] = "task.isCompleted" binary="true" (onChange)="updateStepField(task)">{{task.value}}</p-checkbox>
+</div>

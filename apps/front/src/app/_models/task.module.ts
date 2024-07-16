@@ -22,6 +22,7 @@ export interface Task {
   tags?: Tag[];
   images?:string[];
   priority?: Priority;
+  googleId?:string;
   checkList?: string[];
 }
 

@@ -1,7 +1,6 @@
 import { StepField } from "./stepField.module";
 
 export interface YearlyReport {
-  _id: string;
   idUser: string;
   assignee: string[];
   idEmploye: string;
@@ -11,6 +10,7 @@ export interface YearlyReport {
   paymentAmountPaid: number;
   balanceDue: number;
   stepsList: StepField[];
+  entityType: string;
 
  
 

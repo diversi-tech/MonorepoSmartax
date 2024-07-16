@@ -30,8 +30,8 @@ export class YearlyReport extends Document {
     @Prop()
     balanceDue: number;
 
-    // @Prop()
-    // step1: Step1[];
+    @Prop()
+    entityType: string;
 
     // @Prop()
     // step2: Step2[];
