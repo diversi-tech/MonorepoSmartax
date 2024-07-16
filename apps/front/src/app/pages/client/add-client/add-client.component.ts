@@ -92,6 +92,7 @@ export class AddClientComponent {
     isOpenAccountWithUs: false,
     tag: { color: '', text: '' },
     payment: '',
+    isPreferWhatsapp:false
   };
 
   constructor(
@@ -139,6 +140,7 @@ export class AddClientComponent {
       joinDate: [''],
       isAccounter: [false],
       isOpenAccountWithUs: [false],
+      isPreferWhatsapp:[false]
     });
   }
 
@@ -174,6 +176,7 @@ export class AddClientComponent {
       this.newClient.whatsapp = this.savedData.whatsapp;
       this.newClient.VATFileNumber = this.savedData.VATFileNumber;
       this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+      this.newClient.isPreferWhatsapp=this.savedData.isPreferWhatsapp;
       this.newClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
       this.newClient.tag.color = 'black';
       this.newClient.tag.text = ' ';

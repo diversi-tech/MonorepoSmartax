@@ -45,6 +45,8 @@ export class Client extends Document {
   email: string;
 
   @Prop()
+  isPreferWhatsapp: boolean;
+  @Prop()
   address: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'SensitiveData' }] })

@@ -20,6 +20,7 @@ export interface Client {
   phone: string;
   whatsapp: string;
   email: string;
+  isPreferWhatsapp:boolean;
   address: string;
   encryptedPasswords: SensitiveData[];
   comments: string; 

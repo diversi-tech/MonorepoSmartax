@@ -57,6 +57,10 @@ export class CreateClientDto {
     @IsString()
     email: string;
 
+    @ApiProperty({ example: false })
+    @IsBoolean()
+    isPreferWhatsapp: boolean;
+
     @ApiProperty({ example: '123 Main Street, City, Country' })
     @IsString()
     address: string;
@@ -189,6 +193,11 @@ export class UpdateClientDto {
     @IsOptional()
     @IsString()
     email?: string;
+
+    @ApiProperty({ example: false })
+    @IsOptional()
+    @IsBoolean()
+    isPreferWhatsapp: boolean;
 
     @ApiProperty({ example: '123 Main Street, City, Country' })
     @IsOptional()
