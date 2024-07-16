@@ -73,20 +73,10 @@ export class ClientTypeTagComponent implements OnInit {
       this.buttons.splice(index, 1);
     }
   }
-
-  // getFields(buttonId:string){
-  //   const clientType = this.clientTypes.find(ct => ct._id === buttonId);
-  //   if (clientType) {
-  //     // this.selectedFields = [];
-  //     clientType.fields.forEach(field => {
-  //     console.log(field);
-
-  //     });
-  //   }
-  // }
   @Output() selectedButton = new EventEmitter<string>();
 
   sendSelectedButton(buttonId: string) {
+    console.log("clicked", buttonId);
     this.selectedButton.emit(buttonId);
   }
 

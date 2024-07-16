@@ -35,6 +35,8 @@ export class ClientTypeTabComponent {
   }
 
   receiveSelectedButton(buttonId: string) {
+    // debugger
+    console.log("recived");
     this.selectedButton = buttonId;
     this.getFields(this.selectedButton);
   }
