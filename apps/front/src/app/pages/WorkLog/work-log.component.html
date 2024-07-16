@@ -1,3 +1,64 @@
+  <!-- <h2>ניהול שעות עבודה</h2>
+
+  <div>
+    <p-button label="כניסה" icon="pi pi-sign-in" (click)="checkIn()"></p-button>
+  </div>
+  <div>
+    <p-button label="יציאה" icon="pi pi-sign-out" (click)="checkOut()"></p-button>
+  </div>
+  <div>
+    <h3>רשימת יומני עבודה</h3>
+    <p-table [value]="workLogs">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>מספר עובד</th>
+          <th>תאריך</th>
+          <th>כניסה</th>
+          <th>יציאה</th>
+          <th>שעות עבודה</th>
+          <th>פעולות</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-log>
+        <tr>
+          <td>{{ log.employeeId }}</td>
+          <td>{{ log.date | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ log.checkIn | date: 'HH:mm' }}</td>
+          <td>{{ log.checkOut ? (log.checkOut | date: 'HH:mm') : '---' }}</td>
+          <td>{{ log.hoursWorked ? log.hoursWorked.toFixed(2) : '---' }}</td>
+          <td>
+            <p-button label="עריכה" icon="pi pi-pencil" (click)="editWorkLog(log)"></p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div>
+    <label>חודש</label>
+    <input pInputText type="number" [(ngModel)]="exportMonth" placeholder="חודש">
+    <label>שנה</label>
+    <input pInputText type="number" [(ngModel)]="exportYear" placeholder="שנה">
+    <p-button label="ייצוא" icon="pi pi-file-excel" (click)="exportWorkLogs(exportMonth, exportYear)"></p-button>
+  </div>
+
+  <p-dialog header="עריכת שעות עבודה" [(visible)]="displayDialog" [modal]="true" [closable]="false" [style]="{width: '50vw', height: '50vh'}">
+    <div class="p-grid p-fluid">
+      <div class="p-field">
+        <label for="checkIn">כניסה</label>
+        <p-calendar [(ngModel)]="editedCheckIn" timeOnly="true" showTime="true" hourFormat="24"></p-calendar>
+      </div>
+      <div class="p-field">
+        <label for="checkOut">יציאה</label>
+        <p-calendar [(ngModel)]="editedCheckOut" timeOnly="true" showTime="true" hourFormat="24"></p-calendar>
+      </div>
+    </div>
+    <p-footer>
+      <p-button label="שמור" icon="pi pi-check" (click)="saveEditedWorkLog()"></p-button>
+      <p-button label="ביטול" icon="pi pi-times" (click)="cancelEdit()"></p-button>
+    </p-footer>
+  </p-dialog> -->
+
 <div>
   <h2>ניהול שעות עבודה</h2>
 
@@ -40,23 +101,23 @@
     <input pInputText type="number" [(ngModel)]="exportMonth" placeholder="חודש">
     <label>שנה</label>
     <input pInputText type="number" [(ngModel)]="exportYear" placeholder="שנה">
-    
-    <p-button label="ייצא לאקסל" icon="pi pi-file-excel" (click)="exportWorkLogs(exportMonth, exportYear)"></p-button>
+    <p-button label="ייצוא לאקסל" icon="pi pi-file-excel" (click)="exportWorkLogs(exportMonth, exportYear)"></p-button>
   </div>
 
-  <!-- דיאלוג עריכת שעות עבודה -->
-  <p-dialog header="עריכת שעות עבודה" [(visible)]="displayDialog" [modal]="true">
-    <div>
-      <label>כניסה</label>
-      <p-calendar [(ngModel)]="editedCheckIn" [showTime]="true"></p-calendar>
+  <p-dialog header="עריכת שעות עבודה" [(visible)]="displayDialog" [modal]="true" [closable]="false" [style]="{width: '50vw', height: '100vh'}">
+    <div class="p-grid p-fluid">
+      <div class="p-field">
+        <label for="checkIn">כניסה</label>
+        <p-calendar [(ngModel)]="editedCheckIn" dateFormat="dd/mm/yy" showTime="true" hourFormat="24"></p-calendar>
+      </div>
+      <div class="p-field">
+        <label for="checkOut">יציאה</label>
+        <p-calendar [(ngModel)]="editedCheckOut" dateFormat="dd/mm/yy" showTime="true" hourFormat="24"></p-calendar>
+      </div>
     </div>
-    <div>
-      <label>יציאה</label>
-      <p-calendar [(ngModel)]="editedCheckOut" [showTime]="true"></p-calendar>
-    </div>
-    <div>
+    <p-footer>
       <p-button label="שמור" icon="pi pi-check" (click)="saveEditedWorkLog()"></p-button>
-      <p-button label="בטל" icon="pi pi-times" (click)="cancelEdit()"></p-button>
-    </div>
+      <p-button label="ביטול" icon="pi pi-times" (click)="cancelEdit()"></p-button>
+    </p-footer>
   </p-dialog>
 </div>

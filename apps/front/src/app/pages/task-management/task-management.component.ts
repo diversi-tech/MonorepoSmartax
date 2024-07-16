@@ -127,9 +127,7 @@ export class TaskManagementComponent implements OnInit {
     // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
       // console.log('Task status:', task.status); // הדפסת המצב של המשימה
-      {
-        return task.status && task.status.name === status.name;
-      }
+      { return task.status && task.status.name === status.name; }
     });
   }
 
@@ -189,11 +187,7 @@ export class TaskManagementComponent implements OnInit {
 
   searchClients(event: any): void {
     this.clientService.getAllClients().subscribe((clients: Client[]) => {
-      this.clientSuggestions = clients.filter(
-        (client) =>
-          client.name &&
-          client['name'].toLowerCase().includes(event.query.toLowerCase())
-      );
+      this.clientSuggestions = clients.filter(client => client.firstName && client["firstName"].toLowerCase().includes(event.query.toLowerCase()));
     });
   }
 
@@ -234,19 +228,11 @@ export class TaskManagementComponent implements OnInit {
         (task.dueDate >= this.filter.deadlineRange[0] &&
           task.dueDate <= this.filter.deadlineRange[1]);
 
-      const clientMatch =
-        !this.filter.client ||
-        task.client.name.includes(this.filter.client.name);
+      const clientMatch = !this.filter.client || task.client[0].firstName.includes(this.filter.client.firstName);
 
-      const userMatch =
-        !this.filter.user ||
-        task.assignedTo.some((user) =>
-          user.userName.includes(this.filter.user.userName)
-        );
-
-      const taskNameMatch =
-        !this.filter.task || task.taskName.includes(this.filter.task.taskName);
-
+        const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
+        
+        const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
       let tagsMatch = true;
       if (this.filter.tags && this.filter.tags.length > 0) {
         tagsMatch = this.filter.tags.every((filterTag) => {
