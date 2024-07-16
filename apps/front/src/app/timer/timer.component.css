@@ -11,12 +11,11 @@
   }
   #tooltip{
     width: 230px;
+    float: right;
+    clear: right;
     border: 1px solid rgb(120, 165, 255);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border-radius: 5px;
   }
   #userIcon{
-   /* align-items: right; */
    margin-left: auto;
   }
