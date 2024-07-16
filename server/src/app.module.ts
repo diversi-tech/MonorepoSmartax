@@ -133,6 +133,14 @@ import {
   SensitiveDataModel,
 } from './Models/sensitiveData.model';
 import { SensitiveDataService } from './services/sensitiveData.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+// import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+// import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+// export function HttpLoaderFactory(http: HttpClient) {
+//   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+// }
+// @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
 
 @Module({
   imports: [

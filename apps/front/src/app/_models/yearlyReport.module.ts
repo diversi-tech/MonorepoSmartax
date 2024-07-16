@@ -10,6 +10,7 @@ export interface YearlyReport {
   paymentAmountPaid: number;
   balanceDue: number;
   stepsList: StepField[];
+  entityType: string;
 
  
 

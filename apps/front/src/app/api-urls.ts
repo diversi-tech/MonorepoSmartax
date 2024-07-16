@@ -19,3 +19,5 @@ export const PAYMENT_METHOD_ENDPOINT=`${API_URL}/PaymentMethod`;
 export const FREQUENCY_ENDPOINT=`${API_URL}/Frequency`;
 
 
+export const CHECKLIST_ENDPOINT = `${API_URL}/checklist`;
+export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checklistitem`;

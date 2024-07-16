@@ -17,7 +17,7 @@ export class User extends Document {
     @Prop({ type: Types.ObjectId, ref: 'Role', required: true })
     role: Role;
     @Prop({ type: Types.ObjectId, ref: 'Client', required: true })
-    favorites: Client[]
+    favoritesClient: Client[]
 }
 
 export const UserModel = SchemaFactory.createForClass(User);

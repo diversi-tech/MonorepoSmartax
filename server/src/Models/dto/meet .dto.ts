@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsNumber, IsString, } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, } from "class-validator";
 
 export class CreateMeetDto {
     @ApiProperty({ description: 'Address to the meeting' })
@@ -35,6 +35,11 @@ export class CreateMeetDto {
     @ArrayNotEmpty()
     @IsString({ each: true })
     clientDepartments: string[]
+
+    @ApiProperty({ description: 'Google id' })
+    @IsString()
+    @IsOptional()
+    googleId: string
 }
 
 export class UpdateMeetDto {
@@ -77,4 +82,9 @@ export class UpdateMeetDto {
     @ArrayNotEmpty()
     @IsString({ each: true })
     clientDepartments: string[]
+
+    @ApiProperty({ description: 'Google id' })
+    @IsString()
+    @IsOptional()
+    googleId: string
 }
