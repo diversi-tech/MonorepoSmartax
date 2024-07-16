@@ -9,4 +9,5 @@ export interface WorkLog {
   employeeId: string;
   date: Date;
   timeEntries: TimeEntry[];
+  hoursWorked?: number;
 }

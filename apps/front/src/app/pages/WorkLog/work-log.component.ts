@@ -455,19 +455,28 @@ export class WorkLogComponent implements OnInit {
   employeeId: string | null = null;
   selectedEntry: TimeEntry | null = null;
   userRole: number;
-  logGroup: any;
+  logGroup: any; 
+
 
   constructor(
     private workLogService: WorkLogService,
-    private messageService: MessageService,
-    private tokenService: TokenService
-  ) {
-    this.employeeId = this.tokenService.getCurrentDetail('email');
-    this.userRole = this.tokenService.getCurrentDetail('role').level;
-  }
+    private messageService: MessageService
+  ) {}
 
   ngOnInit() {
+    this.employeeId = this.getEmployeeId();
+    this.userRole = this.getUserRole();
     this.getWorkLogs();
+  }
+
+  private getEmployeeId(): string | null {
+    // Replace with your logic to get employeeId from token or service
+    return 'employee@example.com'; // Example, replace with actual logic
+  }
+
+  private getUserRole(): number {
+    // Replace with your logic to get user role from token or service
+    return 1; // Example, replace with actual logic
   }
 
   getWorkLogs() {
@@ -479,6 +488,10 @@ export class WorkLogComponent implements OnInit {
         } else {
           console.error('Data received from API is not an array:', response);
         }
+      },
+      (error: any) => {
+        console.error('Error fetching work logs:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error fetching work logs', detail: error.message });
       }
     );
   }
@@ -511,7 +524,7 @@ export class WorkLogComponent implements OnInit {
 
   checkIn(logGroup: any) {
     if (!this.employeeId) {
-      alert('שגיאה: מספר עובד לא זמין.');
+      alert('Error: Employee ID is not available.');
       return;
     }
 
@@ -543,7 +556,7 @@ export class WorkLogComponent implements OnInit {
 
   checkOut() {
     if (!this.employeeId) {
-      alert('שגיאה: מספר עובד לא זמין.');
+      alert('Error: Employee ID is not available.');
       return;
     }
 
@@ -551,14 +564,14 @@ export class WorkLogComponent implements OnInit {
     const existingWorkLog = this.workLogs.find(log => log.employeeId === this.employeeId && this.isToday(new Date(log.date)));
 
     if (!existingWorkLog) {
-      alert('יש להכניס כניסה קודם ליציאה.');
+      alert('Please check in before checking out.');
       return;
     }
 
     const currentEntry = existingWorkLog.timeEntries.find(entry => !entry.checkOut);
 
     if (!currentEntry) {
-      alert('לא נמצאה כניסה פתוחה.');
+      alert('No open entry found.');
       return;
     }
 
@@ -608,15 +621,38 @@ export class WorkLogComponent implements OnInit {
     return diff / (1000 * 60 * 60);
   }
 
-  updateWorkLog(workLog: WorkLog) {
-    this.workLogService.updateWorkLog(workLog._id, workLog.timeEntries).subscribe(
+  updateWorkLog(logGroup: any) {
+    const log = logGroup.logs[0]; // accessing the first log within the group
+    if (!log) {
+      console.error('No log found within the group:', logGroup);
+      this.messageService.add({ severity: 'error', summary: 'Error updating work log' });
+      return;
+    }
+
+    const timeEntries = log.timeEntries.map((entry: any) => ({
+      checkIn: new Date(entry.checkIn),
+      checkOut: entry.checkOut ? new Date(entry.checkOut) : null,
+      hoursWorked: entry.hoursWorked
+    }));
+
+    const updatedLog = {
+      employeeId: log.employeeId,
+      date: new Date(log.date),
+      timeEntries: timeEntries
+    };
+
+    this.workLogService.updateWorkLog(updatedLog).subscribe(
       response => {
         if (response) {
-          this.messageService.add({ severity: 'success', summary: 'יומן עבודה עודכן בהצלחה' });
+          this.messageService.add({ severity: 'success', summary: 'Work log updated successfully' });
           this.getWorkLogs();
         } else {
-          this.messageService.add({ severity: 'error', summary: 'שגיאה בעדכון יומן העבודה' });
+          this.messageService.add({ severity: 'error', summary: 'Error updating work log' });
         }
+      },
+      (error: any) => {
+        console.error('Error updating work log:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error updating work log', detail: error.message });
       }
     );
   }
@@ -625,11 +661,15 @@ export class WorkLogComponent implements OnInit {
     this.workLogService.createWorkLog(workLog).subscribe(
       response => {
         if (response) {
-          this.messageService.add({ severity: 'success', summary: 'יומן עבודה נוצר בהצלחה' });
+          this.messageService.add({ severity: 'success', summary: 'Work log created successfully' });
           this.getWorkLogs();
         } else {
-          this.messageService.add({ severity: 'error', summary: 'שגיאה ביצירת יומן העבודה' });
+          this.messageService.add({ severity: 'error', summary: 'Error creating work log' });
         }
+      },
+      (error: any) => {
+        console.error('Error creating work log:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error creating work log', detail: error.message });
       }
     );
   }
