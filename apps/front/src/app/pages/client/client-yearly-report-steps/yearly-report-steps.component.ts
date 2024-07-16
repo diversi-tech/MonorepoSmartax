@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { ScrollerModule } from 'primeng/scroller';
 import { StepsModule } from 'primeng/steps';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -28,8 +29,9 @@ export class YearlyReportStepsComponent implements OnInit{
   allStep: StepField[] = [];
   stepsByNumber: { [key: number]: StepField[] } = {};
   activeStep = 0; // מתחיל בשלב הראשון
+  changes: { [key: string]: boolean } = {};
 
-  constructor(private yearlyReportService: YearlyReportService){
+  constructor(private yearlyReportService: YearlyReportService, private router:Router){
     
   };
 
@@ -75,27 +77,66 @@ export class YearlyReportStepsComponent implements OnInit{
   isStepComplete(stepNumber: number): boolean {
     return this.getStepsByNumber(stepNumber).every(task => task.isComplete);
   }
-  async update(task: StepField) {
-    console.log("before", task);
-    console.log(this.responseData);
+//   async update(task: StepField) {
+//     console.log("before", task);
+//     console.log(this.responseData);
 
-    // Find the task and update it directly
-    const taskIndex = this.responseData.stepsList.findIndex(t => t._id === task._id);
-    if (taskIndex !== -1) {
-        console.log("index", taskIndex);
-        this.responseData.stepsList[taskIndex].isComplete = !this.responseData.stepsList[taskIndex].isComplete;
-    }
+//     // Find the task and update it directly
+//     const taskIndex = this.responseData.stepsList.findIndex(t => t._id === task._id);
+//     if (taskIndex !== -1) {
+//         console.log("index", taskIndex);
+//         this.responseData.stepsList[taskIndex].isComplete = !this.responseData.stepsList[taskIndex].isComplete;
+//     }
 
-    console.log("after", this.responseData.stepsList[taskIndex]);
+//     console.log("after", this.responseData.stepsList[taskIndex]);
 
-    try {
-        const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
-        console.log("response from server", response);
-        alert("succ update response");
-        this.responseData = response;
-    } catch (error) {
-        console.log(error);
-    }
+//     try {
+//         const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
+//         console.log("response from server", response);
+//         alert("succ update response");
+//         this.responseData = response;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+// פונקציית עדכון
+async update(task: StepField) {
+  const taskId = task._id;
+  
+  // הפוך את ה-status
+  this.changes[taskId] = !this.changes[taskId];
+
+  // עדכון למבנה responseData אם יש צורך
+  const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
+  if (taskIndex !== -1) {
+      this.responseData.stepsList[taskIndex].isComplete = this.changes[taskId];
+  }
+}
+
+
+// פונקציה לשליחת כל השינויים לשרת
+async submitChanges() {
+  console.log("Submitting changes:", this.changes);
+  
+  // עדכון הresponseData עם השינויים
+  for (const taskId in this.changes) {
+      const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
+      if (taskIndex !== -1) {
+          this.responseData.stepsList[taskIndex].isComplete = this.changes[taskId];
+      }
+  }
+
+  try {
+      const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
+      console.log("response from server", response);
+      alert("Successful update response");
+      this.responseData = response;
+      // נקה את השינויים אחרי שליחה
+      this.changes = {};
+  } catch (error) {
+      console.log(error);
+  }
 }
 
 
@@ -138,6 +179,7 @@ isAllTasksCompleted(stepNumber: number): boolean {
   const tasks = this.getStepsByNumber(stepNumber);
   return tasks.every(task => task.isComplete);
 }
+
 
   
 }

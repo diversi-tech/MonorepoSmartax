@@ -43,9 +43,9 @@ import { TaskCheckListComponent } from './task-check-list/task-check-list.compon
 import { MonthlyReportComponent } from './pages/client/monthly-report/monthly-report.component';
 import { TaxRefundsComponent } from './pages/client/tax-refunds/tax-refunds.component';
 import { FinancialStatementComponent } from './pages/client/financial-statement/financial-statement.component';
-import { YearlyReportComponent } from './pages/client/yearlyReport/yearly-report.component';
-import { CreateYearlyReportComponent } from './pages/client/create-yearly-report/create-yearly-report.component';
-import { YearlyReportStepsComponent } from './pages/client/yearly-report-steps/yearly-report-steps.component';
+import { YearlyReportComponent } from './pages/client/client-yearlyReport/yearly-report.component';
+import { CreateYearlyReportComponent } from './pages/client/client-create-yearly-report/create-yearly-report.component';
+import { YearlyReportStepsComponent } from './pages/client/client-yearly-report-steps/yearly-report-steps.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
