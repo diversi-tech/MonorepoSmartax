@@ -28,15 +28,15 @@
         <form (ngSubmit)="createCommunication()" #createForm="ngForm" class="form-background">
           <div class="p-field">
             <label for="clientName">Client Name</label>
-            <input type="text" class="p-inputtext" id="clientName" [(ngModel)]="newCommunication.client.name" name="clientName" required>
+            <input type="text" class="p-inputtext" id="clientName" [(ngModel)]="newCommunication.client.firstName" name="clientName" required>
           </div>
           <div class="p-field">
             <label for="contactInfo">Contact Info</label>
-            <input type="email" class="p-inputtext" id="contactInfo" [(ngModel)]="newCommunication.client.contactInfo" name="contactInfo" required>
+            <input type="email" class="p-inputtext" id="contactInfo" [(ngModel)]="newCommunication.client.phone" name="contactInfo" required>
           </div>
           <div class="p-field">
             <label for="businessName">Business Name</label>
-            <input type="text" class="p-inputtext" id="businessName" [(ngModel)]="newCommunication.client.businessName" name="businessName" required>
+            <input type="text" class="p-inputtext" id="businessName" [(ngModel)]="newCommunication.client.companyName" name="businessName" required>
           </div>
           <div class="p-field">
             <label for="source">Source</label>

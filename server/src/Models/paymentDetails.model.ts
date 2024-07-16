@@ -1,10 +1,17 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from 'mongoose';
+import { Frequency } from "./frequency.model";
 
 @Schema()
 export class PaymentDetails extends Document {
     @Prop()
     sumForMonth: number;
+
+    @Prop()
+    maxHours: number;
+
+    @Prop()
+    frequency: Frequency;
 
     @Prop({ default: () => new Date() })
     dateStart: Date;

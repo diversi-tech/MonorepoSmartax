@@ -1,4 +1,8 @@
 {
+    "recommendations": [
+        "codeium.codeium"
+    ]
+}{
   "recommendations": [
     "nrwl.angular-console",
     "esbenp.prettier-vscode",

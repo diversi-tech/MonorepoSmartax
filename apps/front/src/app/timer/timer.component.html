@@ -1,0 +1,31 @@
+
+ <h2 id="totalTime"
+    (mouseover)="showList = true" 
+    (mouseout)="showList = false">
+    {{formattedTotalTime}} :סה"כ שעות עבודה</h2>
+
+<div id="tooltip"
+[hidden]="!showList"
+*ngFor="let timer of allTimers">
+  {{pad(timer.hours)}}:{{pad(timer.minutes)}}:{{pad(timer.seconds)}}
+  :שעות עבודה
+  <app-icon-profile id="userIcon" [userName]="getUserNameById(timer.userId)"></app-icon-profile>
+
+</div>
+
+  <button id="start"
+          (click)="showTimer()"
+          pButton icon="pi pi-caret-right"
+          label="הפעל טיימר"
+          [hidden]="!isStartDisabled"
+  ></button>
+
+
+  <button id="save"
+          (click)="showStart()" 
+          pButton icon="pi pi-check"
+          label="שמירה"
+          [hidden]="isStartDisabled"
+  ></button>
+
+  <h3 [hidden]="isStartDisabled">{{ timerDisplay }}</h3>

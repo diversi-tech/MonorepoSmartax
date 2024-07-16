@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { Client } from '../../../_models/client.module';
@@ -13,6 +13,8 @@ import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplet
 import { NgIf } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { AddClientComponent } from '../add-client/add-client.component';
+import { DialogModule } from 'primeng/dialog';
+import { EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -28,6 +30,7 @@ import { AddClientComponent } from '../add-client/add-client.component';
       TableModule,
       AddClientComponent,
       RouterOutlet,
+      DialogModule,
     ],
 })
 export class ClientAddCommunicationComponent implements OnInit {
@@ -41,18 +44,20 @@ export class ClientAddCommunicationComponent implements OnInit {
     Status: false,
     Subject:""
   };
-  thisSubject=""
-  thisSubject2=""
+  thisSubject="";
+  thisSubject2="";
   formattedDate: string = '';
   isSelected: number;
   selectedCallTopic: callTopicSchema| null = null;
   filteredCallTopic: callTopicSchema[] = [];
   callTopics: callTopicSchema[];
-  callTopics2: callTopicSchema[]=[{name:"לא נמצא"}]
+  callTopics2: callTopicSchema[]=[{name:"לא נמצא"}];
   is: boolean = false;
-  newcallTopicSchema: callTopicSchema={
-    name:""
-  }
+  newcallTopicSchema: callTopicSchema={ name:"" };
+  displayDialog: boolean = true;
+  @Output() close = new EventEmitter<void>();
+
+
   constructor(private router: Router, private communicationService: CommunicationService, private userService: UserService,
     private calltopicservice : CallTopicService
   ) { }
@@ -99,6 +104,7 @@ export class ClientAddCommunicationComponent implements OnInit {
           console.error('Error creating communication:', error);
         }
       );
+      this.close.emit();
   }
   private resetForm(): void {
     this.newCommunication = {
@@ -156,5 +162,8 @@ export class ClientAddCommunicationComponent implements OnInit {
   select(event:  AutoCompleteSelectEvent): void {
       const callTopic = event.value as callTopicSchema;
       this.thisSubject=callTopic.name
+    }
+    onClose() {
+      this.close.emit();
     }
 }
