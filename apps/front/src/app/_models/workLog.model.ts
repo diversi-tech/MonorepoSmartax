@@ -1,4 +1,5 @@
 export interface TimeEntry {
+  _id?: string;
   checkIn: Date;
   checkOut: Date | null;
   hoursWorked: number;

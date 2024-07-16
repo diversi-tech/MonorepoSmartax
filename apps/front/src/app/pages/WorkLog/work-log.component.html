@@ -525,7 +525,7 @@
     </p-footer>
   </p-dialog>
 </div>  -->
-<!-- <div>
+ <!-- <div>
   <h2>ניהול שעות עבודה</h2>
 
   <div>
@@ -573,15 +573,16 @@
     </p-table>
   </div>
 </div> -->
-<div>
+<div> 
   <h2>ניהול שעות עבודה</h2>
 
   <div>
-    <p-button *ngIf="!hasOpenTimeEntry(logGroup)" label="כניסה" icon="pi pi-sign-in" (click)="checkIn(logGroup)"></p-button>
+    <!-- *ngIf="logGroup && !hasOpenTimeEntry(logGroup)" -->
+    <p-button  label="כניסה" icon="pi pi-sign-in" (click)="checkIn()"></p-button>
     <p-button label="יציאה" icon="pi pi-sign-out" (click)="checkOut()"></p-button>
   </div>
 
-  <div *ngIf="groupedWorkLogs && groupedWorkLogs.length > 0">
+  <div *ngIf="groupedWorkLogs ">
     <h3>רשימת יומני עבודה</h3>
     <p-table [value]="groupedWorkLogs">
       <ng-template pTemplate="header">
@@ -650,3 +651,4 @@
     </p-footer>
   </p-dialog>
 </div>
+<button pButton type="button" label="Export to Excel" icon="pi pi-file-excel" class="p-button-success" (click)="exportToExcel()"></button>

@@ -416,6 +416,298 @@
 //   }
 // }
 // work-log.component.ts
+
+//===============//
+// import { Component, OnInit } from '@angular/core';
+// import { WorkLogService } from '../../_services/workLog.service';
+// import { WorkLog, TimeEntry } from '../../_models/workLog.model';
+// import { MessageService } from 'primeng/api';
+// import { FormsModule } from '@angular/forms';
+// import { ButtonModule } from 'primeng/button';
+// import { InputTextModule } from 'primeng/inputtext';
+// import { TableModule } from 'primeng/table';
+// import { CalendarModule } from 'primeng/calendar';
+// import { CommonModule } from '@angular/common';
+// import { DialogModule } from 'primeng/dialog';
+// import { TokenService } from '../../_services/token.service';
+// import { UpdateTimeEntryDto } from '../../../../../../server/src/Models/dto/workLog.dto';
+
+// @Component({
+//   selector: 'app-work-log',
+//   templateUrl: './work-log.component.html',
+//   styleUrls: ['./work-log.component.css'],
+//   standalone: true,
+//   imports: [
+//     FormsModule,
+//     ButtonModule,
+//     InputTextModule,
+//     TableModule,
+//     CalendarModule,
+//     CommonModule,
+//     DialogModule
+//   ],
+//   providers: [MessageService]
+// })
+// export class WorkLogComponent implements OnInit {
+//   workLogs: WorkLog[] = [];
+//   groupedWorkLogs: any[] = [];
+//   displayDialog: boolean = false;
+//   editedCheckIn: Date | null = null;
+//   editedCheckOut: Date | null = null;
+//   selectedLog: any = null;
+//   employeeId: string | null = null;
+//   selectedEntry: TimeEntry | null = null;
+//   userRole: number;
+//   logGroup: any;
+
+//   constructor(
+//     private workLogService: WorkLogService,
+//     private messageService: MessageService,
+//     private tokenService: TokenService
+//   ) {
+//     this.employeeId = this.tokenService.getCurrentDetail('_id');
+//     this.userRole = this.tokenService.getCurrentDetail('role').level;
+//   }
+
+//   ngOnInit() {
+//     this.getWorkLogs();
+//     console.log(this.userRole);
+//   }
+
+//   getWorkLogs() {
+//     if (this.userRole === 3) {
+//       this.workLogService.getWorkLogs().subscribe(
+//         (response: WorkLog[]) => {
+//           if (response && Array.isArray(response)) {
+//             this.workLogs = response.map(log => ({
+//               ...log,
+//               date: new Date(log.date),
+//               timeEntries: log.timeEntries.map(entry => ({
+//                 ...entry,
+//                 checkIn: entry.checkIn ? new Date(entry.checkIn) : null,
+//                 checkOut: entry.checkOut ? new Date(entry.checkOut) : null
+//               }))
+//             }));
+//             this.groupWorkLogsByDate();
+//           } else {
+//             console.error('Data received from API is not an array:', response);
+//           }
+//         },
+//         (error) => {
+//           console.error('Error fetching work logs:', error);
+//         }
+//       );
+//     } else if (this.userRole === 6) {
+//       this.workLogService.getWorkLogs(this.employeeId).subscribe(
+//         (response: WorkLog[]) => {
+//           if (response && Array.isArray(response)) {
+//             this.workLogs = response.map(log => ({
+//               ...log,
+//               date: new Date(log.date),
+//               timeEntries: log.timeEntries.map(entry => ({
+//                 ...entry,
+//                 checkIn: entry.checkIn ? new Date(entry.checkIn) : null,
+//                 checkOut: entry.checkOut ? new Date(entry.checkOut) : null
+//               }))
+//             }));
+//             this.groupWorkLogsByDate();
+//           } else {
+//             console.error('Data received from API is not an array:', response);
+//           }
+//         },
+//         (error) => {
+//           console.error('Error fetching work logs:', error);
+//         }
+//       );
+//     }
+//   }
+
+//   groupWorkLogsByDate() {
+//     const grouped = this.workLogs.reduce((acc, log) => {
+//       const date = new Date(log.date).toLocaleDateString('en-CA');
+//       if (!acc[date]) {
+//         acc[date] = [];
+//       }
+//       acc[date].push(log);
+//       return acc;
+//     }, {});
+
+//     this.groupedWorkLogs = Object.keys(grouped).map(date => {
+//       const logs = grouped[date];
+//       const totalHoursWorked = logs.reduce((sum, log) => {
+//         return sum + log.timeEntries.reduce((entrySum, entry) => {
+//           return entrySum + (entry.hoursWorked || 0);
+//         }, 0);
+//       }, 0);
+//       return { date, logs, totalHoursWorked, expanded: false, employeeId: logs[0].employeeId };
+//     });
+//   }
+
+//   hasOpenTimeEntry(logGroup: any): boolean {
+//     console.log(logGroup);
+//     return logGroup.logs.some((log: WorkLog) => log.timeEntries.some((entry: TimeEntry) => !entry.checkOut));
+//   }
+
+//   checkIn() {
+//     if (!this.employeeId) {
+//       alert('שגיאה: מספר עובד לא זמין.');
+//       return;
+//     }
+
+//     const today = new Date();
+//     const existingWorkLog = this.workLogs.find(log => log.employeeId === this.employeeId && this.isToday(new Date(log.date)));
+
+//     if (existingWorkLog) {
+//       const newTimeEntry: TimeEntry = {
+//         checkIn: today,
+//         checkOut: null,
+//         hoursWorked: 0
+//       };
+//       existingWorkLog.timeEntries.push(newTimeEntry);
+//       this.updateWorkLog(existingWorkLog, existingWorkLog.timeEntries); // Pass timeEntries here
+//     } else {
+//       const newTimeEntry: TimeEntry = {
+//         checkIn: today,
+//         checkOut: null,
+//         hoursWorked: 0
+//       };
+//       const newWorkLog: WorkLog = {
+//         employeeId: this.employeeId,
+//         date: today,
+//         timeEntries: [newTimeEntry]
+//       };
+//       this.createWorkLog(newWorkLog);
+//     }
+//   }
+
+//   checkOut() {
+//     if (!this.employeeId) {
+//       alert('שגיאה: מספר עובד לא זמין.');
+//       return;
+//     }
+
+//     const today = new Date();
+//     const existingWorkLog = this.workLogs.find(log => log.employeeId === this.employeeId && this.isToday(new Date(log.date)));
+
+//     if (!existingWorkLog) {
+//       alert('יש להכניס כניסה קודם ליציאה.');
+//       return;
+//     }
+
+//     const currentEntry = existingWorkLog.timeEntries.find(entry => !entry.checkOut);
+
+//     if (!currentEntry) {
+//       alert('לא נמצאה כניסה פתוחה.');
+//       return;
+//     }
+
+//     currentEntry.checkOut = today;
+//     currentEntry.hoursWorked = this.calculateHours(currentEntry.checkIn, currentEntry.checkOut);
+//     this.updateWorkLog(existingWorkLog, existingWorkLog.timeEntries); // Pass timeEntries here
+//   }
+
+//   editWorkLog(log: any) {
+//     this.selectedLog = log;
+//     this.selectedEntry = null;
+//     this.displayDialog = true;
+//   }
+
+//   editTimeEntry(logGroup: any, entry: TimeEntry) {
+//     this.selectedLog = logGroup;
+//     this.selectedEntry = entry;
+//     this.editedCheckIn = new Date(entry.checkIn);
+//     this.editedCheckOut = entry.checkOut ? new Date(entry.checkOut) : null;
+//     this.displayDialog = true;
+//   }
+
+//   saveEditedWorkLog() {
+//     if (this.selectedLog && this.selectedEntry) {
+//       this.selectedEntry.checkIn = this.editedCheckIn;
+//       this.selectedEntry.checkOut = this.editedCheckOut;
+//       this.selectedEntry.hoursWorked = this.calculateHours(this.selectedEntry.checkIn, this.selectedEntry.checkOut);
+//       this.updateWorkLog(this.selectedLog, this.selectedLog.timeEntries); // Pass timeEntries here
+//       this.displayDialog = false;
+//     }
+//   }
+
+//   cancelEdit() {
+//     this.displayDialog = false;
+//   }
+
+//   isToday(date: Date): boolean {
+//     const today = new Date();
+//     return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+//   }
+
+//   updateWorkLog(workLog: WorkLog, timeEntries: TimeEntry[]) {
+//     this.workLogService.updateWorkLog(workLog._id, timeEntries).subscribe(
+//       response => {
+//         if (response) {
+//           this.messageService.add({ severity: 'success', summary: 'יומן עבודה עודכן בהצלחה' });
+//           this.getWorkLogs();
+//         } else {
+//           this.messageService.add({ severity: 'error', summary: 'שגיאה בעדכון יומן העבודה' });
+//         }
+//       }
+//     );
+//   }
+//   updateTimeEntry(id: string, updateTimeEntryDto: UpdateTimeEntryDto) {
+//     this.workLogService.updateTimeEntry(id, updateTimeEntryDto).subscribe(
+//       response => {
+//         if (response) {
+//           this.messageService.add({ severity: 'success', summary: 'זמן הכניסה והיציאה עודכנו בהצלחה' });
+//           this.getWorkLogs(); // רענון רשימת יומני העבודה לאחר העדכון
+//         } else {
+//           this.messageService.add({ severity: 'error', summary: 'שגיאה בעדכון זמן הכניסה והיציאה' });
+//         }
+//       },
+//       error => {
+//         console.error('Error updating time entry:', error);
+//         this.messageService.add({ severity: 'error', summary: 'שגיאה בשרת - נסה שוב מאוחר יותר' });
+//       }
+//     );
+//   }
+//   createWorkLog(workLog: WorkLog) {
+//     this.workLogService.createWorkLog(workLog).subscribe(
+//       response => {
+//         if (response) {
+//           this.messageService.add({ severity: 'success', summary: 'יומן עבודה נוצר בהצלחה' });
+//           this.getWorkLogs();
+//         } else {
+//           this.messageService.add({ severity: 'error', summary: 'שגיאה ביצירת יומן העבודה' });
+//         }
+//       }
+//     );
+//   }
+
+//   calculateHours(checkIn: Date, checkOut: Date): number {
+//     if (!checkIn || !checkOut) {
+//         return 0;
+//     }
+
+//     // Convert strings to Date objects if necessary
+//     if (typeof checkIn === 'string') {
+//         checkIn = new Date(checkIn);
+//     }
+//     if (typeof checkOut === 'string') {
+//         checkOut = new Date(checkOut);
+//     }
+
+//     const diffMilliseconds = Math.abs(checkOut.getTime() - checkIn.getTime());
+//     const diffSeconds = diffMilliseconds / 1000;
+
+//     const hours = Math.floor(diffSeconds / 3600);
+//     const minutes = Math.floor((diffSeconds % 3600) / 60);
+//     const seconds = Math.floor(diffSeconds % 60);
+
+//     const totalHours = hours + (minutes / 60) + (seconds / 3600);
+//     const roundedHours = Math.round(totalHours * 100) / 100;
+
+//     return roundedHours;
+// }
+
+// }
+
 import { Component, OnInit } from '@angular/core';
 import { WorkLogService } from '../../_services/workLog.service';
 import { WorkLog, TimeEntry } from '../../_models/workLog.model';
@@ -428,6 +720,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../_services/token.service';
+import { UpdateWorkLogDto } from '../../../../../../server/src/Models/dto/workLog.dto';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-work-log',
@@ -455,14 +749,13 @@ export class WorkLogComponent implements OnInit {
   employeeId: string | null = null;
   selectedEntry: TimeEntry | null = null;
   userRole: number;
-  logGroup: any;
 
   constructor(
     private workLogService: WorkLogService,
     private messageService: MessageService,
     private tokenService: TokenService
   ) {
-    this.employeeId = this.tokenService.getCurrentDetail('email');
+    this.employeeId = this.tokenService.getCurrentDetail('_id');
     this.userRole = this.tokenService.getCurrentDetail('role').level;
   }
 
@@ -471,21 +764,36 @@ export class WorkLogComponent implements OnInit {
   }
 
   getWorkLogs() {
-    this.workLogService.getWorkLogs().subscribe(
-      (response: WorkLog[]) => {
-        if (response && Array.isArray(response)) {
-          this.workLogs = response;
-          this.groupWorkLogsByDate();
-        } else {
-          console.error('Data received from API is not an array:', response);
+    if (this.userRole === 3) {
+      this.workLogService.getWorkLogs().subscribe(
+        (response: WorkLog[]) => {
+          if (response && Array.isArray(response)) {
+            this.workLogs = response.map(log => ({
+              ...log,
+              date: new Date(log.date),
+              timeEntries: log.timeEntries.map(entry => ({
+                ...entry,
+                checkIn: entry.checkIn ? new Date(entry.checkIn) : null,
+                checkOut: entry.checkOut ? new Date(entry.checkOut) : null
+              }))
+            }));
+            this.groupWorkLogsByDate();
+          } else {
+            console.error('Data received from API is not an array:', response);
+          }
+        },
+        (error) => {
+          console.error('Error fetching work logs:', error);
         }
-      }
-    );
+      );
+    } else {
+      console.error('User role not supported for fetching work logs.');
+    }
   }
 
   groupWorkLogsByDate() {
     const grouped = this.workLogs.reduce((acc, log) => {
-      const date = new Date(log.date).toLocaleDateString('en-CA'); // extract date without time in 'yyyy-MM-dd' format
+      const date = new Date(log.date).toLocaleDateString('en-CA');
       if (!acc[date]) {
         acc[date] = [];
       }
@@ -505,13 +813,12 @@ export class WorkLogComponent implements OnInit {
   }
 
   hasOpenTimeEntry(logGroup: any): boolean {
-    // Implement your logic here to check if there is an open time entry for the log group
-    return false; // Replace with your actual logic
+    return logGroup.logs.some((log: WorkLog) => log.timeEntries.some((entry: TimeEntry) => !entry.checkOut));
   }
 
-  checkIn(logGroup: any) {
+  checkIn() {
     if (!this.employeeId) {
-      alert('שגיאה: מספר עובד לא זמין.');
+      alert('Error: Employee ID not available.');
       return;
     }
 
@@ -543,7 +850,7 @@ export class WorkLogComponent implements OnInit {
 
   checkOut() {
     if (!this.employeeId) {
-      alert('שגיאה: מספר עובד לא זמין.');
+      alert('Error: Employee ID not available.');
       return;
     }
 
@@ -551,14 +858,14 @@ export class WorkLogComponent implements OnInit {
     const existingWorkLog = this.workLogs.find(log => log.employeeId === this.employeeId && this.isToday(new Date(log.date)));
 
     if (!existingWorkLog) {
-      alert('יש להכניס כניסה קודם ליציאה.');
+      alert('Please check in before checking out.');
       return;
     }
 
     const currentEntry = existingWorkLog.timeEntries.find(entry => !entry.checkOut);
 
     if (!currentEntry) {
-      alert('לא נמצאה כניסה פתוחה.');
+      alert('No open entry found.');
       return;
     }
 
@@ -574,22 +881,53 @@ export class WorkLogComponent implements OnInit {
   }
 
   editTimeEntry(logGroup: any, entry: TimeEntry) {
+    console.log(logGroup);
     this.selectedLog = logGroup;
     this.selectedEntry = entry;
     this.editedCheckIn = new Date(entry.checkIn);
     this.editedCheckOut = entry.checkOut ? new Date(entry.checkOut) : null;
     this.displayDialog = true;
   }
-
+  
   saveEditedWorkLog() {
     if (this.selectedLog && this.selectedEntry) {
       this.selectedEntry.checkIn = this.editedCheckIn;
       this.selectedEntry.checkOut = this.editedCheckOut;
       this.selectedEntry.hoursWorked = this.calculateHours(this.selectedEntry.checkIn, this.selectedEntry.checkOut);
-      this.updateWorkLog(this.selectedLog);
+  
+      const updateDto: UpdateWorkLogDto = {
+        id: this.selectedLog.logs[0]._id,
+        timeEntries: this.selectedLog.logs.flatMap((log: any) => log.timeEntries.map((entry: any) => ({
+          _id: entry._id,
+          checkIn: entry.checkIn,
+          checkOut: entry.checkOut,
+          hoursWorked: entry.hoursWorked
+        })))
+      };
+      this.updateWorkLog(updateDto);
       this.displayDialog = false;
     }
   }
+  // saveEditedWorkLog() {
+  //   if (this.selectedLog && this.selectedEntry) {
+  //     console.log(this.selectedLog.logs[0]._id);
+  //     const updateDto: UpdateWorkLogDto = {
+  //       id: this.selectedLog.logs[0]._id,
+  //       timeEntries: this.selectedLog.logs.flatMap((log: any) => log.timeEntries.map((entry: any) => ({
+  //         _id: entry._id,
+  //         checkIn: entry.checkIn,
+  //         checkOut: entry.checkOut,
+  //         hoursWorked: entry.hoursWorked
+  //       })))
+  //     };
+  //     console.log(updateDto);
+  //     this.updateWorkLog(updateDto);
+  //     this.displayDialog = false;
+  //   }
+  // }
+  
+  
+  
 
   cancelEdit() {
     this.displayDialog = false;
@@ -600,23 +938,19 @@ export class WorkLogComponent implements OnInit {
     return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
   }
 
-  calculateHours(checkIn: Date, checkOut: Date | null): number {
-    if (!checkOut) {
-      return 0;
-    }
-    const diff = checkOut.getTime() - checkIn.getTime();
-    return diff / (1000 * 60 * 60);
-  }
-
-  updateWorkLog(workLog: WorkLog) {
-    this.workLogService.updateWorkLog(workLog._id, workLog.timeEntries).subscribe(
+  updateWorkLog(workLog: any) {
+    this.workLogService.updateWorkLog(workLog.id, workLog.timeEntries).subscribe(
       response => {
         if (response) {
-          this.messageService.add({ severity: 'success', summary: 'יומן עבודה עודכן בהצלחה' });
+          this.messageService.add({ severity: 'success', summary: 'Work log updated successfully' });
           this.getWorkLogs();
         } else {
-          this.messageService.add({ severity: 'error', summary: 'שגיאה בעדכון יומן העבודה' });
+          this.messageService.add({ severity: 'error', summary: 'Failed to update work log' });
         }
+      },
+      error => {
+        console.error('Error updating work log:', error);
+        this.messageService.add({ severity: 'error', summary: 'Server error - try again later' });
       }
     );
   }
@@ -625,11 +959,40 @@ export class WorkLogComponent implements OnInit {
     this.workLogService.createWorkLog(workLog).subscribe(
       response => {
         if (response) {
-          this.messageService.add({ severity: 'success', summary: 'יומן עבודה נוצר בהצלחה' });
+          this.messageService.add({ severity: 'success', summary: 'Work log created successfully' });
           this.getWorkLogs();
         } else {
-          this.messageService.add({ severity: 'error', summary: 'שגיאה ביצירת יומן העבודה' });
+          this.messageService.add({ severity: 'error', summary: 'Failed to create work log' });
         }
+      },
+      error => {
+        console.error('Error creating work log:', error);
+        this.messageService.add({ severity: 'error', summary: 'Server error - try again later' });
+      }
+    );
+  }
+
+  calculateHours(checkIn: Date, checkOut: Date): number {
+    if (!checkIn || !checkOut) {
+      return 0;
+    }
+    const diff = Math.abs(checkOut.getTime() - checkIn.getTime());
+    return diff / (1000 * 60 * 60);
+  }
+  exportToExcel() {
+    const month = new Date().getMonth() + 1; // לדוגמה, יכול להיות לך צורך להשתמש במשתנים אחרים כמו שנה וכדומה
+    const year = new Date().getFullYear();
+    
+    this.workLogService.exportWorkLogs(month, year).subscribe(
+      (blob: Blob) => {
+        const filename = `work-logs-${month}-${year}.xlsx`;
+        
+        
+FileSaver.saveAs(blob, filename);
+      },
+      (error) => {
+        console.error('Error exporting work logs to Excel:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to export work logs to Excel.' });
       }
     );
   }

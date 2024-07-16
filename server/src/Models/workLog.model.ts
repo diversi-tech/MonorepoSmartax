@@ -35,12 +35,15 @@
 // export const WorkLogModel = SchemaFactory.createForClass(WorkLog);
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 
 export type WorkLogDocument = WorkLog & Document;
 
 @Schema()
 export class TimeEntry {
+  @Prop({ type: String, auto: true })
+  _id: string;
+
   @Prop({ required: true })
   checkIn: Date;
 
