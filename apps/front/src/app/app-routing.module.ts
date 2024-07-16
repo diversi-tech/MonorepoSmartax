@@ -98,7 +98,7 @@ import { PaymentComponent } from './pages/payment/payment.component';
     ]
   },
   { path: 'employeesTable', component: EmployeesTableComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'עובדים', icon: icons.employees } },
-  { path: 'payment', component: PaymentComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'כרטיס גביה', icon: icons.employees } },
+  { path: 'payment/:id', component: PaymentComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'כרטיס גביה', icon: icons.employees } },
 
   { path: '', redirectTo: 'home', pathMatch: 'full', data: { forToolbar: false, label: '#', icon: '' } },
  // { path: 'communicationLogs', component: CommunicationLogsComponent, data: { authType: 6, forToolbar: true, label: 'Communication Logs', icon: icons.comment } },
