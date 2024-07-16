@@ -62,6 +62,8 @@ import { MenuItem } from 'primeng/api';
 import { TaskCheckListComponent } from '../task-check-list/task-check-list.component';
 import { TabViewModule } from 'primeng/tabview';
 import { SubTaskComponent } from '../sub-task/sub-task.component';
+import { TimerComponent } from '../timer/timer.component';  // וודא שהנתיב נכון
+
 
 @Component({
   selector: 'app-task',
@@ -101,6 +103,7 @@ import { SubTaskComponent } from '../sub-task/sub-task.component';
     TaskCheckListComponent,
     TabViewModule,
     SubTaskComponent,
+    TimerComponent,
   ],
   providers: [DocumentService],
 })
