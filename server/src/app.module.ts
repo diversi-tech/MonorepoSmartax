@@ -97,8 +97,13 @@ import { YearlyReport, YearlyReportstModel } from './Models/yearlyReports.model'
 import { Year, YearModel } from './Models/year.model';
 import { YearService } from './services/year.service';
 import { YearController } from './controller/year/year.controller';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+// import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+// import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-
+// export function HttpLoaderFactory(http: HttpClient) {
+//   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+// }
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
 
 @Module({
@@ -145,7 +150,14 @@ import { YearController } from './controller/year/year.controller';
     serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
   }),
   MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel }]),
-    JwtModule
+    JwtModule,
+    // TranslateModule.forRoot({
+    //   loader: {
+    //     provide: TranslateLoader,
+    //     useFactory: HttpLoaderFactory,
+    //     deps: [HttpClient]
+    //   }
+    // }),
   ],
   controllers: [
     WorkLogController,

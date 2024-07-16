@@ -30,7 +30,7 @@ export class CreateTaskDto {
     @IsString()
     status: Status;
 
-    @IsNotEmpty()
+    @IsOptional()
     assignedTo: User;
 
     @IsNotEmpty()
@@ -39,6 +39,15 @@ export class CreateTaskDto {
     @IsNotEmpty()
     @IsString()
     priority: Priority;
+
+    @IsOptional()
+    deadline: Date;
+
+    @IsOptional()
+    googleId: string;
+
+    @IsOptional()
+    images: string[];
     
 }
 
@@ -73,4 +82,22 @@ export class UpdateTaskDto {
 
     @IsOptional()
     tags: Tag[];
+
+    @IsOptional()
+    @IsString()
+    priority?: Priority;
+
+    @IsOptional()
+    startDate?: Date;
+
+    @IsOptional()
+    deadline?: Date;
+
+    @IsOptional()
+    googleId?: string;
+
+    @IsOptional()
+    images?: string[];
+
+
 }
