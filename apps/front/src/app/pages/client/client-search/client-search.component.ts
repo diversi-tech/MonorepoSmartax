@@ -157,11 +157,12 @@ export class ClientSearchComponent implements OnInit {
   isClientChoosed(client: Client): boolean {
     return this.choosedClients.includes(client);
   }
-  isFavoriteClient(client: Client) {
-    return this.user.favorites.find(c => c._id === client._id) != undefined;
-  }
+  
+isFavoriteClient(client:Client){
+  return this.user.favoritesClient.find(c=>c._id===client._id)!=undefined;
+}
   addFavoritesClient() {
-    this.user.favorites.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)))
+    this.user.favoritesClient.push(...this.choosedClients.filter(c=>!this.isFavoriteClient(c)))
     this.updateFavorite();
   }
   updateFavorite() {
@@ -172,7 +173,7 @@ export class ClientSearchComponent implements OnInit {
         this.user.email,
         this.user.passwordHash,
         this.user.role,
-        this.user.favorites
+        this.user.favoritesClient
       )
       .subscribe({
         next: (response: any) => {
@@ -183,14 +184,14 @@ export class ClientSearchComponent implements OnInit {
         },
       });
   }
-  removeFromFavorite(client: Client) {
-    this.user.favorites = this.user.favorites.filter(c => c._id != client._id);
-    this.updateFavorite();
-  }
-  addToFavorite(client: Client) {
-    this.user.favorites.push(client);
-    this.updateFavorite();
-  }
+removeFromFavorite(client:Client){
+  this.user.favoritesClient=this.user.favoritesClient.filter(c=>c._id!=client._id);
+  this.updateFavorite();
+}
+addToFavorite(client:Client){
+  this.user.favoritesClient.push(client);
+  this.updateFavorite();
+}
   showConfirmation(): void {
     debugger
     this.confirmationService.confirm({
