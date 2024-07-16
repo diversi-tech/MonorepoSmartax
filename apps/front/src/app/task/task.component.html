@@ -1,7 +1,11 @@
 <!-- ===================== -->
-<app-timer [taskId]="id"></app-timer>
+<app-timer *ngIf="id!='create'" [taskId]="id"></app-timer>
 <div style="margin-top: 10%">
-  <p-card header="Task" subheader="Create and update your task" [style]="{ width: '800px' }">
+  <p-card
+    header="Task"
+    subheader="Create and update your task"
+    [style]="{ width: '800px' }"
+  >
     <ng-template pTemplate="header">
       <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
     </ng-template>
