@@ -13,3 +13,5 @@ export const YEARLYREPORT = `${API_URL}/yearly-reports`;
 export const YEAR = `${API_URL}/year`;
 export const TIMER_ENDPOINT = `${API_URL}/timer`;
 
+export const CHECKLIST_ENDPOINT = `${API_URL}/checklist`;
+export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checklistitem`;
