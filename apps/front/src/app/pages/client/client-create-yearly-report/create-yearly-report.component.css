@@ -71,3 +71,24 @@
     box-shadow: inset #338033 0 0 0; /* דוגמה לאנימציה כאשר הכפתור נלחץ */
     transform: translateY(2px);
   }
+  .custom-dropdown-panel {
+    width: 100%;
+  }
+  
+  .form-group {
+    margin-bottom: 1em;
+    max-width: 200px;
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 0.5em;
+  }
+  
+  .p-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mydialog{}
