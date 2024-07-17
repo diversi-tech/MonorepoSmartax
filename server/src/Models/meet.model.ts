@@ -21,6 +21,9 @@ export class Meet extends Document {
 
     @Prop({ type: [Types.ObjectId], ref: 'Client' })
     clientDepartments: Types.ObjectId[];
+
+    @Prop()
+    googleId: string;
 }
 
 export const MeetModel = SchemaFactory.createForClass(Meet);

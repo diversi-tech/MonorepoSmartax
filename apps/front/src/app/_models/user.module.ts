@@ -1,3 +1,4 @@
+import { Client } from "./client.module";
 import { Role } from "./role.module";
 
 export interface User {
@@ -6,5 +7,5 @@ export interface User {
   email: string;
   passwordHash: string;
   role: string;
-
+  favoritesClient:Client[];
 }

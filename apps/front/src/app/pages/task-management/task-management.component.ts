@@ -7,7 +7,13 @@ import { TagService } from '../../_services/tag.service';
 import { User } from '../../_models/user.module';
 import { Client } from '../../_models/client.module';
 import { Tag } from '../../_models/tag.module';
-import { Confirmation, ConfirmationService, MessageService, Footer, PrimeTemplate } from 'primeng/api';
+import {
+  Confirmation,
+  ConfirmationService,
+  MessageService,
+  Footer,
+  PrimeTemplate,
+} from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
 import { ToastModule } from 'primeng/toast';
@@ -25,37 +31,36 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ButtonDirective, Button } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
-    selector: 'app-task-management',
-    templateUrl: './task-management.component.html',
-    styleUrls: ['./task-management.component.css'],
-    standalone: true,
-    imports: [
-        ConfirmDialogModule,
-        Footer,
-        ButtonDirective,
-        SidebarModule,
-        NgIf,
-        CalendarModule,
-        FormsModule,
-        AutoCompleteModule,
-        PrimeTemplate,
-        IconProfileComponent,
-        MultiSelectModule,
-        Button,
-        RouterLink,
-        InputTextModule,
-        NgFor,
-        PanelModule,
-        TableModule,
-        NgStyle,
-        NgClass,
-        ToastModule,
-        DatePipe,
-    ],
+  selector: 'app-task-management',
+  templateUrl: './task-management.component.html',
+  styleUrls: ['./task-management.component.css'],
+  standalone: true,
+  imports: [
+    ConfirmDialogModule,
+    Footer,
+    ButtonDirective,
+    SidebarModule,
+    NgIf,
+    CalendarModule,
+    FormsModule,
+    AutoCompleteModule,
+    PrimeTemplate,
+    IconProfileComponent,
+    MultiSelectModule,
+    Button,
+    RouterLink,
+    InputTextModule,
+    NgFor,
+    PanelModule,
+    TableModule,
+    NgStyle,
+    NgClass,
+    ToastModule,
+    DatePipe,
+  ],
 })
 export class TaskManagementComponent implements OnInit {
-
-  statuses: Status[] = []
+  statuses: Status[] = [];
 
   tasks: Task[] = [];
   toDoTasks: Task[] = [];
@@ -82,13 +87,12 @@ export class TaskManagementComponent implements OnInit {
       tags: []
     };
 
-
   clientSuggestions: Client[] = [];
   userSuggestions: User[] = [];
   taskSuggestions: any[] = [];
   tagSuggestions: Tag[] = [];
   display: any;
-  filterFirstStatus=true
+  filterFirstStatus = true;
 
   constructor(
     private taskService: TaskService,
@@ -98,20 +102,17 @@ export class TaskManagementComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private statusService: StatusService
-
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getTasks();
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
-      this.tagSuggestions = tags
-    })
-    this.statusService.getAllStatuses().subscribe(
-      data => {
-        this.statuses = data
-        console.log(this.statuses);
-      }
-    )
+      this.tagSuggestions = tags;
+    });
+    this.statusService.getAllStatuses().subscribe((data) => {
+      this.statuses = data;
+      console.log(this.statuses);
+    });
   }
 
   getTasks(): void {
@@ -123,9 +124,9 @@ export class TaskManagementComponent implements OnInit {
 
   categorizeTasks(status: Status): Task[] {
     // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
-    return this.tasks.filter(task => {
+    return this.tasks.filter((task) => {
       // console.log('Task status:', task.status); // הדפסת המצב של המשימה
-     {return task.status && task.status.name === status.name;}
+      { return task.status && task.status.name === status.name; }
     });
   }
 
@@ -134,15 +135,13 @@ export class TaskManagementComponent implements OnInit {
 
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
-
     } else {
-      this.filteredTasks = this.tasks.filter(task =>
+      this.filteredTasks = this.tasks.filter((task) =>
         task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
       console.log('filter: ', this.filteredTasks);
     }
   }
-
 
   showConfirmation(task: Task): void {
     this.selectedTask = task;
@@ -152,25 +151,24 @@ export class TaskManagementComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         console.log('delete start');
-        this.deleteTask(this.selectedTask)
+        this.deleteTask(this.selectedTask);
       },
       reject: () => {
         console.log('cancel start');
         // Add the code to close the pop-up here
-      }
-    })
+      },
+    });
   }
   confirmDelete(task: Task): void {
     this.deleteTask(task);
   }
-
 
   deleteTask(task: Task): void {
     this.taskService.deleteTask(task._id!).subscribe({
       next: () => {
         this.reloadPage();
       },
-      error: err => console.error('Error deleting task: ', err)
+      error: (err) => console.error('Error deleting task: ', err),
     });
   }
 
@@ -179,7 +177,7 @@ export class TaskManagementComponent implements OnInit {
   }
 
   cancelDelete(): void {
-    this.confirmationService.close()
+    this.confirmationService.close();
   }
 
   toggleFilter(): void {
@@ -188,55 +186,104 @@ export class TaskManagementComponent implements OnInit {
 
   searchClients(event: any): void {
     this.clientService.getAllClients().subscribe((clients: Client[]) => {
-      this.clientSuggestions = clients.filter(client => client.name && client["name"].toLowerCase().includes(event.query.toLowerCase()));
+      this.clientSuggestions = clients.filter(client => client.firstName && client["firstName"].toLowerCase().includes(event.query.toLowerCase()));
     });
   }
 
   searchUsers(event: any): void {
     this.userService.getAllUsers().subscribe((users: any[]) => {
-      this.userSuggestions = (users.filter(user => user.userName && user["userName"].toLowerCase().includes(event.query.toLowerCase())))
+      this.userSuggestions = users.filter(
+        (user) =>
+          user.userName &&
+          user['userName'].toLowerCase().includes(event.query.toLowerCase())
+      );
     });
   }
 
   searchTasks(event: any): void {
     const query = event.query.toLowerCase().toLowerCase();
     this.taskSuggestions = this.tasks
-      .filter(task => task.taskName.toLowerCase().includes(query.toLowerCase()))
-      .map(task => ({ taskName: task.taskName }));
+      .filter((task) =>
+        task.taskName.toLowerCase().includes(query.toLowerCase())
+      )
+      .map((task) => ({ taskName: task.taskName }));
   }
 
   searchTags(event: any): void {
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
-      this.tagSuggestions = tags.filter(tag => tag['text'].toLowerCase().includes(event.query.toLowerCase()));
+      this.tagSuggestions = tags.filter((tag) =>
+        tag['text'].toLowerCase().includes(event.query.toLowerCase())
+      );
       // this.filter.tags = tags;
     });
   }
 
   applyFilter() {
-    this.filteredTasks = this.tasks.filter(task => {
-      this.filterFirstStatus=false;
+    this.filteredTasks = this.tasks.filter((task) => {
+      this.filterFirstStatus = false;
 
       const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
-        const clientMatch = !this.filter.client || (task.client && task.client.name && task.client.name.includes(this.filter.client.name));
+      const clientMatch = !this.filter.client || (task.client && task.client.name && task.client.name.includes(this.filter.client.name));
 
-      const userMatch = !this.filter.user || task.assignedTo.some(user => user.userName.includes(this.filter.user.userName));
-
-      const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
-
+        const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
+        
+        const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
       let tagsMatch = true;
       if (this.filter.tags && this.filter.tags.length > 0) {
-        tagsMatch = this.filter.tags.every(filterTag => {
-          return task.tags.some(taskTag => taskTag.text.includes(filterTag.text));
+        tagsMatch = this.filter.tags.every((filterTag) => {
+          return task.tags.some((taskTag) =>
+            taskTag.text.includes(filterTag.text)
+          );
         });
       }
-      
-      console.log(deadlineMatch, clientMatch, userMatch, taskNameMatch, tagsMatch);
 
+      console.log(
+        deadlineMatch,
+        clientMatch,
+        userMatch,
+        taskNameMatch,
+        tagsMatch
+      );
 
-      return deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch;
+      return (
+        deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
+      );
     });
   }
+  // sort
+  // בקומפוננטה שלך
+  sortTasks(field: string, list: Task[], reverse: boolean) {
+    // debugger
+    console.log(this.filteredTasks);
 
-
+    list.sort((a, b) => {
+      // כאן אתה יכול להוסיף לוגיקה למיון על פי השדה שנבחר
+      if (field === 'taskName') {
+        if (reverse) {
+          return b.taskName.localeCompare(a.taskName);
+        }
+        return a.taskName.localeCompare(b.taskName); // מיון לפי שם המשימה
+      }
+      if (field === 'assignedTo') {
+        if (reverse) {
+          return b.assignedTo.length - a.assignedTo.length;
+        }
+        return a.assignedTo.length - b.assignedTo.length; 
+      }
+      if (field === 'dueDate') {
+        if (reverse) {
+          return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate();
+        }
+        return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate(); // מיון לפי תאריך יעד
+      }
+      if (field === 'tags') {
+        if (reverse) {
+          return b.tags.length - a.tags.length;
+        }
+        return a.tags.length - b.tags.length; // מיון לפי מספר התגיות של המשימה
+      }
+      return 0; // במקרה שלא נמצא שדה תואם
+    });
+  }
 }

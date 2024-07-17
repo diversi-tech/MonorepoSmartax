@@ -83,30 +83,69 @@ export class GoogleAuthService {
     });
   }
 
-  public createGoogleEvent(eventDetails: any) {
-    if (!this.gapiInited || !this.gisInited) {
-      console.error("GAPI or GIS not initialized");
-      this.reinitializeGapi();
-      return;
-    }
-    this.tokenClient.callback = async (resp: any) => {
-      if (resp.error !== undefined) {
-        console.error("Error during token request", resp.error);
-        throw resp;
+  // public createGoogleEvent(eventDetails: any) {
+  //   if (!this.gapiInited || !this.gisInited) {
+  //     console.error("GAPI or GIS not initialized");
+  //     this.reinitializeGapi();
+  //     return;
+  //   }
+  //   this.tokenClient.callback = async (resp: any) => {
+  //     if (resp.error !== undefined) {
+  //       console.error("Error during token request", resp.error);
+  //       throw resp;
+  //     }
+  //     await this.scheduleEvent(eventDetails);
+  //   };
+  //   try {
+  //     if (gapi.client.getToken() === null) {
+  //       this.tokenClient.requestAccessToken({ prompt: "consent" });
+  //     } else {
+  //       this.tokenClient.requestAccessToken({ prompt: "" });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error requesting access token", error);
+  //   }
+  //   console.log('Token request initiated');
+  // }
+  createGoogleEvent(eventDetails: any): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (!this.gapiInited || !this.gisInited) {
+        console.error("GAPI or GIS not initialized");
+        this.reinitializeGapi();
+        reject(new Error("GAPI or GIS not initialized"));
+        return;
       }
-      await this.scheduleEvent(eventDetails);
-    };
-    try {
-      if (gapi.client.getToken() === null) {
-        this.tokenClient.requestAccessToken({ prompt: "consent" });
-      } else {
-        this.tokenClient.requestAccessToken({ prompt: "" });
+      
+      this.tokenClient.callback = async (resp: any) => {
+        if (resp.error !== undefined) {
+          console.error("Error during token request", resp.error);
+          reject(resp.error);
+          return;
+        }
+        try {
+          await this.scheduleEvent(eventDetails);
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      };
+  
+      try {
+        if (gapi.client.getToken() === null) {
+          this.tokenClient.requestAccessToken({ prompt: "consent" });
+        } else {
+          this.tokenClient.requestAccessToken({ prompt: "" });
+        }
+        console.log('Token request initiated');
+      } catch (error) {
+        console.error("Error requesting access token", error);
+        reject(error);
       }
-    } catch (error) {
-      console.error("Error requesting access token", error);
-    }
-    console.log('Token request initiated');
+    });
   }
+  
+
+
   // private async scheduleEvent(eventDetails: any) {
   //   // Ensure event details have startTime and endTime
   //   if (!eventDetails.startTime || !eventDetails.endTime) {
@@ -345,7 +384,67 @@ export class GoogleAuthService {
       console.error("Error updating event:", error);
     }
   }
-  
-  
-  
+
+  // delete
+  public deleteGoogleEvent(eventId: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (!this.gapiInited || !this.gisInited) {
+        console.error("GAPI or GIS not initialized");
+        this.reinitializeGapi();
+        reject(new Error("GAPI or GIS not initialized"));
+        return;
+      }
+
+      this.tokenClient.callback = async (resp: any) => {
+        if (resp.error !== undefined) {
+          console.error("Error during token request", resp.error);
+          reject(resp.error);
+          return;
+        }
+
+        try {
+          await this.removeEvent(eventId);
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      try {
+        if (gapi.client.getToken() === null) {
+          this.tokenClient.requestAccessToken({ prompt: "consent" });
+        } else {
+          this.tokenClient.requestAccessToken({ prompt: "" });
+        }
+        console.log('Token request initiated');
+      } catch (error) {
+        console.error("Error requesting access token", error);
+        reject(error);
+      }
+    });
+  }
+
+  private async removeEvent(eventId: string) {
+    try {
+      const request = gapi.client.calendar.events.delete({
+        calendarId: "primary",
+        eventId: eventId,
+      });
+
+      request.execute(() => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "המשימה נמחקה בהצלחה",
+          showConfirmButton: false,
+          timer: 3000
+        });
+        // Clear eventId and conferenceLink subject data
+        this.eventDataSubject.next(null);
+      });
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      throw error;
+    }
+  } 
 }

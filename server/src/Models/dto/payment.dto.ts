@@ -3,13 +3,21 @@ import { IsNotEmpty, IsOptional, IsNumber, ValidateNested, IsArray, IsMongoId } 
 import { Type } from "class-transformer";
 import { PaymentDetails } from "../paymentDetails.model";
 import { PaymentMethod } from "../paymentMethod.model";
+import { Billing } from "../billing.model";
+import { ObjectId } from "typeorm";
+import { Types } from "mongoose";
 
 export class CreatePaymentDto {
     @ApiProperty({ type: PaymentDetails })
     @IsNotEmpty()
     @ValidateNested()
     @Type(() => PaymentDetails)
-    paymentDetails: PaymentDetails;
+    mainPaymentDetails: PaymentDetails;
+
+    @ApiProperty({ type: PaymentDetails })
+    @ValidateNested()
+    @Type(() => PaymentDetails)
+    morePaymentDetails: PaymentDetails[];
 
     @ApiProperty({ type: Number, default: 0 })
     @IsOptional()
@@ -22,17 +30,17 @@ export class CreatePaymentDto {
     @Type(() => PaymentMethod)
     paymentMethod: PaymentMethod;
 
-    @ApiProperty({ type: [String], required: false, default: null })
+    @ApiProperty({ type: [Types.ObjectId], required: false, default: [] })
     @IsOptional()
     @IsArray()
-    @IsMongoId({ each: true })
-    paymentHistory: string[] = null;
+    @IsMongoId()
+    paymentHistory: PaymentDetails[] = [];
 
-    @ApiProperty({ type: [String], required: false, default: null })
+    @ApiProperty({ type: [Types.ObjectId], required: false, default: [] })
     @IsOptional()
     @IsArray()
-    @IsMongoId({ each: true })
-    billingHistory: string[] = null;
+    @IsMongoId()
+    billingHistory: Billing[] = [];
 }
 
 export class UpdatePaymentDto {
@@ -45,7 +53,13 @@ export class UpdatePaymentDto {
     @IsOptional()
     @ValidateNested()
     @Type(() => PaymentDetails)
-    paymentDetails?: PaymentDetails;
+    mainPaymentDetails?: PaymentDetails;
+
+    @ApiProperty({ type: PaymentDetails })
+    @IsOptional()
+    @ValidateNested()
+    @Type(() => PaymentDetails)
+    morePaymentDetails?: PaymentDetails[];
 
     @ApiProperty({ type: Number, required: false, default: 0 })
     @IsOptional()
@@ -58,15 +72,15 @@ export class UpdatePaymentDto {
     @Type(() => PaymentMethod)
     paymentMethod?: PaymentMethod;
 
-    @ApiProperty({ type: [String], required: false, default: null })
+    @ApiProperty({ type: [Types.ObjectId], required: false, default: [] })
     @IsOptional()
     @IsArray()
-    @IsMongoId({ each: true })
-    paymentHistory?: string[] = null;
+    @IsMongoId()
+    paymentHistory?: PaymentDetails[] = [];
 
-    @ApiProperty({ type: [String], required: false, default: null })
+    @ApiProperty({ type: [Types.ObjectId], required: false, default: [] })
     @IsOptional()
     @IsArray()
-    @IsMongoId({ each: true })
-    billingHistory?: string[] = null;
+    @IsMongoId()
+    billingHistory?: Billing[] = [];
 }
