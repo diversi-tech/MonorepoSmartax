@@ -35,7 +35,7 @@ export class Task extends Document {
     @Prop()
     assignedTo: User[];
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }] })
+    @Prop({ type: [{ type: Tag }] })
     tags: Tag[];
 
     @Prop()
