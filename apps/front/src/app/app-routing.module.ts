@@ -48,6 +48,7 @@ import { YearlyReportComponent } from './pages/client/client-yearlyReport/yearly
 import { CreateYearlyReportComponent } from './pages/client/client-create-yearly-report/create-yearly-report.component';
 import { YearlyReportStepsComponent } from './pages/client/client-yearly-report-steps/yearly-report-steps.component';
 import { PaymentComponent } from './pages/payment/payment.component';
+import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -144,9 +145,11 @@ import { PaymentComponent } from './pages/payment/payment.component';
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
   { path:'checklist', component:TaskCheckListComponent},
+  { path:'re', component:TaskRepeatableListComponent},
   
   { path:'checklist', component:TaskCheckListComponent},
-  { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }}
+  { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+
 ];
 
   @NgModule({

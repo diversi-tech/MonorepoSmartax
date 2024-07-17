@@ -1,62 +1,64 @@
-
-<!-- 
 <div class="container">
-    <h2>Select Client Type</h2>
-    
-    <p-dropdown [options]="clientTypes"
-                [(ngModel)]="selectedClientType"
-                optionLabel="name"
-                placeholder="Select a Client Type"
-                (onChange)="showDetails()">
-    </p-dropdown>
-  
-    
-    <div *ngIf="selectedClientType" class="details-panel">
-      <h3>Details for {{ selectedClientType.name }}</h3>
-      <ul>
-        <li><strong>Name:</strong> {{ selectedClientType.name }}</li>
-        <li><strong>Tasks:</strong>
-          <ul>
-            <li *ngFor="let task of selectedTasks">{{ task.taskName }}</li>
-          </ul>
-        </li>
-        <li><strong>Fields:</strong>
-          <ul>
-            <li *ngFor="let field of selectedClientType.fields">{{ field.name }}: {{ field.value }}</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div> -->
-  
+  <!-- Dropdown to select Client Type -->
+  <!-- <p-dropdown
+    [options]="clientTypes"
+    [(ngModel)]="selectedClientType"
+    optionLabel="name"
+    placeholder="רשימת סוגי לקוחות"
+    (onChange)="showDetails()"
+  >
+  </p-dropdown> -->
 
-  <div class="container">
-   
-      
-      <!-- Dropdown to select Client Type -->
-      <p-dropdown [options]="clientTypes"
-                  [(ngModel)]="selectedClientType"
-                  optionLabel="name"
-                  placeholder="רשימת סוגי לקוחות"
-                  (onChange)="showDetails()">
-      </p-dropdown>
-    
-      <!-- Details Panel -->
-      <div *ngIf="selectedClientType" class="details-panel">
-        <h3> {{ selectedClientType.name }}:פרטי</h3>
+  <!-- Details Panel -->
+  <div *ngIf="selectedClientType" class="details-panel">
+    <h3>{{ selectedClientType.name }}:פרטי</h3>
+    <ul>
+      <li>{{ selectedClientType.name }}<strong>:שם</strong></li>
+      <li>
+        <strong>:משימות</strong>
         <ul>
-          <li> {{ selectedClientType.name }}<strong>:שם</strong></li>
-          <li><strong>:משימות</strong>
-            <ul>
-              <li *ngFor="let task of selectedTasks">{{ task.taskName }}</li>
-            </ul>
-          </li>
-          <li><strong>:שדות</strong>
-            <ul>
-              <li *ngFor="let field of selectedClientType.fields">{{ field.key }}: {{ field.type }}</li>
-            </ul>
+          <li *ngFor="let task of selectedTasks">{{ task.taskName }}</li>
+        </ul>
+      </li>
+      <li>
+        <strong>:שדות</strong>
+        <ul>
+          <li *ngFor="let field of selectedClientType.fields">
+            {{ field.key }}: {{ field.type }}
           </li>
         </ul>
-      </div>
+      </li>
+    </ul>
   </div>
-  
+</div>
+
+<!-- ====================================== -->
+
+<div class="card" style="width: 30rem">
+  <p-table
+    [value]="clientTypes"
+    [tableStyle]="{ 'min-width': '30rem', 'max-width': '30rem' }"
+  >
+    <ng-template pTemplate="header" style="text-align: left;">
+      <tr>
+        <!-- <th>Code</th> -->
+        <th>מחיקה</th>
+        <th>עריכה</th>
+        <th>שם</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-type>
+      <tr>
+        <!-- <td>{{ type.code }}</td> -->
+        <td>
+          <i class="pi pi-trash" style="color: red; cursor: pointer"></i>
+        </td>
+        <td>
+          <i class="pi pi-pencil" style="color: blue; cursor: pointer"></i>
+        </td>
+
+        <td>{{ type.name }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

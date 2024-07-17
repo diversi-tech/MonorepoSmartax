@@ -32,10 +32,10 @@ export class MailService {
     // Create a random password from numbers only and 4 characters long
     const validPassword = this.generatePassword(4);
 
-    const fileContent = fs.readFileSync(
-      'D:/פרקטיקום/monorepo2/MonorepoSmartax/server/src/assets/pageToHtml.html',
-      'utf8'
-    );
+    // const fileContent = fs.readFileSync(
+    //   'D:/פרקטיקום/monorepo2/MonorepoSmartax/server/src/assets/pageToHtml.html',
+    //   'utf8'
+    // );
 
     // הוספת הסיסמה האקראית למייל
     const mailOptions = {

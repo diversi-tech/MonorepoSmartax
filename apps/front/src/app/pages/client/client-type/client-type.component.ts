@@ -78,13 +78,14 @@ import { Task } from '../../../_models/task.module';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-client-type',
   templateUrl: './client-type.component.html',
   styleUrls: ['./client-type.component.css'],
   standalone:true,
-  imports:[DropdownModule,FormsModule,NgIf,NgForOf],
+  imports:[DropdownModule,FormsModule,NgIf,NgForOf,TableModule],
 })
 export class ClientTypeComponent implements OnInit {
   
