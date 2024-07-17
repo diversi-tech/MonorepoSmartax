@@ -134,6 +134,8 @@ import {
 } from './Models/sensitiveData.model';
 import { SensitiveDataService } from './services/sensitiveData.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TableController } from './controller/table/table.controller';
+import { TableService } from './services/table.service';
 // import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -175,7 +177,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     MongooseModule.forFeature([
       { name: callTopicSchema.name, schema: callTopicSchemaModel },
     ]),
-    MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
 
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
@@ -256,6 +257,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     YearlyReportController,
     StepFieldController,
     SensitiveDataController,
+    TableController,
   ],
 
   providers: [
@@ -299,6 +301,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     StepFieldService,
     YearlyReportService,
     YearService,
+    TableService,
   ],
 })
 export class AppModule {}
