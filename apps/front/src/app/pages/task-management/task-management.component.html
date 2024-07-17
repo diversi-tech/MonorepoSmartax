@@ -228,14 +228,15 @@
                         style="cursor: pointer; margin-left: 5px"
                       ></i>
                     </th>
-                    <th style="width: auto">Edit</th>
-                    <th style="width: auto">Delete</th>
+                    <th style="width: auto">עריכה</th>
+                    <th style="width: auto">מחיקה</th>
                   </tr>
                 </ng-template>
 
                 <ng-template pTemplate="body" let-task>
                   <tr>
                     <td>{{ task.taskName }}</td>
+
                     <td>
                       <div style="display: flex; align-items: center">
                         <ng-container *ngFor="let u of task.assignedTo">
@@ -250,6 +251,7 @@
                     </td>
 
                     <td>{{ task.dueDate | date : 'shortDate' }}</td>
+                    
                     <td>
                       <button
                         *ngFor="let tag of task.tags; let i = index"
