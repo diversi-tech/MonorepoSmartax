@@ -60,13 +60,13 @@
       <div class="form-group">
         @if (f.submitted && isLoginFailed) {
         <div class="alert alert-danger" role="alert">
-          Login failed: {{ errorMessage }}
+          {{ errorMessage }}
         </div>
         }
       </div>
     </form>
     } @else {
-    <div class="alert alert-success">מחובר כ- {{ role }}</div>
+    <div class="alert alert-success">מחובר כ-{{ role }}</div>
     }
   </div>
   @if (!isLoggedIn) {

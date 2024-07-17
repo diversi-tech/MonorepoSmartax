@@ -108,6 +108,7 @@ export class ClientTypeComponent implements OnInit {
     this.clientTypeService.getAllClientTypes().subscribe((clientTypes) => {
       this.clientTypes = clientTypes;
     });
+    
   }
 
   loadAllTasks(): void {
@@ -140,4 +141,5 @@ export class ClientTypeComponent implements OnInit {
     this.newC = true;
     this.displayDialog = true;
   }
+  
 }

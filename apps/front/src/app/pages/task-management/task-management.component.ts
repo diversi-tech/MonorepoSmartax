@@ -16,7 +16,6 @@ import {
 } from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
-import { every } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
@@ -75,18 +74,18 @@ export class TaskManagementComponent implements OnInit {
   showFilter: boolean = false;
 
   filter: {
-    deadlineRange: [Date, Date] | null;
+    deadline: Date | null;
     client: Client | null;
     user: User | null;
     task: Task | null;
     tags: Tag[];
   } = {
-    deadlineRange: null,
-    client: null,
-    user: null,
-    task: null,
-    tags: [],
-  };
+    deadline: null,
+      client: null,
+      user: null,
+      task: null,
+      tags: []
+    };
 
   clientSuggestions: Client[] = [];
   userSuggestions: User[] = [];
@@ -223,12 +222,9 @@ export class TaskManagementComponent implements OnInit {
     this.filteredTasks = this.tasks.filter((task) => {
       this.filterFirstStatus = false;
 
-      const deadlineMatch =
-        !this.filter.deadlineRange ||
-        (task.dueDate >= this.filter.deadlineRange[0] &&
-          task.dueDate <= this.filter.deadlineRange[1]);
+      const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
-      const clientMatch = !this.filter.client || task.client[0].firstName.includes(this.filter.client.firstName);
+      const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
 
         const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
         

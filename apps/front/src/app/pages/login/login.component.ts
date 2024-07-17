@@ -27,7 +27,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [FormsModule, NgClass, NgIf, ForgotPasswordComponent, RouterOutlet]
+  imports: [FormsModule, NgClass, NgIf, ForgotPasswordComponent, RouterOutlet, NgClass]
 })
 export class LoginComponent implements OnInit {
   form: any = {
@@ -67,13 +67,11 @@ export class LoginComponent implements OnInit {
     this.authService.login(email, password).subscribe({
       next: data => {
         if (data) {
-          console.log("token: ", data);
 
           this.tokenService.saveToken(data);
           this.isLoginFailed = false;
           this.isLoggedIn = true;
           this.role = this.tokenService.getCurrentDetail("role").name;
-          console.log("role", this.role);
 
 
           this.reloadPage();
@@ -82,7 +80,15 @@ export class LoginComponent implements OnInit {
         // this.router.navigate(['/home'])
       },
       error: err => {
-        this.errorMessage = err.error.message;
+        if (err.status === 404) {
+          this.errorMessage = "אחד מהנתונים שהזנת שגוי, אנא נסה שנית";
+
+        } else {
+          
+          this.errorMessage = "שגיאת מערכת, אנא נסה שנית";
+
+        }
+
         console.log(err);
 
         this.isLoginFailed = true;
