@@ -77,14 +77,14 @@ import { TaskService } from '../../../_services/task.service';
 import { Task } from '../../../_models/task.module';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';import { FieldManagementComponent } from '../../fieldManagement/fieldManagement.component';
 
 @Component({
   selector: 'app-client-type',
   templateUrl: './client-type.component.html',
   styleUrls: ['./client-type.component.css'],
   standalone:true,
-  imports:[DropdownModule,FormsModule,NgIf,NgForOf],
+  imports:[DropdownModule,FormsModule,FieldManagementComponent,NgIf,NgForOf],
 })
 export class ClientTypeComponent implements OnInit {
   
@@ -109,6 +109,7 @@ export class ClientTypeComponent implements OnInit {
     this.clientTypeService.getAllClientTypes().subscribe(clientTypes => {
       this.clientTypes = clientTypes;
     });
+    
   }
 
   loadAllTasks(): void {
@@ -134,4 +135,5 @@ export class ClientTypeComponent implements OnInit {
     }
     console.log(JSON.stringify(this.selectedTasks))
   }
+  
 }
