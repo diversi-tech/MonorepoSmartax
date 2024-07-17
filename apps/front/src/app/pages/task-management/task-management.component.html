@@ -25,7 +25,7 @@
     <div class="filter-panel">
       <div class="filter-container">
         <div>
-          <label for="deadlineRange">Deadline Range:</label>
+          <label for="deadlineRange">דדליין</label>
           <p-calendar
             id="deadlineRange"
             [(ngModel)]="filter.deadlineRange"
@@ -33,7 +33,7 @@
           ></p-calendar>
         </div>
         <div>
-          <label for="client">Client:</label>
+          <label for="client">לקוח</label>
           <p-autoComplete
             id="client"
             [(ngModel)]="filter.client"
@@ -53,7 +53,7 @@
           </p-autoComplete>
         </div>
         <div>
-          <label for="user">User:</label>
+          <label for="user">עובד</label>
           <p-autoComplete
             id="user"
             [(ngModel)]="filter.user"
@@ -75,7 +75,7 @@
 
         <!--  -->
         <div>
-          <label for="taskName">Task Name:</label>
+          <label for="taskName">משימה</label>
           <p-autoComplete
             id="taskName"
             [(ngModel)]="filter.task"
@@ -91,7 +91,7 @@
           </p-autoComplete>
         </div>
         <div class="p-field">
-          <label for="tags">Tags:</label>
+          <label for="tags">תגיות</label>
           <p-multiSelect
             id="tags"
             [(ngModel)]="filter.tags"
@@ -113,7 +113,7 @@
     </div>
   </div>
   <div *ngIf="filteredTasks.length === 0 && !filterFirstStatus">
-    <p>No Result Find</p>
+    <p>אין תוצאות</p>
   </div>
 </p-sidebar>
 
@@ -177,7 +177,7 @@
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">
                     <th style="width: auto; height: 50px">
-                      Name
+                      שם
                       <i
                         class="pi pi-caret-up"
                         (click)="sortTasks('taskName', tasks, false)"
@@ -190,7 +190,7 @@
                       ></i>
                     </th>
                     <th style="width: auto; height: 50px">
-                      assignedTo
+                      משוייך ל
                       <i
                       class="pi pi-caret-up"
                       (click)="sortTasks('assignedTo', tasks, false)"
@@ -203,7 +203,7 @@
                     ></i>
                     </th>
                     <th style="width: auto">
-                      Due Date
+                      טווח זמנים
                       <i
                         class="pi pi-caret-up"
                         (click)="sortTasks('dueDate', tasks, false)"
@@ -216,7 +216,7 @@
                       ></i>
                     </th>
                     <th style="width: auto">
-                      Tags
+                      תגיות
                       <i
                         class="pi pi-caret-up"
                         (click)="sortTasks('tags', tasks, false)"
