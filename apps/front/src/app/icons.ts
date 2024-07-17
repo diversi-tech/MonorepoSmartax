@@ -13,6 +13,5 @@ export const icons = {
     comment: 'pi-comments',
     communications: 'pi pi-phone',
     clock: 'pi pi-clock',
-
-
+    favorite: 'pi pi-star',
   };

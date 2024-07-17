@@ -32,8 +32,9 @@ export class ClientController {
     }
     @UseGuards(AuthGuard, RoleGuard(3))
     @Put()
-    async updateClient(@Body(new ValidationPipe()) updateClientDto: UpdateClientDto): Promise<Client> {
-        return await this.clientService.updateClient(updateClientDto);
+    @ApiBody({ type: UpdateClientDto })
+    async updateClient(@Body() updateClientDto: UpdateClientDto): Promise<Client> {
+        return await this.clientService.updateClient(updateClientDto.id, updateClientDto);
     }
     @UseGuards(AuthGuard, RoleGuard(3))
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })

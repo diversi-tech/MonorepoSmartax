@@ -1,3 +1,4 @@
+import { GoogleTaskService } from './../_services/google-task.service';
 import { PriorityService } from './../_services/priority.service';
 import { Priority } from './../_models/priority.module';
 import {
@@ -64,6 +65,11 @@ import { TabViewModule } from 'primeng/tabview';
 import { SubTaskComponent } from '../sub-task/sub-task.component';
 import { TimerComponent } from '../timer/timer.component';  // וודא שהנתיב נכון
 
+import { SocketService } from '../_services/socket.service';
+import { DialogModule } from 'primeng/dialog';
+import { Subscription } from 'rxjs';
+import { CheckList } from '../_models/checkList.model';
+import { CheckListService } from '../_services/checkList.service';
 
 @Component({
   selector: 'app-task',
@@ -103,6 +109,7 @@ import { TimerComponent } from '../timer/timer.component';  // וודא שהנת
     TaskCheckListComponent,
     TabViewModule,
     SubTaskComponent,
+    DialogModule,
     TimerComponent,
   ],
   providers: [DocumentService],
@@ -126,12 +133,20 @@ export class TaskComponent implements OnInit {
   htmlContent: string = '';
   images: string[] = [];
   tags: Tag[] = [];
+  checkList: CheckList[] = [];
+
   //
   additionTask: MenuItem[] = [
     { id: '1', label: 'Check List' },
     { id: '2', label: 'SubTask' },
   ];
   activeItem: MenuItem | undefined;
+  taskNotAssigned: any = null;
+  checkedDialog: boolean = false;
+  visible: boolean = false;
+  // service
+  private eventDataSubscription: Subscription;
+  public eventId: string;
 
   //
   showStatus: boolean = false;
@@ -171,10 +186,14 @@ export class TaskComponent implements OnInit {
     private priorityService: PriorityService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private googleCalendarService: GoogleAuthService
+    private googleCalendarService: GoogleAuthService,
+    private socketService: SocketService,
+    private googleTask: GoogleTaskService,
+    private checkListServise: CheckListService
   ) {}
 
   ngOnInit(): void {
+
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId) this.id = this.taskId;
     console.log(this.id);
@@ -193,21 +212,38 @@ export class TaskComponent implements OnInit {
           this.rangeDates![0] = new Date(this.currentTask.startDate);
           this.rangeDates![1] = new Date(this.currentTask.deadline);
           this.htmlContent = this.currentTask.description;
+          this.dueDate = new Date(this.currentTask.dueDate);
           console.log(this.rangeDates);
 
           this.images = this.currentTask.images;
           this.taskName = this.currentTask.taskName;
-          this.buttons = this.currentTask.tags.map((tag: Tag) => ({
+          this.buttons = this.currentTask.tags?.map((tag: Tag) => ({
             color: tag.color,
             text: tag.text,
             id: tag._id!,
           }));
           this.selectedTags = this.currentTask.tags;
+          this.eventId = this.currentTask.googleId;
+          console.log("checkList", this.currentTask.checkList);
+          this.currentTask.checkList?.forEach((listId: string) => {
+            console.log("listId", listId);
+            
+            this.checkListServise.getCheckLists(listId).subscribe((data: CheckList) => {
+              this.checkList.push(data);
+            });
+          })
+          
         },
         error: (err) => {
           console.log(err);
         },
       });
+      console.log("checkList in task comp");
+    
+      this.checkList.forEach((check) => {
+        console.log("check", check);
+        console.log("*");
+      })
     }
     //users
     this.userSErvice.getAllUsers().subscribe({
@@ -269,6 +305,165 @@ export class TaskComponent implements OnInit {
     this.formGroupStatus = new FormGroup({
       selectStatus: new FormControl<any | null>(null),
     });
+    // socket
+    // Listen for tasks that are not assigned to anyone
+    this.socketService.onTaskNotAssigned().subscribe((task) => {
+      this.taskNotAssigned = task;
+    });
+
+    // Listen for tasks assigned to the current client
+    this.socketService.onTaskAssignedToYou().subscribe((task) => {
+      // Show notification or handle task assignment to the current user
+      console.log('Task assigned to you:', task);
+    });
+
+    // Listen for tasks assigned to someone else
+    this.socketService.onTaskAssigned().subscribe((data) => {
+      const { taskId, assignedTo } = data;
+      // Handle UI updates or notifications for tasks assigned to others
+      console.log(`Task ${taskId} assigned to ${assignedTo}`);
+    });
+  }
+
+  showDialog() {
+    if (this.id == 'create') {
+      this.visible = true;
+    } else {
+      this.save();
+    }
+  }
+
+  cancelDialog() {
+    this.visible = false;
+    this.save();
+  }
+
+  // createGoogleTask() {
+  //   this.visible = false;
+  //   // if (!this.taskTitle.trim()) {
+  //   //   alert('Please enter a task title');
+  //   //   return;
+  //   // }
+  //   const taskDetails = {
+  //     title: 'Task Tzipi2',
+  //     notes: 'Task Notes',
+  //     dueTime: '2024-07-18T10:00:00Z', // תאריך ושעה בפורמט ISO 8601
+  //   };
+
+  //   this.googleTask.createSimpleTask(taskDetails);
+
+  //   this.subscribeToEventData();
+  //   console.log(this.eventId);
+
+  //   this.save();
+  // }
+
+  // createGoogleTask() {
+  //   this.visible = false;
+
+  //   const taskDetails = {
+  //     title: this.taskName,
+  //     notes: 'Task Notes',
+  //     dueTime: this.rangeDates[1], // תאריך ושעה בפורמט ISO 8601
+  //   };
+
+  //   // Create Google event and return a promise
+  //   const createTaskPromise =
+  //     this.googleTask.createSimpleTask(taskDetails);
+
+  //   // After creating event, save the meeting
+  //   createTaskPromise
+  //     .then(() => {
+  //       // debugger;
+  //       // alert('הפגישה נוספה בהצלחה');
+  //       this.subscribeToEventData();
+  //       console.log(this.eventId);
+  //       setTimeout(() => {
+  //         this.save();
+  //       }, 1000); // המתנה 1 שניות, כדי לוודא שההרשמות הושלמו בצורה נכונה
+
+  //       // this.save(); // Save meeting details
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error creating Google event:', error);
+  //     });
+
+  //   // this.googleTask
+  //   //   .createSimpleTask(taskDetails)
+  //   //   .then(() => {
+  //   //     this.subscribeToEventData();
+  //   //     console.log(this.eventId);
+  //   //     this.save();
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     console.error('Error creating task:', error);
+  //   //   });
+  // }
+
+  // createGoogleTask() {
+  //   this.visible = false;
+
+  //   const taskDetails = {
+  //     title: this.taskName,
+  //     notes: 'Task Notes',
+  //     dueTime: this.rangeDates[1], // תאריך ושעה בפורמט ISO 8601
+  //   };
+
+  //   // Create Google task and return a promise
+  //   this.googleTask.createSimpleTask(taskDetails)
+  //     .then(() => {
+  //       return this.subscribeToEventData(); // wait for this to finish
+  //     })
+  //     .then(() => {
+  //       console.log(this.eventId);
+  //       this.save(); // call save after everything is done
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error creating Google event:', error);
+  //     });
+  // }
+
+  // 2
+  createGoogleTask() {
+    this.visible = false;
+
+    const taskDetails = {
+      title: this.taskName,
+      notes: 'Task Notes',
+      dueTime: this.rangeDates[1], // תאריך ושעה בפורמט ISO 8601
+    };
+
+    // this.googleTask.createSimpleTask(taskDetails)
+    //   .then(() => {
+    //     return this.subscribeToEventData();
+    //     alert('1')
+    //   })
+    //   .then(() => {
+    //     console.log(this.eventId);
+    //     alert('2')
+    //     this.save();
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Google event:', error);
+    //   });
+
+    const createEventPromise = this.googleTask.createSimpleTask(taskDetails);
+
+    // After creating event, save the meeting
+    createEventPromise
+      .then(() => {
+        debugger;
+        // alert('הפגישה נוספה בהצלחה');
+        this.subscribeToEventData();
+        setTimeout(() => {
+          this.save();
+        }, 1000); // המתנה 1 שניות, כדי לוודא שההרשמות הושלמו בצורה נכונה
+
+        // this.save(); // Save meeting details
+      })
+      .catch((error) => {
+        console.error('Error creating Google event:', error);
+      });
   }
 
   //functions
@@ -301,10 +496,17 @@ export class TaskComponent implements OnInit {
     if (this.images) newTask.images = this.images;
     if (this.selectedPriority) newTask.priority = this.selectedPriority;
     if (this.dueDate) newTask.dueDate = this.dueDate;
+    if (this.eventId) newTask.googleId = this.eventId;
+    console.log(this.eventId);
+
     if (this.id == 'create') {
       this.tasksService.createTask(newTask).subscribe({
         next: (dataClients) => {
           console.log(dataClients);
+          if ((this.selectedUsers = [])) {
+            // Task not assigned, notify all clients
+            this.socketService.addTask(newTask);
+          }
         },
         error: (errClients) => {
           console.log(errClients);
@@ -314,6 +516,8 @@ export class TaskComponent implements OnInit {
       this.tasksService.updateTask(this.id!, newTask).subscribe({
         next: (dataClients) => {
           console.log(dataClients);
+          // Task updated
+          if (this.eventId) this.updateTask();
           if (this.taskId) this.closeModal.emit();
         },
         error: (errClients) => {
@@ -321,6 +525,17 @@ export class TaskComponent implements OnInit {
         },
       });
     }
+  }
+
+  updateTask() {
+    const taskDetails = {
+      title: this.taskName,
+      notes: 'Task Notes',
+      dueDate: this.rangeDates[1],
+      id: this.eventId, // תאריך ושעה בפורמט ISO 8601
+    };
+
+    this.googleTask.updateGoogleTask(taskDetails);
   }
   //
   cancel() {
@@ -426,5 +641,73 @@ export class TaskComponent implements OnInit {
 
   onActiveItemChange(event: MenuItem) {
     this.activeItem = event;
+  }
+  // google task
+  subscribeToEventData() {
+    alert('se1');
+    this.eventDataSubscription = this.googleTask.eventData$.subscribe(
+      (eventData) => {
+        if (eventData) {
+          alert('se2');
+          console.log(eventData);
+          this.eventId = eventData.eventId;
+          console.log('this.eventId' + this.eventId);
+        }
+      }
+    );
+  }
+
+  // subscribeToEventData(): Promise<void> {
+  //   return new Promise((resolve) => {
+  //     // some async operations
+  //     setTimeout(() => {
+  //       // this.eventId = 'someEventId'; // example assignment
+  //       this.googleCalendarService.eventData$.subscribe((eventData) => {
+  //         if (eventData) {
+  //           // alert('se2')
+  //           console.log(eventData);
+  //           this.eventId = eventData.eventId;
+  //         }
+  //       });
+  //       resolve();
+  //     }, 1000); // simulate async operation
+  //   });
+  // }
+
+  // subscribeToEventData(): Promise<void> {
+  //   return new Promise((resolve, reject) => {
+  //     // נרשם לאירועים מהשירות
+  //     const subscription = this.googleCalendarService.eventData$.subscribe(
+  //       (eventData) => {
+  //         if (eventData) {
+  //           console.log(eventData);
+  //           this.eventId = eventData.eventId;
+  //           subscription.unsubscribe(); // לבטל את ההרשמה לאחר קבלת הנתונים
+  //           resolve();
+  //         } else {
+  //           reject('No event data received');
+  //         }
+  //       },
+  //       (error) => {
+  //         console.error('Error subscribing to event data:', error);
+  //         reject(error);
+  //       }
+  //     );
+
+  //     // אם אנחנו רוצים לוודא שהפונקציה לא נתקעת לנצח, אפשר להוסיף timeout
+  //     setTimeout(() => {
+  //       reject('Timeout waiting for event data');
+  //     }, 5000); // 5 שניות המתנה לדוגמה
+  //   });
+  // }
+
+  unsubscribeFromEventData() {
+    if (this.eventDataSubscription) {
+      this.eventDataSubscription.unsubscribe();
+    }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeFromEventData();
   }
 }

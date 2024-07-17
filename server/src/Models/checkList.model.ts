@@ -7,9 +7,9 @@ import { CheckListItem } from './checkListItem.model';
 export class CheckList extends Document {
     @Prop()
     name: string;
-
     @Prop({ type: [{ type: mongoose.Schema.Types.Array, ref: 'CheckListItem' }] })
     items: CheckListItem[];
+
 }
 
 export const CheckListModel = SchemaFactory.createForClass(CheckList);
