@@ -46,8 +46,6 @@ export class ClientFieldComponent {
         console.error('Error saving client field:', error);
       }
     );
-
-
     // console.log('Submitted client field:', clientField);
   }
 }

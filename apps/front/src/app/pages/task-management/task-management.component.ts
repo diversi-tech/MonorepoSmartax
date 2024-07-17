@@ -10,7 +10,6 @@ import { Tag } from '../../_models/tag.module';
 import { Confirmation, ConfirmationService, MessageService, Footer, PrimeTemplate } from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
-import { every } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';

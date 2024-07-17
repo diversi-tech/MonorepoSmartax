@@ -5,6 +5,7 @@ import { ClientFieldComponent} from '../client-field/client-field.component';
 import { ClientTypeService } from '../../../_services/clientType.service';
 import { ClientType } from '../../../_models/clientType.module';
 import { Field } from '../../../_models/field.module';
+import { FieldService } from '../../../_services/field.service';
 
 @Component({
   selector: 'app-client-type-tab',
@@ -15,14 +16,18 @@ import { Field } from '../../../_models/field.module';
 })
 export class ClientTypeTabComponent {
 
-  constructor(@Inject(ClientTypeService) private clientTypeService: ClientTypeService){}
+  constructor(@Inject(ClientTypeService) private clientTypeService: ClientTypeService,
+         @Inject(FieldService) private fieldService: FieldService
+){}
 
   selectedButton: string;
   clientTypes: ClientType[] = [];
-  selectedFields: Field[] = [];
-
+  fields: Field[] = [];
+  
   ngOnInit() {
+    
     this.getAllClientTypes();
+    this.getAllFields();
   }
 
   getAllClientTypes(): void {
@@ -34,25 +39,35 @@ export class ClientTypeTabComponent {
     });
   }
 
+  getAllFields(): void{
+    console.log("in getAllFields function");
+    
+    this.fieldService.getAllField().subscribe(fields => {
+      this.fields = fields;
+      console.log(this.fields );
+
+    });
+  }
+
   receiveSelectedButton(buttonId: string) {
     // debugger
     console.log("recived");
     this.selectedButton = buttonId;
-    this.getFields(this.selectedButton);
+    // this.getFields(this.selectedButton);
   }
 
 
-getFields(buttonId: string) {
-  const clientType = this.clientTypes.find(ct => ct._id === buttonId);
-  if (clientType) {
-    this.selectedFields = clientType.fields.map(field => ({
-      // id: field._id,
-      key: field.key,
-      type: field.type
-    }));
-    console.log(this.selectedFields);
+// getFields(buttonId: string) {
+//   const clientType = this.clientTypes.find(ct => ct._id === buttonId);
+//   if (clientType) {
+//     this.selectedFields = clientType.fields.map(field => ({
+//       // id: field._id,
+//       key: field.key,
+//       type: field.type
+//     }));
+//     console.log(this.selectedFields);
     
-  }
-}
+//   }
+// }
 
 }

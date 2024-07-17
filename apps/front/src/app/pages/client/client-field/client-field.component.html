@@ -24,16 +24,18 @@
 
   </div>
    -->
+
    <p-card>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="p-fluid">
         <div class="p-field">
           <label for="{{field.key}}">{{field.key | titlecase}}:</label>
           <br>
-          <input *ngIf="field.type === 'string'" pInputText type="text" formControlName="{{field.key}}" />
-          <input *ngIf="field.type === 'number'" pInputText type="number" formControlName="{{field.key}}" />
-          <input *ngIf="field.type === 'date'" pInputText type="date" formControlName="{{field.key}}" />
-          <input *ngIf="field.type === 'bool'" type="checkbox"  formControlName="{{field.key}}" style="width: 20px; height: 20px;" />
+          <input *ngIf="field.type === 'טקסט'" pInputText type="text" formControlName="{{field.key}}" />
+          <input *ngIf="field.type === 'מספר'" pInputText type="number" formControlName="{{field.key}}" />
+          <input *ngIf="field.type === 'שעה'" pInputText type="time" formControlName="{{field.key}}" />
+          <input *ngIf="field.type === 'תאריך'" pInputText type="date" formControlName="{{field.key}}" />
+          <input *ngIf="field.type === 'V\X'" type="checkbox"  formControlName="{{field.key}}" style="width: 20px; height: 20px;" />
         </div>
       </div>
       <button type="submit" pButton label="Submit" class="p-mt-2"></button>
