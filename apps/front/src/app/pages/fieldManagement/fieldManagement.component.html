@@ -11,6 +11,15 @@
         
        
     </p-dialog>
+  
+    <p-confirmDialog header="מחיקה סופית" icon="pi pi-exclamation-triangle" [visible]="vD">
+        <p-footer>
+            <button type="button" pButton icon="pi pi-times" label="ביטול" class="p-button-text"
+                (click)="cancelDelete()"></button>
+            <button type="button" pButton icon="pi pi-check" label="מחיקה" class="p-button-text"
+                (click)="confirmDelete()"></button>
+        </p-footer>
+    </p-confirmDialog>
  
 <p-table [value]="fields" [tableStyle]="{'min-width': '60rem'}"  >
     <ng-template pTemplate="caption">
@@ -27,10 +36,12 @@
         <tr>
             <td>{{field.key}}</td>
             <td >{{field.type}}</td>
-            <td><p-button styleClass="dbtn" severity="danger" (click)="onDeleteField(field._id)"> 
+            <td><p-button styleClass="dbtn" severity="danger" (click)="deletepopup(field._id)"> 
                 <span class="px-3">מחק</span> 
                 <i class="pi pi-trash"></i>
             </p-button></td>
+           
+        
         </tr>
     </ng-template>
     <ng-template pTemplate="summary">

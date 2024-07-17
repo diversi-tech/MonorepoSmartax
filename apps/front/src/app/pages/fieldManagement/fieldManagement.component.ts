@@ -7,6 +7,7 @@ import { customfieldComponent } from '../../custom-field/custom-field.component'
 import { Field } from '../../_models/field.module';
 import { FieldService } from '../../_services/field.service';
 
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TableModule } from 'primeng/table';
 interface rField{
   key : string;
@@ -15,7 +16,7 @@ interface rField{
 @Component({
   selector: 'app-field-management',
   standalone: true,
-  imports: [CommonModule, DialogModule, ButtonModule, InputTextModule, customfieldComponent,TableModule],
+  imports: [CommonModule, DialogModule, ButtonModule, InputTextModule, customfieldComponent,TableModule,ConfirmDialogModule],
   templateUrl: './fieldManagement.component.html',
   styleUrl: './fieldManagement.component.css',
 })
@@ -26,6 +27,8 @@ export class FieldManagementComponent implements OnInit {
   fields: Field[] = [];
   regularF:rField[]=[];
   i:number=0;
+  vD:boolean=false;
+  s:string
     showDialog() {
         this.visible = true;
         
@@ -45,6 +48,10 @@ onClosePopup() {
   }, 1000);
   this.visible= false;
  
+}
+deletepopup(id:string){
+  this.vD=true;
+  this.s=id
 }
 constructor(private fieldService: FieldService,) {}
 getAllFields(): void {
@@ -70,5 +77,13 @@ getAllFields(): void {
         console.error('Error deleting field:', error);
       }
     );
+  }
+  cancelDelete(): void {
+    this.vD=false;
+  }
+
+  confirmDelete(): void {
+    this.onDeleteField(this.s);
+    this.vD=false
   }
 }
