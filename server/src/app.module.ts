@@ -118,6 +118,9 @@ import {
 import { Year, YearModel } from './Models/year.model';
 import { YearService } from './services/year.service';
 import { YearController } from './controller/year/year.controller';
+import { ClientField, ClientFieldModel } from './Models/clientField.model';
+import { ClientFieldController } from './controller/clientField/clientField.controller';
+import { ClientFieldService } from './services/clientField.service';
 import {
   CheckListItem,
   CheckListItemModel,
@@ -145,9 +148,9 @@ import { TableService } from './services/table.service';
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
 
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI),
+  //add
+  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
+    MongooseModule.forFeature([{ name: ClientField.name, schema: ClientFieldModel }]),
     MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
     MongooseModule.forFeature([
@@ -251,6 +254,7 @@ import { TableService } from './services/table.service';
     PaymentMethodController,
     PaymentDetailsController,
     PaymentController,
+    ClientFieldController,
     TimerController,
     CommunicationArchiveController,
     YearController,
@@ -292,6 +296,7 @@ import { TableService } from './services/table.service';
     PaymentDetailsService,
     PaymentService,
     SensitiveDataService,
+    ClientFieldService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,

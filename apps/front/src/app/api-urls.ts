@@ -15,3 +15,4 @@ export const TIMER_ENDPOINT = `${API_URL}/timer`;
 
 export const CHECKLIST_ENDPOINT = `${API_URL}/checklist`;
 export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checklistitem`;
+export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;

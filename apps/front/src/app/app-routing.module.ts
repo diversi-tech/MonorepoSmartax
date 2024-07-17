@@ -122,6 +122,7 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
+      { path: 'clientField' , component:ClientFieldComponent},
       { path: 'yearlyReport', component: YearlyReportComponent ,
        children: [
         {path:  'createYearlyReport', component:CreateYearlyReportComponent},
