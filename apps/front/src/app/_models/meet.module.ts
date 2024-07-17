@@ -3,6 +3,7 @@ import { User } from "./user.module"
 
 export interface Meet {
   _id?: string
+  googleId?: string
   address: string
   date: Date
   beginningTime: Date

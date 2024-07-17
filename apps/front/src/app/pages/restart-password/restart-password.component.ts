@@ -33,10 +33,11 @@ export class RestartPasswordComponent {
     private routeActive: ActivatedRoute,) { }
 
   ngOnInit(): void {
-    if (this.storageService.isLoggedIn()) {
-      this.isLoggedIn = true;
-    }
+    // if (this.storageService.isLoggedIn()) {
+    //   this.isLoggedIn = true;
+    // }
     this.email = this.routeActive.snapshot.paramMap.get('email')!;
+    console.log(this.email)
   }
 
   onSubmit(): void {

@@ -16,6 +16,11 @@ export class CreateStepFieldDto {
     @Min(1)
     @Max(5)
     stepNumber: number;
+
+    @ApiProperty({ description: 'The type ' })
+    @IsNotEmpty()
+    @IsString()
+    type: string;
     
 }
 
@@ -35,6 +40,11 @@ export class UpdateStepFieldDto {
     @Min(1)
     @Max(5)
     stepNumber: number;
+
+    @ApiProperty({ description: 'The type ' })
+    @IsNotEmpty()
+    @IsString()
+    type: string;
     
 
 }

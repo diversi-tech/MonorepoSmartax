@@ -1,3 +1,5 @@
+import { CheckList } from './checkList.model';
+import { CheckListItem } from './checkListItem.model';
 import { Client } from './client.module';
 import { Priority } from './priority.module';
 import { Status } from './status.module';
@@ -20,5 +22,7 @@ export interface Task {
   tags?: Tag[];
   images?:string[];
   priority?: Priority;
+  googleId?:string;
+  checkList?: string[];
 }
 

@@ -4,7 +4,6 @@ import { YearlyReport } from '../_models/yearlyReport.module';
 import { USER_ENDPOINT, YEARLYREPORT } from '../api-urls';
 import { catchError, map, Observable, of } from 'rxjs';
 
-const API_URL = 'http://localhost:8080/api/yearlyReport/';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
@@ -22,7 +21,7 @@ export class YearlyReportService {
 
  // Create a new yearly report
  createYearlyReport(yearlyReport: YearlyReport): Observable<YearlyReport> {
-    return this.http.post<YearlyReport>(this.apiUrl, yearlyReport)
+    return this.http.post<YearlyReport>(`${this.apiUrl}/create`, yearlyReport)
       .pipe(
         catchError(this.handleError<YearlyReport>('createYearlyReport'))
       );
@@ -47,13 +46,16 @@ export class YearlyReportService {
   
  
 
-  // Update an existing yearly report
-  updateYearlyReport(yearlyReport: YearlyReport): Observable<YearlyReport> {
-    return this.http.put<YearlyReport>(`${this.apiUrl}`, yearlyReport)
-      .pipe(
-        catchError(this.handleError<YearlyReport>('updateYearlyReport'))
-      );
- }
+// Update an existing yearly report
+async updateYearlyReport(id: string, yearlyReport: YearlyReport): Promise<YearlyReport> {
+  try {
+      const response = await this.http.post<YearlyReport>(`${this.apiUrl}/update/${id}`, yearlyReport).toPromise();
+      return response;
+  } catch (error) {
+      this.handleError<YearlyReport>('updateYearlyReport', error);
+      throw error; // Re-throw the error if needed
+  }
+}
 
     // Delete a yearly report by ID
   deleteYearlyReport(id: string): Observable<boolean> {

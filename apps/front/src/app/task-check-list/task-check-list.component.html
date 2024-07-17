@@ -1,50 +1,7 @@
-<!-- <section id="app">
-  <header>
-    <div id="day-field">
-      <div id="day">{{date.getDate().toString()}}</div>
-      <div id="month">
-        <span id="month_name">{{this.months[date.getMonth()]}}</span> <span id="year">{{date.getFullYear().toString()}}</span>
-      </div>
-    </div>
-    <div id="week">{{this.days[date.getUTCDay()]}}</div>
-  </header>
-  <section id="main_sec"></section>
-  <footer>
-    <button id="add_but" (click)="addNode()">+</button>
-  </footer>
-</section> -->
+<form class="flex align-items-center gap-1" [formGroup]="formGroup">
+  <input formControlName="name" type="text" value="{{checkList.name}}">
 
+  <p-checkbox formControlName="item" value="isDone" inputId="isDone" />
 
-<!-- <footer id="credits">
-  <span
-    >made by
-    <a href="http://www.pedrocacique.com"
-      ><img
-        alt="avatar"
-        src="https://scontent.fcgh7-1.fna.fbcdn.net/t31.0-8/p960x960/11958099_10200916172781826_3235614628416290419_o.jpg"
-    /></a>
-  </span>
-</footer> -->
-
-
-<div ng-app="TaskList" ng-controller="taskController">
-    <form name="form" ng-submit="addTask()">
-      <div>
-        <input type="text" name="task" placeholder="Add a new task" ng-model="newTask" required>
-        <button ng-disabled="form.$invalid">Add task</button>
-      </div>
-    </form>
-  
-    <ul>
-      <li *ngFor="task in tasks track by $index" ng-class="{'completed': task.done}">
-        <span>{{ task.title }}</span>
-        <input type="checkbox" id="{{ 'task-' + $index }}" ng-model="task.done">
-        <label for="{{ 'task-' + $index }}"></label>
-      </li>
-    </ul>
-  
-    <p ng-show="!(tasks | filter: { title: '' }).length" class="all-complete">All tasks have been completed.</p>
-  
-    <button ng-click="clearCompleted()">Clear completed tasks</button>
-  </div>
-  
+  <input formControlName="description" for="isDone">
+</form>

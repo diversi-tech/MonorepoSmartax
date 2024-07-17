@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { HashPasswordService } from '../_services/hash-password.service';
 import { AUTH_ENDPOINT } from '../api-urls';
@@ -31,13 +31,22 @@ export class AuthService {
     );
   }
 
-
-  logout(): Observable<any> {
-    return this.http.post(this.apiUrl + '/signout', {}, httpOptions);
-  }
-
   
-
+  logout(): Observable<number> {
+    return this.http.post(this.apiUrl + '/signout', {}, httpOptions).pipe(
+      map((response: HttpResponse<any>) => {
+        console.log(response);        
+        if (response.status >= 200 && response.status < 300) {
+          return response.status;
+        } else {
+          throw new Error('HTTP Error: ' + response.status);
+        }
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
 
    getCurrentRole(): Observable<Role> {
     const token = JSON.parse(sessionStorage.getItem('auth-user') + '')?.access_token;

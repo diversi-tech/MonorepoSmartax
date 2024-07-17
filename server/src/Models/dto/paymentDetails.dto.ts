@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsDateString } from "class-validator";
+import { Frequency } from "../frequency.model";
 
 export class CreatePaymentDetailsDto {
 
@@ -7,6 +8,15 @@ export class CreatePaymentDetailsDto {
     @IsNotEmpty()
     @IsNumber()
     sumForMonth: number;
+
+    @ApiProperty({ type: Number})
+    @IsOptional()
+    @IsNumber()
+    maxHours?: number;
+
+    @ApiProperty()
+    @IsOptional()
+    frequency?: Frequency;
 
     @ApiProperty({ type: String, format: 'date-time' })
     @IsNotEmpty()
@@ -35,6 +45,17 @@ export class UpdatePaymentDetailsDto {
     @IsOptional()
     @IsNumber()
     sumForMonth?: number;
+
+
+    @ApiProperty({ type: Number, required: false})
+    @IsOptional()
+    @IsNumber()
+    maxHours?: number;
+
+    @ApiProperty({required: false })
+    @IsOptional()
+    @IsNumber()
+    frequency?: Frequency;
 
     @ApiProperty({ type: String, format: 'date-time', required: false })
     @IsOptional()

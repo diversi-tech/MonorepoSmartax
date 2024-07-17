@@ -34,7 +34,7 @@ export class GoogleDriveService{
   async uploadFile(file: Express.Multer.File, clientId: string, docType:string): Promise<any> {
     try {
       const client=await this.clientService.searchClient(clientId);
-      const clientfolderId = await this.getOrCreateFolder(client.name,this.rootFolderId);
+      const clientfolderId = await this.getOrCreateFolder(client.firstName,this.rootFolderId);
       const folderId = await this.getOrCreateFolder(docType,clientfolderId);
       const response = await this.drive.files.create({
         requestBody: {

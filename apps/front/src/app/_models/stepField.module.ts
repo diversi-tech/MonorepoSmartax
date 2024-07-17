@@ -4,5 +4,6 @@ export interface StepField {
  value: string;
  stepNumber: number;
  isComplete: boolean;
+ type: string;
 
 }

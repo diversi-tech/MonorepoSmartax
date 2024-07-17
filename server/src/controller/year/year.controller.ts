@@ -15,15 +15,17 @@ export class YearController {
 
     constructor(private readonly yearService: YearService ) { }
 
-    @Put()
+    @Post()
     async createRole(@Body(new ValidationPipe()) createYearDto: createYearDto): Promise<Year> {
         return await this.yearService.createYear(createYearDto);
     }
 
-    @Get()
-    async getAllRolies(): Promise<Year[]> {
+    @Get('all')
+    async getAllYears(): Promise<Year[]> {
         return await this.yearService.getAllYear();
     }
+   
+  
 
     
     @Post('delete')
