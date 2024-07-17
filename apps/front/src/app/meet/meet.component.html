@@ -4,14 +4,15 @@
       <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
     </ng-template>
 
+    <div class="input-group"></div>
     <!-- Address -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-link"></span>
-        Address
+        כתובת
       </p>
       <div style="margin-left: 50px">
-        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+        <p-inputGroup class="w-full" [style]="{ height: '20px', marginLeft: '90px' }">
           <input type="text" pInputText [(ngModel)]="form.address" />
           <div *ngIf="isValidURL(form.address)">
             <a [href]="form.address" target="_blank">Open Link</a>
@@ -25,12 +26,12 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-calendar-plus"></span>
-        Date
+        תאריך
       </p>
       <div style="margin-left: 85px">
-        <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
+        <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px', marginLeft: '50px' }">
           <p-calendar [(ngModel)]="form.date" [style]="{ height: '20px', width: '250px' }" [iconDisplay]="'input'"
-            [showIcon]="true" inputId="icondisplay" />
+            [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy"/>
         </p-inputGroup>
       </div>
     </div>
@@ -40,11 +41,12 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-clock"></span>
-        Begining Time
+        שעת התחלה
       </p>
       <div style="margin-left: 85px">
         <input type="time" class="form-control" name="beginningTime" [(ngModel)]="form.beginningTime" required
-          #beginningTime="ngModel" />
+          #beginningTime="ngModel" 
+          [style]="{marginLeft: '10px' , width: '250px'}"/>
       </div>
     </div>
     <br /><br />
@@ -52,11 +54,12 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-clock"></span>
-        End Time
+        שעת סיום
       </p>
       <div style="margin-left: 85px">
         <input type="time" class="form-control" name="endTime" [(ngModel)]="form.endTime" required
-        #endTime="ngModel"/>
+        #endTime="ngModel"
+        [style]="{marginLeft: '30px', width: '250px' }"/>
       </div>
     </div>
     <br /><br />
@@ -65,10 +68,10 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-user-plus"></span>
-        Select Users
+        בחר משתמשים
       </p>
       <div style="margin-left: 60px">
-        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+        <p-inputGroup class="w-full" [style]="{ height: '20px', marginLeft: '20px' }">
         </p-inputGroup>
       </div>
       <ng-template let-user pTemplate="item">
@@ -103,10 +106,10 @@
     <div style="display: flex; align-items: center; height: 50px" id="divHover" class="clients">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-users"></span>
-        Client
+        בחר לקוחות
       </p>
       <div style="margin-left: 85px">
-        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+        <p-inputGroup class="w-full" [style]="{ height: '20px' , marginLeft: '15px'}">
           <div>
             <ng-template let-user pTemplate="item">
               <div>
@@ -141,9 +144,9 @@
     <!-- footer -->
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1" style="margin-left: 70%">
-        <p-button label="Cancel" icon="pi pi-undo" [text]="true" [raised]="true" severity="secondary"
+        <p-button label="ביטול" icon="pi pi-undo" [text]="true" [raised]="true" severity="secondary"
           (click)="cancel()" />
-        <p-button label="Save" icon="pi pi-check" [text]="true" [raised]="true" severity="secondary" (click)="showDialog()" />
+        <p-button label="שמירה" icon="pi pi-check" [text]="true" [raised]="true" severity="secondary" (click)="showDialog()" />
       </div>
     </ng-template>
   </p-card>

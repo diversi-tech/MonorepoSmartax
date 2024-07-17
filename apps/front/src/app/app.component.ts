@@ -59,17 +59,23 @@ export class AppComponent {
   }
 
   logout(): void {
-    this.authService.logout().subscribe(
-      (status: number) => {
-        console.log('Logout successful. Status:', status);
-        this.storageService.clean();
-        this.router.navigate(["/login"]);
-      },
-      (error: any) => {
-        console.error('Logout failed. Error:', error);
-        alert("ארעה שגיאה בתהליך היציאה, אנא נסה שנית")
-      }
-    );
+    try{
+      this.authService.logout().subscribe(
+        (status: number) => {
+          console.log('Logout successful. Status:', status);
+          this.storageService.clean();
+          this.router.navigate(["/login"]);
+        },
+        (error: any) => {
+          console.error('Logout failed. Error:', error);
+          alert("ארעה שגיאה בתהליך היציאה, אנא נסה שנית")
+        }
+      );
+
+    }catch(err){
+      console.error('Logout failed. Error:', err);
+      alert("ארעה שגיאה בתהליך היציאה, אנא נסה שנית")
+    }
   
   }
 }
