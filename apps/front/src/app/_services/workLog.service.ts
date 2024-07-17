@@ -131,15 +131,14 @@ export class WorkLogService {
       map(response => response.data)
     );
   }
-
   updateTimeEntry(id: string, updateTimeEntryDto: UpdateTimeEntryDto): Observable<WorkLog> {
     return this.http.put<{ data: WorkLog }>(`${this.apiUrl}/${id}/time-entries`, updateTimeEntryDto).pipe(
       map(response => response.data)
     );
   }
-
+  
   exportWorkLogs(month: number, year: number): Observable<Blob> {
-    const url = `${this.apiUrl}/export?month=${month}&year=${year}`;
+    const url = `${this.apiUrl}/export/${month}/${year}`;
     return this.http.get(url, { responseType: 'blob' });
   }
 }

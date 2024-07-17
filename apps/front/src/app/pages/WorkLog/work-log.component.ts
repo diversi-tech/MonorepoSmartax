@@ -720,8 +720,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../_services/token.service';
-import { UpdateWorkLogDto } from '../../../../../../server/src/Models/dto/workLog.dto';
-import * as FileSaver from 'file-saver';
+import {  UpdateWorkLogDto } from '../../../../../../server/src/Models/dto/workLog.dto';
 
 @Component({
   selector: 'app-work-log',
@@ -881,22 +880,22 @@ export class WorkLogComponent implements OnInit {
   }
 
   editTimeEntry(logGroup: any, entry: TimeEntry) {
-    console.log(logGroup);
     this.selectedLog = logGroup;
     this.selectedEntry = entry;
     this.editedCheckIn = new Date(entry.checkIn);
     this.editedCheckOut = entry.checkOut ? new Date(entry.checkOut) : null;
     this.displayDialog = true;
   }
-  
+
   saveEditedWorkLog() {
     if (this.selectedLog && this.selectedEntry) {
       this.selectedEntry.checkIn = this.editedCheckIn;
       this.selectedEntry.checkOut = this.editedCheckOut;
       this.selectedEntry.hoursWorked = this.calculateHours(this.selectedEntry.checkIn, this.selectedEntry.checkOut);
+      console.log(this.selectedLog.logs[0]._id);
   
       const updateDto: UpdateWorkLogDto = {
-        id: this.selectedLog.logs[0]._id,
+        _id: this.selectedLog.logs[0]._id,
         timeEntries: this.selectedLog.logs.flatMap((log: any) => log.timeEntries.map((entry: any) => ({
           _id: entry._id,
           checkIn: entry.checkIn,
@@ -908,26 +907,6 @@ export class WorkLogComponent implements OnInit {
       this.displayDialog = false;
     }
   }
-  // saveEditedWorkLog() {
-  //   if (this.selectedLog && this.selectedEntry) {
-  //     console.log(this.selectedLog.logs[0]._id);
-  //     const updateDto: UpdateWorkLogDto = {
-  //       id: this.selectedLog.logs[0]._id,
-  //       timeEntries: this.selectedLog.logs.flatMap((log: any) => log.timeEntries.map((entry: any) => ({
-  //         _id: entry._id,
-  //         checkIn: entry.checkIn,
-  //         checkOut: entry.checkOut,
-  //         hoursWorked: entry.hoursWorked
-  //       })))
-  //     };
-  //     console.log(updateDto);
-  //     this.updateWorkLog(updateDto);
-  //     this.displayDialog = false;
-  //   }
-  // }
-  
-  
-  
 
   cancelEdit() {
     this.displayDialog = false;
@@ -939,7 +918,7 @@ export class WorkLogComponent implements OnInit {
   }
 
   updateWorkLog(workLog: any) {
-    this.workLogService.updateWorkLog(workLog.id, workLog.timeEntries).subscribe(
+    this.workLogService.updateWorkLog(workLog._id, workLog.timeEntries).subscribe(
       response => {
         if (response) {
           this.messageService.add({ severity: 'success', summary: 'Work log updated successfully' });
@@ -978,22 +957,5 @@ export class WorkLogComponent implements OnInit {
     }
     const diff = Math.abs(checkOut.getTime() - checkIn.getTime());
     return diff / (1000 * 60 * 60);
-  }
-  exportToExcel() {
-    const month = new Date().getMonth() + 1; // לדוגמה, יכול להיות לך צורך להשתמש במשתנים אחרים כמו שנה וכדומה
-    const year = new Date().getFullYear();
-    
-    this.workLogService.exportWorkLogs(month, year).subscribe(
-      (blob: Blob) => {
-        const filename = `work-logs-${month}-${year}.xlsx`;
-        
-        
-FileSaver.saveAs(blob, filename);
-      },
-      (error) => {
-        console.error('Error exporting work logs to Excel:', error);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to export work logs to Excel.' });
-      }
-    );
   }
 }

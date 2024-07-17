@@ -126,7 +126,7 @@ export class UpdateWorkLogDto {
   @ApiProperty({ description: 'The work log ID' })
   @IsNotEmpty()
   @IsString()
-  id: string;
+  _id: string;
 
   @ApiProperty({ description: 'The updated time entries', type: [UpdateTimeEntryDto] })
   @IsOptional()
