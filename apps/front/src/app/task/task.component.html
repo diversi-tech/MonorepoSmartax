@@ -263,7 +263,7 @@
               <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"><span
                   (click)="showClients = !showClients" class="pi pi-user"></span></p-inputGroupAddon>
               <div (click)="showClients = !showClients">
-                <app-icon-profile *ngIf="selectedClient" [userName]="selectedclient.firstName"></app-icon-profile>
+                <app-icon-profile *ngIf="selectedClient" [userName]="selectedClient.firstName && selectedclient.firstName"></app-icon-profile>
               </div>
             </p-inputGroup>
             <!-- <p-multiSelect
