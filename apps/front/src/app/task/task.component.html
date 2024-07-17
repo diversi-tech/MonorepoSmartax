@@ -1,7 +1,7 @@
 <!-- ===================== -->
 <app-timer [taskId]="id"></app-timer>
 <div style="margin-top: 10%">
-  <p-card header="Task" subheader="Create and update your task" [style]="{ width: '800px' }">
+  <p-card header="Task" subheader="Create and update your task" [style]="{ width: '800px'}">
     <ng-template pTemplate="header">
       <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
     </ng-template>
@@ -24,6 +24,7 @@
         <span class="pi pi-user"></span>
         משוייך ל
       </p>
+    </div>
       <div style="margin-left: 60px;width: 32%;">
         <!-- <p-inputGroup class="w-full" [style]="{ height: '20px' }">
           <p-inputGroupAddon *ngIf="!selectedUser"
@@ -90,6 +91,8 @@
           </p-listbox>
         </form>
         <br />
+      </div>
+
         <!-- Status  -->
         <div style="display: flex; align-items: center; height: 50px" id="divHover">
           <p style="margin-top: 2%; margin-right: 5%">
@@ -223,7 +226,7 @@
             <input [style]="{ width: '10%' }" type="text" pInputText placeholder="Example" [(ngModel)]="buttonText" />
             <p-inputGroupAddon>
               <span id="divHover" (click)="createTag()" class="pi pi-check"></span>
-            </p-inputGroupAddon> -->
+            </p-inputGroupAddon> 
             <div style="width: 65%">
               <input type="text" [style]="{ width: '100%', height: '20px' }" pInputText placeholder="Example"
                 (keyup.enter)="createTag()" [(ngModel)]="buttonText" />
@@ -372,7 +375,7 @@
             </p-tabPanel>
             <p-tabPanel header="רשימה">
               <div *ngFor="let list of checkList">
-                <app-task-check-list [checkList]="list"></app-task-check-list>
+                <!-- <app-task-check-list [checkList]="list"></app-task-check-list> -->
               </div>
             </p-tabPanel>
           </p-tabView>
@@ -387,8 +390,8 @@
               (click)="showDialog()" />
           </div>
         </ng-template>
-      </div>
-    </div>
+
+    
 
   </p-card>
 </div>
