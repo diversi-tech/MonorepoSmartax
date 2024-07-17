@@ -149,7 +149,9 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
   { path:'checklist', component:TaskCheckListComponent},
   
   { path:'checklist', component:TaskCheckListComponent},
-  { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }}
+  { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
+  {path:'fieldMamagement',component:FieldManagementComponent,data:{authType:3,forToolbar:true,label:'ניהול שדות',icon:''}},
+
 ];
 
   @NgModule({
