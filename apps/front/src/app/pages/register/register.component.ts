@@ -94,7 +94,7 @@ export class RegisterComponent implements OnInit {
       });
     }
     else {
-      this.userService.update(history.state.user._id, this.form.username, this.form.email, history.state.user.passwordHash, this.form.role).subscribe({
+      this.userService.update(history.state.user._id, this.form.username, this.form.email, history.state.user.passwordHash, this.form.role, history.state.user.favorites).subscribe({
         next: data => {
           console.log(data);
           this.isSuccessful = true;

@@ -22,7 +22,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { CalendarModule } from 'primeng/calendar';
 import { ListboxModule } from 'primeng/listbox';
 import { GoogleAuthService } from '../_services/google-calendar.service';
-import { Subscription } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -366,13 +366,17 @@ export class MeetComponent implements OnInit {
   private eventDataSubscription: Subscription;
   public eventId: string;
   public conferenceLink: string;
-  d1:Date = new Date();
-  d2:Date = new Date();
+  d1: Date = new Date();
+  d2: Date = new Date();
   //
   visible: boolean = false;
 
   showDialog() {
-    this.visible = true;
+    if (this.meetId == 'null') {
+      this.visible = true;
+    } else {
+      this.save();
+    }
   }
 
   meeting: Meet | null = null;
@@ -408,9 +412,9 @@ export class MeetComponent implements OnInit {
     if (this.meetingId) {
       this.getMeetById(this.meetingId);
     }
-    debugger
-    this.form.date = new Date(this.selectedDate)
-    this.meetId = this.meetingId!
+    debugger;
+    this.form.date = new Date(this.selectedDate);
+    this.meetId = this.meetingId!;
     // this.primengConfig.ripple = true;
     this.getAllClients();
     this.getAllUsers();
@@ -418,9 +422,12 @@ export class MeetComponent implements OnInit {
 
   // Function to subscribe to event data
   subscribeToEventData() {
+    // alert('se1')
     this.eventDataSubscription =
       this.googleCalendarService.eventData$.subscribe((eventData) => {
         if (eventData) {
+          // alert('se2')
+          console.log(eventData);
           this.eventId = eventData.eventId;
           this.conferenceLink = eventData.conferenceLink;
         }
@@ -452,6 +459,7 @@ export class MeetComponent implements OnInit {
         const beginningTime = new Date(this.currentMeet.beginningTime);
         const endTime = new Date(this.currentMeet.endTime);
         const meetDate = new Date(this.currentMeet.date);
+        if (meet.googleId) this.eventId = meet.googleId;
 
         this.form = {
           address: this.currentMeet.address,
@@ -523,68 +531,96 @@ export class MeetComponent implements OnInit {
     return url.protocol === 'http:' || url.protocol === 'https:';
   }
 
-
   // add to google-meeting
-  scheduleMeeting() {
+  async scheduleMeeting() {
+    // if (this.meetId == 'null') {
     this.visible = false;
-    debugger
-    
-    let appointmentTime = new Date();
-    const startTime3 = appointmentTime.toISOString().slice(0, 18) + '-'+this.form.beginningTime;
-    const endTime3 = appointmentTime.toISOString().slice(0, 18) + '-'+this.form.endTime;
-    // חיבור התאריך והשעה לפורמט ISO
-  // המרת תאריך ושעה לפורמט ISO
-  // this.d1=this.form.date
-  // this.d2=this.form.date
-  
-  // const b=this.form.beginningTime
-  // const[h,m]=b.split(':')
-  // this.form.beginningTime=new Date()
-  // this.form.beginningTime.setHours(+h + 3, +m, 0, 0);
+    debugger;
+    // ======time=======
+    const beginningTime = this.form.beginningTime;
+    const endTime = this.form.endTime;
 
-  // const e=this.form.endTime
+    const [beginningHour, beginningMinute] = beginningTime
+      .split(':')
+      .map(Number);
+    const [endHour, endMinute] = endTime.split(':').map(Number);
 
-  
-  const startDateTime2 = new Date(
-    this.form.date.getFullYear(),
-    this.form.date.getMonth(),
-    this.form.date.getDate(),
-    this.d1.getHours(),
-    this.d1.getMinutes()
-  ).toISOString();
+    const today = new Date();
+    const startDateTime = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      beginningHour,
+      beginningMinute,
+      0,
+      0
+    );
 
-  const endDateTime2 = new Date(
-    this.form.date.getFullYear(),
-    this.form.date.getMonth(),
-    this.form.date.getDate(),
-    this.d2.getHours(),
-    this.d2.getMinutes()
-  ).toISOString();
-    const em=this.getEmailById(this.form.usersId)
-    
-   
+    const endDateTime = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      endHour,
+      endMinute,
+      0,
+      0
+    );
+
+    // =============
+
+    const em = this.getEmailById(this.form.usersId);
+
     const eventDetails = {
       nameT: 'פגישה חשובה',
       description: 'פגישה על פרויקט חדש',
-      startTime: startTime3,//'2024-07-15T10:00:00'
-      endTime: endTime3,
+      startTime: startDateTime, //'2024-07-15T10:00:00'
+      endTime: endDateTime,
       emails: em,
     };
     console.info(eventDetails);
-    this.googleCalendarService.createGoogleEvent(eventDetails);
 
-    this.subscribeToEventData();
-    
-    this.save();
+    // Create Google event and return a promise
+    const createEventPromise =
+      this.googleCalendarService.createGoogleEvent(eventDetails);
+
+    // After creating event, save the meeting
+    createEventPromise
+      .then(() => {
+        debugger;
+        // alert('הפגישה נוספה בהצלחה');
+        this.subscribeToEventData();
+        setTimeout(() => {
+          this.save();
+        }, 1000); // המתנה 1 שניות, כדי לוודא שההרשמות הושלמו בצורה נכונה
+
+        // this.save(); // Save meeting details
+      })
+      .catch((error) => {
+        console.error('Error creating Google event:', error);
+      });
+
+    // this.googleCalendarService.createGoogleEvent(eventDetails);
+    // await this.googleCalendarService.createGoogleEvent(eventDetails);
+    // this.googleCalendarService.createGoogleEvent(eventDetails).pipe(
+    //   tap((eventData) => {
+    //     this.eventId = eventData.eventId;
+    //     this.conferenceLink = eventData.conferenceLink;
+    //   })
+    // );
+
+    // await this.save();
+    // } else {
+    //   this.save();
+    // }
   }
 
   getEmailById(idArray: string[]) {
-    const emails = idArray.map(id => {
-      const item = this.users.find(item => item._id === id);
+    const emails = idArray.map((id) => {
+      const item = this.users.find((item) => item._id === id);
       return item ? item.email : null;
     });
-  
-    return emails.filter(email => email !== null); // מסיר את הקיום
+
+    return emails.filter((email) => email !== null); // מסיר את הקיום
   }
 
   save(): void {
@@ -613,36 +649,83 @@ export class MeetComponent implements OnInit {
       usersId: this.form.usersId,
       clientDepartments: this.form.clientDepartments,
     };
+    // alert('2');
+
+    if (this.eventId) {
+      this.currentMeet.googleId = this.eventId;
+    }
+
+    if (this.checked && this.conferenceLink) {
+      this.currentMeet.address = this.conferenceLink;
+    }
+
+    // alert(this.conferenceLink);
+
+    console.log(this.currentMeet);
 
     if (this.meetId == 'null') {
+      debugger;
       this.meetService.createMeet(this.currentMeet).subscribe(
         (meet) => {
           this.closeModal.emit();
+          // alert('4');
         },
         // },
-        (error) => {}
+        (error) => {
+          console.log(error);
+        }
       );
     } else {
       this.currentMeet.date = new Date(this.form.date);
       this.meetService.updateMeet(this.meetId, this.currentMeet).subscribe(
         (meet) => {
           this.closeModal.emit();
-          // updateMeeting() {
-          const eventDetails = {
-            eventId: 'ID של האירוע שנשמר כאן',
-            nameT: 'פגישה מעודכנת',
-            description: 'פגישה מעודכנת על פרויקט חדש',
-            startTime: '2024-07-15T12:00:00',
-            endTime: '2024-07-15T13:00:00',
-            emails: ['sh054848758@gmail.com', 'tzwine974@gmail.com'],
-          };
-          this.googleCalendarService.updateGoogleEvent(eventDetails);
 
-          this.subscribeToEventData();
-          // }
+          // updateMeeting() {
+          if (this.eventId) {
+            // const eventDetails = {
+            //   eventId: this.eventId,
+            //   nameT: 'פגישה מעודכנת',
+            //   description: 'nnnפגישה מעודכנת על פרויקט חדש',
+            //   startTime: '2024-07-15T12:00:00',
+            //   endTime: '2024-07-15T13:00:00',
+            //   emails: ['sh054848758@gmail.com', 'tzwine974@gmail.com'],
+            // };
+            // debugger;
+            // this.googleCalendarService.updateGoogleEvent(eventDetails);
+            this.updateMeetingGoogle();
+            // this.subscribeToEventData();
+          }
         },
         (error) => {}
       );
     }
+  }
+
+  updateMeetingGoogle() {
+    // ======time=======
+    const beginningTime = new Date(this.form.beginningTime);
+    const endTime = new Date(this.form.endTime);
+
+    beginningTime.setHours(beginningTime.getHours() - 3);
+    endTime.setHours(endTime.getHours() - 3);
+
+    // convert to ISO8601
+    // const beginningTimeISO = beginningTime.toISOString();
+    // const endTimeISO = endTime.toISOString();
+    // =============
+
+    const emailArray = this.getEmailById(this.form.usersId);
+
+    const eventDetails = {
+      eventId: this.eventId,
+      nameT: 'פגישה מעודכנת',
+      description: 'nnnפגישה מעודכנת על פרויקט חדש',
+      startTime: beginningTime,
+      endTime: endTime,
+      emails: emailArray,
+    };
+    debugger;
+    this.googleCalendarService.updateGoogleEvent(eventDetails);
   }
 }

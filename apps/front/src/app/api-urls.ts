@@ -9,4 +9,10 @@ export const MEET_ENDPOINT = `${API_URL}/meet`;
 export const CLIENT_ENDPOINT = `${API_URL}/clients`;
 export const STATUS_ENDPOINT = `${API_URL}/Status`;
 export const TAG_ENDPOINT = `${API_URL}/tags`;
-export const YEARLYREPORT = `${API_URL}/yearlyReport`;
+export const YEARLYREPORT = `${API_URL}/yearly-reports`;
+export const YEAR = `${API_URL}/year`;
+export const TIMER_ENDPOINT = `${API_URL}/timer`;
+
+export const CHECKLIST_ENDPOINT = `${API_URL}/checklist`;
+export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checklistitem`;
+export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;

@@ -15,26 +15,30 @@ export class YearlyReportService {
                  @InjectModel('StepField')private readonly stepFieldModel: Model<StepField>) {}
 
     async createYearlyReport(createYearlyReportDto: CreateYearlyReportDto): Promise<YearlyReport> {
-      const allStepFields = await this.stepFieldModel.find().exec();
-      const createdYearlyReport = new this.YearlyReportModel({
-        ...createYearlyReportDto,
-        stepsList: allStepFields,
-      });
-      return createdYearlyReport.save();
+        const allStepFields = await this.stepFieldModel.find().exec();
+        const filteredStepFields = allStepFields.filter(stepField => stepField.type === 'yearly-report');
+                  
+        const createdYearlyReport = new this.YearlyReportModel({
+          ...createYearlyReportDto,
+             stepsList: filteredStepFields,
+        });
+                  
+       return createdYearlyReport.save();
     }
+                  
 
     async updateYearlyReport(id: string, updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
       const updatedYearlyReport = await this.YearlyReportModel.findByIdAndUpdate(
         id,
         updateYearlyReportDto,
-        { new: true }
+        // { new: true }
       ).exec();
   
       if (!updatedYearlyReport) {
         throw new NotFoundException('Yearly Report not found');
       }
   
-      return updatedYearlyReport;
+      return updatedYearlyReport.save();
     }
 
     async deleteYearlyReport(id: string): Promise<void> {

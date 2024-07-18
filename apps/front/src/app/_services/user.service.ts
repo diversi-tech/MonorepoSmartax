@@ -5,6 +5,7 @@ import { HashPasswordService } from './hash-password.service';
 import { RoleServiceService } from './role-service.service';
 import { Role } from '../_models/role.module';
 import { USER_ENDPOINT } from '../api-urls';
+import { Client } from '../_models/client.module';
 
 const API_URL = 'http://localhost:8080/api/test/';
 const httpOptions = {
@@ -38,13 +39,14 @@ export class UserService {
       httpOptions
     );
   }
-  update(id: string, userName: string, email: string, passwordHash: string, role: Role) {
+  update(id: string, userName: string, email: string, passwordHash: string, role: string,favoritesClient:Client[]) {
     const user = {
       "id": id,
       "userName": userName,
       "passwordHash": passwordHash,
       "role": role,
-      "email": email
+      "email": email,
+      "favoritesClient":favoritesClient
     }
     console.log(user);
 
