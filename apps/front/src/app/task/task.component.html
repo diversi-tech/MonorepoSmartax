@@ -322,7 +322,7 @@
         optionLabel="text"
         [style]="{ width: '15rem' }"
         [listStyle]="{ 'max-height': '400px' }"
-        (onChange)="showTags = !showTags"
+        (onChange)="showTagsList =!showTagsList"
       >
         <ng-template let-user pTemplate="item">
           <div class="d-flex justify-content-between align-items-center">
@@ -356,17 +356,17 @@
         [inline]="true"
       ></p-colorPicker>
       <p-inputGroup>
-        <p-inputGroupAddon>טקסט</p-inputGroupAddon>
-        <input
+        <!-- <p-inputGroupAddon>טקסט</p-inputGroupAddon> -->
+        <!-- <input
           [style]="{ width: '10%' }"
           type="text"
           pInputText
           placeholder="Example"
           [(ngModel)]="buttonText"
-        />
-        <p-inputGroupAddon>
+        /> -->
+        <!-- <p-inputGroupAddon>
           <span id="divHover" (click)="createTag()" class="pi pi-check"></span>
-        </p-inputGroupAddon>
+        </p-inputGroupAddon> -->
         <div style="width: 65%">
           <input
             type="text"
