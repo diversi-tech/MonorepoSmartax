@@ -1,131 +1,200 @@
+<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+  
+  <div class="form-container">
+    <div class="title-container">
+      <div class="icon-circle">
+        <i class="pi pi-user"></i>
+      </div>
+      <h2>:פרטי לקוח</h2>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="tz">:ת"ז</label>
+        <input type="text" id="tz" formControlName="tz" class="form-control" placeholder="הכנס תז">
+        <div *ngIf="contactForm.get('tz')?.errors?.['required']" class="red">ערך חובה</div>
+        <div *ngIf="contactForm.get('tz')?.errors?.['pattern']" class="red">תז חייב להכיל 9 תוים</div>
+      </div>
+      <div class="form-group">
+        <label for="lastName">:שם משפחה</label>
+        <input type="text" id="lastName" formControlName="lastName" class="form-control" placeholder="הכנס שם משפחה">
+        <div *ngIf="contactForm.get('lastName')?.errors?.['required']" class="red">ערך חובה</div>
+        <div *ngIf="contactForm.get('lastName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+      </div>
+      <div class="form-group">
+        <label for="firstName">:שם פרטי</label>
+        <input type="text" id="firstName" formControlName="firstName" class="form-control" placeholder="הכנס שם פרטי">
+        <div *ngIf="contactForm.get('firstName')?.errors?.['required']" class="red">ערך חובה</div>
+        <div *ngIf="contactForm.get('firstName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="isPreferWhatsapp">:מעדיף ואטסאפ</label>
+        <input type="checkbox" id="isPreferWhatsapp" formControlName="isPreferWhatsapp" class="form-control">
+      </div>
 
-<!-- <div *ngIf="true" [@dialog] class="dialog-container"> -->
-    <p-dialog header="לקוח חדש" [(visible)]="displayDialog" [modal]="true" [responsive]="true" [style]="{width: '300px'}" [closable]="true" (onHide)="onClose()">
-        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-          <div>
-            <label for="companyName">שם חברה:</label>
-            <input type="text" id="companyName" formControlName="companyName" required placeholder="הכנס שם חברה">
-              <div *ngIf="contactForm.get('companyName')?.errors?.['required']" class="red">חייבים להכניס שם</div>
-              <div *ngIf="contactForm.get('companyName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+      <div class="form-group">
+        <label for="phone">:מספר טלפון</label>
+        <input type="tel" id="phone" formControlName="phone" class="form-control" placeholder="הכנס מספר טלפון">
+        <div
+          *ngIf="contactForm.get('phone')?.invalid && (contactForm.get('phone')?.dirty || contactForm.get('phone')?.touched)">
+          <div *ngIf="contactForm.get('phone')?.errors?.['required']" class="red">ערך חובה </div>
+          <div *ngIf="contactForm.get('phone')?.errors?.['pattern']" class="red">טלפון לא תקין הכנס טלפון תקין</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="whatsapp">:ואטסאפ</label>
+        <input type="text" id="whatsapp" formControlName="whatsapp" class="form-control" placeholder="הכנס ואטסאפ">
+        <div *ngIf="contactForm.get('whatsapp')?.errors?.['required']" class="red"> ערך חובה</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group">
+        <label for="dateOfBirth">:תאריך לידה</label>
+        <input type="date" id="dateOfBirth" formControlName="dateOfBirth" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="address">:כתובת</label>
+        <input type="text" id="address" formControlName="address" class="form-control" placeholder="הכנס כתובת">
+      </div>
+      <div class="form-group">
+        <label for="email">:מייל</label>
+        <input type="email" id="email" formControlName="email" class="form-control" placeholder="הכנס מייל">
+        <div *ngIf="contactForm.get('email')?.errors?.['pattern']" class="red">מייל לא תקין הכנס מייל תקין</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="comments">:הערות</label>
+      <input type="text" id="comments" formControlName="comments" class="form-control" placeholder="הכנס הערות">
+    </div>
+  </div>
+
+  <div class="form-container">
+    <div class="title-container">
+      <div class="icon-circle">
+        <i class="pi pi-briefcase"></i>
+      </div>
+      <h2>:פרטי עסק</h2>
+    </div>
+
+    <!--  -->
+    <div class="form-row">
+      <div class="form-group">
+
+        <label for="spouseName">:שם בן זוג</label>
+        <input type="text" id="spouseName" formControlName="spouseName" class="form-control"
+          placeholder="הכנס שם בן זוג">
+        <div *ngIf="contactForm.get('spouseName')?.errors?.['required']" class="red">חייבים להכניס שם</div>
+        <div *ngIf="contactForm.get('spouseName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+      </div>
+      <div class="form-group">
+        <label for="contactPersonName">:שם איש קשר</label>
+        <input type="text" id="contactPersonName" formControlName="contactPersonName" class="form-control"
+          placeholder="הכנס שם איש קשר">
+        <div *ngIf="contactForm.get('contactPersonName')?.errors?.['required']" class="red">חייבים להכניס שם</div>
+        <div *ngIf="contactForm.get('contactPersonName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="companyName">:שם חברה</label>
+        <input type="text" id="companyName" formControlName="companyName" class="form-control"
+          placeholder="הכנס שם חברה">
+        <div *ngIf="contactForm.get('companyName')?.errors?.['required']" class="red">ערך חובה</div>
+        <div *ngIf="contactForm.get('companyName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+      </div>
+    </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="businessActivity">:פעילות עסקית</label>
+          <input type="text" id="businessActivity" formControlName="businessActivity" class="form-control"
+            placeholder="הכנס פעילות עסקית">
+        </div>
+        <div class="form-group">
+          <label for="spouseTZ">:ת"ז בן זוג</label>
+          <input type="text" id="spouseTZ" formControlName="spouseTZ" class="form-control" placeholder="הכנס תז בן זוג">
+          <div *ngIf="contactForm.get('spouseTZ')?.errors?.['required']" class="red">ערך חובה</div>
+          <div *ngIf="contactForm.get('spouseTZ')?.errors?.['pattern']" class="red">תז חייב להכיל 9 תוים</div>
+        </div>
+        <div class="form-group">
+          <label for="referrerName">:שם המפנה</label>
+          <input type="text" id="referrerName"  class="form-control" formControlName="referrerName" placeholder="הכנס שם המפנה">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="employsWorkers">:מעסיק עובדים</label>
+          <input type="checkbox" id="employsWorkers" formControlName="employsWorkers" class="form-control">
+        </div>
+      <div class="form-group">
+        <label for="isStatisticsData">:נתונים סטטיסטיים</label>
+        <input type="checkbox" id="isStatisticsData" formControlName="isStatisticsData" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="isAccounter"> :האם קיים רואה חשבון</label>
+        <input type="checkbox" id="isAccounter" formControlName="isAccounter" class="form-control">
+      </div>
+    </div>
+       <div class="form-row">
+
+    <div class="form-group">
+      <label for="isWorkData">:מעונין להכניס נתוני עבודה</label>
+      <input type="checkbox" id="isWorkData" formControlName="isWorkData" class="form-control" class="form-control" (change)="onCHangeIsWorkData()">
+    </div>
+      <div class="form-group">
+        <label for="isOpenAccountWithUs">  :פתח אצלנו בעבר</label>
+        <input type="checkbox" id="isOpenAccountWithUs" formControlName="isOpenAccountWithUs" class="form-control">
+      </div>
+    </div>
+      
+     </div>
+      
+  
+
+
+      <div class="form-container" *ngIf="isWorkData" >
+        <div class="title-container">
+          <div class="icon-circle">
+            <i class="pi pi-chart-line"></i>
           </div>
-            <div>
-              <label for="firstName">שם פרטי:</label>
-              <input type="text" id="firstName" formControlName="firstName" required placeholder="הכנס שם פרטי">
-                <div *ngIf="contactForm.get('firstName')?.errors?.['required']" class="red">חייבים להכניס שם</div>
-                <div *ngIf="contactForm.get('firstName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
-            </div>
-            <div>
-              <label for="lastName">שם משפחה:</label>
-              <input type="text" id="lastName" formControlName="lastName" required placeholder="הכנס שם משפחה">
-                <div *ngIf="contactForm.get('lastName')?.errors?.['required']" class="red">חייבים להכניס שם</div>
-                <div *ngIf="contactForm.get('lastName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
-            </div>
-            <div>
-              <label for="contactPersonName">שם איש קשר:</label>
-              <input type="text" id="contactPersonName" formControlName="contactPersonName" required placeholder="הכנס שם איש קשר">
-                <div *ngIf="contactForm.get('contactPersonName')?.errors?.['required']" class="red">חייבים להכניס שם</div>
-                <div *ngIf="contactForm.get('contactPersonName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
-            </div>
-            <div>
-              <label for="tz">ת"ז:</label>
-              <input type="text" id="tz" formControlName="tz" required placeholder="הכנס תז ">
-                <div *ngIf="contactForm.get('tz')?.errors?.['required']" class="red">חייבים להכניס ת"ז</div>
-                <div *ngIf="contactForm.get('tz')?.errors?.['pattern']" class="red">תז חייב להכיל 9 תוים</div>
-            </div>
-            <div>
-              <label for="spouseName">שם בן זוג:</label>
-              <input type="text" id="spouseName" formControlName="spouseName" required placeholder="הכנס שם בן זוג">
-                <div *ngIf="contactForm.get('spouseName')?.errors?.['required']" class="red">חייבים להכניס שם</div>
-                <div *ngIf="contactForm.get('spouseName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
-            </div>
-            <div>
-              <label for="spouseTZ">ת"ז בן זוג:</label>
-              <input type="text" id="spouseTZ" formControlName="spouseTZ" required placeholder="הכנס תז בן זוג ">
-                <div *ngIf="contactForm.get('spouseTZ')?.errors?.['required']" class="red">חייבים להכניס שם</div>
-                <div *ngIf="contactForm.get('spouseTZ')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
-            </div>
-             <label for="phone">מספר טלפון:</label>
-              <input type="tel" id="phone" formControlName="phone" class="form-control" placeholder="הכנס מספר טלפון">
-              <div *ngIf="contactForm.get('phone')?.invalid && (contactForm.get('phone')?.dirty || contactForm.get('phone')?.touched)">
-                <div *ngIf="contactForm.get('phone')?.errors?.['required']" class="red">חייבים להכניס מספר טלפון</div>
-                <div *ngIf="contactForm.get('phone')?.errors?.['pattern']" class="red">טלפון לא תקין הכנס טלפון תקין</div>
-              </div>
-              
-            <div>
-              <label for="whatsapp">ואטסאפ:</label>
-              <input type="text" id="whatsapp" formControlName="whatsapp" placeholder="הכנס ואטסאפ ">
-              <div *ngIf="contactForm.get('whatsapp')?.errors?.['required']" class="red">חייבים להכניס שם עסק</div>
-            </div>
-            <div>
-              <label for="email">מייל:</label>
-              <input type="email" id="email" formControlName="email" placeholder="הכנס מייל">
-              <div *ngIf="contactForm.get('email')?.errors?.['pattern']" class="red">מייל לא תקין הכנס מייל תקין</div>
-            </div>
-            <div>
-              <label for="isPreferWhatsapp">מעדיף ואטסאפ:</label>
-              <input type="checkbox" id="isPreferWhatsapp" formControlName="isPreferWhatsapp">
-            </div>
-            <div>
-              <label for="address">כתובת:</label>
-              <input type="text" id="address" formControlName="address" placeholder="הכנס כתובת">
-            </div>
-            <div>
-              <label for="comments">הערות:</label>
-              <input type="text" id="comments" formControlName="comments" placeholder="הכנס הערות">
-            </div>
-            <div>
-              <label for="dateOfBirth">תאריך לידה:</label>
-              <input type="date" id="dateOfBirth" formControlName="dateOfBirth">
-            </div>
-            <div>
-              <label for="isEmploysWorkers">מעסיק עובדים:</label>
-              <input type="checkbox" id="isEmploysWorkers" formControlName="isEmploysWorkers">
-            </div>
-            <div>
-              <label for="isWorkData">נתוני עבודה:</label>
-              <input type="checkbox" id="isWorkData" formControlName="isWorkData">
-            </div>
-            <div>
-              <label for="incomeTaxFileNumber">מספר תיק מס הכנסה:</label>
-              <input type="text" id="incomeTaxFileNumber" formControlName="incomeTaxFileNumber" placeholder="הכנס מספר תיק ">
-            </div>
-            <div>
-              <label for="incomeTaxDeductions_registerID">מס הכנסה:</label>
-              <input type="text" id="incomeTaxDeductions_registerID" formControlName="incomeTaxDeductions_registerID" placeholder="הכנס מספר תיק">
-            </div>
-            <div>
-              <label for="VATFileNumber">מספר תיק מע"ם:</label>
-              <input type="text" id="VATFileNumber" formControlName="VATFileNumber" placeholder="הכנס מספר תיק">
-            </div>
-            <div>
-              <label for="reports">מדווח:</label>
-              <select  id="reports" formControlName="reports">
-                <option value="מדווח חודשי">מדווח חודשי</option>
-                <option value="דו חודשי">דו חודשי</option>
-                <option value="חצי שנתי">חצי שנתי</option>
-                <option value="לא מדווח">לא מדווח</option>
-              </select>
-            </div>
-            <div>
-              <label for="isStatisticsData">נתונים סטטיסטיים:</label>
-              <input type="checkbox" id="isStatisticsData" formControlName="isStatisticsData">
-            </div>
-            <div>
-              <label for="referrerName">שם המפנה:</label>
-              <input type="text" id="referrerName" formControlName="referrerName" placeholder="הכנס שם המפנה">
-            </div>
-            <div>
-              <label for="joinDate">תאריך הצטרפות:</label>
-              <input type="date" id="joinDate" formControlName="joinDate">
-            </div>
-            <div>
-              <label for="isAccounter"> עבר רואה חשבון:</label>
-              <input type="checkbox" id="isAccounter" formControlName="isAccounter">
-            </div>
-            <div>
-              <label for="isOpenAccountWithUs"> פתח אצלנו:</label>
-              <input type="checkbox" id="isOpenAccountWithUs" formControlName="isOpenAccountWithUs">
-            </div>
-            <button type="submit" [disabled]="!contactForm.valid">שלח</button>
-          </form>
-        </p-dialog>
+          <h2>:נתוני עבודה</h2>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="incomeTaxFileNumber">:מספר תיק מס הכנסה</label>
+            <input type="text" id="incomeTaxFileNumber" formControlName="incomeTaxFileNumber" class="form-control"
+              placeholder="הכנס מספר תיק">
+          </div>
+          <div class="form-group">
+            <label for="incomeTaxDeductions_registerID">:מס הכנסה</label>
+            <input type="text" id="incomeTaxDeductions_registerID" formControlName="incomeTaxDeductions_registerID"
+              class="form-control" placeholder="הכנס מספר תיק">
+          </div>
+          <div class="form-group">
+            <label for="VATFileNumber">:מספר תיק מע"מ</label>
+            <input type="text" id="VATFileNumber" formControlName="VATFileNumber" class="form-control"
+              placeholder="הכנס מספר תיק">
+          </div>
+
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reports">:מדווח</label>
+            <select id="reports" formControlName="reports" class="form-control">
+              <option value="מדווח חודשי">מדווח חודשי</option>
+              <option value="דו חודשי">דו חודשי</option>
+              <option value="חצי שנתי">חצי שנתי</option>
+              <option value="לא מדווח">לא מדווח</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <button type="submit" [disabled]="!contactForm.valid">שלח</button>
+
+</form>
