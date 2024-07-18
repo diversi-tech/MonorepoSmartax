@@ -139,6 +139,9 @@ import { SensitiveDataService } from './services/sensitiveData.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TableController } from './controller/table/table.controller';
 import { TableService } from './services/table.service';
+import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.model';
+import { RepeatableTaskController } from './controller/repeatableTask/repeatableTask.controller';
+import { repeatableTaskService } from './services/repeatableTask.service';
 // import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -198,6 +201,8 @@ import { TableService } from './services/table.service';
     ]),
     MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
     MongooseModule.forFeature([{ name: Timer.name, schema: TimerModel }]),
+    MongooseModule.forFeature([{ name: RepeatableTask.name, schema: RepeatableTaskModel }]),
+    MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '../uploads'),
       serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -262,6 +267,8 @@ import { TableService } from './services/table.service';
     StepFieldController,
     SensitiveDataController,
     TableController,
+    RepeatableTaskController,
+    FrequencyController,
   ],
 
   providers: [
@@ -297,6 +304,7 @@ import { TableService } from './services/table.service';
     PaymentService,
     SensitiveDataService,
     ClientFieldService,
+    repeatableTaskService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
