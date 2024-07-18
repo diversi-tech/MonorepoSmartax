@@ -6,7 +6,7 @@
       <div class="flex align-items-center gap-2">
         <!-- avatar -->
         <span class="font-bold">
-          {{type && type.name }}
+          {{ isNew ? 'יצירת סוג לקוח חדש' : type?.name }}
         </span>
       </div>
     </ng-template>
@@ -16,9 +16,21 @@
       >
         <div class="flex align-items-center gap-2">
           <!-- x -->
-          <p-button (click)="cancel()" label="ביטול" icon="pi pi-times" rounded="true" text="true" />
+          <p-button
+            (click)="closeDialogInner()"
+            label="ביטול"
+            icon="pi pi-times"
+            rounded="true"
+            text="true"
+          />
           <!-- v -->
-          <p-button (click)="save()" label="שמירה" icon="pi pi-check" rounded="true" text="true" />
+          <p-button
+            (click)="save()"
+            label="שמירה"
+            icon="pi pi-check"
+            rounded="true"
+            text="true"
+          />
         </div>
         <!-- <span class="p-text-secondary"> לשמירת השינויים </span> -->
       </div>
@@ -42,12 +54,39 @@
 
         <div style="width: 100%">
           <p-multiSelect
-            [style]="{ flex: '1 1 auto', 'min-width': '100%' }"
+            [style]="{
+              flex: '1 1 auto',
+              'min-width': '100%',
+              'max-width': '20rem'
+            }"
             [options]="tasks"
             [(ngModel)]="selectedTask"
             optionLabel="taskName"
             placeholder="בחר משימות"
-          ></p-multiSelect>
+          >
+            <ng-template
+              style="display: flex"
+              let-user
+              pTemplate="selectedItems"
+            >
+              <div *ngIf="selectedTask.length < 1">
+                {{ selectedTask.length < 1 && 'בחר משימות' }}
+              </div>
+
+              <div
+                class="selected-items-container"
+                style="display: flex; max-width: 20rem"
+              >
+                <div
+                  *ngFor="let t of selectedTask"
+                  class="selected-item"
+                  style="margin-right: 10px"
+                >
+                  ,{{ t.taskName }}
+                </div>
+              </div>
+            </ng-template>
+          </p-multiSelect>
         </div>
       </div>
 

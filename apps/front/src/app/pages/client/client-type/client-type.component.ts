@@ -56,10 +56,12 @@ export class ClientTypeComponent implements OnInit {
   selectedDeleteType: ClientType | null = null;
   newClient: ClientType;
   newC: boolean = false;
+  create : boolean = false;
 
   showDialog(type: ClientType) {
     this.selectedType = type;
     console.log(this.selectedType);
+    this.newC = !type;
     this.displayDialog = true;
   }
 
@@ -139,7 +141,16 @@ export class ClientTypeComponent implements OnInit {
     console.log('Avatar clicked');
     // כאן תוכל להוסיף את הפעולה הרצויה בעת לחיצה על ה-avatar
     this.newC = true;
+    // this.create = true;
     this.displayDialog = true;
+  }
+
+  handleCloseDialog() {
+    this.displayDialog = false;
+  }
+
+  handleDataUpdated() {
+    this.loadAllClientTypes();
   }
   
 }
