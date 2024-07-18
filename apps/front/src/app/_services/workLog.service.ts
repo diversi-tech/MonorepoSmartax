@@ -43,7 +43,10 @@ export class WorkLogService {
     const url = `${this.apiUrl}/export/${month}/${year}`;
     return this.http.get(url, { responseType: 'blob' });
   }
-
+  exportWorkLogsForEmployee(employeeId: string, month: number, year: number): Observable<Blob> {
+    const url = `${this.apiUrl}/export/${employeeId}/${month}/${year}`;
+    return this.http.get(url, { responseType: 'blob' });
+  }
    getWorkLogsByEmployeeId(employeeId: string): Observable<WorkLog[]> {
     const url = `${this.apiUrl}/employee/${employeeId}`;
     return this.http.get<{ data: WorkLog[] }>(url).pipe(

@@ -290,22 +290,46 @@ exportToExcel() {
   const now = new Date();
   const month = now.getMonth() + 1; // getMonth is zero-based
   const year = now.getFullYear();
-  this.workLogService.exportWorkLogs(month, year).subscribe(
+
+  if (this.userRole === 6) {
+    // Export only work logs for the current employee
+    const employeeWorkLogs = this.workLogs.filter(log => log.employeeId === this.employeeId);
+    this.exportWorkLogsToExcel(employeeWorkLogs, year, month);
+  } else {
+    // Export all work logs
+    this.workLogService.exportWorkLogs(month, year).subscribe(
+      (blob: Blob) => {
+        this.downloadExcelBlob(blob, year, month);
+      },
+      (error) => {
+        console.error('Error exporting work logs:', error);
+        this.messageService.add({ severity: 'error', summary: 'Failed to export work logs' });
+      }
+    );
+  }
+}
+
+private exportWorkLogsToExcel(workLogs: WorkLog[], year: number, month: number) {
+  this.workLogService.exportWorkLogsForEmployee(this.employeeId, month, year).subscribe(
     (blob: Blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      document.body.appendChild(a);
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `worklogs_${year}_${month}.xlsx`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      this.downloadExcelBlob(blob, year, month);
     },
     (error) => {
-      console.error('Error exporting work logs:', error);
+      console.error('Error exporting work logs for employee:', error);
       this.messageService.add({ severity: 'error', summary: 'Failed to export work logs' });
     }
   );
+}
+
+private downloadExcelBlob(blob: Blob, year: number, month: number) {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  document.body.appendChild(a);
+  a.style.display = 'none';
+  a.href = url;
+  a.download = `worklogs_${year}_${month}.xlsx`;
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
 }
 }

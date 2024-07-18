@@ -107,4 +107,43 @@ export class WorkLogService {
     const buffer = await workbook.xlsx.writeBuffer();
     return Buffer.from(buffer);
   }
+  async exportWorkLogsForEmployee(employeeId: string, month: number, year: number): Promise<Buffer> {
+    console.log(`Searching work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`);
+
+    const workLogs = await this.workLogModel.find({
+      employeeId,
+      date: {
+        $gte: new Date(year, month - 1, 1),
+        $lte: new Date(year, month, 0),
+      },
+    }).exec();
+
+    console.log(`Found work logs for employeeId: ${employeeId}: ${workLogs.length}`);
+    
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Work Logs');
+
+    worksheet.columns = [
+      { header: 'Employee ID', key: 'employeeId', width: 15 },
+      { header: 'Date', key: 'date', width: 20 },
+      { header: 'Check In', key: 'checkIn', width: 15 },
+      { header: 'Check Out', key: 'checkOut', width: 15 },
+      { header: 'Hours Worked', key: 'hoursWorked', width: 15 },
+    ];
+
+    workLogs.forEach((log) => {
+      log.timeEntries.forEach((entry) => {
+        worksheet.addRow({
+          employeeId: log.employeeId,
+          date: log.date.toLocaleDateString('en-US'),
+          checkIn: entry.checkIn ? entry.checkIn.toLocaleTimeString('en-US') : '',
+          checkOut: entry.checkOut ? entry.checkOut.toLocaleTimeString('en-US') : '',
+          hoursWorked: entry.hoursWorked,
+        });
+      });
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    return Buffer.from(buffer);
+  }
 }
