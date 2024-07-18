@@ -1,0 +1,69 @@
+<p>edit-client-yearlyReport works!</p>
+
+<p-table 
+    [value]="allStepFields" 
+    dataKey="id" 
+    [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:25%">האם הושלמה</th>
+            <th style="width:25%">מספר שלב</th>
+            <th style="width:50%">תאור</th>
+            <th>עריכה</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-step let-editing="allStepFields">
+        <tr>
+            <td [pEditableColumn]="step.isCompleted" pEditableColumnField="isCompleted">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input 
+                            pInputText 
+                            type="checkbox" 
+                            [(ngModel)]="step.isCompleted" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{ step.isCompleted ? 'כן' : 'לא' }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td [pEditableColumn]="step.stepNumber" pEditableColumnField="stepNumber">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input 
+                            pInputText 
+                            type="number" 
+                            [(ngModel)]="step.stepNumber"
+                            value="{{step.stepNumber}}"
+                            [placeholder]="step.stepNumber" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{ step.stepNumber }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td [pEditableColumn]="step.value" pEditableColumnField="value">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input 
+                            pInputText 
+                            type="text" 
+                            [(ngModel)]="step.value"
+                            [value]="step.value"
+                            [placeholder]="step.value"
+                            (blur)="saveStepValue(step)"
+                            style="text-align: right;" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{ step.value }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <button (click)="update(step)">
+                    <i class="pi pi-pencil"></i>
+                </button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

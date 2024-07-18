@@ -27,12 +27,15 @@ export class Task extends Document {
     startDate: Date;
 
     @Prop()
+    deadline: Date;
+
+    @Prop()
     status: Status;
 
     @Prop()
     assignedTo: User[];
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }] })
+    @Prop({ type: [{ type: Tag }] })
     tags: Tag[];
 
     @Prop()
@@ -46,6 +49,9 @@ export class Task extends Document {
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CheckList' }] })
     checkList: CheckList[];
+
+    @Prop()
+    googleId: string;
 }
 
 export const TaskModel = SchemaFactory.createForClass(Task);

@@ -1,8 +1,8 @@
 
-.button-list {
+/* .button-list {
     display: flex;
     flex-direction: column;
-  }
+  } */
 .custom-button {
     margin: 5px;
     padding: 5px 20px; /* Smaller padding */
@@ -13,8 +13,8 @@
     color: white;
     cursor: pointer;
     line-height: 1.2;
-    font-size: 1.2em;
-    height: 35px;
+    font-size: 1em;
+    height: 30px;
 
   }
   
