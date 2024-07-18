@@ -1,8 +1,10 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -37,6 +39,11 @@ import { ClientTypeService } from '../../../_services/clientType.service';
 })
 export class TypeClientCreateComponent implements OnInit, OnChanges {
   @Input() type: ClientType | undefined;
+  @Input() isNew: boolean = false;
+  @Output() closeDialog: EventEmitter<void> = new EventEmitter<void>();
+  @Output() dataUpdated = new EventEmitter<void>();
+
+
   // @Input() create: string | undefined;
   tasks: Task[] = [];
   selectedTask: Task[] = [];
@@ -49,7 +56,7 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     private taskService: TaskService,
     private fieldService: FieldService,
     private r: Router,
-    private clientTypeService:ClientTypeService
+    private clientTypeService: ClientTypeService
   ) {}
 
   updateSelectedType(): void {
@@ -63,14 +70,13 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
           this.selectedField.push(fieldId);
         }
         console.log(this.selectedField);
-        
       }
       if (this.type.tasks) {
         for (const taskId of this.type.tasks) {
           this.taskService.searchTask(taskId).subscribe({
             next: (data) => {
               this.selectedTask.push(data);
-              console.log(this.selectedTask); 
+              console.log(this.selectedTask);
             },
             error: (err) => {
               console.log(err);
@@ -89,12 +95,43 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
   // }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // if (changes['type'] && changes['type'].currentValue) {
+    //   this.updateSelectedType();
+    // }
+
     if (changes['type'] && changes['type'].currentValue) {
-      this.updateSelectedType();
+      this.initializeFormWithType();
+    }
+
+    if (this.isNew) {
+      this.initializeFormForNewType();
     }
 
     // else
     //   this.createType();
+  }
+
+  private initializeFormWithType(): void {
+    if (this.type) {
+      this.value = this.type.name;
+      this.selectedTask = [];
+      this.selectedField = [...this.type.fields];
+
+      if (this.type.tasks) {
+        this.type.tasks.forEach((taskId) => {
+          this.taskService.searchTask(taskId).subscribe({
+            next: (task) => this.selectedTask.push(task),
+            error: (err) => console.error(err),
+          });
+        });
+      }
+    }
+  }
+
+  private initializeFormForNewType(): void {
+    this.value = '';
+    this.selectedTask = [];
+    this.selectedField = [];
   }
   ngOnInit(): void {
     console.log('client type', this.type);
@@ -156,29 +193,50 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     this.r.navigate(['taskSpe/create']);
   }
 
-  save(){
+  save() {
     this.selectedTask.forEach((element) => {
       this.tasksId.push(element._id);
-    })
-    const c : ClientType={
+    });
+    const c: ClientType = {
       name: this.value,
       tasks: this.tasksId,
-      fields: this.selectedField
+      fields: this.selectedField,
+    };
+    
+
+    if (this.isNew) {
+      this.clientTypeService.createClientType(c).subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    } else {
+      const c: ClientType = {
+        name: this.value,
+        tasks: this.tasksId,
+        fields: this.selectedField,
+        _id: this.type._id,
+      };
+      this.clientTypeService.updateClientType(c).subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
-
-    this.clientTypeService.createClientType(c).subscribe({
-      next: (data) => {
-        console.log(data);
-        
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
-
-
+    this.dataUpdated.emit();
+    this.closeDialog.emit();
   }
-  cancel(){
+  // cancel() {
+  //   this.closeDialogInner();
+  // }
 
+  closeDialogInner() {
+    this.closeDialog.emit();
   }
 }

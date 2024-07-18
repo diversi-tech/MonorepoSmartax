@@ -9,7 +9,7 @@ import { ClientType } from '../../app/_models/clientType.module'; // Update the 
 })
 export class ClientTypeService {
 
-  private apiUrl = 'http://localhost:3000/clientTypes'; // Base URL for the ClientType API
+  private apiUrl = 'http://localhost:8080/clientTypes'; // Base URL for the ClientType API
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }) // Define headers for HTTP requests
