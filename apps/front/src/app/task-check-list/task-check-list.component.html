@@ -1,7 +1,26 @@
-<form class="flex align-items-center gap-1" [formGroup]="formGroup">
-  <input formControlName="name" type="text" value="{{checkList.name}}">
+//לבדוק בקומפוננטת משימה איך לעשות binding על משימות מהטבלה, שיודעים על איזה משימה מדובר
 
-  <p-checkbox formControlName="item" value="isDone" inputId="isDone" />
+<!-- <form>
+  <span>{{ checkList.name }}</span>
 
-  <input formControlName="description" for="isDone">
-</form>
+  <div class="p-field" *ngFor="let item of checkList.items; let i = index" style="display: flex; flex-direction: row;">
+    <div class="p-field-checkbox">
+      <p-checkbox binary="true" [(ngModel)]="item.isDone"></p-checkbox>
+    </div>
+
+    <div class="p-field">
+      <p-input type="text" [(ngModel)]="item.description" name="description"></p-input>
+      <p>{{editingItemIndex}}</p>
+    </div>
+
+    <div>
+      <i (click)="editItem(i)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
+      <i (click)="deleteItem(i)" class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
+    </div>
+  </div>
+
+  <div>
+    <p-button type="button" icon="pi pi-plus" label="הוספת פריט" (click)="addItem()"></p-button>
+  </div>
+
+</form> -->

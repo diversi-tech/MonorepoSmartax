@@ -1,0 +1,82 @@
+<!-- ----------------------------- -->
+
+<div class="card" style="max-width: 50rem">
+  <p-panel [toggleable]="true">
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <!-- avatar -->
+        <span class="font-bold">
+          {{type && type.name }}
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <div
+        class="flex flex-wrap align-items-center justify-content-between gap-3"
+      >
+        <div class="flex align-items-center gap-2">
+          <!-- x -->
+          <p-button (click)="cancel()" label="ביטול" icon="pi pi-times" rounded="true" text="true" />
+          <!-- v -->
+          <p-button (click)="save()" label="שמירה" icon="pi pi-check" rounded="true" text="true" />
+        </div>
+        <!-- <span class="p-text-secondary"> לשמירת השינויים </span> -->
+      </div>
+    </ng-template>
+    <div class="m-0">
+      <div class="card flex justify-content-center">
+        <input type="text" pInputText [(ngModel)]="value" />
+      </div>
+      <p>משימות</p>
+      <div style="width: 100%; display: flex; align-items: center">
+        <i
+          (click)="addTask()"
+          class="pi pi-plus"
+          style="
+            font-size: 2rem;
+            margin-right: 10px;
+            cursor: pointer;
+            color: blue;
+          "
+        ></i>
+
+        <div style="width: 100%">
+          <p-multiSelect
+            [style]="{ flex: '1 1 auto', 'min-width': '100%' }"
+            [options]="tasks"
+            [(ngModel)]="selectedTask"
+            optionLabel="taskName"
+            placeholder="בחר משימות"
+          ></p-multiSelect>
+        </div>
+      </div>
+
+      <p-divider />
+      <p>שדות</p>
+
+      <div style="width: 100%; display: flex; align-items: center">
+        <i
+          (click)="addField()"
+          class="pi pi-plus"
+          style="
+            font-size: 2rem;
+            margin-right: 10px;
+            cursor: pointer;
+            color: blue;
+          "
+        ></i>
+
+        <div style="width: 100%">
+          <p-multiSelect
+            [style]="{ flex: '1 1 auto', 'min-width': '100%' }"
+            [options]="fields"
+            [(ngModel)]="selectedField"
+            optionLabel="key"
+            placeholder="בחר שדות"
+          />
+        </div>
+      </div>
+      <p-divider />
+    </div>
+  </p-panel>
+</div>

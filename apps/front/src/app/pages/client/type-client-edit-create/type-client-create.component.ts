@@ -1,0 +1,184 @@
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ClientType } from '../../../_models/clientType.module';
+import { TaskService } from '../../../_services/task.service';
+import { Task } from '../../../_models/task.module';
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
+import { PanelModule } from 'primeng/panel';
+import { FormsModule } from '@angular/forms';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DividerModule } from 'primeng/divider';
+import { Field } from '../../../_models/field.module';
+import { FieldService } from '../../../_services/field.service';
+import { Router } from '@angular/router';
+import { ClientTypeService } from '../../../_services/clientType.service';
+
+@Component({
+  selector: 'app-type-client-create',
+  standalone: true,
+  imports: [
+    CommonModule,
+    PanelModule,
+    AvatarModule,
+    ButtonModule,
+    MultiSelectModule,
+    FormsModule,
+    DividerModule,
+  ],
+  templateUrl: './type-client-create.component.html',
+  styleUrl: './type-client-create.component.css',
+})
+export class TypeClientCreateComponent implements OnInit, OnChanges {
+  @Input() type: ClientType | undefined;
+  // @Input() create: string | undefined;
+  tasks: Task[] = [];
+  selectedTask: Task[] = [];
+  selectedField: Field[] = [];
+  fields: Field[] = [];
+  value: string;
+  tasksId: string[] = [];
+
+  constructor(
+    private taskService: TaskService,
+    private fieldService: FieldService,
+    private r: Router,
+    private clientTypeService:ClientTypeService
+  ) {}
+
+  updateSelectedType(): void {
+    if (this.type) {
+      this.value = this.type.name;
+      this.selectedField = []; // Make sure to create a new array
+      this.selectedTask = []; // Clear the selectedTask array
+
+      if (this.type.fields) {
+        for (const fieldId of this.type.fields) {
+          this.selectedField.push(fieldId);
+        }
+        console.log(this.selectedField);
+        
+      }
+      if (this.type.tasks) {
+        for (const taskId of this.type.tasks) {
+          this.taskService.searchTask(taskId).subscribe({
+            next: (data) => {
+              this.selectedTask.push(data);
+              console.log(this.selectedTask); 
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          });
+        }
+        console.log(this.selectedTask);
+      }
+    }
+  }
+
+  // createType() {
+  //   this.value = '';
+  //   this.selectedField = []; // Make sure to create a new array
+  //   this.selectedTask = [];
+  // }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['type'] && changes['type'].currentValue) {
+      this.updateSelectedType();
+    }
+
+    // else
+    //   this.createType();
+  }
+  ngOnInit(): void {
+    console.log('client type', this.type);
+
+    // if (this.type) {
+    //   this.value = this.type.name;
+    //   // this.selectedTask=this.type.tasks
+    //   // this.selectedField=this.type.fields
+    //   this.type.fields.forEach((element) => {
+    //     this.selectedField.push(element);
+    //   });
+    //   console.log(this.type.fields);
+    //   console.log(this.type.tasks);
+    //   if (this.type.tasks) {
+    //     for (const taskId of this.type.tasks) {
+    //       this.taskService.searchTask(taskId).subscribe({
+    //         next: (data) => {
+    //           console.log(data);
+    //           this.selectedTask.push(data);
+    //           this.selectedTask = this.selectedTask;
+    //         },
+    //         error: (err) => {
+    //           console.log(err);
+    //         },
+    //       });
+    //     }
+    //   }
+    // }
+    // else
+    //   this.createType();
+
+    this.taskService.getAllTasks().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.tasks = data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+    //
+    this.fieldService.getAllField().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.fields = data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+    //
+  }
+
+  addTask() {
+    this.r.navigate(['taskSpe/create']);
+  }
+
+  addField() {
+    this.r.navigate(['taskSpe/create']);
+  }
+
+  save(){
+    this.selectedTask.forEach((element) => {
+      this.tasksId.push(element._id);
+    })
+    const c : ClientType={
+      name: this.value,
+      tasks: this.tasksId,
+      fields: this.selectedField
+    }
+
+    this.clientTypeService.createClientType(c).subscribe({
+      next: (data) => {
+        console.log(data);
+        
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+
+
+  }
+  cancel(){
+
+  }
+}
