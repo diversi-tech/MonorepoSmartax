@@ -46,13 +46,13 @@ export class UserService {
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const { userName, email, passwordHash, role,favoritesClient } = updateUserDto;
+    const { userName, email, role,favoritesClient } = updateUserDto;
 
     const updatedUser = await this.userModel.findByIdAndUpdate(
       id,
-      { userName, email, passwordHash, role, favoritesClient: favoritesClient },
+      { userName, email, role, favoritesClient: favoritesClient },
       { new: true }
-    ).exec();
+    ).select("-passwordHash").exec();
 
     if (!updatedUser) {
       throw new ValidationException('User not found');
