@@ -18,22 +18,75 @@
       </div>
     </div>
     <br />
-    <!-- Assignees -->
+    <!--  -->
+    <!-- Select User -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
-      <p style="margin-top: 2%; margin-right: 5%">
-        <span class="pi pi-user"></span>
-        משוייך ל
+      <p style="margin-top: 2%">
+        <span class="pi pi-user-plus"></span>
+        בחר משתמשים
       </p>
+      <div style="margin-left: 60px">
+        <p-inputGroup
+          class="w-full"
+          [style]="{ height: '20px', marginLeft: '20px' }"
+        >
+        </p-inputGroup>
+      </div>
+      <ng-template let-user pTemplate="item">
+        <div>
+          <app-icon-profile [userName]="user.userName"></app-icon-profile>
+          <span>{{ user.userName }}</span>
+        </div>
+      </ng-template>
+
+      <!-- pop -->
+      <p-multiSelect
+        [options]="users"
+        [(ngModel)]="selectedUsers"
+        required
+        name="selectedUsers"
+        placeholder="Select Users"
+        defaultLabel="Select Users"
+        [style]="{ height: '50px', width: '15rem' }"
+      >
+        <ng-template let-user pTemplate="item">
+          <div class="avatar-item">
+            <app-icon-profile
+              class="avatar"
+              [userName]="user.userName"
+            ></app-icon-profile>
+            <span>{{ user.userName }}</span>
+          </div>
+        </ng-template>
+        <ng-template style="display: flex" let-user pTemplate="selectedItems">
+          <div class="selected-items-container" style="display: flex">
+            <div
+              *ngFor="let selectedUser of selectedUsers"
+              class="selected-item"
+              style="margin-right: 10px"
+            >
+              <app-icon-profile
+                class="avatar"
+                [userName]="selectedUser.userName"
+              ></app-icon-profile>
+            </div>
+          </div>
+        </ng-template>
+      </p-multiSelect>
     </div>
-    <div style="margin-left: 60px;width: 32%;">
-      <!-- <p-inputGroup class="w-full" [style]="{ height: '20px' }">
-          <p-inputGroupAddon *ngIf="!selectedUser"
-            ><span
-              (click)="showAssignees = !showAssignees"
-              class="pi pi-user-plus"
-            ></span>
-          </p-inputGroupAddon>
-        </p-inputGroup> 
+    <!--  -->
+    <!-- Assignees -->
+    <!-- <div>
+      <div
+        style="display: flex; align-items: center; height: 50px"
+        id="divHover"
+      >
+        <p style="margin-top: 2%; margin-right: 5%">
+          <span class="pi pi-user"></span>
+          משוייך ל
+        </p>
+      </div>
+      <div style="margin-left: 60px; width: 32%">
         <p-multiSelect
           [options]="users"
           [(ngModel)]="selectedUsers"
@@ -52,7 +105,7 @@
             </div>
           </ng-template>
           <ng-template let-user pTemplate="selectedItems">
-            <div class="selected-items-container" style="display: flex;">
+            <div class="selected-items-container" style="display: flex">
               <div
                 *ngFor="let selectedUser of selectedUsers"
                 class="selected-item"
@@ -74,24 +127,24 @@
           [email]="selectedUser.email"
         ></app-icon-profile>
       </div>
-    </div>
-     pop -->
-      <form [formGroup]="formGroupUser" *ngIf="showAssignees">
-        <p-listbox [options]="users" [filter]="true" formControlName="selectedUser" [(ngModel)]="selectedUser"
-          optionLabel="userName" [style]="{ width: '15rem' }" [listStyle]="{ 'max-height': '400px' }"
-          (onChange)="showAssignees = !showAssignees">
-          <ng-template let-user pTemplate="item">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <app-icon-profile class="avatar" [userName]="user.userName" [email]="user.email"></app-icon-profile>
-                <span style="margin-left: 5%;">{{ user.userName }}</span>
+    </div> -->
+
+    <!-- <form [formGroup]="formGroupUser" *ngIf="showAssignees">
+          <p-listbox [options]="users" [filter]="true" formControlName="selectedUser" [(ngModel)]="selectedUser"
+            optionLabel="userName" [style]="{ width: '15rem' }" [listStyle]="{ 'max-height': '400px' }"
+            (onChange)="showAssignees = !showAssignees">
+            <ng-template let-user pTemplate="item">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <app-icon-profile class="avatar" [userName]="user.userName" [email]="user.email"></app-icon-profile>
+                  <span style="margin-left: 5%;">{{ user.userName }}</span>
+                </div>
               </div>
-            </div>
-          </ng-template>
-        </p-listbox>
-      </form>
-      <br />
-    </div>
+            </ng-template>
+          </p-listbox>
+        </form> -->
+    <br />
+    <!-- </div> -->
 
     <!-- Status  -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
@@ -101,33 +154,58 @@
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
-          <p-button [style]="{ height: '20px' }" label="{{ selectStatus ? selectStatus.name : 'NOT_STARTED' }}"
-            [outlined]="true" severity="secondary" (click)="showStatus = !showStatus"></p-button>
-          <p-inputGroupAddon><i class="pi pi-angle-right"></i></p-inputGroupAddon>
+          <p-button
+            [style]="{ height: '20px' }"
+            label="{{ selectStatus ? selectStatus.name : 'NOT_STARTED' }}"
+            [outlined]="true"
+            severity="secondary"
+            (click)="showStatus = !showStatus"
+          ></p-button>
+          <p-inputGroupAddon
+            ><i class="pi pi-angle-right"></i
+          ></p-inputGroupAddon>
           <p-inputGroupAddon>
             <div class="card flex justify-content-center">
-              <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary" (onChange)="changeStatus()"
-                [ngStyle]="{ color: 'green' }"></p-checkbox>
+              <p-checkbox
+                [(ngModel)]="checked"
+                [binary]="true"
+                inputId="binary"
+                (onChange)="changeStatus()"
+                [ngStyle]="{ color: 'green' }"
+              ></p-checkbox>
             </div>
           </p-inputGroupAddon>
           <p style="height: 20px">
-            {{
-            dueDate && dueDate | date :'yyyy/MM/dd'
-            }}
+            {{ dueDate && dueDate | date : 'yyyy/MM/dd' }}
           </p>
         </p-inputGroup>
       </div>
     </div>
     <!-- pop -->
     <form [formGroup]="formGroupStatus" *ngIf="showStatus">
-      <br><br>
+      <br /><br />
       <div style="width: 170px" class="card flex justify-content-center">
         <p-menu [model]="listStatus" styleClass="w-full md:w-5rem">
           <ng-template pTemplate="item" let-item let-i>
-            <div pRipple class="flex align-items-center p-menuitem-link" (click)="showStatus = !showStatus">
-              <span [style]="{ color: item.color }" class="pi pi-stop-circle"></span>
-              <span (click)="status(item)" class="ml-2"
-                [style]="{ color: 'gray', 'font-size': '12px','margin-left': '5%' }">{{ item.name }}</span>
+            <div
+              pRipple
+              class="flex align-items-center p-menuitem-link"
+              (click)="showStatus = !showStatus"
+            >
+              <span
+                [style]="{ color: item.color }"
+                class="pi pi-stop-circle"
+              ></span>
+              <span
+                (click)="status(item)"
+                class="ml-2"
+                [style]="{
+                  color: 'gray',
+                  'font-size': '12px',
+                  'margin-left': '5%'
+                }"
+                >{{ item.name }}</span
+              >
               <!-- <span
                 [class]="i%2 != 0 ? 'pi pi-check-circle' : 'pi pi-check'"
                 [style]="{ 'margin-left': '40%' }"
@@ -146,22 +224,41 @@
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full" [style]="{ height: '20px' }">
-          <p-inputGroupAddon><span (click)="showPriority = !showPriority" class="pi pi-flag"
-              [style]="{ color: selectedPriority && selectedPriority.color }"></span>
+          <p-inputGroupAddon
+            ><span
+              (click)="showPriority = !showPriority"
+              class="pi pi-flag"
+              [style]="{ color: selectedPriority && selectedPriority.color }"
+            ></span>
           </p-inputGroupAddon>
         </p-inputGroup>
       </div>
     </div>
     <!-- pop -->
     <form [formGroup]="formGroupStatus" *ngIf="showPriority">
-      <br><br>
+      <br /><br />
       <div style="width: 170px" class="card flex justify-content-center">
         <p-menu [model]="listPriority" styleClass="w-full md:w-5rem">
           <ng-template pTemplate="item" let-item let-i>
-            <div pRipple class="flex align-items-center p-menuitem-link" (click)="showPriority = !showPriority">
-              <span [style]="{ color: item.color }" class="pi pi-stop-circle"></span>
-              <span (click)="priority(item)" class="ml-2"
-                [style]="{ color: 'gray', 'font-size': '12px','margin-left': '5%'}">{{ item.name }}</span>
+            <div
+              pRipple
+              class="flex align-items-center p-menuitem-link"
+              (click)="showPriority = !showPriority"
+            >
+              <span
+                [style]="{ color: item.color }"
+                class="pi pi-stop-circle"
+              ></span>
+              <span
+                (click)="priority(item)"
+                class="ml-2"
+                [style]="{
+                  color: 'gray',
+                  'font-size': '12px',
+                  'margin-left': '5%'
+                }"
+                >{{ item.name }}</span
+              >
             </div>
           </ng-template>
         </p-menu>
@@ -177,18 +274,34 @@
       <!-- buttons -->
       <div style="margin-left: 100px">
         <p-inputGroup class="w-full md:w-30rem flex-container">
-          <p-button (click)="showTagsList = !showTagsList"
-            [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }" icon="pi pi-tag" [outlined]="true"
-            severity="secondary">
+          <p-button
+            (click)="showTagsList = !showTagsList"
+            [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
+            icon="pi pi-tag"
+            [outlined]="true"
+            severity="secondary"
+          >
           </p-button>
-          <p-button (click)="showTags = !showTags" [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
-            label="new" [outlined]="true" severity="secondary"></p-button>
+          <p-button
+            (click)="showTags = !showTags"
+            [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
+            label="new"
+            [outlined]="true"
+            severity="secondary"
+          ></p-button>
           <!--  -->
-          <button *ngFor="let button of buttons; let i = index"
-            [ngStyle]="{ backgroundColor: button.color, color: 'white' }" class="custom-button"
-            (click)="removeButton(i)">
+          <button
+            *ngFor="let button of buttons; let i = index"
+            [ngStyle]="{ backgroundColor: button.color, color: 'white' }"
+            class="custom-button"
+            (click)="removeButton(i)"
+          >
             {{ button.text }}
-            <span (click)="buttons.splice(i, 1)" [ngClass]="{ bounce: i < buttons.length - 1 }" class="delete-button">
+            <span
+              (click)="buttons.splice(i, 1)"
+              [ngClass]="{ bounce: i < buttons.length - 1 }"
+              class="delete-button"
+            >
               x
             </span>
           </button>
@@ -198,17 +311,32 @@
     <br /><br />
     <!-- pop -->
     <form [formGroup]="formGroupUser" *ngIf="showTagsList">
-      <p-listbox [options]="tags!" [filter]="true" formControlName="selectedUser" optionLabel="text"
-        [style]="{ width: '15rem' }" [listStyle]="{ 'max-height': '400px' }" (onChange)="showTags = !showTags">
+      <p-listbox
+        [options]="tags!"
+        [filter]="true"
+        formControlName="selectedUser"
+        optionLabel="text"
+        [style]="{ width: '15rem' }"
+        [listStyle]="{ 'max-height': '400px' }"
+        (onChange)="showTagsList =!showTagsList"
+      >
         <ng-template let-user pTemplate="item">
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-              <span [style]="{ color: user.color }" class="pi pi-stop-circle"></span>
-              <span (click)="tag(user)" class="ml-2" [style]="{
+              <span
+                [style]="{ color: user.color }"
+                class="pi pi-stop-circle"
+              ></span>
+              <span
+                (click)="tag(user)"
+                class="ml-2"
+                [style]="{
                   color: 'gray',
                   'font-size': '12px',
                   'margin-left': '5%'
-                }">{{ user.text }}</span>
+                }"
+                >{{ user.text }}</span
+              >
               <span style="margin-left: 5%">{{ user.userName }}</span>
             </div>
           </div>
@@ -218,16 +346,32 @@
     <!--  -->
     <div style="width: 40%" *ngIf="showTags">
       <p>בחירת צבע:</p>
-      <p-colorPicker [(ngModel)]="selectedColor" [style]="{ width: '250px' }" [inline]="true"></p-colorPicker>
+      <p-colorPicker
+        [(ngModel)]="selectedColor"
+        [style]="{ width: '250px' }"
+        [inline]="true"
+      ></p-colorPicker>
       <p-inputGroup>
-        <p-inputGroupAddon>טקסט</p-inputGroupAddon>
-        <input [style]="{ width: '10%' }" type="text" pInputText placeholder="Example" [(ngModel)]="buttonText" />
-        <p-inputGroupAddon>
+        <!-- <p-inputGroupAddon>טקסט</p-inputGroupAddon> -->
+        <!-- <input
+          [style]="{ width: '10%' }"
+          type="text"
+          pInputText
+          placeholder="Example"
+          [(ngModel)]="buttonText"
+        /> -->
+        <!-- <p-inputGroupAddon>
           <span id="divHover" (click)="createTag()" class="pi pi-check"></span>
-        </p-inputGroupAddon>
+        </p-inputGroupAddon> -->
         <div style="width: 65%">
-          <input type="text" [style]="{ width: '100%', height: '20px' }" pInputText placeholder="Example"
-            (keyup.enter)="createTag()" [(ngModel)]="buttonText" />
+          <input
+            type="text"
+            [style]="{ width: '100%', height: '20px' }"
+            pInputText
+            placeholder="Example"
+            (keyup.enter)="createTag()"
+            [(ngModel)]="buttonText"
+          />
         </div>
       </p-inputGroup>
     </div>
@@ -239,9 +383,16 @@
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
-          <p-calendar [style]="{ height: '20px', width: '250px' }" [iconDisplay]="'input'" [showIcon]="true"
-            inputId="icondisplay" [(ngModel)]="rangeDates" selectionMode="range" (ngModelChange)="onDateSelect($event)"
-            dateFormat="yy/mm/dd" />
+          <p-calendar
+            [style]="{ height: '20px', width: '250px' }"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            inputId="icondisplay"
+            [(ngModel)]="rangeDates"
+            selectionMode="range"
+            (ngModelChange)="onDateSelect($event)"
+            dateFormat="yy/mm/dd"
+          />
         </p-inputGroup>
       </div>
     </div>
@@ -254,10 +405,17 @@
       </p>
       <div style="margin-left: 85px; width: 32%">
         <p-inputGroup class="w-full" [style]="{ height: '20px' }">
-          <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"><span
-              (click)="showClients = !showClients" class="pi pi-user"></span></p-inputGroupAddon>
+          <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"
+            ><span
+              (click)="showClients = !showClients"
+              class="pi pi-user"
+            ></span
+          ></p-inputGroupAddon>
           <div (click)="showClients = !showClients">
-            <app-icon-profile *ngIf="selectedClient" [userName]="selectedclient.firstName"></app-icon-profile>
+            <app-icon-profile
+              *ngIf="selectedClient"
+              [userName]="selectedClient.firstName && selectedclient.firstName"
+            ></app-icon-profile>
           </div>
         </p-inputGroup>
         <!-- <p-multiSelect
@@ -297,15 +455,27 @@
     </div>
     <!-- pop -->
     <form [formGroup]="formGroupClient" *ngIf="showClients">
-      <br><br>
-      <p-listbox [options]="clients" [filter]="true" formControlName="selectedClient" [(ngModel)]="selectedClient"
-        optionLabel="name" [style]="{ width: '15rem' }" [listStyle]="{ 'max-height': '400px' }"
-        (onChange)="showClients = !showClients">
+      <br /><br />
+      <p-listbox
+        [options]="clients"
+        [filter]="true"
+        formControlName="selectedClient"
+        [(ngModel)]="selectedClient"
+        optionLabel="name"
+        [style]="{ width: '15rem' }"
+        [listStyle]="{ 'max-height': '400px' }"
+        (onChange)="showClients = !showClients"
+      >
         <ng-template let-client pTemplate="item">
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-              <app-icon-profile [userName]="client.firstName" [email]="client.email"></app-icon-profile>
-              <span style="margin-left: 5%;">{{ client.firstName && client.firstName }}</span>
+              <app-icon-profile
+                [userName]="client.firstName"
+                [email]="client.email"
+              ></app-icon-profile>
+              <span style="margin-left: 5%">{{
+                client.firstName && client.firstName
+              }}</span>
             </div>
           </div>
         </ng-template>
@@ -320,37 +490,55 @@
       </p>
       <div style="margin-left: 50px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
-          <p-inputGroupAddon><span (click)="showDescription = !showDescription"
-              class="pi pi-pencil"></span></p-inputGroupAddon>
+          <p-inputGroupAddon
+            ><span
+              (click)="showDescription = !showDescription"
+              class="pi pi-pencil"
+            ></span
+          ></p-inputGroupAddon>
         </p-inputGroup>
       </div>
     </div>
     <br /><br />
     <!-- pop -->
-    <app-editor *ngIf="showDescription && !currentTask" [initialContent]="htmlContent"
-      (contentChange)="onContentChange($event)"></app-editor>
-    <app-editor *ngIf="showDescription && currentTask" [initialContent]="currentTask!.description"
-      (contentChange)="onContentChange($event)"></app-editor>
+    <app-editor
+      *ngIf="showDescription && !currentTask"
+      [initialContent]="htmlContent"
+      (contentChange)="onContentChange($event)"
+    ></app-editor>
+    <app-editor
+      *ngIf="showDescription && currentTask"
+      [initialContent]="currentTask!.description"
+      (contentChange)="onContentChange($event)"
+    ></app-editor>
     <!-- upload doc -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-file-o"></span>
         העלאת מסמכים
       </p>
-      <div>
-        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
-          <p-inputGroupAddon><span (click)="showDoc = !showDoc" class="pi pi-file-plus"></span>
+      <div style="margin-right: 10%">
+        <p-inputGroup
+          class="w-full"
+          [style]="{ height: '20px', marginRight: '15%' }"
+        >
+          <p-inputGroupAddon style="margin-right: 10%"
+            ><span (click)="showDoc = !showDoc" class="pi pi-file-plus"></span>
           </p-inputGroupAddon>
         </p-inputGroup>
       </div>
     </div>
     <!-- array id -->
-    <app-upload-doc-task *ngIf="showDoc" [idClient]="selectedClients[0] && selectedClients[0]._id"
-      (responseReceived)="handleResponse($event)">
+    <app-upload-doc-task
+      *ngIf="showDoc"
+      [idClient]="selectedClients[0] && selectedClients[0]._id"
+      (responseReceived)="handleResponse($event)"
+    >
     </app-upload-doc-task>
     <!-- drive image -->
     <div *ngFor="let image of images">
-      <a [href]="image" download="{{ image }}">{{ image }}
+      <a [href]="image" download="{{ image }}"
+        >{{ image }}
         <!-- <button>Download</button> -->
       </a>
     </div>
@@ -400,14 +588,25 @@
 </div>
 <!--  -->
 
-<p-dialog header="Google Calendar" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-  <span class="p-text-secondary block mb-5">Do you add the task to google calendar?</span>
-  <br>
+<p-dialog
+  header="Google Calendar"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <span class="p-text-secondary block mb-5"
+    >Do you add the task to google calendar?</span
+  >
+  <br />
   <div class="flex justify-content-end gap-2">
-    <p-button icon="pi pi-times" label="No" severity="secondary" (click)="cancelDialog()" />
+    <p-button
+      icon="pi pi-times"
+      label="No"
+      severity="secondary"
+      (click)="cancelDialog()"
+    />
     <p-button icon="pi pi-check" label="Yes" (click)="createGoogleTask()" />
   </div>
 </p-dialog>
-
 
 <!--  -->

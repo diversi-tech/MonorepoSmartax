@@ -23,7 +23,7 @@ export class FieldController {
         return await this.fieldservice.getALLField();
     }
 
-    @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
+    @ApiBody({ schema: { type: 'string', properties: { id: { type: 'string' } } } })
     @Post('searchField')
     async searchField(@Body(new ValidationPipe()) body: {"id": string}): Promise<Field> {
         return await this.fieldservice.searchField(body.id);
@@ -34,7 +34,7 @@ export class FieldController {
         return await this.fieldservice.updateField(updateFieldDto);
     }
 
-    @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
+    @ApiBody({ schema: { type: 'string', properties: { id: { type: 'string' } } } })
     @Delete()
     async deleteField(@Body(new ValidationPipe()) id: {"id": string}): Promise<boolean> {
         return await this.fieldservice.deleteField(id.id);
