@@ -73,7 +73,7 @@ export class CreateClientDto {
     @MaxLength(300)
     comments: string;
 
-    @ApiProperty({ example: '<user_id>' })
+    @ApiProperty({ example: '<user_id>'})
     lastUserUpdate: User;
 
     @ApiProperty({ example: ['<user_id_1>', '<user_id_2>'] })
@@ -142,7 +142,7 @@ export class UpdateClientDto {
     @ApiProperty({ example: '123456789', required: false })
     @IsOptional()
     @IsString()
-    id?: string;
+    _id?: string;
 
     @ApiProperty({ example: 'ACME Corporation' })
     @IsString()

@@ -1,0 +1,17 @@
+  <p-button (onClick)="showDialog()" label="ייבא מאקסל" />
+  <p-dialog
+    header="ייבוא לקוחות"
+    [(visible)]="visible"
+    [style]="{ width: '25rem' }"  >
+         <div class="flex align-items-center gap-3 mb-5">
+           <p-button class="flex-auto" label="הורד קובץ" (onClick)="downloadTemplate()"/>
+        <p-fileUpload class="flex-auto"
+          mode="basic"
+          customUpload="true"
+          chooseLabel="ייבא קובץ"
+          chooseIcon="pi pi-upload"
+          accept=".xls,.xlsx"
+          (uploadHandler)="onUpload($event)"
+          />
+      </div> 
+  </p-dialog>

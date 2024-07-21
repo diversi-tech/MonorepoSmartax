@@ -134,6 +134,7 @@ import {
 } from './Models/sensitiveData.model';
 import { SensitiveDataService } from './services/sensitiveData.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { importClientsController } from './controller/importClients/importClients.controller';
 // import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -256,6 +257,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     YearlyReportController,
     StepFieldController,
     SensitiveDataController,
+    importClientsController
   ],
 
   providers: [
