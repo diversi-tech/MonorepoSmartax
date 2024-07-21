@@ -10,5 +10,8 @@ export const icons = {
     file: 'pi-file',
     profile: 'pi-id-card',
     search: 'pi pi-search',
-    comment: 'pi-comments'
+    comment: 'pi-comments',
+    communications: 'pi pi-phone',
+    clock: 'pi pi-clock',
+    favorite: 'pi pi-star',
   };

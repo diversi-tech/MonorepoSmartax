@@ -103,6 +103,8 @@ export class CalendarComponent {
         this.loadTaskComponent('create');
       
       this.showDialog();
+      this.add = false
+
   }
 
   // בעת לחיצה על אירוע
@@ -132,7 +134,6 @@ export class CalendarComponent {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TaskComponent);
       const componentRef = this.modalContent.createComponent(componentFactory);
       componentRef.instance.taskId = taskId;
-      // componentRef.instance.selectedDate = this.currentDate;
       componentRef.instance.closeModal.subscribe(() => {
         this.hideDialog();
       });

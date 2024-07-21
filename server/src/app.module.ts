@@ -8,7 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TasksController } from './controller/tasks/tasks.controller';
 import { CommunicationsController } from './controller/communications/communications.controller';
 import { BillingController } from './controller/billing/billing.controller';
-import { MongooseModule } from '@nestjs/mongoose';
+import { getConnectionToken, MongooseModule } from '@nestjs/mongoose';
 import { UserService } from './services/user.service';
 import { User, UserModel } from './Models/user.model';
 import { GoogleDriveController } from './controller/google-drive/google-drive.controller';
@@ -26,7 +26,10 @@ import { ClientService } from './services/client.service';
 import { Docs, DocumentsModel } from './Models/doc.model';
 import { BillingsService } from './services/billing.service';
 import { Billing, BillingModel } from './Models/billing.model';
-import { BillingStatus, BillingStatusModel } from './Models/billingStatus.model';
+import {
+  BillingStatus,
+  BillingStatusModel,
+} from './Models/billingStatus.model';
 import { BillingStatusService } from './services/billingStatus';
 import { BillingStatusController } from './controller/billingStatus/billingStatus.controller';
 //add
@@ -39,7 +42,7 @@ import { hashPasswordService } from './services/hash-password';
 import { AuthController } from './controller/auth/auth.controller';
 import { RoleService } from './services/role.service';
 import { RoleController } from './controller/role/role.controller';
-import { Role ,RoleModel } from './Models/role.modle';
+import { Role, RoleModel } from './Models/role.modle';
 import { ClientTypeController } from './controller/clientTypes/clientTypes.controller';
 import { ClientType, ClientTypeModel } from './Models/clientType.model';
 import { ClientTypeService } from './services/clientType.service';
@@ -54,55 +57,209 @@ import { TagController } from './controller/tag/tag.controller';
 import { TagService } from './services/tag.service';
 import express from 'express';
 import * as path from 'path';
- import { ServeStaticModule } from '@nestjs/serve-static';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { Status, StatusModel } from './Models/status.model';
 import { Priority, PriorityModel } from './Models/priority.model';
 import { StatusController } from './controller/status/status.controller';
 import { StatusService } from './services/status.service';
 import { PriorityService } from './services/priority.service';
 import { CommunicationArchiveController } from './controller/communicationArchive/communicationArchive.controler';
-import { CommunicationArchive, communicationArchiveModel } from './Models/communicationArchive.model';
+import {
+  CommunicationArchive,
+  communicationArchiveModel,
+} from './Models/communicationArchive.model';
 import { CommunicationArchiveService } from './services/communicationArchive.service';
 import { DocTypeController } from './controller/docTypes/docTypes.controller';
 import { DocTypeService } from './services/docTypes.service';
 import { DocType, docTypeModel } from './Models/docType.model';
 import { CallTopicController } from './controller/callTopicSchema/callTopicSchema.controller';
 import { CallTopicService } from './services/callTopicSchema.service';
-import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.model';
+import {
+  callTopicSchema,
+  callTopicSchemaModel,
+} from './Models/callTopicSchema.model';
+import { FieldService } from './services/field.service';
+import { FieldController } from './controller/field/field.controller';
+import { Field, FieldModell } from './Models/field.model';
+import { Timer, TimerModel } from './Models/timer';
+import { TimerController } from './controller/timer/timer.controller';
+import { TimerService } from './services/timer';
+import { WorkLogController } from './controller/workLog/workLog.controller';
+import { WorkLogService } from './services/workLog.service';
+import { WorkLogModel, WorkLog } from './Models/workLog.model';
 
+import { FrequencyController } from './controller/frequency/frequency.controller';
+import { Frequency, frequencyModel } from './Models/frequency.model';
+import { FrequencyService } from './services/frequency.service';
+import { PaymentMethodController } from './controller/paymentMethod/paymentMethod.controller';
+import { PaymentMethodService } from './services/PaymentMethod.service';
+import {
+  PaymentMethod,
+  PaymentMethodModel,
+} from './Models/paymentMethod.model';
+import { PaymentDetailsController } from './controller/paymentDetails/paymentDetails.controller';
+import { PaymentDetailsService } from './services/paymentDetails.service';
+import {
+  PaymentDetails,
+  PaymentDetailsModel,
+} from './Models/paymentDetails.model';
+import { PaymentService } from './services/payment.service';
+import { PaymentController } from './controller/payment/payment.controller';
+import { Payment, PaymentModel } from './Models/payment.model';
+import { StepFieldController } from './controller/yearlyReport/stepField.controller';
+import { YearlyReportController } from './controller/yearlyReport/yearlyReport.controller';
+import { StepFieldService } from './services/stepField.service';
+import { YearlyReportService } from './services/yearlyReport.service';
+import { StepField, stepFieldModel } from './Models/stepField.model';
+import {
+  YearlyReport,
+  YearlyReportstModel,
+} from './Models/yearlyReports.model';
+import { Year, YearModel } from './Models/year.model';
+import { YearService } from './services/year.service';
+import { YearController } from './controller/year/year.controller';
+import {
+  CheckListItem,
+  CheckListItemModel,
+} from './Models/checkListItem.model';
+import { CheckList, CheckListModel } from './Models/checkList.model';
+import { CheckListService } from './services/checkList.service';
+import { CheckListItemService } from './services/checkListItem.service';
+import { CheckListItemController } from './controller/checkListItem/checkListItem.controller';
+import { CheckListController } from './controller/checkList/checkList.controller';
+import { SensitiveDataController } from './controller/sensitiveData/sensitiveData.controller';
+import {
+  SensitiveData,
+  SensitiveDataModel,
+} from './Models/sensitiveData.model';
+import { SensitiveDataService } from './services/sensitiveData.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+// import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+// import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+// export function HttpLoaderFactory(http: HttpClient) {
+//   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+// }
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
 
 @Module({
-//add
-  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
+  imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
+    MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
+    MongooseModule.forFeature([
+      { name: ClientType.name, schema: ClientTypeModel },
+    ]),
+    MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
+    MongooseModule.forFeature([
+      { name: SensitiveData.name, schema: SensitiveDataModel },
+    ]),
 
-  MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
- MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel }]),
-  MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
-  MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
-  MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel }]),
-  MongooseModule.forFeature([{ name: Communication.name, schema: communicationModel }]),
-  MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
-  MongooseModule.forFeature([{ name: Docs.name, schema: DocumentsModel }]),
-  MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
-  MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
-  MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
- MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
- MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
- MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
- MongooseModule.forFeature([{ name: callTopicSchema.name, schema:callTopicSchemaModel }]),
- ServeStaticModule.forRoot({
-   rootPath: path.join(__dirname, '../uploads'),
-   serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
- }),
- MongooseModule.forFeature([{name: CommunicationArchive.name, schema:communicationArchiveModel}]),
-  JwtModule
+    MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
+    MongooseModule.forFeature([
+      { name: BillingStatus.name, schema: BillingStatusModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: Communication.name, schema: communicationModel },
+    ]),
+    MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
+    MongooseModule.forFeature([{ name: Docs.name, schema: DocumentsModel }]),
+    MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
+    MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
+    MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
+    MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+    MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+    MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+    MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel }]),
+    MongooseModule.forFeature([
+      { name: callTopicSchema.name, schema: callTopicSchemaModel },
+    ]),
+    MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+    MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+
+    MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+    MongooseModule.forFeature([
+      { name: callTopicSchema.name, schema: callTopicSchemaModel },
+    ]),
+
+    MongooseModule.forFeature([
+      { name: Frequency.name, schema: frequencyModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: PaymentMethod.name, schema: PaymentMethodModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: PaymentDetails.name, schema: PaymentDetailsModel },
+    ]),
+    MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
+    MongooseModule.forFeature([{ name: Timer.name, schema: TimerModel }]),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '../uploads'),
+      serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+    }),
+    MongooseModule.forFeature([
+      { name: CommunicationArchive.name, schema: communicationArchiveModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: StepField.name, schema: stepFieldModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: CommunicationArchive.name, schema: communicationArchiveModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: YearlyReport.name, schema: YearlyReportstModel },
+    ]),
+    MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]),
+    MongooseModule.forFeature([
+      { name: CheckListItem.name, schema: CheckListItemModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: CheckList.name, schema: CheckListModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: CommunicationArchive.name, schema: communicationArchiveModel },
+    ]),
+    JwtModule,
   ],
-  controllers: [AppController,ClientTypeController,CallTopicController, UserController,PriorityController, ClientController, TasksController, CommunicationsController, BillingController, BillingStatusController,MailController, GoogleDriveController, AuthController,RoleController,TasksController,TagController, MeetController,StatusController,DocTypeController],  
-
+  controllers: [
+    WorkLogController,
+    AppController,
+    CheckListItemController,
+    CheckListController,
+    FieldController,
+    ClientTypeController,
+    CallTopicController,
+    UserController,
+    PriorityController,
+    ClientController,
+    TasksController,
+    CommunicationsController,
+    BillingController,
+    BillingStatusController,
+    MailController,
+    GoogleDriveController,
+    AuthController,
+    RoleController,
+    TasksController,
+    TagController,
+    MeetController,
+    StatusController,
+    DocTypeController,
+    FrequencyController,
+    PaymentMethodController,
+    PaymentDetailsController,
+    PaymentController,
+    TimerController,
+    CommunicationArchiveController,
+    YearController,
+    YearlyReportController,
+    StepFieldController,
+    SensitiveDataController,
+  ],
 
   providers: [
+    WorkLogService,
     AppService,
     UserService,
     MailService,
@@ -111,6 +268,7 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
     JwtService,
     ClientService,
     ClientTypeService,
+    FieldService,
     TaskService,
     TagService,
     StatusService,
@@ -123,11 +281,24 @@ import { callTopicSchema, callTopicSchemaModel } from './Models/callTopicSchema.
     MeetService,
     CallTopicService,
     CommunicationArchiveService,
+    CheckListService,
+    CheckListItemService,
     DocTypeService,
+    TimerService,
+    FrequencyService,
+    PaymentMethodService,
+    PaymentDetailsService,
+    PaymentService,
+    SensitiveDataService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
     },
+    CommunicationArchiveService,
+
+    StepFieldService,
+    YearlyReportService,
+    YearService,
   ],
 })
 export class AppModule {}

@@ -36,7 +36,7 @@ export class TokenService {
     }
   }
 
-  async validatePolicy(token: string) {
+  async getRoleFromToken(token: string) {
     try {
       const decode = this.decodeToken(token);
       

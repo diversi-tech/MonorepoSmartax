@@ -87,11 +87,6 @@ export class EmployeesTableComponent implements OnInit {
   }
 
 
-
-
-
-  
-
   cancelDelete(): void {
     this.confirmationService.close()
   }

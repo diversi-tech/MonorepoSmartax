@@ -25,14 +25,14 @@ export class BillingController {
         return await this.billingsService.getAllBillings();
     }
 
-    @Get('by-client')
-    @ApiOperation({ summary: 'Get billings by Client ID' })
-    @ApiQuery({ name: 'id', required: true, description: 'The Client ID of the billings to find' })
-    @ApiResponse({ status: 200, description: 'Return the billings .' })
-    @ApiResponse({ status: 404, description: 'Billings not found.' })
-    async getBillingsByClientId(@Query('id') id: string): Promise<Billing[]> {
-        return await this.billingsService.getBillingsByClientId(id);
-    }
+    // @Get('by-client')
+    // @ApiOperation({ summary: 'Get billings by Client ID' })
+    // @ApiQuery({ name: 'id', required: true, description: 'The Client ID of the billings to find' })
+    // @ApiResponse({ status: 200, description: 'Return the billings .' })
+    // @ApiResponse({ status: 404, description: 'Billings not found.' })
+    // async getBillingsByClientId(@Query('id') id: string): Promise<Billing[]> {
+    //     return await this.billingsService.getBillingsByClientId(id);
+    // }
 
     @Put('update')
     @ApiOperation({ summary: 'Update a billing by ID' })
