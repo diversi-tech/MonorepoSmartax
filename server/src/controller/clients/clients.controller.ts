@@ -24,7 +24,7 @@ export class ClientController {
     async getAllClients(): Promise<Client[]> {
         return await this.clientService.getAllClients();
     }
-    @UseGuards(AuthGuard, RoleGuard(3))
+    // @UseGuards(AuthGuard, RoleGuard(3))
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
     @Post('searchClient')
     async searchClient(@Body(new ValidationPipe()) body: {"id": string}): Promise<Client> {
