@@ -30,8 +30,9 @@ export class ClientController {
     }
 
     @Put()
-    async updateClient(@Body(new ValidationPipe()) updateClientDto: UpdateClientDto): Promise<Client> {
-        return await this.clientService.updateClient(updateClientDto);
+    @ApiBody({ type: UpdateClientDto })
+    async updateClient(@Body() updateClientDto: UpdateClientDto): Promise<Client> {
+        return await this.clientService.updateClient(updateClientDto.id, updateClientDto);
     }
 
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
@@ -40,4 +41,3 @@ export class ClientController {
         return await this.clientService.deleteClient(id.id);
     }
 }
-    // הוספת פרופרטי tag למוצא לבדוק אם הכול עובד כרגיל וכן להוסיף את לא אם Even the Their

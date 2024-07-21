@@ -6,6 +6,6 @@ export interface User {
   userName: string;
   email: string;
   passwordHash: string;
-  role: Role;
-  favorites:Client[];
+  role: string;
+  favoritesClient:Client[];
 }
