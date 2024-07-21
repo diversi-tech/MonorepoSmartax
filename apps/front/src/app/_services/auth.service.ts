@@ -33,19 +33,24 @@ export class AuthService {
 
   
   logout(): Observable<number> {
-    return this.http.post(this.apiUrl + '/signout', {}, httpOptions).pipe(
-      map((response: HttpResponse<any>) => {
-        console.log(response);        
-        if (response.status >= 200 && response.status < 300) {
-          return response.status;
-        } else {
-          throw new Error('HTTP Error: ' + response.status);
-        }
-      }),
-      catchError(error => {
-        return throwError(error);
-      })
-    );
+    try {
+      return this.http.post(this.apiUrl + '/signout', {}, httpOptions).pipe(
+        
+        map((response: HttpResponse<any>) => {
+          console.log(response);        
+          if (response.status >= 200 && response.status < 300) {
+            return response.status;
+          } else {
+            throw new Error('HTTP Error: ' + response.status);
+          }
+        })
+      );
+
+    }catch(error){
+      debugger
+      console.log(error)
+      return throwError(error);
+    }
   }
 
    getCurrentRole(): Observable<Role> {

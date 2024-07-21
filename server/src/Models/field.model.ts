@@ -6,8 +6,9 @@ export class Field extends Document {
     @Prop()
     key: string;
     
+    // @Prop({type:String})
     @Prop()
-    type:string;
+    type_:string;
     
 }
 

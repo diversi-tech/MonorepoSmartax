@@ -31,10 +31,10 @@ export class ClientTypeService {
           return clientType;
     }
     async updateClientType(updateClientTypeDto: UpdateClientTypeDto): Promise<ClientType> {
-        const {id, ...updateData } = updateClientTypeDto;
-        const updatedClientType = await this.clientTypeModel.findByIdAndUpdate(id, updateData, { new: true });
+        const {_id, ...updateData } = updateClientTypeDto;
+        const updatedClientType = await this.clientTypeModel.findByIdAndUpdate(_id, updateData, { new: true });
         if (!updatedClientType) {
-            throw new NotFoundException(`ClientType with ID ${id} not found`);
+            throw new NotFoundException(`ClientType with ID ${_id} not found`);
         }
         return updatedClientType;
     }

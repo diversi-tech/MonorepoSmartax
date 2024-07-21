@@ -118,6 +118,9 @@ import {
 import { Year, YearModel } from './Models/year.model';
 import { YearService } from './services/year.service';
 import { YearController } from './controller/year/year.controller';
+import { ClientField, ClientFieldModel } from './Models/clientField.model';
+import { ClientFieldController } from './controller/clientField/clientField.controller';
+import { ClientFieldService } from './services/clientField.service';
 import {
   CheckListItem,
   CheckListItemModel,
@@ -135,6 +138,11 @@ import {
 import { SensitiveDataService } from './services/sensitiveData.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { importClientsController } from './controller/importClients/importClients.controller';
+import { TableController } from './controller/table/table.controller';
+import { TableService } from './services/table.service';
+import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.model';
+import { RepeatableTaskController } from './controller/repeatableTask/repeatableTask.controller';
+import { repeatableTaskService } from './services/repeatableTask.service';
 // import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -144,9 +152,9 @@ import { importClientsController } from './controller/importClients/importClient
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
 
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI),
+  //add
+  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
+    MongooseModule.forFeature([{ name: ClientField.name, schema: ClientFieldModel }]),
     MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
     MongooseModule.forFeature([
@@ -176,7 +184,6 @@ import { importClientsController } from './controller/importClients/importClient
     MongooseModule.forFeature([
       { name: callTopicSchema.name, schema: callTopicSchemaModel },
     ]),
-    MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
 
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
@@ -195,6 +202,8 @@ import { importClientsController } from './controller/importClients/importClient
     ]),
     MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
     MongooseModule.forFeature([{ name: Timer.name, schema: TimerModel }]),
+    MongooseModule.forFeature([{ name: RepeatableTask.name, schema: RepeatableTaskModel }]),
+    MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '../uploads'),
       serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -251,13 +260,17 @@ import { importClientsController } from './controller/importClients/importClient
     PaymentMethodController,
     PaymentDetailsController,
     PaymentController,
+    ClientFieldController,
     TimerController,
     CommunicationArchiveController,
     YearController,
     YearlyReportController,
     StepFieldController,
     SensitiveDataController,
-    importClientsController
+    importClientsController,
+    TableController,
+    RepeatableTaskController,
+    FrequencyController,
   ],
 
   providers: [
@@ -292,6 +305,8 @@ import { importClientsController } from './controller/importClients/importClient
     PaymentDetailsService,
     PaymentService,
     SensitiveDataService,
+    ClientFieldService,
+    repeatableTaskService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
@@ -301,6 +316,7 @@ import { importClientsController } from './controller/importClients/importClient
     StepFieldService,
     YearlyReportService,
     YearService,
+    TableService,
   ],
 })
 export class AppModule {}
