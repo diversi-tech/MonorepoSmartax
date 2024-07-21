@@ -19,12 +19,14 @@
         <input type="text" id="lastName" formControlName="lastName" class="form-control" placeholder="הכנס שם משפחה">
         <div *ngIf="contactForm.get('lastName')?.errors?.['required']" class="red">ערך חובה</div>
         <div *ngIf="contactForm.get('lastName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+        <div *ngIf="contactForm.get('lastName')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
       </div>
       <div class="form-group">
         <label for="firstName">:שם פרטי</label>
         <input type="text" id="firstName" formControlName="firstName" class="form-control" placeholder="הכנס שם פרטי">
         <div *ngIf="contactForm.get('firstName')?.errors?.['required']" class="red">ערך חובה</div>
         <div *ngIf="contactForm.get('firstName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+        <div *ngIf="contactForm.get('firstName')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
       </div>
     </div>
     <div class="form-row">
@@ -46,6 +48,8 @@
         <label for="whatsapp">:ואטסאפ</label>
         <input type="text" id="whatsapp" formControlName="whatsapp" class="form-control" placeholder="הכנס ואטסאפ">
         <div *ngIf="contactForm.get('whatsapp')?.errors?.['required']" class="red"> ערך חובה</div>
+        <div *ngIf="contactForm.get('whatsapp')?.errors?.['pattern']" class="red">וואטסאפ לא תקין הכנס וואטסאפ תקין</div>
+
       </div>
     </div>
 
@@ -59,17 +63,20 @@
       <div class="form-group">
         <label for="address">:כתובת</label>
         <input type="text" id="address" formControlName="address" class="form-control" placeholder="הכנס כתובת">
+        <div *ngIf="contactForm.get('address')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
       </div>
       <div class="form-group">
         <label for="email">:מייל</label>
         <input type="email" id="email" formControlName="email" class="form-control" placeholder="הכנס מייל">
-        <div *ngIf="contactForm.get('email')?.errors?.['pattern']" class="red">מייל לא תקין הכנס מייל תקין</div>
+        <div *ngIf="contactForm.get('email')?.errors?.['required']" class="red"> ערך חובה</div>
+        <div *ngIf="contactForm.get('email')?.errors?.['email']" class="red">מייל לא תקין הכנס מייל תקין</div>
       </div>
     </div>
 
     <div class="form-group">
       <label for="comments">:הערות</label>
       <input type="text" id="comments" formControlName="comments" class="form-control" placeholder="הכנס הערות">
+      <div *ngIf="contactForm.get('comments')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
     </div>
   </div>
 
@@ -88,23 +95,23 @@
         <label for="spouseName">:שם בן זוג</label>
         <input type="text" id="spouseName" formControlName="spouseName" class="form-control"
           placeholder="הכנס שם בן זוג">
-        <div *ngIf="contactForm.get('spouseName')?.errors?.['required']" class="red">חייבים להכניס שם</div>
         <div *ngIf="contactForm.get('spouseName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+        <div *ngIf="contactForm.get('spouseName')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
       </div>
       <div class="form-group">
         <label for="contactPersonName">:שם איש קשר</label>
         <input type="text" id="contactPersonName" formControlName="contactPersonName" class="form-control"
           placeholder="הכנס שם איש קשר">
-        <div *ngIf="contactForm.get('contactPersonName')?.errors?.['required']" class="red">חייבים להכניס שם</div>
         <div *ngIf="contactForm.get('contactPersonName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות
         </div>
+        <div *ngIf="contactForm.get('contactPersonName')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
       </div>
       <div class="form-group">
         <label for="companyName">:שם חברה</label>
         <input type="text" id="companyName" formControlName="companyName" class="form-control"
           placeholder="הכנס שם חברה">
-        <div *ngIf="contactForm.get('companyName')?.errors?.['required']" class="red">ערך חובה</div>
         <div *ngIf="contactForm.get('companyName')?.errors?.['pattern']" class="red">השם חייב להכיל לפחות 2 אותיות</div>
+        <div *ngIf="contactForm.get('companyName')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
       </div>
     </div>
 
@@ -113,16 +120,19 @@
           <label for="businessActivity">:פעילות עסקית</label>
           <input type="text" id="businessActivity" formControlName="businessActivity" class="form-control"
             placeholder="הכנס פעילות עסקית">
+        <div *ngIf="contactForm.get('businessActivity')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
+
         </div>
         <div class="form-group">
           <label for="spouseTZ">:ת"ז בן זוג</label>
           <input type="text" id="spouseTZ" formControlName="spouseTZ" class="form-control" placeholder="הכנס תז בן זוג">
-          <div *ngIf="contactForm.get('spouseTZ')?.errors?.['required']" class="red">ערך חובה</div>
           <div *ngIf="contactForm.get('spouseTZ')?.errors?.['pattern']" class="red">תז חייב להכיל 9 תוים</div>
         </div>
         <div class="form-group">
           <label for="referrerName">:שם המפנה</label>
           <input type="text" id="referrerName"  class="form-control" formControlName="referrerName" placeholder="הכנס שם המפנה">
+        <div *ngIf="contactForm.get('referrerName')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
+          
         </div>
       </div>
       <div class="form-row">
@@ -168,17 +178,25 @@
             <label for="incomeTaxFileNumber">:מספר תיק מס הכנסה</label>
             <input type="text" id="incomeTaxFileNumber" formControlName="incomeTaxFileNumber" class="form-control"
               placeholder="הכנס מספר תיק">
+          <div *ngIf="contactForm.get('incomeTaxFileNumber')?.errors?.['pattern']" class="red">אי אפשר להכניס אותיות רק מספרים</div>
+          <div *ngIf="contactForm.get('incomeTaxFileNumber')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
           </div>
           <div class="form-group">
             <label for="incomeTaxDeductions_registerID">:מס הכנסה</label>
             <input type="text" id="incomeTaxDeductions_registerID" formControlName="incomeTaxDeductions_registerID"
               class="form-control" placeholder="הכנס מספר תיק">
+          <div *ngIf="contactForm.get('incomeTaxDeductions_registerID')?.errors?.['pattern']" class="red">אי אפשר להכניס אותיות רק מספרים</div>
+          <div *ngIf="contactForm.get('incomeTaxDeductions_registerID')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
+
           </div>
           <div class="form-group">
             <label for="VATFileNumber">:מספר תיק מע"מ</label>
             <input type="text" id="VATFileNumber" formControlName="VATFileNumber" class="form-control"
               placeholder="הכנס מספר תיק">
-          </div>
+          <div *ngIf="contactForm.get('VATFileNumber')?.errors?.['pattern']" class="red">אי אפשר להכניס אותיות רק מספרים</div>
+          <div *ngIf="contactForm.get('VATFileNumber')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
+
+        </div>
 
         </div>
         <div class="form-row">
