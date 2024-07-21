@@ -1,0 +1,29 @@
+
+  <div class="p-field" style="display:flex; flex-direction: row; ">
+    <div class="p-field-checkbox">
+      <p-checkbox [(ngModel)]="item.isDone" (click)="saveDone()" binary="true" value="item.isDone"></p-checkbox>
+    </div>
+
+    <div style="display: flex; flex-direction: row; " *ngIf="!edit">
+      <p>{{ item.description }}</p>
+
+      <div (click)="editDescription()">
+        <i class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
+      </div>
+      <div (click)="deleteItem()">
+        <i class="pi pi-trash" style="color: red;cursor: pointer;"></i>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: row; " *ngIf="edit">
+      <input [(ngModel)]="item.description" pInputText type="text" id="description" 
+      value="{{ item.description }}" style="width: 150px; height: 40px;">
+
+      <div (click)="saveDescription()">
+        <i class="pi pi-check" style="color: red;cursor: pointer;"></i>
+      </div>
+      <div (click)="cencelDescription()">
+        <i class="pi pi-times" style="color: blue;cursor: pointer;"></i>
+      </div>
+    </div>
+  </div>

@@ -218,7 +218,10 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
   { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   {path:'fieldMamagement',component:FieldManagementComponent,data:{authType:3,forToolbar:true,label:'ניהול שדות',icon:''}},
 
-];
+,  { path: 'checklist', component: ClientTypeComponent , data:{ authType: 3, forToolbar:true, icon: '', label:"רשימת משימות" }}
+
+]
+;
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
