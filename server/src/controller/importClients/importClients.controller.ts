@@ -10,6 +10,7 @@ import { Model } from 'mongoose';
 import { SensitiveData } from '../../Models/sensitiveData.model';
 import { Tag } from '../../Models/tag.model';
 import { User } from '../../Models/user.model';
+import * as ExcelJS from 'exceljs';
 
 @Controller('importClients')
 export class importClientsController {
@@ -71,21 +72,56 @@ export class importClientsController {
   }
 
   @Get('download-template')
-  downloadTemplate(@Res() res: Response) {
-    const templateData = [
-      ['שם החברה', 'שם פרטי', 'שם משפחה', 'שם איש קשר', 'ת.ז.', 'שם בן/בת זוג', 'ת.ז. בן/בת זוג', 'טלפון', 'וואטסאפ', 'אימייל', 'העדפה לווטסאפ', 'כתובת', 'הערות', 'מספר לקוח', 'תאריך לידה', 'מעסיק עובדים', 'מידע על עבודה', 'מספר תיק מס הכנסה', 'מספר רישום ניכויי מס', 'מספר תיק מע"מ', 'סוג דוח', 'מידע סטטיסטי', 'שם המפנה', 'תאריך הצטרפות', 'עבר רואה חשבון', 'פתח חשבון אצלנו'],
+  async downloadTemplate(@Res() res: Response) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('לקוחות');
+
+    // הגדרת כיוון הטקסט מימין לשמאל
+    worksheet.views = [{ rightToLeft: true }];
+
+    // הגדרת כותרות העמודות
+    const columns = [
+      'שם החברה', 'שם פרטי', 'שם משפחה', 'שם איש קשר', 'ת.ז.', 'שם בן/בת זוג', 
+      'ת.ז. בן/בת זוג', 'טלפון', 'וואטסאפ', 'אימייל', 'העדפה לווטסאפ', 'כתובת', 
+      'הערות', 'תאריך לידה', 'מעסיק עובדים', 'מידע על עבודה', 'מספר תיק מס הכנסה', 
+      'מספר רישום ניכויי מס', 'מספר תיק מע"מ', 'סוג דוח', 'מידע סטטיסטי', 'שם המפנה', 
+      'תאריך הצטרפות', 'עבר רואה חשבון', 'פתח חשבון אצלנו'
     ];
-    const worksheet = XLSX.utils.aoa_to_sheet(templateData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
 
-    const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+    worksheet.columns = columns.map(column => ({ header: column, key: column }));
+    worksheet.getCell(2['עבר רואה חשבון']).dataValidation = {
+      type: 'list',
+      formulae: ["כן","לא"],
+      showErrorMessage: true,
+      errorTitle: 'Invalid input',
+      error:"בחר 'כן' או 'לא'"
+    };
+    // הגדרת תבנית עבור מספרי טלפון
+    worksheet.getCell(2['טלפון']).numFmt = '000-000-0000'; // תבנית של מספר טלפון
 
-    res.setHeader('Content-Disposition', 'attachment; filename=template.xlsx');
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.send(buffer);
+    // הגדרת תבנית עבור תאריך
+    worksheet.getCell(2['תאריך הצטרפות']).numFmt = 'dd/mm/yyyy'; // תבנית של תאריך
+    // הגדרת כיוון טקסט מימין לשמאל עבור כותרות העמודות
+    worksheet.getRow(1).eachCell((cell, colNumber) => {
+      cell.alignment = { readingOrder: 'rtl', horizontal: 'right' };
+    });
+
+    // כתיבת הקובץ לתגובה
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + 'customers.xlsx',
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
   }
-}
+
+  }
+
 
 
 
