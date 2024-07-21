@@ -76,6 +76,8 @@ import { customfieldComponent } from './custom-field/custom-field.component';
 //dashboard, clients, tasks, payments, sessions, reports, users, schedule
 import { FieldManagementComponent } from './pages/fieldManagement/fieldManagement.component';
 import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yearly-report/edit-client-yearly-report.component';
+import { ManagerNavbarComponent } from './pages/Manager/edit-client-yearly-report/manager-navbar/manager-navbar.component';
+import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearly-report/edit-client-tax-refuned/edit-client-tax-refuned.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -223,13 +225,19 @@ import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yea
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:false, icon: '' }},
   { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
   { path:'checklist', component:TaskCheckListComponent},
-  
+
   { path:'checklist', component:TaskCheckListComponent},
   {path:'add-new-client',component:AddClientComponent,data: { authType: 6}},
 
   { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   {path:'fieldMamagement',component:FieldManagementComponent,data:{authType:3,forToolbar:true,label:'ניהול שדות',icon:''}},
-  {path: 'editClientYearlyReport',component:EditClientYearlyReportComponent}
+  {path: 'manager',component:ManagerNavbarComponent,data:{ authType: 3, forToolbar:true, icon: icons.manager, label:"מנהל" },
+  children:[
+    {path: 'editClientYearlyReport',component:EditClientYearlyReportComponent},
+    {path: 'editTaxRefuned',component:EditClientTaxRefunedComponent}
+
+  ]
+}
 
 ,  { path: 'checklist', component: ClientTypeComponent , data:{ authType: 3, forToolbar:true, icon: '', label:"רשימת משימות" }}
 

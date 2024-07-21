@@ -18,4 +18,5 @@ export const TAX_REFUNDS = `${API_URL}/tax-refunds`;
 
 export const CHECKLIST_ENDPOINT = `${API_URL}/checkList`;
 export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checkListItem`;
+export const IMPORTCLIENTS_ENDPOIMT = `${API_URL}/importclients`;
 export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;

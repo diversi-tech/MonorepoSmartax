@@ -14,6 +14,7 @@ import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ImportClientComponent } from '../import-clients/import-client.component';
 
 @Component({
   selector: 'app-client-search',
@@ -30,7 +31,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     AddClientComponent,
     RouterOutlet,
     Button,
-    RouterLink
+    RouterLink,
+    ImportClientComponent
   ],
 })
 export class ClientSearchComponent implements OnInit {

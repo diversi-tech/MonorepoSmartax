@@ -1,7 +1,9 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { stepFieldService } from '../../../_services/step_field.service';
-import { StepField } from '../../../_models/stepField.module';
+import { EditClientYearlyReportComponent } from '../edit-client-yearly-report.component';
+
+import { stepFieldService } from '../../../../_services/step_field.service';
+import { StepField } from '../../../../_models/stepField.module';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
@@ -9,20 +11,21 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown'; // ייבוא של קומפוננטת ה-Dropdown
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+
 @Component({
-  selector: 'app-edit-client-yearly-report',
+  selector: 'app-edit-client-tax-refuned',
   standalone: true,
-  imports: [CommonModule, TableModule, ToastModule, ButtonModule, ReactiveFormsModule, FormsModule,DialogModule,DropdownModule,InputTextModule],
-  templateUrl: './edit-client-yearly-report.component.html',
-  styleUrls: ['./edit-client-yearly-report.component.css'],
+  imports: [CommonModule,TableModule, ToastModule, ButtonModule, ReactiveFormsModule, FormsModule,DialogModule,DropdownModule,InputTextModule],
+  templateUrl: '../../edit-client-yearly-report/edit-client-yearly-report.component.html',
+  styleUrl: '../../edit-client-yearly-report/edit-client-yearly-report.component.css',
 })
 @Injectable({
   providedIn: 'root'
 })
-export class EditClientYearlyReportComponent implements OnInit {
+export class EditClientTaxRefunedComponent {
   allStepFields: StepField[] = [];
   filteredStepFields: StepField[] = [];
-  numberOptions = [1, 2, 3, 4, 5];
+  numberOptions = [1, 2, 3];
 
   displayAddDialog: boolean = false;
   newStepValue: string = '';
@@ -33,7 +36,7 @@ export class EditClientYearlyReportComponent implements OnInit {
   ngOnInit(): void {
     this.stepFieldService.getAllStepField().subscribe(
       (stepFields) => {
-        this.allStepFields = stepFields.filter(x => x.type === "yearly-report");
+        this.allStepFields = stepFields.filter(x => x.type === "החזרי מס");
         this.filteredStepFields = [...this.allStepFields];
       },
       (error) => {
@@ -73,7 +76,7 @@ export class EditClientYearlyReportComponent implements OnInit {
       value: this.newStepValue,
       stepNumber: this.newStepStepNumber,
       isComplete: false,
-      type: 'yearly-report'
+      type: 'החזרי מס'
     };
 
     if (this.isValidStep(newStep)) {

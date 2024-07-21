@@ -22,7 +22,7 @@ import { TokenService } from '../../../_services/token.service';
 @Component({
   selector: 'app-add-client',
   templateUrl: './add-client.component.html',
-  styleUrl: './add-client.component.css',
+  styleUrls:[ './add-client.component.css'],
   providers: [ClientService],
   animations: [
     trigger('dialog', [
@@ -48,7 +48,7 @@ import { TokenService } from '../../../_services/token.service';
     ]),
   ],
   standalone: true,
-  imports: [DialogModule, FormsModule, ReactiveFormsModule, NgIf],
+  imports: [DialogModule, FormsModule, ReactiveFormsModule,NgIf],
 })
 export class AddClientComponent {
   contactForm!: FormGroup;
@@ -95,6 +95,7 @@ export class AddClientComponent {
     isPreferWhatsapp:false
   };
   isWorkData: boolean= false
+  form: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -103,19 +104,19 @@ export class AddClientComponent {
   ) {}
   ngOnInit() {
     this.contactForm = this.formBuilder.group({
-      companyName: ['', Validators.required],
+      companyName: ['', [Validators.maxLength(20)]],
       firstName: [
         '',
-        [Validators.required, Validators.pattern('[ a-zA-Zא-ת]{2,}')],
+        [Validators.required, Validators.pattern('[ a-zA-Zא-ת]{2,}'),,Validators.maxLength(25)],
       ],
       lastName: [
         '',
-        [Validators.required, Validators.pattern('[ a-zA-Zא-ת]{2,}')],
+        [Validators.required, Validators.pattern('[ a-zA-Zא-ת]{2,}'),Validators.maxLength(25)],
       ],
-      contactPersonName: ['', Validators.required],
-      tz: ['', Validators.required],
-      spouseName: ['', Validators.required],
-      spouseTZ: ['', Validators.required],
+      contactPersonName: ['', [Validators.maxLength(20)]],
+      tz: ['', [Validators.required,Validators.pattern('[0-9]{9}')]],
+      spouseName: ['', [Validators.maxLength(20)]],
+      spouseTZ: ['',[Validators.pattern('[0-9]{9}')]],
       phone: [
         '',
         [
@@ -125,35 +126,40 @@ export class AddClientComponent {
           ),
         ],
       ],
-      whatsapp: [''],
-      email: [''],
-      address: [''],
+      whatsapp: ['',
+        [
+          Validators.pattern(
+            '^0(2|3|4|8|9|7[1-46-9]|5[0-578])[.-:]?([2-9][0-9]{6})$'
+          ),
+        ],],
+      businessActivity:["",[Validators.maxLength(25)]],
+      email: ['',[Validators.required,Validators.email]],
+      address: ['',[Validators.maxLength(25)]],
       dateOfBirth: ['', Validators.required],
-      comments: [''],
+      comments: ['',[Validators.maxLength(155)]],
       isEmploysWorkers: [false],
       isWorkData: [false],
-      incomeTaxFileNumber: [''],
-      incomeTaxDeductions_registerID: [''],
-      VATFileNumber: [''],
+      incomeTaxFileNumber: ['',[Validators.pattern('^[0-9]+$'), Validators.maxLength(10)]],
+      incomeTaxDeductions_registerID: ['',[Validators.pattern('^[0-9]+$'), Validators.maxLength(10)]],
+      VATFileNumber: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(10)]],
       reports: [''],
       isStatisticsData: [false],
-      referrerName: [''],
+      referrerName: ['',[Validators.maxLength(25)]],
       joinDate: [''],
       isAccounter: [false],
       isOpenAccountWithUs: [false],
       isPreferWhatsapp:[false]
     });
     this.onCHangeIsWorkData();
+    
   }
-
+  get VATFileNumber() { return this.form.get('VATFileNumber'); }
   onCHangeIsWorkData(): void{
+    
     this.isWorkData = this.contactForm.get('isWorkData')?.value;
-
   }
 
   onSubmit() {
-    console.log('submit');
-
     if (this.contactForm.valid) {
       alert('נשמר בהצלחה');
       this.savedData = this.contactForm.value;
