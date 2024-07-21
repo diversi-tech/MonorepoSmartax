@@ -33,7 +33,6 @@
     "@nestjs/swagger": "^7.4.0",
     "@nx/angular": "^19.4.1",
     "@types/gapi.client.calendar": "^3.0.12",
-    "@types/socket.io-client": "^3.0.0",
     "ajv-keywords": "^5.1.0",
     "axios": "^1.6.0",
     "bcryptjs": "^2.4.3",

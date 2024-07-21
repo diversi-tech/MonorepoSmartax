@@ -1,68 +1,104 @@
-<p>edit-client-yearlyReport works!</p>
-
-<p-table 
-    [value]="allStepFields" 
-    dataKey="id" 
-    [tableStyle]="{ 'min-width': '50rem' }">
+<p-toast></p-toast>
+<p-table [value]="allStepFields" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
     <ng-template pTemplate="header">
         <tr>
-            <th style="width:25%">האם הושלמה</th>
-            <th style="width:25%">מספר שלב</th>
-            <th style="width:50%">תאור</th>
-            <th>עריכה</th>
+            <th style="width:20%">פרוט</th>
+            <th style="width:20%">מספר שלב</th>
+            <!-- <th style="width:20%">Inventory Status</th>
+            <th style="width:20%">Price</th> -->
+            <th style="width:20%"></th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-step let-editing="allStepFields">
-        <tr>
-            <td [pEditableColumn]="step.isCompleted" pEditableColumnField="isCompleted">
+    <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="product">
+            <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <input 
+                            [value]="product.value"
                             pInputText 
-                            type="checkbox" 
-                            [(ngModel)]="step.isCompleted" />
+                            type="text" 
+                            [(ngModel)]="product.value" />
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{ step.isCompleted ? 'כן' : 'לא' }}
+                        {{product.value}}
                     </ng-template>
                 </p-cellEditor>
             </td>
-            <td [pEditableColumn]="step.stepNumber" pEditableColumnField="stepNumber">
+            <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <input 
-                            pInputText 
-                            type="number" 
-                            [(ngModel)]="step.stepNumber"
-                            value="{{step.stepNumber}}"
-                            [placeholder]="step.stepNumber" />
+                            [value]="product.stepNumber"
+                            pInputText type="text" 
+                            [(ngModel)]="product.stepNumber" 
+                            required />
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{ step.stepNumber }}
+                        {{product.stepNumber}}
                     </ng-template>
                 </p-cellEditor>
             </td>
-            <td [pEditableColumn]="step.value" pEditableColumnField="value">
+            <!-- <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-dropdown 
+                            [options]="statuses" 
+                            appendTo="body" 
+                            [(ngModel)]="product.inventoryStatus" 
+                            [style]="{'width':'100%'}" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        <p-tag 
+                            [value]="product.inventoryStatus" 
+                            [severity]="getSeverity(product.inventoryStatus)" />
+                    </ng-template>
+                </p-cellEditor>
+            </td> -->
+            <!-- <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <input 
                             pInputText 
                             type="text" 
-                            [(ngModel)]="step.value"
-                            [value]="step.value"
-                            [placeholder]="step.value"
-                            (blur)="saveStepValue(step)"
-                            style="text-align: right;" />
+                            [(ngModel)]="product.price" />
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{ step.value }}
+                        {{product.price | currency: 'USD'}}
                     </ng-template>
                 </p-cellEditor>
-            </td>
+            </td> -->
             <td>
-                <button (click)="update(step)">
-                    <i class="pi pi-pencil"></i>
-                </button>
+                <div class="flex align-items-center justify-content-center gap-2">
+                    <button 
+                        *ngIf="!editing" 
+                        pButton 
+                        pRipple 
+                        type="button" 
+                        pInitEditableRow 
+                        icon="pi pi-pencil" 
+                        class="p-button-rounded p-button-text">
+                    </button>
+                    <button 
+                        *ngIf="editing" 
+                        pButton 
+                        pRipple 
+                        type="button" 
+                        pSaveEditableRow 
+                        icon="pi pi-check" 
+                        (click)="update(product)" 
+                        class="p-button-rounded p-button-text p-button-success mr-2">
+                    </button>
+                    <button 
+                        *ngIf="editing" 
+                        pButton pRipple 
+                        type="button" 
+                        pCancelEditableRow 
+                        icon="pi pi-times" 
+                        (click)="delete(product)" 
+                        class="p-button-rounded p-button-text p-button-danger">
+                    </button>
+                </div>
             </td>
         </tr>
     </ng-template>

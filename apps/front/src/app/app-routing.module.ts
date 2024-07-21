@@ -74,6 +74,7 @@ import { customfieldComponent } from './custom-field/custom-field.component';
 //for toolBar
 //dashboard, clients, tasks, payments, sessions, reports, users, schedule
 import { FieldManagementComponent } from './pages/fieldManagement/fieldManagement.component';
+import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yearly-report/edit-client-yearly-report.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -221,6 +222,7 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
 
   { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   {path:'fieldMamagement',component:FieldManagementComponent,data:{authType:3,forToolbar:true,label:'ניהול שדות',icon:''}},
+  {path: 'editClientYearlyReport',component:EditClientYearlyReportComponent}
 
 ];
 

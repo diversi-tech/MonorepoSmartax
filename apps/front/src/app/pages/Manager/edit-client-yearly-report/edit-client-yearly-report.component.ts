@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { stepFieldService } from '../../../_services/step_field.service';
 import { StepField } from '../../../_models/stepField.module';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-edit-client-yearly-report',
   standalone: true,
-  imports: [CommonModule,TableModule],
+  imports: [CommonModule,TableModule,ToastModule,ButtonModule],
   templateUrl: './edit-client-yearly-report.component.html',
   styleUrl: './edit-client-yearly-report.component.css',
 })
@@ -44,20 +46,41 @@ export class EditClientYearlyReportComponent {
   }
 
   update(step: StepField) {
-    const originalStep = this.allStepFields.find(s => s.stepNumber === step.stepNumber);
-    if (originalStep && (
-      originalStep.value !== step.value || 
-      originalStep.stepNumber !== step.stepNumber)) {
+    console.log(step)
+    const originalStep = this.allStepFields.find(s => s._id === step._id);
+    console.log("originalStep",originalStep)
+    if (originalStep) {
       // שלח את השינויים לשרת
       this.stepFieldService.updateStepField(step).subscribe(
         response => {
-          console.log('Step updated successfully', response);
+          if(response){
+            console.log('Step updated successfully', response);
+          }
         },
         error => {
           console.error('Error updating step', error);
         }
       );
     }
+  }
+
+  delete(step: StepField) {
+    console.log("delete")
+
+    // const originalStep = this.allStepFields.find(s => s.stepNumber === step.stepNumber);
+    // if (originalStep && (
+    //   originalStep.value !== step.value || 
+    //   originalStep.stepNumber !== step.stepNumber)) {
+      // שלח את השינויים לשרת
+      this.stepFieldService.deleteStepField(step._id).subscribe(
+        response => {
+          console.log('delted  successfully', response);
+        },
+        error => {
+          console.error('Error deleted step', error);
+        }
+      );
+   
   }
  
 
