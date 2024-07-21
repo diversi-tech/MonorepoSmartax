@@ -35,6 +35,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 })
 export class ClientSearchComponent implements OnInit {
   filterNumber: string = '';
+  filterTZ: string = '';
   isSelected: number = 0;
   clients: Client[] = [];
   filteredClients: Client[] = [];
@@ -99,10 +100,12 @@ export class ClientSearchComponent implements OnInit {
   }
 
   filterClientsByNameAndBusinessName(value: string): void {
+    
     if (value !== '') {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
         (client.firstName && client.firstName.toLowerCase().includes(query)) ||
+        (client.lastName && client.lastName.toLowerCase().includes(query))||
         (client.companyName && client.companyName.toLowerCase().includes(query))
       );
     }
@@ -115,7 +118,12 @@ export class ClientSearchComponent implements OnInit {
     else
       this.filteredClients = this.clients;
   }
-
+  filterClientsByTZ(): void {
+    if (this.filterTZ != "")
+      this.filteredClients = this.clients.filter(client => client.tz.includes(this.filterTZ));
+    else
+      this.filteredClients = this.clients;
+  }
   openContactFormDialog() {
     this.displayDialog = true;
   }
