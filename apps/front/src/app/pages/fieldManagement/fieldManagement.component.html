@@ -36,12 +36,11 @@
         <tr>
             <td>{{field.key}}</td>
             <td >{{field.type}}</td>
-            <td><p-button styleClass="dbtn" severity="danger" (click)="deletepopup(field._id)"> 
-                <span class="px-3">מחק</span> 
-                <i class="pi pi-trash"></i>
-            </p-button></td>
-           
-        
+            <td>
+                <i (click)="deletepopup(field._id)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
+
+            </td>
+
         </tr>
     </ng-template>
     <ng-template pTemplate="summary">

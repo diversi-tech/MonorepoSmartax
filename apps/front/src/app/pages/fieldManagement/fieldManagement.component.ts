@@ -44,7 +44,7 @@ ngOnInit(): void {
 
 onClosePopup() {
   setTimeout(() => {
-    this.getAllFields();
+   this.getAllFields();
   }, 1000);
   this.visible= false;
  
