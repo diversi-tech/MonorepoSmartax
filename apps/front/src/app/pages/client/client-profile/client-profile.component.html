@@ -1,16 +1,16 @@
-
 <div class="container">
   <div class="card">
     <div class="card-header">
-      <!-- <h2 (click)="toggleDetails()" class="card-title">{{ client?.firstName }}</h2> -->
+      <h2 (click)="toggleDetails()" class="card-title">{{ client?.firstName }}</h2>
     </div>
     <div class="card-body">
       <div *ngIf="showDetails">
-        <!-- <p class="card-text"><strong>Contact Info:</strong> {{ client?.contactInfo }}</p>
+        <p class="card-text"><strong>Contact Info:</strong> {{ client?.contactInfo }}</p>
         <p class="card-text"><strong>Business Name:</strong> {{ client?.businessName }}</p>
         <p class="card-text"><strong>Source:</strong> {{ client?.source }}</p>
-        <p class="card-text"><strong>Status:</strong> {{ client?.status }}</p> -->
-        <!-- <p class="card-text"><strong>Created Date:</strong> {{ client?.createdDate | date }}</p> -->
+        <p class="card-text"><strong>Status:</strong> {{ client?.status }}</p>
+        <p class="card-text"><strong>Created Date:</strong> {{ client?.createdDate | date }}</p>
+        <button (click)="navigateToSensitiveDetails()" class="btn btn-primary mt-3">הצגת פרטים רגישים</button>
       </div>
     </div>
   </div>

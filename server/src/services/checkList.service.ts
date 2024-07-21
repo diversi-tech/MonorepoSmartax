@@ -7,7 +7,7 @@ import { CreateCheckListDto, UpdateCheckListDto } from "../Models/dto/checkList.
 @Injectable()
 export class CheckListService {
 
-  constructor(@InjectModel(CheckList.name) private checkListModel: Model<CheckList>) {}
+  constructor(@InjectModel(CheckList.name) private checkListModel: Model<CheckList>) { }
 
   async create(createCheckListDto: CreateCheckListDto): Promise<CheckList> {
     const createdCheckList = new this.checkListModel(createCheckListDto);
@@ -23,7 +23,13 @@ export class CheckListService {
   }
 
   async update(id: string, updateCheckListDto: UpdateCheckListDto): Promise<CheckList> {
-    return this.checkListModel.findByIdAndUpdate(id, updateCheckListDto, { new: true }).exec();
+    try {
+      return this.checkListModel.findByIdAndUpdate(id, updateCheckListDto, { new: true }).exec();
+
+    } catch (err) {
+      console.log(err);
+
+    }
   }
 
   async delete(id: string): Promise<CheckList> {

@@ -1,0 +1,142 @@
+<p-toast></p-toast>
+<br><br>
+
+
+<!-- כפתור הוספה -->
+<div class="mb-3">
+    <button 
+        pButton 
+        pRipple 
+        type="button" 
+        label="הוספת רשומה חדשה" 
+        icon="pi pi-plus" 
+        (click)="showAddDialog()"
+        class="p-button-success">
+    </button>
+</div>
+
+<!-- דיאלוג הוספה -->
+<p-dialog header="Add New Step" [(visible)]="displayAddDialog" modal="modal" [style]="{'width': '300px'}">
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="value">Value</label>
+            <input id="value" type="text" pInputText [(ngModel)]="newStepValue" />
+        </div>
+        <div class="p-field">
+            <label for="stepNumber">Step Number</label>
+            <p-dropdown 
+                id="stepNumber" 
+                [options]="numberOptions" 
+                [(ngModel)]="newStepStepNumber" 
+                placeholder="Select a step number">
+            </p-dropdown>
+        </div>
+    </div>
+    <br><br><br>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" label="Add" (click)="addStep()"></button>
+        <button type="button" pButton icon="pi pi-times" label="Cancel" (click)="hideAddDialog()"></button>
+    </p-footer>
+</p-dialog>
+
+<p-table [value]="filteredStepFields" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '20rem'}" dir="rtl">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:50%">
+                פירוט
+                <input 
+                    type="text" 
+                    pInputText 
+                    (input)="filterByDescription($event.target.value)"
+                    placeholder="חפש..."/>
+            </th>
+            <th style="width:25%">
+                מספר שלב
+                <p-dropdown 
+                    [options]="numberOptions"
+                    placeholder="בחר מספר"
+                    (onChange)="filterByStepNumber($event.value)">
+                </p-dropdown>
+            </th>
+            <th style="width:25%"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="product">
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input 
+                            [value]="product.value"
+                            pInputText 
+                            type="text" 
+                            required
+                            [(ngModel)]="product.value" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{product.value}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input 
+                            [value]="product.stepNumber"
+                            pInputText 
+                            type="number"
+                            min="1" 
+                            max="5" 
+                            [(ngModel)]="product.stepNumber" 
+                            required />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{product.stepNumber}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <div class="flex align-items-center justify-content-center gap-2">
+                    <button 
+                        *ngIf="!editing" 
+                        pButton 
+                        pRipple 
+                        type="button" 
+                        pInitEditableRow 
+                        icon="pi pi-pencil" 
+                        class="p-button-rounded p-button-text">
+                    </button>
+                    <button 
+                        *ngIf="editing" 
+                        pButton 
+                        pRipple 
+                        type="button" 
+                        pSaveEditableRow 
+                        icon="pi pi-check" 
+                        (click)="update(product)" 
+                        class="p-button-rounded p-button-text p-button-success mr-2">
+                    </button>
+                    <button 
+                        *ngIf="editing" 
+                        pButton 
+                        pRipple 
+                        type="button" 
+                        pCancelEditableRow 
+                        icon="pi pi-trash" 
+                        (click)="delete(product._id)" 
+                        class="p-button-rounded p-button-text p-button-danger">
+                    </button>
+                    <button 
+                        *ngIf="editing" 
+                        pButton 
+                        pRipple 
+                        type="button" 
+                        pCancelEditableRow 
+                        icon="pi pi-times" 
+                        class="p-button-rounded p-button-text p-button-danger">
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
