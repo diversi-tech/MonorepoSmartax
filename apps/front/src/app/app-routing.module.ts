@@ -52,6 +52,7 @@ import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeata
 import { TypeClientCreateComponent } from './pages/client/type-client-edit-create/type-client-create.component';
 import { AddClientComponent } from './pages/client/add-client/add-client.component';
 
+import { TaxRefundsStepsComponent } from './pages/client/tax-refunds-steps/tax-refunds-steps.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -202,17 +203,23 @@ import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearl
         {path: 'steps', component:YearlyReportStepsComponent}
        ]
       },
+      { path: 'taxRefunds', component: TaxRefundsComponent ,
+        children: [
+         {path: 'steps', component:TaxRefundsStepsComponent}
+        ]
+       },
 
       { path: 'clientBillings', component: ClientBillingsComponent },
       { path: 'clientTypeTab', component: ClientTypeTabComponent },
       { path: 'clientType', component: ClientTypeComponent },
       { path: 'clientTypeTag', component: ClientTypeTagComponent },
       { path: 'monthlyReport', component: MonthlyReportComponent },
-      { path: 'taxRefunds ', component: TaxRefundsComponent },
+      { path: 'taxRefunds', component: TaxRefundsComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
     ],
   },
   { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
+  { path: 'taxRefunds',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
   { path: 'allCommunication', component: AllCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'כלל השיחות', icon: icons.communications  } },
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:false, icon: '' }},
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:false, icon: '' }},
