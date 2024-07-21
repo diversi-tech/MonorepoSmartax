@@ -37,12 +37,25 @@ export class CheckListController {
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateCheckListDto: UpdateCheckListDto): Promise<CheckList> {
-    return this.checkListService.update(id, updateCheckListDto);
+    try {
+      console.log("try update checkList");
+      
+      return this.checkListService.update(id, updateCheckListDto);
+    }
+    catch (err) {
+      console.log(err);
+    }
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<CheckList> {
-    return this.checkListService.delete(id);
+    try {
+      return this.checkListService.delete(id);
+    }
+    catch (err) {
+      console.log(err);
+
+    }
   }
 
 
