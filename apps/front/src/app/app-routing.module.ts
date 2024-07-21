@@ -216,7 +216,7 @@ import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yea
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:false, icon: '' }},
   { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
   { path:'checklist', component:TaskCheckListComponent},
-  
+
   { path:'checklist', component:TaskCheckListComponent},
   {path:'add-new-client',component:AddClientComponent,data: { authType: 6}},
 
