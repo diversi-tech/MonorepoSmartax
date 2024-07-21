@@ -72,7 +72,8 @@
     "rxjs": "~7.8.0",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
-    "sweetalert2": "^11.6.13",
+    "stream-browserify": "^3.0.0",
+    "sweetalert2": "^11.12.1",
     "tslib": "^2.3.0",
     "typeorm": "^0.3.20",
     "zone.js": "^0.14.7"

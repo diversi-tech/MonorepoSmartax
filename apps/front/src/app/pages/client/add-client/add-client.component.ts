@@ -94,6 +94,7 @@ export class AddClientComponent {
     payment: '',
     isPreferWhatsapp:false
   };
+  isWorkData: boolean= false
 
   constructor(
     private formBuilder: FormBuilder,
@@ -142,6 +143,12 @@ export class AddClientComponent {
       isOpenAccountWithUs: [false],
       isPreferWhatsapp:[false]
     });
+    this.onCHangeIsWorkData();
+  }
+
+  onCHangeIsWorkData(): void{
+    this.isWorkData = this.contactForm.get('isWorkData')?.value;
+
   }
 
   onSubmit() {
@@ -169,7 +176,7 @@ export class AddClientComponent {
       this.newClient.isOpenAccountWithUs = this.savedData.isOpenAccountWithUs;
       this.newClient.isStatisticsData = this.savedData.isStatisticsData;
       this.newClient.isWorkData = this.savedData.isWorkData;
-      this.newClient.joinDate = this.savedData.joinDate;
+      this.newClient.joinDate =new Date()
       this.newClient.phone = this.savedData.phone;
       this.newClient.referrerName = this.savedData.referrerName;
       this.newClient.reports = this.savedData.reports;
