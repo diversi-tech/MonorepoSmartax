@@ -2,18 +2,16 @@
   <!-- edit task name -->
   <div>
     <i *ngIf="editNameInput" (click)="editName()" class="pi pi-pencil" style="top:0;color: blue;cursor: pointer;"></i>
-  <!-- add item -->
-  <i (click)="addItem()" class="pi pi-plus" style="color:rgb(0, 255, 21); cursor: pointer;"></i>
-  <i class="pi pi-trash" (click)="deleteList()" style="color: red;cursor: pointer;"></i>
+    <!-- add item -->
+    <i (click)="addItem()" class="pi pi-plus" style="color:rgb(0, 255, 21); cursor: pointer;"></i>
+    <i class="pi pi-trash" (click)="deleteList()" style="color: red;cursor: pointer;"></i>
 
-  <!-- new item -->
-  <app-check-list-item *ngIf="editNewItem" [item]="newItem" [newItem]="true" (delete)="deleteItem('1234')"
-    (update)="updateItem($event)"></app-check-list-item>
+    <!-- new item -->
+    <app-check-list-item *ngIf="editNewItem" [item]="newItem" [newItem]="true" (delete)="deleteItem('1234')"
+      (update)="updateItem($event)"></app-check-list-item>
   </div>
-
-  <p-divider />
-
   <div class="p-field" style="display: flex; flex-direction: row;">
+    <!-- <p-divider /> -->
 
     <div *ngIf="!editNameInput" style="display: flex; flex-direction: row;">
       <input pInputText type="text" id="name" [(ngModel)]="checkList.name" value="{{checkList.name}}">
@@ -26,6 +24,9 @@
       </div>
     </div>
   </div>
+
+  <p-divider />
+
 
   <!-- items of checklist -->
   <div *ngFor="let item of checkList.items; let i = index">
