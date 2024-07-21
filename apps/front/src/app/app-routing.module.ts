@@ -50,6 +50,8 @@ import { YearlyReportStepsComponent } from './pages/client/client-yearly-report-
 import { PaymentComponent } from './pages/payment/payment.component';
 import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
 import { TypeClientCreateComponent } from './pages/client/type-client-edit-create/type-client-create.component';
+import { AddClientComponent } from './pages/client/add-client/add-client.component';
+
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -72,6 +74,7 @@ import { customfieldComponent } from './custom-field/custom-field.component';
 //for toolBar
 //dashboard, clients, tasks, payments, sessions, reports, users, schedule
 import { FieldManagementComponent } from './pages/fieldManagement/fieldManagement.component';
+import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yearly-report/edit-client-yearly-report.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -215,13 +218,17 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
   { path:'checklist', component:TaskCheckListComponent},
   
   { path:'checklist', component:TaskCheckListComponent},
+  {path:'add-new-client',component:AddClientComponent,data: { authType: 6}},
+
   { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   {path:'fieldMamagement',component:FieldManagementComponent,data:{authType:3,forToolbar:true,label:'ניהול שדות',icon:''}},
+  {path: 'editClientYearlyReport',component:EditClientYearlyReportComponent}
 
 ,  { path: 'checklist', component: ClientTypeComponent , data:{ authType: 3, forToolbar:true, icon: '', label:"רשימת משימות" }}
 
 ]
 ;
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
