@@ -43,7 +43,29 @@ export class FavoritesClientsListComponent implements OnInit {
 
 
   }
-  
+  updateFavorite() {
+    this.userService
+      .update(
+        this.user._id,
+        this.user.userName,
+        this.user.email,
+        this.user.passwordHash,
+        this.user.role,
+        this.user.favoritesClient
+      )
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+        },
+        error: (err) => {
+          console.error('Error add to favorite', err);
+        },
+      });
+  }
+removeFromFavorite(client:Client){
+  this.user.favoritesClient=this.user.favoritesClient.filter(c=>c._id!=client._id);
+  this.updateFavorite();
+}
   selectClientFromList(client: Client): void {
     this.router.navigate(['/clientSearch/clientManagement'], {
       state: { client },
