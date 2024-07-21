@@ -45,6 +45,7 @@ export class ClientSearchComponent implements OnInit {
   choosedClients: Client[] = [];
   user: User;
   isChoosedAllClient: boolean = false;
+  displayDialog: boolean;
 
   constructor(
     private clientService: ClientService,
