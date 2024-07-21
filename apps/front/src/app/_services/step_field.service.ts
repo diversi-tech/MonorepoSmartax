@@ -20,7 +20,7 @@ export class stepFieldService {
 
   // Create stepField
   createStepField(stepField: StepField): Observable<StepField> {
-    return this.http.post<StepField>(this.apiUrl, stepField, this.httpOptions)
+    return this.http.post<StepField>(`${this.apiUrl}/create`, stepField, this.httpOptions)
       .pipe(
         catchError(this.handleError<StepField>('createStepField'))
       );
