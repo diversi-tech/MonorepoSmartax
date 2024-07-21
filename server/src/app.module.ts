@@ -137,6 +137,7 @@ import {
 } from './Models/sensitiveData.model';
 import { SensitiveDataService } from './services/sensitiveData.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { importClientsController } from './controller/importClients/importClients.controller';
 import { TableController } from './controller/table/table.controller';
 import { TableService } from './services/table.service';
 import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.model';
@@ -266,6 +267,7 @@ import { repeatableTaskService } from './services/repeatableTask.service';
     YearlyReportController,
     StepFieldController,
     SensitiveDataController,
+    importClientsController,
     TableController,
     RepeatableTaskController,
     FrequencyController,
