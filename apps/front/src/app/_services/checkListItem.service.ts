@@ -23,7 +23,7 @@ export class CheckListItemService {
 
     // פונקציה לעדכון נתונים
     updateCheckListItem(checkListItem: CheckListItem): Observable<CheckListItem> {
-        return this.http.put<CheckListItem>(`${CHECKLISTITEM_ENDPOINT}/${checkListItem._id}`, checkListItem);
+        return this.http.put<CheckListItem>(`${CHECKLISTITEM_ENDPOINT}}`, checkListItem);
     }
 
     // פונקציה למחיקת נתונים

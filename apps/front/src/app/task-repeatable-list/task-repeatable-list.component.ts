@@ -1,8 +1,20 @@
 import { Component } from '@angular/core';
-import { CommonModule, DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
-import { ConfirmationService, Footer, MessageService, PrimeTemplate } from 'primeng/api';
+import {
+  CommonModule,
+  DatePipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+} from '@angular/common';
+import {
+  ConfirmationService,
+  Footer,
+  MessageService,
+  PrimeTemplate,
+} from 'primeng/api';
 import { Tag } from '../_models/tag.module';
-import {Task} from '../_models/task.module'
+import { Task } from '../_models/task.module';
 import { Client } from '../_models/client.module';
 import { Status } from '../_models/status.module';
 import { User } from '../_models/user.module';
@@ -24,45 +36,55 @@ import { SidebarModule } from 'primeng/sidebar';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { IconProfileComponent } from '../share/icon-profile/icon-profile.component';
+import { RepeatableTaskService } from '../_services/repeatable.service';
+import { RepeatableTask } from '../_models/repeatable.module';
+import { Frequency } from '../_models/frequency.module';
+import { FrequencyService } from '../_services/frequency.service';
+import { TooltipModule } from 'primeng/tooltip';
+import { AvatarModule } from 'primeng/avatar';
+
+
 
 @Component({
   selector: 'app-task-repeatable-list',
   standalone: true,
   imports: [
     ConfirmDialogModule,
-        Footer,
-        ButtonDirective,
-        SidebarModule,
-        NgIf,
-        CalendarModule,
-        FormsModule,
-        AutoCompleteModule,
-        PrimeTemplate,
-        IconProfileComponent,
-        MultiSelectModule,
-        Button,
-        RouterLink,
-        InputTextModule,
-        NgFor,
-        PanelModule,
-        TableModule,
-        NgStyle,
-        NgClass,
-        ToastModule,
-        DatePipe,
+    Footer,
+    ButtonDirective,
+    SidebarModule,
+    NgIf,
+    CalendarModule,
+    FormsModule,
+    AutoCompleteModule,
+    PrimeTemplate,
+    IconProfileComponent,
+    MultiSelectModule,
+    Button,
+    RouterLink,
+    InputTextModule,
+    NgFor,
+    PanelModule,
+    TableModule,
+    NgStyle,
+    NgClass,
+    ToastModule,
+    DatePipe,
+    TooltipModule,
+    AvatarModule
   ],
   templateUrl: './task-repeatable-list.component.html',
   styleUrl: './task-repeatable-list.component.css',
 })
 export class TaskRepeatableListComponent {
-  statuses: Status[] = []
+  frequencies: Frequency[] = [];
 
-  tasks: Task[] = [];
+  tasks: RepeatableTask[] = [];
   toDoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
   doneTasks: Task[] = [];
   filteredTasks: Task[] = [];
-  selectedTask!: Task;
+  selectedTask!: RepeatableTask;
 
   searchTerm: string = '';
 
@@ -75,57 +97,55 @@ export class TaskRepeatableListComponent {
     task: Task | null;
     tags: Tag[];
   } = {
-      deadlineRange: null,
-      client: null,
-      user: null,
-      task: null,
-      tags: []
-    };
-
+    deadlineRange: null,
+    client: null,
+    user: null,
+    task: null,
+    tags: [],
+  };
 
   clientSuggestions: Client[] = [];
   userSuggestions: User[] = [];
   taskSuggestions: any[] = [];
   tagSuggestions: Tag[] = [];
   display: any;
-
+  filterFirstStatus = true;
 
   constructor(
-    private taskService: TaskService,
+    private taskService: RepeatableTaskService,
     private userService: UserService,
     private clientService: ClientService,
     private tagService: TagService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private statusService: StatusService
-
-  ) { }
+    private frequencyService: FrequencyService
+  ) {}
 
   ngOnInit(): void {
     this.getTasks();
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
-      this.tagSuggestions = tags
-    })
-    this.statusService.getAllStatuses().subscribe(
-      data => {
-        this.statuses = data
-        console.log(this.statuses);
-      }
-    )
-  }
-
-  getTasks(): void {
-    this.taskService.getAllTasks().subscribe((allTasks: Task[]) => {
-      this.tasks = allTasks;
-      console.log(this.tasks);
+      this.tagSuggestions = tags;
+    });
+    this.frequencyService.getAllFrequencys().subscribe((data) => {
+      this.frequencies = data;
+      console.log(this.frequencies);
     });
   }
 
-  categorizeTasks(status: Status): Task[] {
-    // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
-    return this.tasks.filter(task => {
-      // console.log('Task status:', task.status); // הדפסת המצב של המשימה
-     {return task.status && task.status.name === status.name;}
+  getTasks(): void {
+    this.taskService
+      .getAllRepeatableTasks()
+      .subscribe((allTasks: RepeatableTask[]) => {
+        this.tasks = allTasks;
+        console.log(this.tasks);
+      });
+  }
+
+  categorizeTasks(f: Frequency): RepeatableTask[] {
+    return this.tasks.filter((task) => {
+      {
+        return task.frequency && task.frequency.name === f.name;
+      }
     });
   }
 
@@ -134,17 +154,15 @@ export class TaskRepeatableListComponent {
 
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
-
     } else {
-      this.filteredTasks = this.tasks.filter(task =>
+      this.filteredTasks = this.tasks.filter((task) =>
         task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
       console.log('filter: ', this.filteredTasks);
     }
   }
 
-
-  showConfirmation(task: Task): void {
+  showConfirmation(task: RepeatableTask): void {
     this.selectedTask = task;
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this task?',
@@ -152,27 +170,24 @@ export class TaskRepeatableListComponent {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         console.log('delete start');
-        this.deleteTask(this.selectedTask)
+        this.deleteTask(this.selectedTask);
       },
       reject: () => {
         console.log('cancel start');
         // Add the code to close the pop-up here
-      }
-    })
+      },
+    });
   }
-  confirmDelete(task: Task): void {
+  confirmDelete(task: RepeatableTask): void {
     this.deleteTask(task);
   }
 
-
-  deleteTask(task: Task): void {
-    this.taskService.deleteTask(task._id!).subscribe({
+  deleteTask(task: RepeatableTask): void {
+    this.taskService.deleteRepeatableTask(task._id!).subscribe({
       next: () => {
-        this.tasks = this.tasks.filter(task => task._id !== task._id);
-        // this.categorizeTasks();
         this.reloadPage();
       },
-      error: err => console.error('Error deleting task: ', err)
+      error: (err) => console.error('Error deleting task: ', err),
     });
   }
 
@@ -181,7 +196,7 @@ export class TaskRepeatableListComponent {
   }
 
   cancelDelete(): void {
-    this.confirmationService.close()
+    this.confirmationService.close();
   }
 
   toggleFilter(): void {
@@ -190,51 +205,117 @@ export class TaskRepeatableListComponent {
 
   searchClients(event: any): void {
     this.clientService.getAllClients().subscribe((clients: Client[]) => {
-      this.clientSuggestions = clients.filter(client => client["name"].toLowerCase().includes(event.query.toLowerCase()));
+      this.clientSuggestions = clients.filter(
+        (client) =>
+          client.firstName &&
+          client['firstName'].toLowerCase().includes(event.query.toLowerCase())
+      );
     });
   }
 
   searchUsers(event: any): void {
+    console.log(event.query);
+
     this.userService.getAllUsers().subscribe((users: any[]) => {
-      this.userSuggestions = (users.filter(user => user["userName"].toLowerCase().includes(event.query.toLowerCase())))
+      this.userSuggestions = users.filter(
+        (user) =>
+          user.userName &&
+          user['userName'].toLowerCase().includes(event.query.toLowerCase())
+      );
     });
   }
 
   searchTasks(event: any): void {
     const query = event.query.toLowerCase().toLowerCase();
     this.taskSuggestions = this.tasks
-      .filter(task => task.taskName.toLowerCase().includes(query.toLowerCase()))
-      .map(task => ({ taskName: task.taskName }));
+      .filter((task) =>
+        task.taskName.toLowerCase().includes(query.toLowerCase())
+      )
+      .map((task) => ({ taskName: task.taskName }));
   }
 
   searchTags(event: any): void {
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
-      this.tagSuggestions = tags.filter(tag => tag['text'].toLowerCase().includes(event.query.toLowerCase()));
+      this.tagSuggestions = tags.filter((tag) =>
+        tag['text'].toLowerCase().includes(event.query.toLowerCase())
+      );
       // this.filter.tags = tags;
     });
   }
 
   applyFilter() {
-    this.filteredTasks = this.tasks.filter(task => {
-      const deadlineMatch = !this.filter.deadlineRange ||
-        (task.dueDate >= this.filter.deadlineRange[0] && task.dueDate <= this.filter.deadlineRange[1]);
+    this.display = false;
+    this.filteredTasks = this.tasks.filter((task) => {
+      this.filterFirstStatus = false;
 
-      const clientMatch = !this.filter.client || task.client[0].name.includes(this.filter.client.name);
+      const deadlineMatch =
+        !this.filter.deadlineRange ||
+        (new Date(task.dueDate) >= this.filter.deadlineRange[0] &&
+          new Date(task.dueDate) <= this.filter.deadlineRange[1]);
 
-      const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
+      // const clientMatch = !this.filter.client || task.client.firstName.includes(this.filter.client.firstName);
+      const clientMatch =
+        !this.filter.client ||
+        (task.client &&
+          task.client.firstName.includes(this.filter.client.firstName));
 
-      const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
+      // const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
+      const userMatch =
+        !this.filter.user ||
+        (task.assignedTo[0] &&
+          task.assignedTo[0].userName &&
+          task.assignedTo[0].userName.includes(this.filter.user.userName));
 
+      console.log(userMatch);
+      console.log(this.filter.user);
+      console.log(task.assignedTo[0].userName);
+
+      const taskNameMatch =
+        !this.filter.task || task.taskName.includes(this.filter.task.taskName);
       let tagsMatch = true;
       if (this.filter.tags && this.filter.tags.length > 0) {
-        tagsMatch = this.filter.tags.every(filterTag => {
-          return task.tags.some(taskTag => taskTag.text.includes(filterTag.text));
+        tagsMatch = this.filter.tags.every((filterTag) => {
+          return task.tags.some((taskTag) =>
+            taskTag.text.includes(filterTag.text)
+          );
         });
       }
-      console.log(deadlineMatch, clientMatch, userMatch, taskNameMatch, tagsMatch);
 
+      console.log(
+        deadlineMatch,
+        clientMatch,
+        userMatch,
+        taskNameMatch,
+        tagsMatch
+      );
 
-      return deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch;
+      return (
+        deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
+      );
     });
   }
+  // sort
+  sortTasks(field: string, list: Task[], reverse: boolean) {
+    list.sort((a, b) => {
+      if (field === 'taskName') {
+        return reverse ? b.taskName.localeCompare(a.taskName) : a.taskName.localeCompare(b.taskName);
+      }
+      if (field === 'assignedTo') {
+        const nameA = a.assignedTo.map(user => user.userName).join(', ');
+        const nameB = b.assignedTo.map(user => user.userName).join(', ');
+        return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
+      }
+      if (field === 'dueDate') {
+        const dateA = new Date(a.dueDate).getTime();
+        const dateB = new Date(b.dueDate).getTime();
+        return reverse ? dateB - dateA : dateA - dateB;
+      }
+      if (field === 'tags') {
+        const tagsA = a.tags.map(tag => tag.text).join(', ');
+        const tagsB = b.tags.map(tag => tag.text).join(', ');
+        return reverse ? tagsB.localeCompare(tagsA) : tagsA.localeCompare(tagsB);
+      }
+      return 0;
+    });
+}
 }

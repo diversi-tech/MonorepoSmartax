@@ -93,8 +93,9 @@
     </ng-template>
   </p-table>
 
-  <button pButton class="styleCliennt" (click)="openContactFormDialog()">הוספת לקוח חדש</button>
-  <app-add-client *ngIf="displayDialog" (close)="closeDialog()"></app-add-client>
+  <!-- <button pButton class="styleCliennt" (click)="openContactFormDialog()">הוספת לקוח חדש</button> -->
+  <!-- <app-add-client *ngIf="displayDialog" (close)="closeDialog()"></app-add-client> -->
+  <button pButton class="styleCliennt" (click)="addNewClient()">הוספת לקוח חדש</button>
 
   <router-outlet></router-outlet>
 </div> 

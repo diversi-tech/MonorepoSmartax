@@ -41,7 +41,7 @@ export class ClientSearchComponent implements OnInit {
   filteredClients: Client[] = [];
   searchName = new FormControl('');
   selectedClient: Client | null = null;
-  displayDialog: boolean = false;
+  // displayDialog: boolean = false;
   choosedClients: Client[] = [];
   user: User;
   isChoosedAllClient: boolean = false;
@@ -126,11 +126,16 @@ export class ClientSearchComponent implements OnInit {
   }
   openContactFormDialog() {
     this.displayDialog = true;
+}
+  addNewClient() {
+    console.log("in")
+    // this.displayDialog = true;
+    this.router.navigate(['add-new-client'])
   }
 
-  closeDialog() {
-    this.displayDialog = false;
-  }
+  // closeDialog() {
+  //   this.displayDialog = false;
+  // }
 
   updateChoosedClients(client: Client, isChecked: boolean) {
     if (isChecked && !this.choosedClients.includes(client)) {
