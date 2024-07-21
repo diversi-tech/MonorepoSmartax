@@ -13,10 +13,8 @@ export interface Task {
   description?: string;
   dueDate?: Date;
   deadline?: Date;
-
   startDate?:Date;
-
-
+  
   status?: Status;
   assignedTo?: User[];
   tags?: Tag[];
