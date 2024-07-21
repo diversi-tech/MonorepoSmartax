@@ -133,11 +133,12 @@
   >
     <div>
       <!-- <p>שם: {{ selectedType.name }}</p> -->
-      <div *ngIf="!newC">
+      <!-- <div *ngIf="!newC">
         <app-type-client-create
           *ngIf="selectedType"
           style="margin-right: 50%"
           [type]="selectedType"
+          (closeDialog)="handleCloseDialog()"
         ></app-type-client-create>
       </div>
 
@@ -145,8 +146,16 @@
         <app-type-client-create
           style="margin-right: 50%"
           [type]="newClient"
+          [isNew]="create"
+          (closeDialog)="handleCloseDialog()"
         ></app-type-client-create>
-      </div>
+      </div> -->
+      <app-type-client-create
+        [type]="selectedType"
+        [isNew]="newC"
+        (closeDialog)="handleCloseDialog()"
+        (dataUpdated)="handleDataUpdated()"
+      ></app-type-client-create>
 
       <!-- הוסף פרטים נוספים כרצונך -->
       <!-- <router-outlet></router-outlet> -->
