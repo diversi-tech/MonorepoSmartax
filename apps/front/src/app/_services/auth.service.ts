@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { HashPasswordService } from '../_services/hash-password.service';
 import { AUTH_ENDPOINT } from '../api-urls';
@@ -31,13 +31,27 @@ export class AuthService {
     );
   }
 
-
-  logout(): Observable<any> {
-    return this.http.post(this.apiUrl + '/signout', {}, httpOptions);
-  }
-
   
+  logout(): Observable<number> {
+    try {
+      return this.http.post(this.apiUrl + '/signout', {}, httpOptions).pipe(
+        
+        map((response: HttpResponse<any>) => {
+          console.log(response);        
+          if (response.status >= 200 && response.status < 300) {
+            return response.status;
+          } else {
+            throw new Error('HTTP Error: ' + response.status);
+          }
+        })
+      );
 
+    }catch(error){
+      debugger
+      console.log(error)
+      return throwError(error);
+    }
+  }
 
    getCurrentRole(): Observable<Role> {
     const token = JSON.parse(sessionStorage.getItem('auth-user') + '')?.access_token;
@@ -59,14 +73,11 @@ export class AuthService {
 
 
   checkTokenAndPolicyValidity(policy: number): Observable<boolean> {
-    const token = JSON.parse(sessionStorage.getItem('auth-user') + '')?.access_token;
-    const headers = {
-      'Authorization': `Bearer ${token}`
-    };
+
 
     const body = { policy };
 
-    return this.http.post<any>(this.apiUrl + '/validate-token', body, { headers }).pipe(
+    return this.http.post<any>(this.apiUrl + '/validate-token', body).pipe(
       // map(response => {
       //   if (response.message !== 'Token is valid and policy is valid') {
       //     return false;

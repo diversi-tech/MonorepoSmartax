@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ClientType } from '../_models/clientType.module'; // Update the path according to the location of your model
+import { ClientType } from '../../app/_models/clientType.module'; // Update the path according to the location of your model
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientTypeService {
 
-  private apiUrl = 'http://localhost:3000/clientTypes'; // Base URL for the ClientType API
+  private apiUrl = 'http://localhost:8080/clientTypes'; // Base URL for the ClientType API
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }) // Define headers for HTTP requests

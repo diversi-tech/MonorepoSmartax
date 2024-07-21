@@ -1,0 +1,10 @@
+.rtl-table {
+    direction: rtl;
+    text-align: right;
+  }
+  
+  .rtl-table th, .rtl-table td {
+    text-align: right;
+  }
+  
+  

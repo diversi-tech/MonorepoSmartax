@@ -1,0 +1,39 @@
+
+/* .button-list {
+    display: flex;
+    flex-direction: column;
+  } */
+.custom-button {
+    margin: 5px;
+    padding: 5px 20px; /* Smaller padding */
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    display: inline-block;
+    color: white;
+    cursor: pointer;
+    line-height: 1.2;
+    font-size: 1em;
+    height: 30px;
+
+  }
+  
+  .custom-button .delete-button {
+    display: none;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px; /* Smaller size */
+    height: 16px; /* Smaller size */
+    line-height: 16px;
+    text-align: center;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px; /* Smaller font size */
+  }
+  
+  .custom-button:hover .delete-button {
+    display: block;
+  }

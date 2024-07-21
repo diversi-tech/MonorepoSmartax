@@ -1,0 +1,80 @@
+<div>
+  <h2>ניהול שעות עבודה</h2>
+
+  <!-- Existing buttons for check-in and check-out -->
+  <div>
+    <p-button label="כניסה" icon="pi pi-sign-in" (click)="checkIn()"></p-button>
+    <p-button label="יציאה" icon="pi pi-sign-out" (click)="checkOut()"></p-button>
+  </div>
+  
+  <!-- Table to display work logs -->
+  <div *ngIf="groupedWorkLogs">
+    <h3>רשימת יומני עבודה</h3>
+    <p-table [value]="groupedWorkLogs" class="rtl-table">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>תאריך</th>
+          <th>מספר עובד</th>
+          <th>שעות עבודה כולל</th>
+          <th>פעולות</th>
+        </tr>
+      </ng-template>
+  
+      <ng-template pTemplate="body" let-logGroup>
+        <tr>
+          <td>{{ logGroup.date }}</td>
+          <td>{{ logGroup.employeeId }}</td>
+          <td>{{ logGroup.totalHoursWorked ? logGroup.totalHoursWorked.toFixed(2) : '---' }}</td>
+          <td>
+            <p-button icon="pi pi-plus" (click)="logGroup.expanded = !logGroup.expanded"></p-button>
+          </td>
+        </tr>
+        <tr *ngIf="logGroup.expanded">
+          <td colspan="4">
+            <p-table [value]="logGroup.logs" class="rtl-table">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>שעת כניסה</th>
+                  <th>שעת יציאה</th>
+                  <th>סה"כ שעות</th>
+                  <th>פעולות</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-logEntry>
+                <tr *ngFor="let log of logEntry.timeEntries">
+                  <td>{{ log.checkIn | date: 'HH:mm' }}</td>
+                  <td>{{ log.checkOut ? (log.checkOut | date: 'HH:mm') : '---' }}</td>
+                  <td>{{ log.hoursWorked ? log.hoursWorked.toFixed(2) : '---' }}</td>
+                  <td>
+                    <p-button label="עריכה" icon="pi pi-pencil" (click)="editTimeEntry(logGroup, log)"></p-button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  
+  <!-- Dialog for editing work log -->
+  <p-dialog header="עריכת יומן עבודה" [(visible)]="displayDialog" [modal]="true" [closable]="false" [style]="{width: '50vw', height: '100vh'}">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="checkIn">שעת כניסה</label>
+        <p-calendar id="checkIn" [(ngModel)]="editedCheckIn" showTime="true" hourFormat="24"></p-calendar>
+      </div>
+      <div class="p-field">
+        <label for="checkOut">שעת יציאה</label>
+        <p-calendar id="checkOut" [(ngModel)]="editedCheckOut" showTime="true" hourFormat="24"></p-calendar>
+      </div>
+    </div>
+    <p-footer>
+      <p-button label="שמירה" icon="pi pi-check" (click)="saveEditedWorkLog()"></p-button>
+      <p-button label="ביטול" icon="pi pi-times" (click)="cancelEdit()"></p-button>
+    </p-footer>
+  </p-dialog>
+  
+  <!-- Export to Excel button -->
+  <p-button label="ייצוא לאקסל" icon="pi pi-file-excel" (click)="exportToExcel()"></p-button>
+</div>

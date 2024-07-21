@@ -11,7 +11,7 @@ export class MeetService {
     constructor(@InjectModel('Meet') private readonly MeetModel: Model<Meet>) { }
 
     async createMeet(createMeetDto: CreateMeetDto): Promise<Meet> {
-        const { address, date, beginningTime, endTime, usersId, clientDepartments } = createMeetDto;
+        const { address, date, beginningTime, endTime, usersId, clientDepartments ,googleId} = createMeetDto;
 
         if (!address || !date || !beginningTime || !endTime || !usersId || !clientDepartments) {
             throw new ValidationException('Missing required fields');
@@ -25,7 +25,8 @@ export class MeetService {
             date, beginningTime, 
             endTime, 
             usersId:usersIdObjectIds, 
-            clientDepartments:clientDepartmentsObjectIds });
+            clientDepartments:clientDepartmentsObjectIds,
+            googleId});
 
         try{
             return await createMeet.save();

@@ -1,0 +1,94 @@
+.custom-dropdown .p-dropdown .p-inputNumber .custom-inputNumber{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  }
+  
+  .custom-dropdown .p-dropdown:hover .p-inputNumber{
+    border-color: #42d013;
+  }
+  
+  .custom-dropdown .p-dropdown-label .p-inputNumber{
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .custom-dropdown .p-dropdown-trigger .p-inputNumber-trigger{
+    border-left: none;
+  }
+  
+  .custom-dropdown .p-dropdown-item {
+    font-size: 14px;
+  }
+  
+  .custom-dropdown-panel .p-inputNumber-panel {
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  #numberInput{
+    width:200px ;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    /* background-color: #f7f7f7; */
+    transition: all 0.3s;
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); */
+  }
+
+  input, textarea, select #p-button{
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  button {
+    padding: 12px 20px;
+    font-family: var(--font);
+    font-size: 14px;
+    text-transform: uppercase;
+    border: none;
+    background: var(--color-button);
+    color: var(--color-button-text);
+    box-shadow: inset #4c924c 0 -2px 0; /* דוגמה לצל כפתור */
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s ease-out;
+    border-radius: 0;
+  }
+  
+  button:disabled {
+    background: var(--color-button-disabled);
+    box-shadow: inset #b3b3b3 0 -2px 0; /* דוגמה לצל כפתור מנוטרל */
+  }
+  
+  button:hover {
+    background: #59a059; /* דוגמה לצבע רקע כאשר העכבר מעל */
+  }
+  
+  button:active {
+    box-shadow: inset #338033 0 0 0; /* דוגמה לאנימציה כאשר הכפתור נלחץ */
+    transform: translateY(2px);
+  }
+  .custom-dropdown-panel {
+    width: 100%;
+  }
+  
+  .form-group {
+    margin-bottom: 1em;
+    max-width: 200px;
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 0.5em;
+  }
+  
+  .p-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mydialog{}

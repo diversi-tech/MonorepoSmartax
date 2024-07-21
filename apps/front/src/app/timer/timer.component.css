@@ -1,0 +1,21 @@
+  #start{
+    background-color: green;
+    border: none;
+  }
+  #save{
+    background-color:red;
+    border: none;
+  }
+  #totalTime{
+    color: blue;
+  }
+  #tooltip{
+    width: 230px;
+    float: right;
+    clear: right;
+    border: 1px solid rgb(120, 165, 255);
+    border-radius: 5px;
+  }
+  #userIcon{
+   margin-left: auto;
+  }

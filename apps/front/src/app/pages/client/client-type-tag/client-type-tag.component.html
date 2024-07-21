@@ -1,0 +1,117 @@
+
+<!-- <div style="margin-left: 100px" >
+  <p-carousel [value]="buttons" styleClass="custom-carousel" [numVisible]="5" [numScroll]="1" [circular]="true" [autoplayInterval]="3000">
+    <ng-template pTemplate="item" let-button>
+      <p-inputGroup class="w-full md:w-30rem flex-container">
+        <div class="button-list">
+          <button
+            [style]="{
+              'background-color': getColor(button.text),
+              color: '#fff'
+            }"
+            class="custom-button"
+            (click)="initializeFormWithButtonId(button.id)"
+             >
+            {{ button.text }}
+            <span
+              (click)="buttons.splice(buttons.indexOf(button), 1)"
+              class="delete-button"
+            >
+              x
+            </span>
+          </button>
+        </div>
+      </p-inputGroup>
+    </ng-template>
+  </p-carousel>
+  <p-button (click)="addClientType()">הוספת תגית</p-button>
+
+</div> -->
+
+
+  <!-- buttons -->
+  <div style="margin-left: 100px">
+    <p-inputGroup class="w-full md:w-30rem flex-container">
+      <p-button
+        (click)="showClientTypesList = !showClientTypesList"
+        [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
+        icon="pi pi-tag"
+        [outlined]="true"
+        severity="secondary"
+      >
+      </p-button>
+      <!--  -->
+      <button
+      *ngFor="let ct of ClientTypesselected; let i = index"
+        [style]="{
+          'background-color': getColor(ct.text),
+          color: '#fff'
+        }"        
+        class="custom-button"
+       
+      >
+        {{ ct.text }}
+        <span
+        (click)="removeButton(index)"
+          (click)="ClientTypesselected.splice(i, 1)"
+          [ngClass]="{ bounce: i < ClientTypesselected.length - 1 }"
+          class="delete-button"
+        >
+          x
+        </span>
+      </button>
+    </p-inputGroup>
+  </div>
+  <form *ngIf="showClientTypesList">
+    <p-listbox
+      [options]="buttons!"
+      [filter]="true"
+      optionLabel="text"
+      [style]="{ width: '15rem' }"
+      [listStyle]="{ 'max-height': '400px' }"
+      (onChange)="showClientTypes = !showClientTypes"
+    >
+    <ng-template let-button pTemplate="item">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <span
+            [style]="{ color: getColor(button.text)}"
+            class="pi pi-stop-circle"
+          ></span>
+          <span
+            (click)="clientT(button)"
+            class="ml-2"
+            [style]="{
+              color: 'gray',
+              'font-size': '12px',
+              'margin-left': '5%'
+            }"
+            >{{ button.text }}</span
+          >
+          <!-- <span style="margin-left: 5%">{{ button.text }}</span> -->
+        </div>
+      </div>
+    </ng-template>
+    </p-listbox>
+  </form>
+  
+
+
+  <!-- <div *ngIf="showClientType">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div *ngFor="let field of selectedClientType?.fields">
+        <label [for]="field.name">{{ field.name }}</label>
+        <p-inputText
+          *ngIf="field.type === 'STRING'"
+          [formControlName]="field.name"
+          [id]="field.name"
+        ></p-inputText>
+        <p-calendar
+          *ngIf="field.type === 'DATE'"
+          [formControlName]="field.name"
+          [id]="field.name"
+        ></p-calendar>
+      </div>
+      <button pButton type="submit" label="Submit"></button>
+    </form>
+  </div> -->

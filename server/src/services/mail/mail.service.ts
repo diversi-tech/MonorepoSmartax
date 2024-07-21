@@ -15,26 +15,46 @@ export class MailService {
     });
   }
 
+  // Create a random password from numbers only and 4 characters long
+  generatePassword(length: number) {
+    const charset = '0123456789';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+    return password;
+  }
+
   async sendMail(body: any) {
     const { to, email } = body;
+
+    // Create a random password from numbers only and 4 characters long
+    const validPassword = this.generatePassword(4);
+
     const fileContent = fs.readFileSync(
-      __dirname + '/../../../src/assets/pageToHtml.html',
-      'utf8',
+      '../MonorepoSmartax/server/src/services/mail/mail.service.ts',
+      'utf8'
     );
+
+    // הוספת הסיסמה האקראית למייל
     const mailOptions = {
       from: process.env.EMAIL,
       to: to,
-      subject: 'Forgot Password',
-      text: 'This is a test email sent from NestJS',
-      html: fileContent,
+      subject: 'Forgot Password ❓- Smartax',
+      text: `Password to verify email address. Your password is: ${validPassword}`,
+      // html:m
     };
+
     try {
       const info = await this.transporter.sendMail(mailOptions);
       console.log('Email sent: ' + info.response);
-      return true;
+
+      // החזרת הסיסמה בתגובה של הפונקציה
+      return { success: true, password: validPassword, email: to };
     } catch (error) {
       console.error('Error sending email:', error);
-      return false;
+      return { success: false, error: error.message };
     }
   }
 }
