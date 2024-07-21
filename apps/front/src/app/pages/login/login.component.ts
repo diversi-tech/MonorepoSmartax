@@ -8,7 +8,12 @@ import { HashPasswordService } from '../../_services/hash-password.service';
 import { ForgotPasswordComponent } from '../forget-password/forget-password.component';
 import { NgClass, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { log } from 'util';
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 
 @Component({
   selector: 'app-login',
@@ -101,4 +106,174 @@ export class LoginComponent implements OnInit {
   reloadPage(): void {
     window.location.reload();
   }
+//   loadGoogleApi(): void {
+//     const script = document.createElement('script');
+//     script.src = 'https://accounts.google.com/gsi/client';
+//     script.async = true;
+//     script.defer = true;
+//     script.onload = () => this.initGoogleOneTap();
+//     script.onerror = (error) => console.error('Failed to load Google API script:', error);
+//     document.body.appendChild(script);
+//   }
+  
+//   initGoogleOneTap(): void {
+//     if (window.google.accounts.id) {
+//       window.google.accounts.id.initialize({
+//         client_id: '975731254673-141hak533863jonh6psdqo7qccdt2qnf.apps.googleusercontent.com',
+//         callback: this.handleCredentialResponse.bind(this)
+//       });
+//       window.google.accounts.id.prompt();
+//     } else {
+//       console.error("Google accounts.id API not loaded.");
+//     }
+//   }
+//   handleCredentialResponse(response: any): void {
+//     console.log("etty");
+//     if (response.credential) {
+//       var idToken = response.credential;
+//       var decodedToken = this.parseJwt(idToken);
+//       var email = decodedToken.email;
+//       var userName = decodedToken.name;
+//       console.log(email);
+//       console.log(userName);
+//     }
+    
+//   }
+//   parseJwt(token: string) {
+// console.log("parseJwt");
+//     var base64Url = token.split('.')[1];
+//     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+//     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+//       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+//     }).join(''));
+// console.log("join");
+
+//     return JSON.parse(jsonPayload);
+//   }
+// }
+
+
+
+// loadGoogleApi(): void {
+//   const script = document.createElement('script');
+//   script.src = 'https://accounts.google.com/gsi/client';
+//   script.async = true;
+//   script.defer = true;
+//   script.onload = () => this.initGoogleOneTap();
+//   script.onerror = (error) => console.error('Failed to load Google API script:', error);
+//   document.body.appendChild(script);
+// }
+
+// initGoogleOneTap(): void {
+//   console.log("Checking Google API availability...");
+//   if (window.google && window.google.accounts && window.google.accounts.id) {
+//     console.log("Google API is available.");
+//     window.google.accounts.id.initialize({
+//       client_id: "450626878965-7r8nl14gj5eh5h4lfb1qs2d4kfkvq15l.apps.googleusercontent.com",
+//       callback: (response: any) => this.handleCredentialResponse(response)
+//     });
+//     window.google.accounts.id.prompt();
+//     console.log("Prompt should be displayed.");
+//   } else {
+//     console.error("Google accounts.id API not loaded.");
+//   }
+// }
+
+
+
+// handleCredentialResponse(response: any): void {
+//   console.log("handleCredentialResponse called");
+//   if (response && response.credential) {
+//     const idToken = response.credential;
+//     console.log("ID Token:", idToken);
+//     const decodedToken = this.parseJwt(idToken);
+//     console.log("Decoded Token:", decodedToken);
+//     const email = decodedToken.email;
+//     const userName = decodedToken.name;
+//     console.log("Email:", email);
+//     console.log("UserName:", userName);
+//   } else {
+//     console.error("No credential found in response or response is invalid");
+//   }
+// }
+
+
+// parseJwt(token: string) {
+//   console.log("parseJwt called");
+//   try {
+//     const base64Url = token.split('.')[1];
+//     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+//     const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+//       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+//     }).join(''));
+//     return JSON.parse(jsonPayload);
+//   } catch (e) {
+//     console.error("Error parsing JWT:", e);
+//     return {};
+//   }
+// }
+// }
+
+
+
+
+
+
+loadGoogleApi(): void {
+  const script = document.createElement('script');
+  script.src = 'https://accounts.google.com/gsi/client';
+  script.async = true;
+  script.defer = true;
+  script.onload = () => this.initGoogleOneTap();
+  script.onerror = (error) => console.error('Failed to load Google API script:', error);
+  document.body.appendChild(script);
+}
+
+initGoogleOneTap(): void {
+  console.log("Checking Google API availability...");
+  if (window.google && window.google.accounts && window.google.accounts.id) {
+    console.log("Google API is available.");
+    window.google.accounts.id.initialize({
+      client_id: "450626878965-7r8nl14gj5eh5h4lfb1qs2d4kfkvq15l.apps.googleusercontent.com",
+      callback: (response: any) => this.handleCredentialResponse(response)
+    });
+    window.google.accounts.id.prompt();
+    console.log("Prompt should be displayed.");
+  } else {
+    console.error("Google accounts.id API not loaded.");
+  }
+}
+
+
+handleCredentialResponse(response: any): void {
+  console.log("handleCredentialResponse called");
+  if (response && response.credential) {
+    const idToken = response.credential;
+    console.log("ID Token:", idToken);
+    const decodedToken = this.parseJwt(idToken);
+    console.log("Decoded Token:", decodedToken);
+    const email = decodedToken.email;
+    const userName = decodedToken.name;
+    console.log("Email:", email);
+    console.log("UserName:", userName);
+  } else {
+    console.error("No credential found in response or response is invalid");
+  }
+}
+
+
+parseJwt(token: string) {
+  console.log("parseJwt called");
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    console.error("Error parsing JWT:", e);
+    return {};
+  }
+}
 }

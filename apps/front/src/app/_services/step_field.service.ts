@@ -20,7 +20,7 @@ export class stepFieldService {
 
   // Create stepField
   createStepField(stepField: StepField): Observable<StepField> {
-    return this.http.post<StepField>(this.apiUrl, stepField, this.httpOptions)
+    return this.http.post<StepField>(`${this.apiUrl}/create`, stepField, this.httpOptions)
       .pipe(
         catchError(this.handleError<StepField>('createStepField'))
       );
@@ -44,15 +44,16 @@ export class stepFieldService {
 
   // Update an existing Client
   updateStepField(StepField: StepField): Observable<StepField> {
-    return this.http.put<StepField>(`${this.apiUrl}`, StepField, this.httpOptions)
+    return this.http.post<StepField>(`${this.apiUrl}/update/${StepField._id}`, StepField, this.httpOptions)
       .pipe(
         catchError(this.handleError<StepField>('updateStepField'))
       );
   }
 
-  // Delete a Client by ID
+  // Delete a StepField by ID
   deleteStepField(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
+    console.log("server id",id)
+    return this.http.post<boolean>(`${this.apiUrl}/delete`,   {id} ,this.httpOptions )
       .pipe(
         catchError(this.handleError<boolean>('deleteStepField', false))
       );

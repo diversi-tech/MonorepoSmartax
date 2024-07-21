@@ -16,20 +16,21 @@ export class StepFieldService{
     
         return step.save();
       }
-      async updateStepFieldDto(id: string, UpdateStepFieldDto: UpdateStepFieldDto): Promise<StepField> {
-        const step=await this.StepFieldModel.findByIdAndUpdate(
-            id,
-            this.updateStepFieldDto,
-            {new: true}
+
+      async updateStepFieldDto(id: string, updateStepFieldDto: UpdateStepFieldDto): Promise<StepField> {
+        const step = await this.StepFieldModel.findByIdAndUpdate(
+          id,
+          updateStepFieldDto,
+          // { new: true }
         ).exec();
-
-        if(!step){
-            throw new NotFoundException('step not found');
+    
+        if (!step) {
+          throw new NotFoundException('Yearly Report not found');
         }
-
-   
-        return step;
+    
+        return step.save();
       }
+  
 
       async deleteStepField(id: string): Promise<void> {
         const result = await this.StepFieldModel.findByIdAndDelete(id).exec();
