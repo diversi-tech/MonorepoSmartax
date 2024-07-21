@@ -1,141 +1,137 @@
-import { Component, NgModule } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
-import { NgForm, NgModel } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CheckList } from '../_models/checkList.model';
+import { CheckListItem } from '../_models/checkListItem.model';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckListItemComponent } from '../check-list-item/check-list-item.component';
+import { CheckListService } from '../_services/checkList.service';
+import { CheckListItemService } from '../_services/checkListItem.service';
 
-
-interface Todo {
-  id: number;
-  name: string;
-  completed: boolean;
-}
 @Component({
   selector: 'app-task-check-list',
   standalone: true,
-  imports: [CommonModule, NgFor, NgIf, NgClass],
+  imports: [CommonModule, NgFor, NgIf, NgClass, CheckListItemComponent, CheckboxModule, ReactiveFormsModule, FormsModule, ButtonModule, InputTextModule],
   templateUrl: './task-check-list.component.html',
-  styleUrl: './task-check-list.component.css',
+  styleUrls: ['./task-check-list.component.css'],
 })
-export class TaskCheckListComponent {
+export class TaskCheckListComponent implements OnInit {
 
-  title: string = new Date().toDateString();
-  data: Todo[] = [
-    { id: -1, name: "Morning walk", completed: true },
-    { id: -2, name: "Meeting with Holden Caulfield", completed: true },
-    { id: -3, name: "Call Alper Kamu", completed: false },
-    { id: -4, name: "Book flight to Hungary", completed: false },
-    { id: -5, name: "Blog about CSS box model", completed: true }
-  ];
-  filteredData: Todo[] = this.data;
-  count: number = this.data.length;
+  // formGroup: FormGroup;
+  editingItemIndex: number | null = null;
 
-  filterTypes: { name: string; queryParam: string | null; queryValue: string | null; active: boolean }[] = [
-    { name: "All", queryParam: null, queryValue: null, active: true },
-    { name: "Active", queryParam: "completed", queryValue: "false", active: false },
-    { name: "Completed", queryParam: "completed", queryValue: "true", active: false }
-  ];
+  @Input()
+  checkList: CheckList | null = {
+    _id: "0",
+    name: 'רשימת המשימות שלי',
+    items: []
+  };
 
-  constructor() {}
+  @Output()
+  save = new EventEmitter<CheckList>();
+
+  constructor(private formBuilder: FormBuilder, private checkListService: CheckListService, private checkListItemService: CheckListItemService) { }
 
   ngOnInit(): void {
-    this.listUI(this.data);
-    this.filterUI();
-  }
-
-  // addTask({ id = new Date().getUTCMilliseconds(), name = `New task #${new Date().getUTCMilliseconds()}`, completed = false } = {}): void {
-  //   const newTask: Todo = { id, name, completed };
-  //   this.data.push(newTask);
-  //   this.listUI(this.data);
-  //   this.updateCount();
-  //   this.filterData();
-  // }
-
-  deleteTask(id: number): void {
-    this.data = this.data.filter(task => task.id !== id);
-    this.listUI(this.data);
-    this.updateCount();
-    this.filterData();
-  }
-
-  toggleStatus(id: number): void {
-    this.data = this.data.map(task => {
-      if (task.id === id) task.completed = !task.completed;
-      return task;
-    });
-    this.listUI(this.data);
-    this.filterData();
-  }
-
-  filterData(queryParam: string | null = null, queryValue: string | null = null): void {
-    this.filteredData =
-      !queryValue && !queryParam
-        ? this.data
-        : this.data.filter(task => String(task[queryParam]) === queryValue);
-    this.listUI(this.filteredData);
-    this.filterTypes = this.filterTypes.map(filter => {
-      filter.active = String(filter.queryParam) === String(queryParam) && String(filter.queryValue) === queryValue;
-      return filter;
-    });
-  }
-
-  updateCount(): void {
-    this.count = this.data.length;
-  }
-
-  listUI(data: Todo[] = this.data): void {
-    // Implement your UI logic here
-  }
-
-  filterUI(filterTypes: { name: string; queryParam: string | null; queryValue: string | null; active: boolean }[] = this.filterTypes): void {
-    // Implement your UI logic here
-  }
-
-  
-  cont = 1;
-  days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-  date: Date = new Date()
-
-
-  addNode(checked: boolean = false) {
-    const newNode = document.createElement('article');
-    // newNode.innerHTML = `<input type='checkbox' id='t${this.cont}' ${checked ? 'checked' : ''}/> <label for='t${this.cont}'></label><span contenteditable='true'>Task #${this.cont}</span>`;
-    newNode.innerHTML = `<input type='checkbox' id='t${this.cont}' ${checked ? 'checked' : ''} onchange='updateText(this)'/> <label for='t${this.cont}'></label><span contenteditable='true' id='span${this.cont}'>${checked ? 'Task #' + this.cont + ':' : 'Task #' + this.cont}</span>`;
-
-    newNode.id = `article${this.cont}`;
-    newNode.ondblclick = this.onDblClick;
-    this.cont++;
-    const main_sec = document.getElementById('main_sec');
-    main_sec.appendChild(newNode);
-    main_sec.scrollTop = main_sec.scrollHeight;
-  }
-
-  updateText(checkbox:any) {
-    var span = document.getElementById('span' + checkbox.id.substring(1));
-    if (checkbox.checked) {
-      span.innerHTML = 'Task #' + checkbox.id.substring(1) + ':';
-    } else {
-      span.innerHTML = 'Task #' + checkbox.id.substring(1);
+    if (this.checkList == null) {
+      this.checkList = {
+        name: 'רשימת המשימות שלך',
+        items: []
+      }
+      this.editNewItem = true
     }
   }
 
-  onDblClick(event: any) {
-    document.getElementById(event.target.id).remove();
+
+  updateItem(item: CheckListItem): void {
+    let res1: any | null
+    let res2: any | null
+    let copy: any | null
+    if (item._id! != "1234") {
+      try {
+        let prev = this.checkList.items.find(item => item._id === item._id)
+        if (prev) {
+          copy = prev
+          prev = item;
+          res1 = this.checkListService.updateCheckList(this.checkList);
+        }
+        else {
+          alert("ארעה שגיאה, אנא נסה שוב")
+          // this.checkList.items.push(item);
+          // res2 = this.checkListService.updateCheckList(this.checkList);
+        }
+      } catch (err) {
+        console.log(err);
+        if (!res1) {
+          let prev = this.checkList.items.find(item => item._id === item._id)
+          prev = copy
+        }
+        // if (!res2) {
+        //   this.checkList.items.pop()
+        // }
+        // alert("העדכון נכשל, אנא נסה שוב")
+      }
+    }
+    else{
+      alert("new item")
+      this.saveItem(item)
+    }
   }
 
-  tasks = [
-    { title: 'A default item', done: false },
-    { title: 'A completed default item', done: true }
-  ];
+  deleteItem(_id: string): void {
+    try {
+      if (_id) {
+        const index = this.checkList.items.findIndex(item => item._id === _id)
+        alert(index)
+        if (index) {
+          this.checkList.items.splice(index, 1);
+          this.checkListService.updateCheckList(this.checkList);
+        }
+        else {
+          this.editNewItem = false;
+        }
 
-  newTask: string;
-
-  addTask() {
-    this.tasks.push({ title: this.newTask, done: false });
-    this.newTask = '';
+      }
+      else {
+        throw new Error('Item not found');
+      }
+    } catch (err) {
+      console.log(err);
+      alert("ארעה שגיאה בתהליך המחיקה, אנא נסה שוב")
+    }
   }
 
-  clearCompleted() {
-    this.tasks = this.tasks.filter(task => !task.done);
+  editNewItem = false
+  newItem: CheckListItem = {_id: "1234", description: 'משימה חדשה', isDone: false  }
+  addItem(): void {
+    this.editNewItem = true;
   }
-  
+
+  deleteName(): boolean {
+    return true;
+  }
+
+  editNameInput: boolean = true;
+  editName(): void {
+    this.editNameInput = !this.editNameInput;
+  }
+
+  saveItem(item: CheckListItem): void {
+    try {
+      const maxId: string = this.checkList.items.reduce((max, item) => (item._id > max ? item._id : max), this.checkList.items[0]._id);
+      if (maxId) { item._id = (parseInt(maxId) + 1).toString() }
+      else item._id = "0"
+      this.checkList.items.push(item);
+      this.checkListService.updateCheckList(this.checkList);
+      this.newItem={_id: "1234", description: 'משימה חדשה', isDone: false  }
+      this.editNewItem = false
+    }
+    catch (err) {
+      console.log("ההוספה נכשלה, אנא נסה שוב");
+      this.editNewItem = false
+    }
+  }
+
 }

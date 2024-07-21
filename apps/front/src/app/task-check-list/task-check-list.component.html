@@ -1,50 +1,68 @@
-<!-- <section id="app">
-  <header>
-    <div id="day-field">
-      <div id="day">{{date.getDate().toString()}}</div>
-      <div id="month">
-        <span id="month_name">{{this.months[date.getMonth()]}}</span> <span id="year">{{date.getFullYear().toString()}}</span>
+<form>
+
+  <div class="p-field" style="display: flex; flex-direction: row;">
+    <input [disabled]="editNameInput" pInputText type="text" id="name" value="{{checkList.name}}">
+
+    <div *ngIf="editNameInput">
+      <div (click)="editName()">
+        <i class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
+      </div>
+
+      <!-- <div (click)="deleteName()">
+        <i class="pi pi-trash" style="color: red;cursor: pointer;"></i>
+      </div> -->
+    </div>
+
+    <div *ngIf="!editNameInput">
+      <div (click)="updateItemi()">
+        <i class="pi pi-check" style="color: red;cursor: pointer;"></i>
+      </div>
+      <div (click)="editName(i)">
+        <i class="pi pi-times" style="color: blue;cursor: pointer;"></i>
       </div>
     </div>
-    <div id="week">{{this.days[date.getUTCDay()]}}</div>
-  </header>
-  <section id="main_sec"></section>
-  <footer>
-    <button id="add_but" (click)="addNode()">+</button>
-  </footer>
-</section> -->
-
-
-<!-- <footer id="credits">
-  <span
-    >made by
-    <a href="http://www.pedrocacique.com"
-      ><img
-        alt="avatar"
-        src="https://scontent.fcgh7-1.fna.fbcdn.net/t31.0-8/p960x960/11958099_10200916172781826_3235614628416290419_o.jpg"
-    /></a>
-  </span>
-</footer> -->
-
-
-<div ng-app="TaskList" ng-controller="taskController">
-    <form name="form" ng-submit="addTask()">
-      <div>
-        <input type="text" name="task" placeholder="Add a new task" ng-model="newTask" required>
-        <button ng-disabled="form.invalid">הוספת משימה</button>
-      </div>
-    </form>
-  
-    <ul>
-      <li *ngFor="let task of tasks" ng-class="{'completed': task.done}">
-        <span>{{ task.title }}</span>
-        <input type="checkbox" id="{{ 'task-'}}" ng-model="task.done">
-        <label for="{{ 'task-' }}"></label>
-      </li>
-    </ul>
-  
-    <p ng-show="!(tasks | filter: { title: '' }).length" class="all-complete">כל המשימות הושלמו</p>
-  
-    <button ng-click="clearCompleted()">מחק משימות שהושלמו</button>
   </div>
-  
+  <!-- (changeDone)="changeDone(i)" -->
+  <div *ngFor="let item of checkList.items; let i = index">
+    <app-check-list-item [item]="item" [newItem]="false" (delete)="deleteItem(item._id)" (update)="updateItem($event)"></app-check-list-item>
+
+  </div>
+    <p-button (click)="addItem()">הוספת פריט</p-button>
+  <app-check-list-item *ngIf="editNewItem" [item]="newItem" [newItem]="true" (delete)="deleteItem('1234')" (update)="updateItem($event)"></app-check-list-item>
+  <!-- <p-button (click)="saveItem">שמירה</p-button> -->
+
+  <!-- <div *ngFor="let item of checkList.items; let i = index" style="display: flex; flex-direction: row;">
+    <div class="p-field-checkbox">
+      <p-checkbox [disabled]="editingItemIndex!=i" binary="true" value="item.isDone"></p-checkbox>
+    </div>
+
+    <div class="p-field">
+      <p *ngIf="editingItemIndex!=i" [disabled]="editingItemIndex!=i">{{ item.description }}</p>
+
+      <input pInputText type="text" id="description" value="{{ item.description }}" *ngIf="editingItemIndex==i">
+    </div>
+
+    <div *ngIf="editingItemIndex!=i">
+      <div (click)="editItem(i)">
+        <i class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
+      </div>
+      <div (click)="deleteItem(i)">
+        <i class="pi pi-trash" style="color: red;cursor: pointer;"></i>
+      </div>
+    </div>
+
+    <div *ngIf="editingItemIndex==i">
+      <div (click)="saveItem(i)">
+        <i class="pi pi-check" style="color: red;cursor: pointer;"></i>
+      </div>
+      <div (click)="editItem(i)">
+        <i class="pi pi-times" style="color: blue;cursor: pointer;"></i>
+      </div>
+    </div>
+
+
+
+  </div> -->
+
+  <!-- <p-button type="button" label="הוספת פריט" (click)="addItem()"></p-button> -->
+</form>

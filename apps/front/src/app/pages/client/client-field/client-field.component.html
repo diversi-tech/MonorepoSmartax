@@ -1,5 +1,5 @@
-<p>client-field works!</p>
-<!-- 
+<!-- <p>client-field works!</p>
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div *ngFor="let field of fields">
       <label [for]="field.key">{{ field.key }}</label>
@@ -9,6 +9,35 @@
       <p-calendar *ngIf="field.type === 'DATE'" [formControlName]="field.key"></p-calendar>
   
     </div>
-  
     <button pButton type="submit" label="Submit" [disabled]="form.invalid"></button>
-  </form> -->
+  </form>
+
+  <div>
+    <p>The key value is: {{ key }}</p>
+  </div>
+  <div>
+    <label>{{ key }}:</label>
+    <input pInputText *ngIf="type === 'string'" type="text" [(ngModel)]="value" />
+    <input pInputText *ngIf="type === 'number'" type="number" [(ngModel)]="value" />
+    <input pInputText *ngIf="type === 'date'" type="date" [(ngModel)]="value" />
+    <input pInputText *ngIf="type === 'bool'" type="checkbox" [(ngModel)]="value" />
+
+  </div>
+   -->
+
+   <p-card>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="{{field.key}}">{{field.key | titlecase}}:</label>
+          <br>
+          <input *ngIf="field.type === 'טקסט'" pInputText type="text" formControlName="{{field.key}}" />
+          <input *ngIf="field.type === 'מספר'" pInputText type="number" formControlName="{{field.key}}" />
+          <input *ngIf="field.type === 'שעה'" pInputText type="time" formControlName="{{field.key}}" />
+          <input *ngIf="field.type === 'תאריך'" pInputText type="date" formControlName="{{field.key}}" />
+          <input *ngIf="field.type === 'V\X'" type="checkbox"  formControlName="{{field.key}}" style="width: 20px; height: 20px;" />
+        </div>
+      </div>
+      <button type="submit" pButton label="Submit" class="p-mt-2"></button>
+    </form>
+  </p-card>

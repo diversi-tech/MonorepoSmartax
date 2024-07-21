@@ -9,6 +9,7 @@ import { TokenService } from './_services/token.service';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { LoginComponent } from './pages/login/login.component';
+import { CheckListItemComponent } from './check-list-item/check-list-item.component';
 
 // import { RouterTestingModule } from '@angular/router/testing';
 // import { TestBed } from '@angular/core/testing';
@@ -23,7 +24,7 @@ import { LoginComponent } from './pages/login/login.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [LoginComponent,RouterLinkActive, RouterLink, ToolBarComponent, RouterOutlet, ToolBarComponent]
+  imports: [LoginComponent,RouterLinkActive, CheckListItemComponent, RouterLink, ToolBarComponent, RouterOutlet, ToolBarComponent]
 })
 export class AppComponent {
   isLoggedIn = false;
@@ -59,16 +60,23 @@ export class AppComponent {
   }
 
   logout(): void {
-    this.authService.logout().subscribe({
-      next: res => {
-        console.log(res);
-        this.storageService.clean();
-        window.location.reload();
-        this.router.navigate(['/home']);
-      },
-      error: err => {
-        console.log(err);
-      }
-    });
+    try{
+      this.authService.logout().subscribe(
+        (status: number) => {
+          console.log('Logout successful. Status:', status);
+          this.storageService.clean();
+          this.router.navigate(["/login"]);
+        },
+        (error: any) => {
+          console.error('Logout failed. Error:', error);
+          alert("ארעה שגיאה בתהליך היציאה, אנא נסה שנית")
+        }
+      );
+
+    }catch(err){
+      console.error('Logout failed. Error:', err);
+      alert("ארעה שגיאה בתהליך היציאה, אנא נסה שנית")
+    }
+  
   }
 }

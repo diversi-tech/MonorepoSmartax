@@ -33,7 +33,7 @@ export class MailService {
     const validPassword = this.generatePassword(4);
 
     const fileContent = fs.readFileSync(
-      'D:/פרקטיקום/monorepo2/MonorepoSmartax/server/src/assets/pageToHtml.html',
+      '../MonorepoSmartax/server/src/services/mail/mail.service.ts',
       'utf8'
     );
 

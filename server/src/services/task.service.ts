@@ -20,15 +20,15 @@ export class TaskService {
   
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    //const {  client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority } = createTaskDto;
-    const task = new this.taskModel(createTaskDto);
-    return task.save()
+    const {  client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority,images,googleId,startDate } = createTaskDto;
+    // const task = new this.taskModel(createTaskDto);
+    // return task.save()
     // if (!client || !assignedTo) {
     //   throw new ValidationException('Missing required fields');
     // }
 
-    //const createTask = new this.taskModel({ client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority });
-    //return await createTask.save();
+    const createTask = new this.taskModel({ client, taskName, description,dueDate,status,assignedTo,tags,priority,images,googleId,deadline,startDate});
+    return await createTask.save();
   }
 
   async findAll(): Promise<Task[]> {
@@ -45,18 +45,23 @@ export class TaskService {
 
 
   async updateTask(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    const {  client, taskName, description,dueDate,status,assignedTo,tags } = updateTaskDto;
+try{
+  const {  client, taskName, description,dueDate,status,assignedTo,tags, checkList,priority,images,googleId,deadline ,startDate} = updateTaskDto;
 
-    const updatedTask = await this.taskModel.findByIdAndUpdate(
-      id,
-      { client, taskName, description,dueDate,status,assignedTo,tags },
-      { new: true }
-    ).exec();
+  const updatedTask = await this.taskModel.findByIdAndUpdate(
+    id,
+    { client, taskName, description,dueDate,status,assignedTo,tags,checkList,priority,images,googleId,deadline,startDate},
+    { new: true }
+  ).exec();
 
-    if (!updatedTask) {
-      throw new ValidationException('Task not found');
-    }
-    return updatedTask;
+  if (!updatedTask) {
+    throw new ValidationException('Task not found');
+  }
+  return updatedTask;
+}catch(err){
+  console.log(err);
+  
+}
   }
 
   async deleteTask(id: string): Promise<Task> {

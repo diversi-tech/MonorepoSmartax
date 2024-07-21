@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 
 export class CreateFieldDto {
 
-    @ApiProperty({ type: String })
+    @ApiProperty()
     @IsNotEmpty()
     @IsString()
     key: string;
@@ -18,10 +18,7 @@ export class CreateFieldDto {
     @ApiProperty()
     @IsOptional()
     @IsString()
-    type?:string;
-
-
-
+    type_?:string;
    
 }
 
@@ -39,7 +36,7 @@ export class UpdateFieldDto {
     @ApiProperty({ type: String, required: true })
     @IsOptional()
     @IsString()
-    type?:string;
+    type_?:string;
 
 }
 
