@@ -126,6 +126,7 @@ export class TaskComponent implements OnInit {
   rangeDates: Date[] = [];
   dueDate: Date | undefined;
   id: string | undefined;
+  clientIds: string [] = [];
   checked: boolean = false;
   text: string | undefined; //description of task
   buttonText: string = '';
@@ -166,6 +167,7 @@ export class TaskComponent implements OnInit {
   selectedTags: Tag[] = [];
   selectedPriority!: Priority;
   // array
+  sentClients: Client[] = []
   selectedClients: Client[] = [];
   selectedUsers: User[] = [];
   //
@@ -177,6 +179,8 @@ export class TaskComponent implements OnInit {
   @Input() taskId: string | null = null;
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
   //
+
+  clientIdsParam: string[]
   constructor(
     private userSErvice: UserService,
     private clientService: ClientService,
@@ -193,11 +197,33 @@ export class TaskComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
+    const clientIdsString = this.route.snapshot.paramMap.get('clientIds');
+    if (clientIdsString) {
+      this.clientIdsParam = clientIdsString.split(',');
+    }
+    console.log(this.clientIdsParam); // הדפסה לנתונים לבדיקה
+
+    this.clientIdsParam.forEach(clientId => {
+      this.clientService.searchClient(clientId).subscribe({
+        next: (client: Client) => {
+          this.selectedClients.push(client);
+          console.log('Loaded Client:', client);
+          console.log(this.selectedClients);
+          
+        },
+        error: (err) => {
+          console.error('Error loading client:', err);
+        }
+      });
+    });
+  
 
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId) this.id = this.taskId;
     console.log(this.id);
-    if (this.id != 'create') {
+    if (this.id != 'create' ) {
+      
       this.tasksService.searchTask(this.id!).subscribe({
         next: (data) => {
           console.log('tasks: ', data);
@@ -324,6 +350,9 @@ export class TaskComponent implements OnInit {
       console.log(`Task ${taskId} assigned to ${assignedTo}`);
     });
   }
+
+
+
 
   showDialog() {
     if (this.id == 'create') {
@@ -485,7 +514,7 @@ export class TaskComponent implements OnInit {
       // dueDate: this.currentTask.dueDate!,
     };
 
-    if (this.selectedClient) newTask.client = this.selectedClient;
+    if (this.selectedClients) newTask.client = this.selectedClients;
     if (this.htmlContent) newTask.description = this.htmlContent;
     if (this.selectStatus) newTask.status = this.selectStatus;
     if (this.buttons) newTask.tags = this.buttons;
@@ -499,7 +528,25 @@ export class TaskComponent implements OnInit {
     if (this.eventId) newTask.googleId = this.eventId;
     console.log(this.eventId);
 
-    if (this.id == 'create') {
+    // if (this.clientIds.length > 0){
+    //   console.log(this.clientIds.length);
+      
+    //   this.tasksService.createTask(newTask).subscribe({
+    //     next: (dataClients) => {
+    //       console.log(dataClients);
+    //       if ((this.selectedUsers = [])) {
+    //         // Task not assigned, notify all clients
+    //         this.socketService.addTask(newTask);
+    //       }
+    //     },
+    //     error: (errClients) => {
+    //       console.log(errClients);
+    //     },
+    //   });
+
+    // }
+
+    if (this.id == 'create' || this.clientIdsParam) {
       this.tasksService.createTask(newTask).subscribe({
         next: (dataClients) => {
           console.log(dataClients);

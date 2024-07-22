@@ -141,10 +141,10 @@ export class TasksController {
 @Post('create')
   @ApiOperation({ summary: 'Create a new task' })
   @ApiBody({ type: CreateTaskDto })
-  async create(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
+  async create(@Body() createTaskDto: CreateTaskDto): Promise<Task[]> {
     try {
-      const newTask = await this.taskService.createTask(createTaskDto);
-      return newTask;
+      const newTasks = await this.taskService.createTask(createTaskDto);
+      return newTasks;
     } catch (error) {
         console.log(error);
       throw new HttpException(

@@ -220,4 +220,12 @@ addToFavorite(client:Client){
   onDocumentClick() {
     this.choosedClients = [];
   }
+
+  navigateWithClientIds() {
+    const clientIds = this.choosedClients.map(client => client._id);
+    const queryParams = clientIds.join(',');
+    const url = `/taskSpe/create/${queryParams}`;
+    this.router.navigateByUrl(url);
+  }
+
 }

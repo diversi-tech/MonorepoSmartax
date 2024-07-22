@@ -8,29 +8,63 @@ import { TokenService } from './jwt.service';
 import * as bcrypt from 'bcryptjs';
 import { Task } from '../Models/task.model';
 import { CreateTaskDto ,UpdateTaskDto } from '../Models/dto/task.dto';
+import { ClientService } from './client.service';
 
 
 @Injectable()
 export class TaskService {
   constructor(
     @InjectModel('Task') private readonly taskModel: Model<Task>,
-    private jwtToken:TokenService
+    private jwtToken:TokenService,
+    private clientService: ClientService
     
   ) {}
   
 
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    const {  client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority,images,googleId,startDate } = createTaskDto;
-    // const task = new this.taskModel(createTaskDto);
-    // return task.save()
-    // if (!client || !assignedTo) {
-    //   throw new ValidationException('Missing required fields');
-    // }
+  // async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+  //   const {  client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority,images,googleId,startDate } = createTaskDto;
+  //   // const task = new this.taskModel(createTaskDto);
+  //   // return task.save()
+  //   // if (!client || !assignedTo) {
+  //   //   throw new ValidationException('Missing required fields');
+  //   // }
 
-    const createTask = new this.taskModel({ client, taskName, description,dueDate,status,assignedTo,tags,priority,images,googleId,deadline,startDate});
-    return await createTask.save();
+  //   const createTask = new this.taskModel({ client, taskName, description,dueDate,status,assignedTo,tags,priority,images,googleId,deadline,startDate});
+  //   return await createTask.save();
+  // }
+
+  async createTask(createTaskDto: CreateTaskDto): Promise<Task[]> {
+    const { client, taskName, description, dueDate, status, assignedTo, tags, deadline, priority, images, googleId, startDate } = createTaskDto;
+    const tasks: Task[] = [];
+    if (client.length){
+      for (const singleClient of client) {
+        const createTask = new this.taskModel({ 
+          client: singleClient, 
+          taskName, 
+          description, 
+          dueDate, 
+          status, 
+          assignedTo, 
+          tags, 
+          priority, 
+          images, 
+          googleId, 
+          deadline, 
+          startDate 
+        });
+        const savedTask = await createTask.save();
+        tasks.push(savedTask);
+      }
+    }else
+    {
+      const createTask = new this.taskModel({ client, taskName, description, dueDate, status, assignedTo, tags, deadline, priority, images, googleId, startDate})
+      const savedTask = await createTask.save();
+      tasks.push(savedTask);
+    }
+  
+    return tasks;
   }
-
+  
   async findAll(): Promise<Task[]> {
     return await this.taskModel.find().exec();
   }

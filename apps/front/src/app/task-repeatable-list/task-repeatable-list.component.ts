@@ -42,9 +42,6 @@ import { Frequency } from '../_models/frequency.module';
 import { FrequencyService } from '../_services/frequency.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
-
-
-
 @Component({
   selector: 'app-task-repeatable-list',
   standalone: true,
@@ -78,18 +75,14 @@ import { AvatarModule } from 'primeng/avatar';
 })
 export class TaskRepeatableListComponent {
   frequencies: Frequency[] = [];
-
   tasks: RepeatableTask[] = [];
   toDoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
   doneTasks: Task[] = [];
-  filteredTasks: Task[] = [];
+  filteredTasks: RepeatableTask[] = [];
   selectedTask!: RepeatableTask;
-
   searchTerm: string = '';
-
   showFilter: boolean = false;
-
   filter: {
     deadlineRange: [Date, Date] | null;
     client: Client | null;
@@ -103,14 +96,12 @@ export class TaskRepeatableListComponent {
     task: null,
     tags: [],
   };
-
   clientSuggestions: Client[] = [];
   userSuggestions: User[] = [];
   taskSuggestions: any[] = [];
   tagSuggestions: Tag[] = [];
   display: any;
   filterFirstStatus = true;
-
   constructor(
     private taskService: RepeatableTaskService,
     private userService: UserService,
@@ -120,7 +111,6 @@ export class TaskRepeatableListComponent {
     private messageService: MessageService,
     private frequencyService: FrequencyService
   ) {}
-
   ngOnInit(): void {
     this.getTasks();
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
@@ -131,7 +121,6 @@ export class TaskRepeatableListComponent {
       console.log(this.frequencies);
     });
   }
-
   getTasks(): void {
     this.taskService
       .getAllRepeatableTasks()
@@ -140,7 +129,6 @@ export class TaskRepeatableListComponent {
         console.log(this.tasks);
       });
   }
-
   categorizeTasks(f: Frequency): RepeatableTask[] {
     return this.tasks.filter((task) => {
       {
@@ -148,10 +136,8 @@ export class TaskRepeatableListComponent {
       }
     });
   }
-
   searchTask(): void {
     console.log(typeof this.searchTerm);
-
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
     } else {
@@ -161,7 +147,6 @@ export class TaskRepeatableListComponent {
       console.log('filter: ', this.filteredTasks);
     }
   }
-
   showConfirmation(task: RepeatableTask): void {
     this.selectedTask = task;
     this.confirmationService.confirm({
@@ -181,7 +166,6 @@ export class TaskRepeatableListComponent {
   confirmDelete(task: RepeatableTask): void {
     this.deleteTask(task);
   }
-
   deleteTask(task: RepeatableTask): void {
     this.taskService.deleteRepeatableTask(task._id!).subscribe({
       next: () => {
@@ -190,19 +174,15 @@ export class TaskRepeatableListComponent {
       error: (err) => console.error('Error deleting task: ', err),
     });
   }
-
   reloadPage(): void {
     window.location.reload();
   }
-
   cancelDelete(): void {
     this.confirmationService.close();
   }
-
   toggleFilter(): void {
     this.showFilter = !this.showFilter;
   }
-
   searchClients(event: any): void {
     this.clientService.getAllClients().subscribe((clients: Client[]) => {
       this.clientSuggestions = clients.filter(
@@ -212,10 +192,8 @@ export class TaskRepeatableListComponent {
       );
     });
   }
-
   searchUsers(event: any): void {
     console.log(event.query);
-
     this.userService.getAllUsers().subscribe((users: any[]) => {
       this.userSuggestions = users.filter(
         (user) =>
@@ -224,7 +202,6 @@ export class TaskRepeatableListComponent {
       );
     });
   }
-
   searchTasks(event: any): void {
     const query = event.query.toLowerCase().toLowerCase();
     this.taskSuggestions = this.tasks
@@ -233,7 +210,6 @@ export class TaskRepeatableListComponent {
       )
       .map((task) => ({ taskName: task.taskName }));
   }
-
   searchTags(event: any): void {
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
       this.tagSuggestions = tags.filter((tag) =>
@@ -242,34 +218,28 @@ export class TaskRepeatableListComponent {
       // this.filter.tags = tags;
     });
   }
-
   applyFilter() {
     this.display = false;
     this.filteredTasks = this.tasks.filter((task) => {
       this.filterFirstStatus = false;
-
       const deadlineMatch =
         !this.filter.deadlineRange ||
         (new Date(task.dueDate) >= this.filter.deadlineRange[0] &&
           new Date(task.dueDate) <= this.filter.deadlineRange[1]);
-
       // const clientMatch = !this.filter.client || task.client.firstName.includes(this.filter.client.firstName);
       const clientMatch =
         !this.filter.client ||
         (task.client &&
           task.client.firstName.includes(this.filter.client.firstName));
-
       // const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
       const userMatch =
         !this.filter.user ||
         (task.assignedTo[0] &&
           task.assignedTo[0].userName &&
           task.assignedTo[0].userName.includes(this.filter.user.userName));
-
       console.log(userMatch);
       console.log(this.filter.user);
       console.log(task.assignedTo[0].userName);
-
       const taskNameMatch =
         !this.filter.task || task.taskName.includes(this.filter.task.taskName);
       let tagsMatch = true;
@@ -280,7 +250,6 @@ export class TaskRepeatableListComponent {
           );
         });
       }
-
       console.log(
         deadlineMatch,
         clientMatch,
@@ -288,44 +257,33 @@ export class TaskRepeatableListComponent {
         taskNameMatch,
         tagsMatch
       );
-
       return (
         deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
       );
     });
   }
   // sort
-  // בקומפוננטה שלך
   sortTasks(field: string, list: Task[], reverse: boolean) {
-    // debugger
-    console.log(this.filteredTasks);
-
     list.sort((a, b) => {
       if (field === 'taskName') {
-        if (reverse) {
-          return b.taskName.localeCompare(a.taskName);
-        }
-        return a.taskName.localeCompare(b.taskName); // sort by task name
+        return reverse ? b.taskName.localeCompare(a.taskName) : a.taskName.localeCompare(b.taskName);
       }
       if (field === 'assignedTo') {
-        if (reverse) {
-          return b.assignedTo.length - a.assignedTo.length;
-        }
-        return a.assignedTo.length - b.assignedTo.length;
+        const nameA = a.assignedTo.map(user => user.userName).join(', ');
+        const nameB = b.assignedTo.map(user => user.userName).join(', ');
+        return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
       }
       if (field === 'dueDate') {
-        if (reverse) {
-          return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate();
-        }
-        return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate(); // מיון לפי תאריך יעד
+        const dateA = new Date(a.dueDate).getTime();
+        const dateB = new Date(b.dueDate).getTime();
+        return reverse ? dateB - dateA : dateA - dateB;
       }
       if (field === 'tags') {
-        if (reverse) {
-          return b.tags.length - a.tags.length;
-        }
-        return a.tags.length - b.tags.length; // מיון לפי מספר התגיות של המשימה
+        const tagsA = a.tags.map(tag => tag.text).join(', ');
+        const tagsB = b.tags.map(tag => tag.text).join(', ');
+        return reverse ? tagsB.localeCompare(tagsA) : tagsA.localeCompare(tagsB);
       }
-      return 0; // במקרה שלא נמצא שדה תואם
+      return 0;
     });
-  }
+}
 }

@@ -8,8 +8,8 @@ import { Status } from '../status.model';
 import { CheckList } from '../checkList.model';
 
 export class CreateTaskDto {
-    @IsNotEmpty()
-    client: Client;
+  @IsOptional()
+  client: Client[];
 
     @IsNotEmpty()
     @IsString()
@@ -52,6 +52,7 @@ export class CreateTaskDto {
     
     @IsOptional()
     checkList: CheckList[];
+  createTaskDto: Promise<Client>;
 }
 
 export class UpdateTaskDto {

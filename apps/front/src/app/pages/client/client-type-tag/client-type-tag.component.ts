@@ -29,7 +29,6 @@ import { ClientService } from '../../../_services/client.service';
   styleUrls: ['./client-type-tag.component.css'],
 })
 export class ClientTypeTagComponent implements OnInit {
-  @Input() tagName: string | undefined;
 
   showTags: boolean = false;
   clientTypes: ClientType[] = [];
@@ -42,6 +41,9 @@ export class ClientTypeTagComponent implements OnInit {
   ClientTypesselected: ClientType[] = [];
   id: string = "";
   thisClient: Client;
+  selectedClients: Client[] = [];
+  clients: Client[] = []
+  clientIdsParam: string[]= []
 
   constructor(
     @Inject(ClientTypeService) private clientTypeService: ClientTypeService,
@@ -53,20 +55,15 @@ export class ClientTypeTagComponent implements OnInit {
   ) {
     this.form = this.fb.group({});
   }
-  
+  stateData: string;
+
   ngOnInit() {
     this.getAllClientTypes();
-    this.ar.params.subscribe(
-          data => {
-            this.id = data['id'];
-            this.clientService.searchClient(this.id).subscribe(
-              suc => {
-                this.thisClient = suc,
-                console.log(this.thisClient)
-              })
-            }
-          )
+    this.stateData = history.state.client;
+    console.log('stateData:', this.stateData.length);
   }
+
+
 
   getAllClientTypes(): void {
     this.clientTypeService.getAllClientTypes().subscribe({
