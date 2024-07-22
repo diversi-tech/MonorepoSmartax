@@ -1,7 +1,55 @@
-// socket.service.ts
+// // socket.service.ts
+// import { Injectable } from '@angular/core';
+// import { io, Socket } from 'socket.io-client';
+// import { Observable } from 'rxjs';
+
+// @Injectable({
+//   providedIn: 'root',
+// })
+// export class SocketService {
+//   private socket: Socket;
+
+//   constructor() {
+//     this.socket = io('http://localhost:3000'); // Replace with your server URL
+//   }
+
+//   public onTaskNotAssigned(): Observable<any> {
+//     return new Observable<any>((observer) => {
+//       this.socket.on('taskNotAssigned', (data) => {
+//         observer.next(data);
+//       });
+//     });
+//   }
+
+//   public onTaskAssignedToYou(): Observable<any> {
+//     return new Observable<any>((observer) => {
+//       this.socket.on('taskAssignedToYou', (data) => {
+//         observer.next(data);
+//       });
+//     });
+//   }
+
+//   public onTaskAssigned(): Observable<any> {
+//     return new Observable<any>((observer) => {
+//       this.socket.on('taskAssigned', (data) => {
+//         observer.next(data);
+//       });
+//     });
+//   }
+
+//   public addTask(task: any): void {
+//     console.log(task);
+//     this.socket.emit('addTask', task);
+//   }
+
+//   public assignTask(taskId: string, assignedTo: string): void {
+//     this.socket.emit('assignTask', taskId, assignedTo);
+//   }
+// }
+
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,40 +57,44 @@ import { Observable } from 'rxjs';
 export class SocketService {
   private socket: Socket;
 
+  private taskConfirmedSource = new Subject<string>();
+  taskConfirmed$ = this.taskConfirmedSource.asObservable();
+
   constructor() {
-    this.socket = io('http://localhost:3000'); // Replace with your server URL
-  }
+    this.socket = io('http://192.168.174.1:3000');
 
-  public onTaskNotAssigned(): Observable<any> {
-    return new Observable<any>((observer) => {
-      this.socket.on('taskNotAssigned', (data) => {
-        observer.next(data);
-      });
+    this.socket.on('connect', () => {
+      console.log('מחובר לשרת WebSocket');
+    });
+
+    this.socket.on('disconnect', () => {
+      console.log('מנותק משרת WebSocket');
+    });
+
+    this.socket.on('taskConfirmed', (taskId: string) => {
+      this.taskConfirmedSource.next(taskId);
     });
   }
 
-  public onTaskAssignedToYou(): Observable<any> {
-    return new Observable<any>((observer) => {
-      this.socket.on('taskAssignedToYou', (data) => {
-        observer.next(data);
-      });
+  onTaskCreated(callback: (task: any) => void) {
+    this.socket.on('taskCreated', (task) => {
+      console.log('אירוע taskCreated התקבל:', task);
+      callback(task);
     });
   }
 
-  public onTaskAssigned(): Observable<any> {
-    return new Observable<any>((observer) => {
-      this.socket.on('taskAssigned', (data) => {
-        observer.next(data);
-      });
+  onTaskConfirmed(callback: (taskId: string) => void) {
+    this.socket.on('taskConfirmed', (taskId) => {
+      console.log('אירוע taskConfirmed התקבל:', taskId);
+      callback(taskId);
     });
   }
 
-  public addTask(task: any): void {
-    console.log(task);
+  confirmTask(taskId: string) {
+    this.socket.emit('confirmTask', taskId);
+  }
+
+  addTask(task: any) {
     this.socket.emit('addTask', task);
-  }
-
-  public assignTask(taskId: string, assignedTo: string): void {
-    this.socket.emit('assignTask', taskId, assignedTo);
   }
 }

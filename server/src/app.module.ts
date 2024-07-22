@@ -118,6 +118,9 @@ import {
 import { Year, YearModel } from './Models/year.model';
 import { YearService } from './services/year.service';
 import { YearController } from './controller/year/year.controller';
+import { ClientField, ClientFieldModel } from './Models/clientField.model';
+import { ClientFieldController } from './controller/clientField/clientField.controller';
+import { ClientFieldService } from './services/clientField.service';
 import {
   CheckListItem,
   CheckListItemModel,
@@ -134,8 +137,15 @@ import {
 } from './Models/sensitiveData.model';
 import { SensitiveDataService } from './services/sensitiveData.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { importClientsController } from './controller/importClients/importClients.controller';
 import { TableController } from './controller/table/table.controller';
 import { TableService } from './services/table.service';
+import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.model';
+import { RepeatableTaskController } from './controller/repeatableTask/repeatableTask.controller';
+import { repeatableTaskService } from './services/repeatableTask.service';
+import { TasksGateway } from './services/socket/socket.gateway';
+// import { PopupGateway } from './services/socket/socket.gateway';
+// import { PopupController } from './controller/socket/popUp.controller';
 // import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -143,11 +153,14 @@ import { TableService } from './services/table.service';
 //   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 // }
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
+import { TaxRefundsService } from './services/taxRefunds.service';
+import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
+import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI),
+  //add
+  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
+    MongooseModule.forFeature([{ name: ClientField.name, schema: ClientFieldModel }]),
     MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
     MongooseModule.forFeature([
@@ -195,6 +208,8 @@ import { TableService } from './services/table.service';
     ]),
     MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
     MongooseModule.forFeature([{ name: Timer.name, schema: TimerModel }]),
+    MongooseModule.forFeature([{ name: RepeatableTask.name, schema: RepeatableTaskModel }]),
+    MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '../uploads'),
       serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
@@ -220,6 +235,9 @@ import { TableService } from './services/table.service';
     ]),
     MongooseModule.forFeature([
       { name: CommunicationArchive.name, schema: communicationArchiveModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: TaxRefunds.name, schema: taxRefundsModel },
     ]),
     JwtModule,
   ],
@@ -251,13 +269,18 @@ import { TableService } from './services/table.service';
     PaymentMethodController,
     PaymentDetailsController,
     PaymentController,
+    ClientFieldController,
     TimerController,
     CommunicationArchiveController,
     YearController,
     YearlyReportController,
     StepFieldController,
     SensitiveDataController,
+    importClientsController,
     TableController,
+    RepeatableTaskController,
+    FrequencyController,
+    TaxRefundsController,
   ],
 
   providers: [
@@ -292,6 +315,9 @@ import { TableService } from './services/table.service';
     PaymentDetailsService,
     PaymentService,
     SensitiveDataService,
+    ClientFieldService,
+    repeatableTaskService,
+    TaxRefundsService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
@@ -302,6 +328,8 @@ import { TableService } from './services/table.service';
     YearlyReportService,
     YearService,
     TableService,
+    TasksGateway,
+    // PopupGateway,
   ],
 })
 export class AppModule {}

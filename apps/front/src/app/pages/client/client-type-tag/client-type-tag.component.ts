@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClientTypeService } from '../../../_services/clientType.service';
 import { Observable } from 'rxjs';
@@ -6,7 +6,13 @@ import { ClientType } from '../../../_models/clientType.module';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Field } from '../../../_models/field.module';
+import { CarouselModule } from 'primeng/carousel';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ListboxModule } from 'primeng/listbox';
+import { Client } from '../../../_models/client.module';
+import { ClientService } from '../../../_services/client.service';
 
 @Component({
   selector: 'app-client-type-tag',
@@ -15,7 +21,9 @@ import { Router } from '@angular/router';
     CommonModule,
     CardModule,
     InputGroupModule,
-    ButtonModule
+    ButtonModule,
+    CarouselModule,
+    ListboxModule
   ],
   templateUrl: './client-type-tag.component.html',
   styleUrls: ['./client-type-tag.component.css'],
@@ -27,34 +35,71 @@ export class ClientTypeTagComponent implements OnInit {
   clientTypes: ClientType[] = [];
   buttons: { text: string; id: string }[] = [];
   selectedClientType: ClientType | null = null;
-
+  selectedFields: Field[] = [];
+  form: FormGroup;
+  showClientTypesList: boolean = false
+  showClientTypes: boolean = false;
+  ClientTypesselected: ClientType[] = [];
+  id: string = "";
+  thisClient: Client;
 
   constructor(
-    @Inject(ClientTypeService) private clientTypeTagService: ClientTypeService,
+    @Inject(ClientTypeService) private clientTypeService: ClientTypeService,
+    @Inject(ClientService) private clientService: ClientService,
     @Inject(Router) private router: Router,
+    private fb: FormBuilder,
+    public ar: ActivatedRoute
 
-  ) {}
+  ) {
+    this.form = this.fb.group({});
+  }
   
   ngOnInit() {
     this.getAllClientTypes();
+    this.ar.params.subscribe(
+          data => {
+            this.id = data['id'];
+            this.clientService.searchClient(this.id).subscribe(
+              suc => {
+                this.thisClient = suc,
+                console.log(this.thisClient)
+              })
+            }
+          )
   }
 
   getAllClientTypes(): void {
-    this.clientTypeTagService.getAllClientTypes().subscribe(types => {
-      this.clientTypes = types;
-      this.createTag();
-      console.log(this.clientTypes);
+    this.clientTypeService.getAllClientTypes().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.clientTypes = data;
+        this.createTag();
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
+
   }
 
+  clientT(ct: ClientType) {
+    this.ClientTypesselected.push(ct);
+    this.buttons.push({ text: ct.name,id: ct._id });
+    this.showClientTypesList = !this.showClientTypesList;
+  }
+  
   createTag(): void {
+    this.showClientTypes = !this.showClientTypes;
     this.buttons = this.clientTypes.map((type: ClientType) => ({
       text: type.name,
       id: type._id!,
     }));
   }
-
+  
   getColor(name: string): string {
+    if (!name) {
+      return '#000'; 
+    }
     const hash = name
       .split('')
       .reduce((acc, char) => char.codePointAt(0)! + ((acc << 5) - acc), 0);
@@ -66,15 +111,20 @@ export class ClientTypeTagComponent implements OnInit {
       .join('')}`;
     return color;
   }
-
-  removeButton(button: any) {
-    const index = this.buttons.indexOf(button);
+  
+  removeButton(tag: any) {
+    console.log(this.buttons);
+    console.log(this.ClientTypesselected);
+    
+    const index = this.ClientTypesselected.indexOf(tag);
     if (index !== -1) {
-      this.buttons.splice(index, 1);
+      this.ClientTypesselected.splice(index, 1);
     }
   }
 
 
  
-
 }
+ 
+
+

@@ -18,8 +18,21 @@ export class CheckListController {
 
   @Post()
   async create(@Body() createCheckListDto: CreateCheckListDto): Promise<CheckList> {
-    return this.checkListService.create(createCheckListDto);
-  }
+    try{
+      console.log(createCheckListDto);
+      createCheckListDto.items!.forEach(element => {
+        console.log(element);
+        
+      })
+      
+      return this.checkListService.create(createCheckListDto);
+    }catch(err){
+      console.log(err);
+      
+    }
+  
+  
+    }
 
   @Get()
   async findAll(): Promise<CheckList[]> {
@@ -37,12 +50,25 @@ export class CheckListController {
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateCheckListDto: UpdateCheckListDto): Promise<CheckList> {
-    return this.checkListService.update(id, updateCheckListDto);
+    try {
+      console.log("try update checkList");
+      
+      return this.checkListService.update(id, updateCheckListDto);
+    }
+    catch (err) {
+      console.log(err);
+    }
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<CheckList> {
-    return this.checkListService.delete(id);
+    try {
+      return this.checkListService.delete(id);
+    }
+    catch (err) {
+      console.log(err);
+
+    }
   }
 
 

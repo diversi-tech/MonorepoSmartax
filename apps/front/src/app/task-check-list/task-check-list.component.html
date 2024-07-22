@@ -1,26 +1,37 @@
-//לבדוק בקומפוננטת משימה איך לעשות binding על משימות מהטבלה, שיודעים על איזה משימה מדובר
-
-<!-- <form>
-  <span>{{ checkList.name }}</span>
-
-  <div class="p-field" *ngFor="let item of checkList.items; let i = index" style="display: flex; flex-direction: row;">
-    <div class="p-field-checkbox">
-      <p-checkbox binary="true" [(ngModel)]="item.isDone"></p-checkbox>
-    </div>
-
-    <div class="p-field">
-      <p-input type="text" [(ngModel)]="item.description" name="description"></p-input>
-      <p>{{editingItemIndex}}</p>
-    </div>
-
-    <div>
-      <i (click)="editItem(i)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
-      <i (click)="deleteItem(i)" class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
-    </div>
-  </div>
-
+<p-card header="{{checkList.name}}">
+  <!-- edit task name -->
   <div>
-    <p-button type="button" icon="pi pi-plus" label="הוספת פריט" (click)="addItem()"></p-button>
+    <i *ngIf="editNameInput" (click)="editName()" class="pi pi-pencil" style="top:0;color: blue;cursor: pointer;"></i>
+    <!-- add item -->
+    <i (click)="addItem()" class="pi pi-plus" style="color:rgb(0, 255, 21); cursor: pointer;"></i>
+    <i class="pi pi-trash" (click)="deleteList()" style="color: red;cursor: pointer;"></i>
+
+    <!-- new item -->
+    <app-check-list-item *ngIf="editNewItem" [item]="newItem" [newItem]="true" (delete)="deleteItem('1234')"
+      (update)="updateItem($event)"></app-check-list-item>
+  </div>
+  <div class="p-field" style="display: flex; flex-direction: row;">
+    <!-- <p-divider /> -->
+
+    <div *ngIf="!editNameInput" style="display: flex; flex-direction: row;">
+      <input pInputText type="text" id="name" [(ngModel)]="checkList.name" value="{{checkList.name}}">
+
+      <div (click)="updateItem()">
+        <i class="pi pi-check" style="color: blue ;cursor: pointer;"></i>
+      </div>
+      <div (click)="editName()">
+        <i class="pi pi-times" style="color:red;cursor: pointer;"></i>
+      </div>
+    </div>
   </div>
 
-</form> -->
+  <p-divider />
+
+
+  <!-- items of checklist -->
+  <div *ngFor="let item of checkList.items; let i = index">
+    <app-check-list-item [item]="item" [newItem]="false" (delete)="deleteItem(item._id)"
+      (update)="updateItem($event)"></app-check-list-item>
+  </div>
+
+</p-card>

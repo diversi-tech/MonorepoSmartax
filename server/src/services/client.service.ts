@@ -56,6 +56,8 @@ export class ClientService {
   }
   async searchClient(id: string): Promise<Client> {
     const client = await this.clientModel.findOne({ _id: id }).exec();
+    console.log(client);
+    console.log("etty");
     if (!client) {
       throw new NotFoundException('Client not found');
     }
