@@ -53,10 +53,12 @@
 
 
     <div class="card coupons">
-      <label class="title">Apply coupons</label>
+      <label class="title">מידע נוסף</label>
       <form class="form">
-        <input type="text" placeholder="Apply your coupons here" class="input_field">
-        <button>Apply</button>
+        <span *ngIf="thisPayment.totalPayment">:סכום לגביה</span>
+        <p>{{thisPayment.totalPayment}}</p>
+        <span *ngIf="thisPayment.paymentMethod">:צורת תשלום</span>
+        <p>{{thisPayment.paymentMethod.name}}</p>
       </form>
     </div>
 
