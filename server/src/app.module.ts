@@ -81,9 +81,9 @@ import {
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
-import { Timer, TimerModel } from './Models/timer';
+import { Timer, TimerModel } from './Models/timer.model';
 import { TimerController } from './controller/timer/timer.controller';
-import { TimerService } from './services/timer';
+import { TimerService } from './services/timer.service';
 import { WorkLogController } from './controller/workLog/workLog.controller';
 import { WorkLogService } from './services/workLog.service';
 import { WorkLogModel, WorkLog } from './Models/workLog.model';
