@@ -216,6 +216,8 @@ import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearl
       { path: 'monthlyReport', component: MonthlyReportComponent },
       { path: 'taxRefunds', component: TaxRefundsComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
+      {path:'sensitiveDetails', component:SensitiveDetailsComponent}
+  
     ],
   },
   { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
