@@ -97,6 +97,9 @@ export class LoginComponent implements OnInit {
   }
   forgotPassword() {
     this.forgot = true;
+
+
+   
   }
   reloadPage(): void {
     window.location.reload();
