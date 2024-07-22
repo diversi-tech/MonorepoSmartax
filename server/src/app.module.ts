@@ -143,6 +143,9 @@ import { TableService } from './services/table.service';
 import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.model';
 import { RepeatableTaskController } from './controller/repeatableTask/repeatableTask.controller';
 import { repeatableTaskService } from './services/repeatableTask.service';
+import { TasksGateway } from './services/socket/socket.gateway';
+// import { PopupGateway } from './services/socket/socket.gateway';
+// import { PopupController } from './controller/socket/popUp.controller';
 // import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -325,6 +328,8 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     YearlyReportService,
     YearService,
     TableService,
+    TasksGateway,
+    // PopupGateway,
   ],
 })
 export class AppModule {}
