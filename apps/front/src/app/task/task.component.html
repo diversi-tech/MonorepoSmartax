@@ -1,7 +1,11 @@
 <!-- ===================== -->
-<app-timer *ngIf="id!='create'" [taskId]="id"></app-timer>
 <div style="margin-top: 10%" id="container">
-  <p-card header="משימה" subheader="צור וערוך את המשימה שלך" [style]="{ width: '800px' }">
+  <p-card
+    header="משימה"
+    subheader="ליצור ולערוך משימות"
+    [style]="{ width: '800px' }"
+  >
+    <app-timer *ngIf="id != 'create'" [taskId]="id"></app-timer>
     <ng-template pTemplate="header">
       <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
     </ng-template>
@@ -300,8 +304,10 @@
           <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"><span
               (click)="showClients = !showClients" class="pi pi-user"></span></p-inputGroupAddon>
           <div (click)="showClients = !showClients">
-            <app-icon-profile *ngIf="selectedClient"
-              [userName]="selectedClient.firstName && selectedclient.firstName"></app-icon-profile>
+            <app-icon-profile
+              *ngIf="selectedClient"
+              [userName]="selectedClient.firstName && selectedClient.firstName"
+            ></app-icon-profile>
           </div>
         </p-inputGroup>
         <!-- <p-multiSelect
@@ -416,12 +422,12 @@
       <p-tabView>
         <p-tabPanel header="רשימות">
           <div *ngFor="let list of checkList" style="padding: 5px;">
-            <app-task-check-list [checkList]=" list" (save)="saveList($event)" (delete)="deleteList($event)"> </app-task-check-list>          
+            <app-task-check-list [checkList]=" list" (save)="updateList($event)" (delete)="deleteList($event)"> </app-task-check-list>          
           </div>
           <p *ngIf="checkList.length==0">אין רשימות</p>
 
           <!-- create new list -->
-          <p-dropdown (onChange)="addList($event)" [options]="groupedLists" [(ngModel)]="selectedList"
+          <p-dropdown (onChange)="createList($event)" [options]="groupedLists" [(ngModel)]="selectedList"
             placeholder="{{selectPlaceholder}}" [group]="true" ngModel #dropdownModel="ngModel" name="selectedList">
             <ng-template let-group pTemplate="group">
               <div class="flex align-items-center">
@@ -457,10 +463,21 @@
     <!-- footer -->
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1" style="margin-left: 70%">
-        <p-button label="Cancel" icon="pi pi-undo" [text]="true" [raised]="true" severity="secondary"
-          style="color: red;" [style]="{color:'red'}" (click)="cancel()" />
-        <p-button label="Save" icon="pi pi-check" [text]="true" [raised]="true" severity="secondary"
-          (click)="showDialog()" />
+        <p-button
+          label="Cancel"
+          icon="pi pi-undo"
+          [text]="true"
+          [raised]="true"
+          severity="danger"
+          (click)="cancel()"
+        />
+        <p-button
+          label="Save"
+          icon="pi pi-check"
+          [text]="true"
+          [raised]="true"
+          (click)="showDialog()"
+        />
       </div>
     </ng-template>
 

@@ -17,6 +17,6 @@ export class ClientBillingsComponent {
   constructor(private billingService: BillingService) { }
 
   ngOnInit() {
-    this.billingService.getBillingsByClientId('667368ad9f9f5b132becf6a5').subscribe(data => this.listBillings = data);
+    // this.billingService.getBillingsByClientId('667368ad9f9f5b132becf6a5').subscribe(data => this.listBillings = data);
   }
 }
