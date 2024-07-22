@@ -58,10 +58,28 @@
             label="בחר הכל"></button></th>
         <th></th>
         <th></th>
-        <th>שם החברה</th>
+        <th>   <span (click)="onSelectionChange(4)">שם חברה</span>
+          <div>
+            <input *ngIf="isSelected == 4" type="text" placeholder="שם חברה"   [(ngModel)]="filternamecom"
+            (input)="filterClientsBynamecom()"/>
+          </div> </th>
         <th>שם פרטי ומשפחה</th>
-        <th>תעודת זהות</th>
-        <th>טלפון</th>
+        <th> 
+          <span (click)="onSelectionChange(3)">תעודות זהות</span>
+          <div>
+            <input *ngIf="isSelected == 3" type="text" placeholder="תעודות זהות"   [(ngModel)]="filterTZ"
+            (input)="filterClientsByTZ()"/>
+          </div> </th>
+        <th> <span (click)="onSelectionChange(2)">טלפון</span>
+          <div>
+            <input
+            *ngIf="isSelected == 2"
+            type="text"
+            placeholder="טלפון"
+            [(ngModel)]="filterNumber"
+            (input)="filterClientsByNumber()"
+          />
+          </div> </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-client let-columns="columns">
