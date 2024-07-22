@@ -24,7 +24,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-pop-up-socket',
   standalone: true,
-  imports: [CommonModule, DialogModule,ButtonModule],
+  imports: [CommonModule, DialogModule, ButtonModule],
   templateUrl: './popUp-socket.component.html',
   styleUrls: ['./popUp-socket.component.css'],
 })
@@ -32,7 +32,7 @@ export class PopupNotificationComponent implements OnInit {
   task: any = null;
   display: boolean = false;
 
-  constructor(private socketService: SocketService,private router:Router) {}
+  constructor(private socketService: SocketService, private router: Router) {}
 
   ngOnInit() {
     this.socketService.onTaskCreated((task) => {
@@ -53,12 +53,15 @@ export class PopupNotificationComponent implements OnInit {
 
   confirmTask() {
     if (this.task) {
-      this.socketService.confirmTask(this.task.id);
+      this.socketService.confirmTask(this.task._id);
       this.display = false;
       this.task = null;
     }
   }
-  moveTask(){
+  moveTask() {
+    this.socketService.confirmTask(this.task._id);
     this.router.navigate(['/taskSpe', this.task._id]);
+    this.display = false;
+    this.task = null;
   }
 }

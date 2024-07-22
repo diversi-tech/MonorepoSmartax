@@ -235,6 +235,16 @@ export class TaskComponent implements OnInit {
             });
           })
 
+          this.clientService.searchClient(this.selectedClient).subscribe({
+            next: (dataClients) => {
+              console.log(dataClients);
+              this.selectedClient = dataClients;
+            },
+            error: (errClients) => {
+              console.log(errClients);
+            },
+          });
+
         },
         error: (err) => {
           console.log(err);

@@ -56,8 +56,12 @@ export class TasksGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+
+
   @SubscribeMessage('confirmTask')
   handleConfirmTask(@MessageBody() taskId: string) {
+    console.log(`Task ${taskId} confirmed`);
+    // Emit event to all connected clients to hide the popup
     this.server.emit('taskConfirmed', taskId);
   }
 

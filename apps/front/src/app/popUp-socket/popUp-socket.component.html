@@ -4,26 +4,6 @@
   <button (click)="confirmTask()">אשר משימה</button>
 </div> -->
 
-<!-- <p-dialog
-  *ngIf="task"
-  header="הודעת משימה חדשה"
-  [(visible)]="display"
-  [closable]="false"
-  [dismissableMask]="true"
-  [contentStyle]="{ 'position': 'absolute', 'top': '0', 'right': '0' }"
->
-  <div *ngIf="task">
-    <p>משימה חדשה לא משויכת:{{ task.taskName }}</p>
-    <a [routerLink]="['/taskSpe', task.id]">שיוך המשימה אליך</a>
-    <button
-      pButton
-      type="button"
-      label="אשר משימה"
-      (click)="confirmTask()"
-    ></button>
-  </div>
-</p-dialog> -->
-
 <p-dialog
   *ngIf="task"
   header="הודעת משימה חדשה"
