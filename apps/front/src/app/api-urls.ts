@@ -18,6 +18,10 @@ export const PAYMENT_DETAILS_ENDPOINT=`${API_URL}/PaymentDetails`;
 export const PAYMENT_METHOD_ENDPOINT=`${API_URL}/PaymentMethod`;
 export const FREQUENCY_ENDPOINT=`${API_URL}/Frequency`;
 
+export const REPEATABLE_ENDPOINT = `${API_URL}/repeatableTask`;
+export const TAX_REFUNDS = `${API_URL}/tax-refunds`;
 
-export const CHECKLIST_ENDPOINT = `${API_URL}/checklist`;
-export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checklistitem`;
+export const CHECKLIST_ENDPOINT = `${API_URL}/checkList`;
+export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checkListItem`;
+export const IMPORTCLIENTS_ENDPOIMT = `${API_URL}/importclients`;
+export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;

@@ -5,10 +5,10 @@
 >
 <ng-template #eventContent let-arg>
   @if(arg.event.title=='task'){
-    <b style="color: rgb(232, 66, 160);">{{ arg.event.title }}</b>
+    <b style="color: rgb(232, 66, 160);">משימה</b>
   }
     @if(arg.event.title=='meeting'){
-      <b style="color: rgb(28, 173, 209);">{{ arg.event.title }}</b>
+      <b style="color: rgb(28, 173, 209);">פגישה</b>
       <br>
       <small style="color: rgb(28, 173, 209);">{{ getAdjustedTime(arg.event.start) }}</small>
     }

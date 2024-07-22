@@ -10,7 +10,7 @@ import { Field } from '../_models/field.module';
 })
 export class FieldService {
 
-  private apiUrl = 'http://localhost:3000/field'; // Base URL for the Field API
+  private apiUrl = 'http://localhost:8080/field'; // Base URL for the Field API
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }) // Define headers for HTTP requests

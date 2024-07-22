@@ -14,12 +14,12 @@ export class FieldService {
 
     constructor(@InjectModel('Field') private readonly fieldModel: Model<Field>) {}
     async createField(CreateFieldDto: CreateFieldDto): Promise<Field> {
-        const { key,type} = CreateFieldDto;
+        const { key,type_} = CreateFieldDto;
 
-        if (!key || !type ) {
+        if (!key || !type_ ) {
           throw new ValidationException('Missing required fields');
         }
-        const createField = new this.fieldModel({ key,type });
+        const createField = new this.fieldModel({ key,type_ });
         return await createField.save();
     }
 

@@ -1,5 +1,6 @@
 export interface Frequency {
-    id:string;
-    name: string;
+    _id?: string;
     color: string;
+    name: string;
   }
+  

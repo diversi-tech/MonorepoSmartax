@@ -1,39 +1,66 @@
-import { Injectable } from '@angular/core';
-import { FREQUENCY_ENDPOINT } from '../api-urls';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Frequency } from '../_models/frequency.module';
+import { Injectable } from '@angular/core';
+import { Frequency } from '../_models/frequency.module'; // Update the path according to the location of your model
+
+import { Observable, catchError, of } from 'rxjs';
+import { FREQUENCY_ENDPOINT } from '../api-urls';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FrequencyService {
-  constructor(private http: HttpClient) { }
-  private apiUrl = FREQUENCY_ENDPOINT;
+  private apiUrl = FREQUENCY_ENDPOINT; // Base URL for the Client API
+
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }) // Define headers for HTTP requests
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }), // Define headers for HTTP requests
   };
 
-  getAllFrequancies(): Observable<Frequency[]>{
-    return this.http.get<Frequency[]>(`${this.apiUrl}`);
+  constructor(private http: HttpClient) {}
+
+  // Create a new Client
+  createFrequency(Frequency: Frequency): Observable<Frequency> {
+    return this.http
+      .post<Frequency>(this.apiUrl, Frequency, this.httpOptions)
+      .pipe(catchError(this.handleError<Frequency>('createClient')));
   }
 
-  createFrequency(frequency: Frequency): Observable<Frequency> {
-    return this.http.post<Frequency>(this.apiUrl, frequency, this.httpOptions);
+  // Get all Clients
+  getAllFrequencys(): Observable<Frequency[]> {
+    return this.http
+      .get<Frequency[]>(`${this.apiUrl}`)
+      .pipe(catchError(this.handleError<Frequency[]>('getAllClients', [])));
   }
 
+  // Search for a Client by ID
   searchFrequency(id: string): Observable<Frequency[]> {
-    return this.http.post<Frequency[]>(`${this.apiUrl}/searchFrequency`, { id }, this.httpOptions);
+    return this.http
+      .post<Frequency[]>(
+        `${this.apiUrl}/searchClient`,
+        { id },
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError<Frequency[]>('searchClient', [])));
   }
 
-  updateFrequency(frequency: Frequency): Observable<Frequency> {
-    return this.http.put<Frequency>(`${this.apiUrl}`, frequency, this.httpOptions);
+  // Update an existing Client
+  updateFrequency(client: Frequency): Observable<Frequency> {
+    return this.http
+      .put<Frequency>(`${this.apiUrl}`, client, this.httpOptions)
+      .pipe(catchError(this.handleError<Frequency>('updateClient')));
   }
 
+  // Delete a Frequency by ID
   deleteFrequency(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } });
+    return this.http
+      .delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
+      .pipe(catchError(this.handleError<boolean>('deleteFrequency', false)));
   }
 
-
-
+  // Error handling function
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(`${operation} failed: ${error.message}`); // Log error message to console
+      return of(result as T); // Return default result to keep the app running
+    };
+  }
 }
