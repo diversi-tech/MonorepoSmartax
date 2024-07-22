@@ -65,7 +65,7 @@ export class SensitiveDetailsComponent implements OnInit {
 
   onSubmit(): void {
     const password = this.passwordForm.get('password')?.value;
-    if (password === '456789') {
+    if (password === '123456') {
       this.fetchClientSensitiveData();
       this.formShow=false;
       this.showSensitiveDetails=true;
