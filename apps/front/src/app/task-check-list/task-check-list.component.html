@@ -1,7 +1,37 @@
-<form class="flex align-items-center gap-1" [formGroup]="formGroup">
-  <input formControlName="name" type="text" value="{{checkList.name}}">
+<p-card header="{{checkList.name}}">
+  <!-- edit task name -->
+  <div>
+    <i *ngIf="editNameInput" (click)="editName()" class="pi pi-pencil" style="top:0;color: blue;cursor: pointer;"></i>
+    <!-- add item -->
+    <i (click)="addItem()" class="pi pi-plus" style="color:rgb(0, 255, 21); cursor: pointer;"></i>
+    <i class="pi pi-trash" (click)="deleteList()" style="color: red;cursor: pointer;"></i>
 
-  <p-checkbox formControlName="item" value="isDone" inputId="isDone" />
+    <!-- new item -->
+    <app-check-list-item *ngIf="editNewItem" [item]="newItem" [newItem]="true" (delete)="deleteItem('1234')"
+      (update)="updateItem($event)"></app-check-list-item>
+  </div>
+  <div class="p-field" style="display: flex; flex-direction: row;">
+    <!-- <p-divider /> -->
 
-  <input formControlName="description" for="isDone">
-</form>
+    <div *ngIf="!editNameInput" style="display: flex; flex-direction: row;">
+      <input pInputText type="text" id="name" [(ngModel)]="checkList.name" value="{{checkList.name}}">
+
+      <div (click)="updateItem()">
+        <i class="pi pi-check" style="color: blue ;cursor: pointer;"></i>
+      </div>
+      <div (click)="editName()">
+        <i class="pi pi-times" style="color:red;cursor: pointer;"></i>
+      </div>
+    </div>
+  </div>
+
+  <p-divider />
+
+
+  <!-- items of checklist -->
+  <div *ngFor="let item of checkList.items; let i = index">
+    <app-check-list-item [item]="item" [newItem]="false" (delete)="deleteItem(item._id)"
+      (update)="updateItem($event)"></app-check-list-item>
+  </div>
+
+</p-card>
