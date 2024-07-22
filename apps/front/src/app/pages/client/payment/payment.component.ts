@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataViewModule } from 'primeng/dataview';
 import { ActivatedRoute } from '@angular/router';
-import { Client } from '../../_models/client.module';
-import { ClientService } from '../../_services/client.service';
-import { PaymentService } from '../../_services/payment.service';
-import { Payment } from '../../_models/payment.module';
+import { Client } from '../../../_models/client.module';
+import { ClientService } from '../../../_services/client.service';
+import { PaymentService } from '../../../_services/payment.service';
+import { Payment } from '../../../_models/payment.module';
 import { TabViewModule } from 'primeng/tabview';
 
 
