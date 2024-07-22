@@ -56,5 +56,16 @@
 th,td {
   text-align: center;
 }
+.clickable-text {
+  cursor: pointer;
+  transition: transform 10s;
+}
+
+.clickable-text:hover {
+  transform: scale(10.10);
+  color: rgb(9, 9, 9);
+
+  
+}
 
 
