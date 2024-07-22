@@ -12,14 +12,13 @@ import { TabViewModule } from 'primeng/tabview';
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [CommonModule, DataViewModule,TabViewModule],
+  imports: [CommonModule, DataViewModule, TabViewModule],
   providers: [PaymentService, ClientService],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css',
 })
 export class PaymentComponent implements OnInit {
 
-  id: string = ""
   thisClient: Client
   thisPayment: Payment
 
@@ -31,32 +30,19 @@ export class PaymentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.thisClient = history.state.client
 
-    this.ar.params.subscribe(
-      data => {
-        this.id = data['id'];
-
-        this.clientService.searchClient(this.id).subscribe(
-          suc => {
-            this.thisClient = suc,
-            console.log(this.thisClient)
-            console.log('suc find client');
-            console.log(this.thisClient.payment)
-            this.paymentService.searchPayment(this.thisClient.payment).subscribe(
-              s => {this.thisPayment = s[0],
-                console.log(this.thisPayment);
-                console.log('arr: ');
-                console.log(this.thisPayment.morePaymentDetails);
-              },
-              f =>{ console.log(f),
-                console.log('נפל בחיפוש החשבונית');
-              }
-            )
-          },
-          err => console.log(err)
-        )
+    this.paymentService.searchPayment(this.thisClient.payment).subscribe(
+      s => {
+        this.thisPayment = s[0],
+        console.log(this.thisPayment);
+        console.log('arr: ');
+        console.log(this.thisPayment.morePaymentDetails);
+      },
+      f => {
+        console.log(f),
+        console.log('נפל בחיפוש החשבונית');
       }
-    );
-
+    )
   }
 }
