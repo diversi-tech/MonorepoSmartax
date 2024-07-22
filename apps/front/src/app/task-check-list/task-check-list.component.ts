@@ -9,11 +9,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckListItemComponent } from '../check-list-item/check-list-item.component';
 import { CheckListService } from '../_services/checkList.service';
 import { CheckListItemService } from '../_services/checkListItem.service';
+import { PanelModule } from 'primeng/panel';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-task-check-list',
   standalone: true,
-  imports: [CommonModule, NgFor, NgIf, NgClass, CheckListItemComponent, CheckboxModule, ReactiveFormsModule, FormsModule, ButtonModule, InputTextModule],
+  imports: [CommonModule, NgFor, NgIf, NgClass, DividerModule, PanelModule, CardModule, CheckListItemComponent, CheckboxModule, ReactiveFormsModule, FormsModule, ButtonModule, InputTextModule],
   templateUrl: './task-check-list.component.html',
   styleUrls: ['./task-check-list.component.css'],
 })
@@ -24,13 +27,16 @@ export class TaskCheckListComponent implements OnInit {
 
   @Input()
   checkList: CheckList | null = {
-    _id: "0",
-    name: 'רשימת המשימות שלי',
-    items: []
+    name: 'רשימת המשימות שלך',
+    items: [],
   };
 
   @Output()
   save = new EventEmitter<CheckList>();
+
+  @Output()
+  delete = new EventEmitter<string>();
+
 
   constructor(private formBuilder: FormBuilder, private checkListService: CheckListService, private checkListItemService: CheckListItemService) { }
 
@@ -44,12 +50,14 @@ export class TaskCheckListComponent implements OnInit {
     }
   }
 
+  deleteList(): void { this.delete.emit(this.checkList._id) }
 
-  updateItem(item: CheckListItem): void {
+  updateItem(item: CheckListItem | null): void {
+    this.editNameInput = false
     let res1: any | null
     let res2: any | null
     let copy: any | null
-    if (item._id! != "1234") {
+    if (item && item._id != "1234") {
       try {
         let prev = this.checkList.items.find(item => item._id === item._id)
         if (prev) {
@@ -74,9 +82,12 @@ export class TaskCheckListComponent implements OnInit {
         // alert("העדכון נכשל, אנא נסה שוב")
       }
     }
-    else{
-      alert("new item")
-      this.saveItem(item)
+    else {
+      if (item) {
+        this.saveItem(item)
+      } else {
+        this.save.emit(this.checkList)
+      }
     }
   }
 
@@ -84,8 +95,7 @@ export class TaskCheckListComponent implements OnInit {
     try {
       if (_id) {
         const index = this.checkList.items.findIndex(item => item._id === _id)
-        alert(index)
-        if (index) {
+        if (index||index==0) {
           this.checkList.items.splice(index, 1);
           this.checkListService.updateCheckList(this.checkList);
         }
@@ -104,7 +114,7 @@ export class TaskCheckListComponent implements OnInit {
   }
 
   editNewItem = false
-  newItem: CheckListItem = {_id: "1234", description: 'משימה חדשה', isDone: false  }
+  newItem: CheckListItem = { _id: "1234", description: 'משימה חדשה', isDone: false }
   addItem(): void {
     this.editNewItem = true;
   }
@@ -115,6 +125,7 @@ export class TaskCheckListComponent implements OnInit {
 
   editNameInput: boolean = true;
   editName(): void {
+
     this.editNameInput = !this.editNameInput;
   }
 
@@ -125,7 +136,7 @@ export class TaskCheckListComponent implements OnInit {
       else item._id = "0"
       this.checkList.items.push(item);
       this.checkListService.updateCheckList(this.checkList);
-      this.newItem={_id: "1234", description: 'משימה חדשה', isDone: false  }
+      this.newItem = { _id: "1234", description: 'משימה חדשה', isDone: false }
       this.editNewItem = false
     }
     catch (err) {

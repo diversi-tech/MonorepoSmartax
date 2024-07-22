@@ -18,8 +18,21 @@ export class CheckListController {
 
   @Post()
   async create(@Body() createCheckListDto: CreateCheckListDto): Promise<CheckList> {
-    return this.checkListService.create(createCheckListDto);
-  }
+    try{
+      console.log(createCheckListDto);
+      createCheckListDto.items!.forEach(element => {
+        console.log(element);
+        
+      })
+      
+      return this.checkListService.create(createCheckListDto);
+    }catch(err){
+      console.log(err);
+      
+    }
+  
+  
+    }
 
   @Get()
   async findAll(): Promise<CheckList[]> {
