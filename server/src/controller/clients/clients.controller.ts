@@ -43,4 +43,3 @@ export class ClientController {
         return await this.clientService.deleteClient(id.id);
     }
 }
-    // הוספת פרופרטי tag למוצא לבדוק אם הכול עובד כרגיל וכן להוסיף את לא אם Even the Their

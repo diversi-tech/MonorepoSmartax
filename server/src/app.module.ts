@@ -150,6 +150,9 @@ import { repeatableTaskService } from './services/repeatableTask.service';
 //   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 // }
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
+import { TaxRefundsService } from './services/taxRefunds.service';
+import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
+import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
 
 @Module({
   //add
@@ -230,6 +233,9 @@ import { repeatableTaskService } from './services/repeatableTask.service';
     MongooseModule.forFeature([
       { name: CommunicationArchive.name, schema: communicationArchiveModel },
     ]),
+    MongooseModule.forFeature([
+      { name: TaxRefunds.name, schema: taxRefundsModel },
+    ]),
     JwtModule,
   ],
   controllers: [
@@ -271,6 +277,7 @@ import { repeatableTaskService } from './services/repeatableTask.service';
     TableController,
     RepeatableTaskController,
     FrequencyController,
+    TaxRefundsController,
   ],
 
   providers: [
@@ -307,6 +314,7 @@ import { repeatableTaskService } from './services/repeatableTask.service';
     SensitiveDataService,
     ClientFieldService,
     repeatableTaskService,
+    TaxRefundsService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,

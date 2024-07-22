@@ -1,32 +1,12 @@
-<p-table [value]="allTaxRefunds" [tableStyle]="{ 'max-width': '50rem' }">
-  <ng-template pTemplate="header">
-    <tr>
-      <th></th>
-      <th>עובד מטפל</th>
-      <th>תאריך יצירה</th>
-      <th>שנה</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-task>
-    <tr>
-      <td><p-button (click)="flag = true" label="עדכן"></p-button></td>
-      <!-- <td><p-button (click)="goToSteps(task)" label="עדכן" /></td> -->
-      <td>{{getEmployeName(task.idEmploye)?.userName }}</td>
-      <td>{{ task.date | date:'dd/MM/yyyy' }}</td>
-      <td>{{ task.year }}</td>
-    </tr>
-  </ng-template>
-</p-table>
-<div *ngIf="flag">
-  <p-stepper dir="rtl">
+<p-stepper dir="rtl">
     <p-stepperPanel header="שלב I">
       <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index" let-onClick="onClick">
         <div class="flex flex-column h-12rem">
           <div
             class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-            <!-- <div>{{getStepsByNumber(1)}}</div> -->
+            <div>{{getStepsByNumber(1)}}</div>
   
-            <div >
+            <div *ngFor="let task of tasksStep">
               <div class="checkbox-wrapper">
                 <label>
                   <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateStepField(task)" />
@@ -46,8 +26,8 @@
         <div class="flex flex-column h-12rem">
           <div
             class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-            <!-- <div>{{getStepsByNumber(2)}}</div> -->
-            <div >
+            <div>{{getStepsByNumber(2)}}</div>
+            <div *ngFor="let task of tasksStep">
               <div class="checkbox-wrapper">
   
                 <label>
@@ -69,9 +49,9 @@
         <div class="flex flex-column h-12rem">
           <div
             class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-            <!-- <div>{{getStepsByNumber(3)}}</div> -->
+            <div>{{getStepsByNumber(3)}}</div>
   
-            <div >
+            <div *ngFor="let task of tasksStep">
               <div class="checkbox-wrapper">
                 <label>
                   <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateStepField(task)" />
@@ -87,5 +67,3 @@
       </ng-template>
     </p-stepperPanel>
   </p-stepper>
-
-  
