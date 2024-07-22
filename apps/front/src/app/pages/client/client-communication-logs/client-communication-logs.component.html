@@ -4,7 +4,6 @@
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th>סוג השיחה </th>
-      <th>שם לקוח</th>
       <th>תאריך</th>
       <th>נושא שיחה</th>
       <th>סיכום</th>
@@ -15,7 +14,6 @@
 
       <td *ngIf="communication.Status === 'true'">ליד</td>
       <td *ngIf="communication.Status === 'false'">מעקב</td>
-      <td>{{communication.client}}</td>
       <td>{{communication.date | date: 'yyyy-MM-dd' }}</td>
       <td>{{communication.Subject}}</td>
       <td>{{communication.summary}}</td>

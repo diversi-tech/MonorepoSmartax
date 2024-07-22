@@ -46,11 +46,9 @@ export class ClientCommunicationLogsComponent {
   }
 
   getCommunications(): void {
-    debugger
-    this.communicationService.getCommunicationsByClientId(this.tokenService.getCurrentDetail('_id'))
+    this.communicationService.getCommunicationsByClientId(this.client._id)
       .subscribe(communications =>
         { this.communications = communications });
-     console.log(this.tokenService.getCurrentDetail('_id'), this.communications)
   }
 
 
