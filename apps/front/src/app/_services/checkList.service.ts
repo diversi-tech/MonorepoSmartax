@@ -1,7 +1,7 @@
 //service for checkList
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { CheckList } from '../_models/checkList.model';
 import { CHECKLIST_ENDPOINT } from '../api-urls';
 
@@ -11,10 +11,11 @@ import { CHECKLIST_ENDPOINT } from '../api-urls';
 })
 export class CheckListService {
     constructor(private http: HttpClient) { }
+    url = CHECKLIST_ENDPOINT
 
     // פונקציה להוספת נתונים
-    createCheckList(checkList: CheckList, taskId: string): Observable<CheckList> {
-        return this.http.post<CheckList>(`${CHECKLIST_ENDPOINT}`, { checkList, taskId });
+    createCheckList(checkList: CheckList): Observable<CheckList> {
+        return this.http.post<CheckList>(`${CHECKLIST_ENDPOINT}`,  checkList );
     }
 
     // פונקציה לקריאת כל הנתונים
@@ -32,12 +33,31 @@ export class CheckListService {
 
     // פונקציה לעדכון נתונים
     updateCheckList(checkList: CheckList): Observable<CheckList> {
-        return this.http.put<CheckList>(`${CHECKLIST_ENDPOINT}/${checkList._id}`, checkList);
+        try {
+            const res = this.http.put<CheckList>(`${this.url}/${checkList._id}`, checkList)
+            res.subscribe(data =>
+                // alert(data),
+                console.log(data),
+                
+            )
+            return res
+        } catch (err) {
+            // alert(err)
+            console.log(err);
+        }
+    }
+    handleError(handleError: any): import("rxjs").OperatorFunction<CheckList, any> {
+        throw new Error('Method not implemented.');
     }
 
     // פונקציה למחיקת נתונים
     deleteCheckList(id: string): Observable<CheckList> {
-        return this.http.delete<CheckList>(`${CHECKLIST_ENDPOINT}/${id}`);
+        try {
+            return this.http.delete<CheckList>(`${CHECKLIST_ENDPOINT}/${id}`);
+        } catch (err) {
+            console.log(err);
+
+        }
     }
 }
 

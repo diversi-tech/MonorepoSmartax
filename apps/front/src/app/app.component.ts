@@ -12,6 +12,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { DialogModule } from 'primeng/dialog';
 import { PopupNotificationComponent } from "./popUp-socket/popUp-socket.component";
 // import { WebSocketService } from './_services/webSocket.service';
+import { CheckListItemComponent } from './check-list-item/check-list-item.component';
 
 // import { RouterTestingModule } from '@angular/router/testing';
 // import { TestBed } from '@angular/core/testing';
@@ -26,7 +27,7 @@ import { PopupNotificationComponent } from "./popUp-socket/popUp-socket.componen
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [LoginComponent, RouterLinkActive, RouterLink, ToolBarComponent, RouterOutlet, ToolBarComponent, DialogModule, PopupNotificationComponent]
+  imports: [LoginComponent, RouterLinkActive, CheckListItemComponent, RouterLink, ToolBarComponent, RouterOutlet, ToolBarComponent, DialogModule, PopupNotificationComponent]
 })
 export class AppComponent {
   isLoggedIn = false;

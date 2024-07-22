@@ -25,7 +25,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TaskService } from '../_services/task.service';
 import { Task } from '../_models/task.module';
 import { Tag } from '../_models/tag.module';
-
+import { DropdownModule } from 'primeng/dropdown';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import * as FileSaver from 'file-saver';
 import { Status } from '../_models/status.module';
@@ -59,7 +59,7 @@ import { StatusService } from '../_services/status.service';
 import { GoogleAuthService } from '../_services/google-calendar.service';
 import { MultiSelect, MultiSelectModule } from 'primeng/multiselect';
 import { DividerModule } from 'primeng/divider';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, SelectItem, SelectItemGroup } from 'primeng/api';
 import { TaskCheckListComponent } from '../task-check-list/task-check-list.component';
 import { TabViewModule } from 'primeng/tabview';
 import { SubTaskComponent } from '../sub-task/sub-task.component';
@@ -97,6 +97,7 @@ import { CheckListService } from '../_services/checkList.service';
     RadioButtonModule,
     EditorModule,
     FileUploadModule,
+    DropdownModule,
     ToastModule,
     ColorPickerModule,
     AutoCompleteModule,
@@ -111,6 +112,7 @@ import { CheckListService } from '../_services/checkList.service';
     SubTaskComponent,
     DialogModule,
     TimerComponent,
+
   ],
   providers: [DocumentService],
 })
@@ -134,7 +136,7 @@ export class TaskComponent implements OnInit {
   images: string[] = [];
   tags: Tag[] = [];
   checkList: CheckList[] = [];
-
+  checkListId: string[] | undefined;
   //
   additionTask: MenuItem[] = [
     { id: '1', label: 'Check List' },
@@ -191,7 +193,7 @@ export class TaskComponent implements OnInit {
     private socketService: SocketService,
     private googleTask: GoogleTaskService,
     private checkListServise: CheckListService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
@@ -226,20 +228,19 @@ export class TaskComponent implements OnInit {
           this.eventId = this.currentTask.googleId;
           console.log('checkList', this.currentTask.checkList);
           this.currentTask.checkList?.forEach((listId: string) => {
-            console.log('listId', listId);
+            console.log("listId", listId);
 
-            this.checkListServise
-              .getCheckLists(listId)
-              .subscribe((data: CheckList) => {
-                this.checkList.push(data);
-              });
-          });
+            this.checkListServise.getCheckLists(listId).subscribe((data: CheckList) => {
+              this.checkList.push(data);
+            });
+          })
+
         },
         error: (err) => {
           console.log(err);
         },
       });
-      console.log('checkList in task comp');
+      console.log("checkList in task comp");
 
       this.checkList.forEach((check) => {
         console.log('check', check);
@@ -306,6 +307,48 @@ export class TaskComponent implements OnInit {
     this.formGroupStatus = new FormGroup({
       selectStatus: new FormControl<any | null>(null),
     });
+
+    //checklist
+    let checklists: SelectItem<any>[] = []
+    this.checkListServise.getAllCheckLists().subscribe({
+      next: (lists) => {
+        if (!lists) {
+          this.groupedLists = [
+            {
+              label: "חדש",
+              value: "צור רשימה חדשה",
+              items: [{ label: 'רשימה חדשה', value: 'new' }]
+            },
+            {
+              label: 'בחר מתוך רשימות',
+              value: 'old',
+              items: [{ label: 'אין רשימות', value: null }]
+            }
+          ];
+          console.log('No checklist data');
+          return;
+        }
+
+        const checklists = lists.map(list => ({ label: list.name, value: list._id }));
+
+        this.groupedLists = [
+          {
+            label: "חדש",
+            value: "צור רשימה חדשה",
+            items: [{ label: 'רשימה חדשה', value: 'new' }]
+          },
+          {
+            label: 'בחר מתוך רשימות',
+            value: 'old',
+            items: checklists
+          }
+        ];
+      },
+      error: (err) => {
+        console.log('Error getting checklist data:', err);
+      }
+    });
+
     // socket
     // Listen for tasks that are not assigned to anyone
     // this.socketService.onTaskNotAssigned().subscribe((task) => {
@@ -338,6 +381,7 @@ export class TaskComponent implements OnInit {
     this.visible = false;
     this.save();
   }
+
 
   // createGoogleTask() {
   //   this.visible = false;
@@ -503,6 +547,7 @@ export class TaskComponent implements OnInit {
     if (this.selectedPriority) newTask.priority = this.selectedPriority;
     if (this.dueDate) newTask.dueDate = this.dueDate;
     if (this.eventId) newTask.googleId = this.eventId;
+    newTask.checkList = this.currentTask.checkList;
     console.log(this.eventId);
 
     if (this.id == 'create') {
@@ -625,6 +670,131 @@ export class TaskComponent implements OnInit {
     const imageUrl = `http://localhost:8080/uploads/ttt.png`;
     FileSaver.saveAs(imageUrl, 'ttt.png');
   }
+
+
+  //checkList
+  newList: boolean = false;
+  showNewList() {
+      this.newList = true;
+  
+  }
+  addNewList(){
+    this.newList = false;
+    if(this.newListName)
+      {      let l: CheckList = { name: this.newListName, items: [] }
+            this.checkListServise.createCheckList(l).subscribe({
+              next
+                : (newList) => {
+      
+                  this.save()
+      
+                  this.currentTask.checkList.push(newList._id)
+                  this.checkList.push(newList)
+                },
+              error
+                : (err) => {
+                  console.log(err);
+                  alert("ההוספה נכשלה, אנא נסה שנית")
+                },
+            })}
+            else{
+              alert("יש להזין שם")
+            }
+  }
+  selectedList: string | undefined
+  groupedLists: SelectItemGroup[] = []
+  editNewList = false
+  newListName:string|null
+  selectPlaceholder = 'בחר רשימה'
+  addList(i: any) {
+    this.selectedList = i.value
+    if (this.selectedList && this.selectedList != "new") {
+      this.checkListServise.getCheckLists(this.selectedList).subscribe({
+        next: (copylist) => {
+          let l: CheckList = { name: copylist.name, items: copylist.items }
+          this.checkListServise.createCheckList(l).subscribe({
+            next
+              : (newList) => {
+
+                this.save()
+
+                this.currentTask.checkList.push(newList._id)
+                this.checkList.push(newList)
+              },
+            error
+              : (err) => {
+                console.log(err);
+                alert("ההוספה נכשלה, אנא נסה שנית")
+              },
+          })
+        }
+      })
+
+    }
+    else {
+      this.editNewList = true
+      this.newList = true;
+
+    }
+    this.selectedList = undefined
+  }
+  saveList(list: CheckList) {
+    this.editNewList = false
+    if (list._id != "0") {
+      this.checkListServise.updateCheckList(list).subscribe({
+        next: (newList) => {
+          console.log(newList);
+          let prev = this.checkList.findIndex(c => c._id === newList._id)
+          this.checkList[prev] = newList
+        },
+        error: (err) => {
+          console.log(err);
+          alert("העדכון נכשל, אנא נסה שנית")
+        },
+      })
+    }
+    // else {
+    //   this.checkListServise.createCheckList(list, this.taskId).subscribe({
+    //     next: (newList) => {
+    //       console.log(newList);
+    //       this.checkList.push(newList);
+    //     },
+    //     error: (err) => {
+    //       console.log(err);
+    //       alert("ההוספה נכשלה, אנא נסה שנית")
+    //     },
+    //   })
+    // }
+  }
+  deleteList(_id: string) {
+    if (_id != "1234") {
+      let i = this.currentTask.checkList.findIndex(item => item === _id)
+      this.currentTask.checkList.forEach((element, index) => {
+        if (element === _id) {
+          console.log(element, index);
+          i=index
+        }
+      })
+      this.currentTask.checkList.splice(i, 1)//delete from current-task.checklist
+      console.log(this.currentTask);
+      
+      this.checkList.splice(i, 1)//delete from checklist
+
+      this.save();
+      this.checkListServise.deleteCheckList(_id).subscribe({
+        next: (data) => {
+          console.log(data);
+          let prev = this.checkList.findIndex(c => c._id === _id)
+          // this.checkList.slice(prev, 1)
+        },
+        error: (err) => {
+          console.log(err);
+          alert("המחיקה נכשלה, אנא נסה שנית")
+        },
+      })
+    }
+  }
+
   //description
   response: any;
   handleResponse(event: any) {

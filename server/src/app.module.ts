@@ -137,6 +137,7 @@ import {
 } from './Models/sensitiveData.model';
 import { SensitiveDataService } from './services/sensitiveData.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { importClientsController } from './controller/importClients/importClients.controller';
 import { TableController } from './controller/table/table.controller';
 import { TableService } from './services/table.service';
 import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.model';
@@ -152,6 +153,9 @@ import { TasksGateway } from './services/socket/socket.gateway';
 //   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 // }
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
+import { TaxRefundsService } from './services/taxRefunds.service';
+import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
+import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
 
 @Module({
   //add
@@ -232,6 +236,9 @@ import { TasksGateway } from './services/socket/socket.gateway';
     MongooseModule.forFeature([
       { name: CommunicationArchive.name, schema: communicationArchiveModel },
     ]),
+    MongooseModule.forFeature([
+      { name: TaxRefunds.name, schema: taxRefundsModel },
+    ]),
     JwtModule,
   ],
   controllers: [
@@ -269,10 +276,11 @@ import { TasksGateway } from './services/socket/socket.gateway';
     YearlyReportController,
     StepFieldController,
     SensitiveDataController,
+    importClientsController,
     TableController,
     RepeatableTaskController,
     FrequencyController,
-    // PopupController,
+    TaxRefundsController,
   ],
 
   providers: [
@@ -309,6 +317,7 @@ import { TasksGateway } from './services/socket/socket.gateway';
     SensitiveDataService,
     ClientFieldService,
     repeatableTaskService,
+    TaxRefundsService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,

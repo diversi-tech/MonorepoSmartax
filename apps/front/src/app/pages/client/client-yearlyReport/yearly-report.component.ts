@@ -58,6 +58,7 @@ export class YearlyReportComponent implements OnInit {
   }
 
   getYearlyReportsForClient(): void {
+    debugger
     const clientId =this.client._id // Assuming the client ID is passed via the state
     this.yearlyReportService.getYearlyReportsForClient(clientId).subscribe(
       (reports) => {
@@ -77,7 +78,7 @@ export class YearlyReportComponent implements OnInit {
  
   goToSteps(task: any){
     console.log(task)
-
+debugger
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps',this.router], { state: { data: task } });
 
   }
