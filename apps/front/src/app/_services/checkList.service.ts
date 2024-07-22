@@ -34,6 +34,7 @@ export class CheckListService {
     // פונקציה לעדכון נתונים
     updateCheckList(checkList: CheckList): Observable<CheckList> {
         try {
+            alert(JSON.stringify(checkList))
             const res = this.http.put<CheckList>(`${this.url}/${checkList._id}`, checkList)
             res.subscribe(data =>
                 // alert(data),

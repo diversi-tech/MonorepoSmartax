@@ -225,7 +225,6 @@ import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearl
   ]
 }
 
-,  { path: 'checklist', component: ClientTypeComponent , data:{ authType: 3, forToolbar:true, icon: '', label:"רשימת משימות" }}
 
 ]
 ;
