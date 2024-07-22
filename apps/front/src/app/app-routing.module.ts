@@ -143,17 +143,7 @@ import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearl
       icon: icons.employees,
     },
   },
-  {
-    path: 'payment',
-    component: PaymentComponent,
-    canActivate: [AuthGuard],
-    data: {
-      authType: 6,
-      forToolbar: true,
-      label: 'כרטיס גביה',
-      icon: icons.employees,
-    },
-  },
+  
 
   {
     path: '',
@@ -192,6 +182,7 @@ import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearl
         path: 'clientTaskManagement',
         component: ClientTaskManagementComponent,
       },
+      { path: 'payments', component: PaymentComponent},
       { path: 'clientBillings', component: ClientBillingsComponent },
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
