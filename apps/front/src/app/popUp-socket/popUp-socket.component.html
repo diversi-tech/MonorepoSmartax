@@ -1,0 +1,47 @@
+<!-- popup-notification.component.html -->
+<!-- <div *ngIf="task" class="popup">
+  <p>משימה חדשה: {{ task.name }}</p>
+  <button (click)="confirmTask()">אשר משימה</button>
+</div> -->
+
+<!-- <p-dialog
+  *ngIf="task"
+  header="הודעת משימה חדשה"
+  [(visible)]="display"
+  [closable]="false"
+  [dismissableMask]="true"
+  [contentStyle]="{ 'position': 'absolute', 'top': '0', 'right': '0' }"
+>
+  <div *ngIf="task">
+    <p>משימה חדשה לא משויכת:{{ task.taskName }}</p>
+    <a [routerLink]="['/taskSpe', task.id]">שיוך המשימה אליך</a>
+    <button
+      pButton
+      type="button"
+      label="אשר משימה"
+      (click)="confirmTask()"
+    ></button>
+  </div>
+</p-dialog> -->
+
+<p-dialog
+  *ngIf="task"
+  header="הודעת משימה חדשה"
+  [(visible)]="display"
+  [closable]="false"
+  [dismissableMask]="true"
+  [style]="{ 'position': 'fixed', 'top': '10px', 'right': '10px', 'width': '300px' }"
+  [contentStyle]="{ 'padding': '20px' }"
+>
+  <div *ngIf="task">
+    <p>משימה חדשה לא משויכת: {{ task.taskName }}</p>
+    <a (click)="moveTask()" [routerLink]="['/taskSpe', task._id]" class="task-link">שיוך המשימה אליך</a>
+    <!-- <button
+      pButton
+      type="button"
+      label="אשר משימה"
+      (click)="confirmTask()"
+    ></button> -->
+  </div>
+</p-dialog>
+

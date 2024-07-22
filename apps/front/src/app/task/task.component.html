@@ -1,8 +1,8 @@
 <!-- ===================== -->
 <div style="margin-top: 10%">
   <p-card
-    header="Task"
-    subheader="Create and update your task"
+    header="משימה"
+    subheader="ליצור ולערוך משימות"
     [style]="{ width: '800px' }"
   >
     <app-timer *ngIf="id != 'create'" [taskId]="id"></app-timer>
@@ -418,7 +418,7 @@
           <div (click)="showClients = !showClients">
             <app-icon-profile
               *ngIf="selectedClient"
-              [userName]="selectedClient.firstName && selectedclient.firstName"
+              [userName]="selectedClient.firstName && selectedClient.firstName"
             ></app-icon-profile>
           </div>
         </p-inputGroup>
@@ -579,9 +579,7 @@
           icon="pi pi-undo"
           [text]="true"
           [raised]="true"
-          severity="secondary"
-          style="color: red"
-          [style]="{ color: 'red' }"
+          severity="danger"
           (click)="cancel()"
         />
         <p-button
@@ -589,7 +587,6 @@
           icon="pi pi-check"
           [text]="true"
           [raised]="true"
-          severity="secondary"
           (click)="showDialog()"
         />
       </div>
@@ -620,3 +617,7 @@
 </p-dialog>
 
 <!--  -->
+<!-- main-component.component.html -->
+<app-pop-up-socket *ngIf="visiblePopup"></app-pop-up-socket>
+
+
