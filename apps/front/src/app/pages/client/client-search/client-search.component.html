@@ -25,13 +25,13 @@
    
   
  
-   <div class="my3">
-    <p-button  label="מיין לפי  ->  "  routerLinkActive="active"></p-button>
+   <!-- <div class="my3"> -->
+    <!-- <p-button  label="מיין לפי  ->  "  routerLinkActive="active"></p-button>
 
-  <select class="my2" (change)="onSelectionChange($event)">
+  <select class="my2" (change)="onSelectionChange($event)"> -->
     <!-- <option value="" > מיין לפי</option> -->
 
-    <option value="option1">כל הלקוחות</option>
+    <!-- <option value="option1">כל הלקוחות</option>
     <option value="option2">טלפון</option>
     <option value="option3">ת.ז.</option>
   </select>
@@ -46,8 +46,9 @@
   <input *ngIf="isSelected == 3" type="text" placeholder="id"   [(ngModel)]="filterTZ"
   (input)="filterClientsByTZ()"/>
  
-  <br /></div>
-</div> </div>
+  <br /></div> -->
+</div>
+ </div>
 
 
   <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
@@ -57,7 +58,7 @@
     </p-footer>
   </p-confirmDialog>
 
-  <h3>רשימת לקוחות</h3>
+  <h3 (click)="onSelectionChange(1)">רשימת לקוחות</h3>
     
   <button *ngIf="isChoosedAllClient" pButton (click)="removeAllClients()" label="הסר הכל"></button>
   <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים" (click)="$event.stopPropagation(); addFavoritesClient()" ></button>
@@ -70,10 +71,28 @@
         <th><button *ngIf="!isChoosedAllClient" pButton (click)="$event.stopPropagation(); chooseAllClients()"label="בחר הכל"></button></th>
         <th></th>
         <th></th>
-        <th>שם החברה</th>
+        <th>   <span (click)="onSelectionChange(4)">שם חברה</span>
+          <div>
+            <input *ngIf="isSelected == 4" type="text" placeholder="שם חברה"   [(ngModel)]="filternamecom"
+            (input)="filterClientsBynamecom()"/>
+          </div> </th>
         <th>שם פרטי ומשפחה</th>
-        <th>תעודת זהות</th>
-        <th>טלפון</th>
+        <th> 
+          <span (click)="onSelectionChange(3)">תעודות זהות</span>
+          <div>
+            <input *ngIf="isSelected == 3" type="text" placeholder="תעודות זהות"   [(ngModel)]="filterTZ"
+            (input)="filterClientsByTZ()"/>
+          </div> </th>
+        <th> <span (click)="onSelectionChange(2)">טלפון</span>
+          <div>
+            <input
+            *ngIf="isSelected == 2"
+            type="text"
+            placeholder="טלפון"
+            [(ngModel)]="filterNumber"
+            (input)="filterClientsByNumber()"
+          />
+          </div> </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-client let-columns="columns">
