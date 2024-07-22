@@ -7,27 +7,60 @@ import { ValidationException } from '../common/exceptions/validation.exception';
 import { TokenService } from './jwt.service';
 import * as bcrypt from 'bcryptjs';
 import { Task } from '../Models/task.model';
-import { CreateTaskDto ,UpdateTaskDto } from '../Models/dto/task.dto';
-
+import { CreateTaskDto, UpdateTaskDto } from '../Models/dto/task.dto';
+import { TasksGateway } from './socket/socket.gateway';
 
 @Injectable()
 export class TaskService {
   constructor(
     @InjectModel('Task') private readonly taskModel: Model<Task>,
-    private jwtToken:TokenService
-    
+    private jwtToken: TokenService,
+    private readonly tasksGateway: TasksGateway
   ) {}
-  
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    const {  client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority,images,googleId,startDate } = createTaskDto;
+    const {
+      client,
+      taskName,
+      description,
+      dueDate,
+      status,
+      assignedTo,
+      tags,
+      deadline,
+      priority,
+      images,
+      googleId,
+      startDate,
+    } = createTaskDto;
     // const task = new this.taskModel(createTaskDto);
     // return task.save()
     // if (!client || !assignedTo) {
     //   throw new ValidationException('Missing required fields');
     // }
 
-    const createTask = new this.taskModel({ client, taskName, description,dueDate,status,assignedTo,tags,priority,images,googleId,deadline,startDate});
+    // הודעה ללקוחות על יצירת משימה חדשה
+    // if(!assignedTo || assignedTo.length === 0) {
+    //   console.log("מממממלא משויכת לאף אחד");
+      
+    //   this.tasksGateway.handleTaskCreated(createTaskDto);
+
+    // }
+
+    const createTask = new this.taskModel({
+      client,
+      taskName,
+      description,
+      dueDate,
+      status,
+      assignedTo,
+      tags,
+      priority,
+      images,
+      googleId,
+      deadline,
+      startDate,
+    });
     return await createTask.save();
   }
 
@@ -36,32 +69,60 @@ export class TaskService {
   }
 
   async findOne(id: string): Promise<Task> {
-    const task = await this.taskModel.findById({"_id":id}).exec();
+    const task = await this.taskModel.findById({ _id: id }).exec();
     if (!task) {
       throw new ValidationException('Task not found');
     }
     return task;
   }
 
-
   async updateTask(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
-try{
-  const {  client, taskName, description,dueDate,status,assignedTo,tags, checkList,priority,images,googleId,deadline ,startDate} = updateTaskDto;
+    try {
+      const {
+        client,
+        taskName,
+        description,
+        dueDate,
+        status,
+        assignedTo,
+        tags,
+        checkList,
+        priority,
+        images,
+        googleId,
+        deadline,
+        startDate,
+      } = updateTaskDto;
 
-  const updatedTask = await this.taskModel.findByIdAndUpdate(
-    id,
-    { client, taskName, description,dueDate,status,assignedTo,tags,checkList,priority,images,googleId,deadline,startDate},
-    { new: true }
-  ).exec();
+      const updatedTask = await this.taskModel
+        .findByIdAndUpdate(
+          id,
+          {
+            client,
+            taskName,
+            description,
+            dueDate,
+            status,
+            assignedTo,
+            tags,
+            checkList,
+            priority,
+            images,
+            googleId,
+            deadline,
+            startDate,
+          },
+          { new: true }
+        )
+        .exec();
 
-  if (!updatedTask) {
-    throw new ValidationException('Task not found');
-  }
-  return updatedTask;
-}catch(err){
-  console.log(err);
-  
-}
+      if (!updatedTask) {
+        throw new ValidationException('Task not found');
+      }
+      return updatedTask;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async deleteTask(id: string): Promise<Task> {
@@ -72,4 +133,3 @@ try{
     return deletedTask;
   }
 }
-
