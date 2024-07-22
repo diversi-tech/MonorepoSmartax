@@ -416,12 +416,12 @@
       <p-tabView>
         <p-tabPanel header="רשימות">
           <div *ngFor="let list of checkList" style="padding: 5px;">
-            <app-task-check-list [checkList]=" list" (save)="saveList($event)" (delete)="deleteList($event)"> </app-task-check-list>          
+            <app-task-check-list [checkList]=" list" (save)="updateList($event)" (delete)="deleteList($event)"> </app-task-check-list>          
           </div>
           <p *ngIf="checkList.length==0">אין רשימות</p>
 
           <!-- create new list -->
-          <p-dropdown (onChange)="addList($event)" [options]="groupedLists" [(ngModel)]="selectedList"
+          <p-dropdown (onChange)="createList($event)" [options]="groupedLists" [(ngModel)]="selectedList"
             placeholder="{{selectPlaceholder}}" [group]="true" ngModel #dropdownModel="ngModel" name="selectedList">
             <ng-template let-group pTemplate="group">
               <div class="flex align-items-center">
@@ -458,7 +458,7 @@
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1" style="margin-left: 70%">
         <p-button label="Cancel" icon="pi pi-undo" [text]="true" [raised]="true" severity="secondary"
-          style="color: red;" [style]="{color:'red'}" (click)="cancel()" />
+          style="color: red;" (click)="cancel()" />
         <p-button label="Save" icon="pi pi-check" [text]="true" [raised]="true" severity="secondary"
           (click)="showDialog()" />
       </div>
