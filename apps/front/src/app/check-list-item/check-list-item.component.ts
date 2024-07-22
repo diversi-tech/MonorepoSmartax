@@ -80,9 +80,16 @@ export class CheckListItemComponent implements OnInit {
   }
 
   cencelDescription(): void {
+    if (this.item._id === "1234") {
+      try { this.delete.emit("1234") }
+      catch (err) {
+        console.log(err);
 
-    this.item.description = this.prevItem.description
-    this.editDescription()
+      }
+    } else {
+      this.item.description = this.prevItem.description
+      this.editDescription()
+    }
   }
 
 }

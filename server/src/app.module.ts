@@ -81,9 +81,9 @@ import {
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
-import { Timer, TimerModel } from './Models/timer';
+import { Timer, TimerModel } from './Models/timer.model';
 import { TimerController } from './controller/timer/timer.controller';
-import { TimerService } from './services/timer';
+import { TimerService } from './services/timer.service';
 import { WorkLogController } from './controller/workLog/workLog.controller';
 import { WorkLogService } from './services/workLog.service';
 import { WorkLogModel, WorkLog } from './Models/workLog.model';
@@ -143,6 +143,9 @@ import { TableService } from './services/table.service';
 import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.model';
 import { RepeatableTaskController } from './controller/repeatableTask/repeatableTask.controller';
 import { repeatableTaskService } from './services/repeatableTask.service';
+import { TasksGateway } from './services/socket/socket.gateway';
+// import { PopupGateway } from './services/socket/socket.gateway';
+// import { PopupController } from './controller/socket/popUp.controller';
 // import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -150,6 +153,9 @@ import { repeatableTaskService } from './services/repeatableTask.service';
 //   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 // }
 // @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
+import { TaxRefundsService } from './services/taxRefunds.service';
+import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
+import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
 
 @Module({
   //add
@@ -230,6 +236,9 @@ import { repeatableTaskService } from './services/repeatableTask.service';
     MongooseModule.forFeature([
       { name: CommunicationArchive.name, schema: communicationArchiveModel },
     ]),
+    MongooseModule.forFeature([
+      { name: TaxRefunds.name, schema: taxRefundsModel },
+    ]),
     JwtModule,
   ],
   controllers: [
@@ -271,6 +280,7 @@ import { repeatableTaskService } from './services/repeatableTask.service';
     TableController,
     RepeatableTaskController,
     FrequencyController,
+    TaxRefundsController,
   ],
 
   providers: [
@@ -307,6 +317,7 @@ import { repeatableTaskService } from './services/repeatableTask.service';
     SensitiveDataService,
     ClientFieldService,
     repeatableTaskService,
+    TaxRefundsService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
@@ -317,6 +328,8 @@ import { repeatableTaskService } from './services/repeatableTask.service';
     YearlyReportService,
     YearService,
     TableService,
+    TasksGateway,
+    // PopupGateway,
   ],
 })
 export class AppModule {}

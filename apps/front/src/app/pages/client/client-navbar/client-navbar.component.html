@@ -2,11 +2,11 @@
 <p-button label="שיחות" (click)="navigateTo('clientCommunicationLogs')"></p-button>
 <p-button label="מסמכים" (click)="navigateTo('clientUploadDoc')"></p-button>
 <p-button label="משימות" (click)="navigateTo('clientTaskManagement')"></p-button>
-<p-button label="תשלום" (click)="navigateTo('clientBillings')"></p-button>
+<p-button label="תשלום" (click)="navigateTo('payments')"></p-button>
 <p-button label="דוחות חודשיים" routerLink='monthlyReport' routerLinkActive="active"></p-button>
 <p-button label="הצהרת הון" routerLink='financialStatement' routerLinkActive="active"></p-button>
 <p-button label="החזרי מס\שבח" routerLink='taxRefunds ' routerLinkActive="active"></p-button>
-<p-button label="פרטי לקוח" routerLink="clientTypeTab" routerLinkActive="active"></p-button>
+<p-button label="פרטי לקוח" (click)="navigateTo('clientTypeTab')"></p-button>
 
 <p-button label="דוחות שנתיים" (click)="navigateTo('yearlyReport')"></p-button>
 

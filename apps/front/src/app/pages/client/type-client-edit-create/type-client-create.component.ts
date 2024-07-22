@@ -19,7 +19,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DividerModule } from 'primeng/divider';
 import { Field } from '../../../_models/field.module';
 import { FieldService } from '../../../_services/field.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ClientTypeService } from '../../../_services/clientType.service';
 
 @Component({
@@ -33,6 +33,7 @@ import { ClientTypeService } from '../../../_services/clientType.service';
     MultiSelectModule,
     FormsModule,
     DividerModule,
+    RouterLink,
   ],
   templateUrl: './type-client-create.component.html',
   styleUrl: './type-client-create.component.css',
@@ -42,7 +43,6 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
   @Input() isNew: boolean = false;
   @Output() closeDialog: EventEmitter<void> = new EventEmitter<void>();
   @Output() dataUpdated = new EventEmitter<void>();
-
 
   // @Input() create: string | undefined;
   tasks: Task[] = [];
@@ -185,13 +185,13 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     //
   }
 
-  addTask() {
-    this.r.navigate(['taskSpe/create']);
-  }
+  // addTask() {
+  //   this.r.navigate(['taskSpe/create']);
+  // }
 
-  addField() {
-    this.r.navigate(['taskSpe/create']);
-  }
+  // addField() {
+  //   this.r.navigate(['taskSpe/create']);
+  // }
 
   save() {
     this.selectedTask.forEach((element) => {
@@ -202,7 +202,6 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
       tasks: this.tasksId,
       fields: this.selectedField,
     };
-    
 
     if (this.isNew) {
       this.clientTypeService.createClientType(c).subscribe({
