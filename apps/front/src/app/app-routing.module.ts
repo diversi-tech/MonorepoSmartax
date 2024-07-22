@@ -199,13 +199,7 @@ import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearl
          {path: 'steps', component:TaxRefundsStepsComponent}
         ]
        },
-
-      { path: 'clientBillings', component: ClientBillingsComponent },
-      { path: 'clientTypeTab', component: ClientTypeTabComponent },
-      { path: 'clientType', component: ClientTypeComponent },
-      { path: 'clientTypeTag', component: ClientTypeTagComponent },
       { path: 'monthlyReport', component: MonthlyReportComponent },
-      { path: 'taxRefunds', component: TaxRefundsComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
     ],
   },
