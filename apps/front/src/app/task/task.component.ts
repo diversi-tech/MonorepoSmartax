@@ -557,7 +557,7 @@ export class TaskComponent implements OnInit {
     if (this.selectedPriority) newTask.priority = this.selectedPriority;
     if (this.dueDate) newTask.dueDate = this.dueDate;
     if (this.eventId) newTask.googleId = this.eventId;
-    newTask.checkList = this.currentTask.checkList;
+    // newTask.checkList = this.currentTask.checkList;
     console.log(this.eventId);
 
     if (this.id == 'create') {
