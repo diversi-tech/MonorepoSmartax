@@ -15,14 +15,10 @@
 
       <p-button label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
 
-
-
       <div class="my3">
         <p-button label="מיין לפי  ->  " routerLinkActive="active"></p-button>
 
         <select class="my2" (change)="onSelectionChange($event)">
-          <!-- <option value="" > מיין לפי</option> -->
-
           <option value="option1">כל הלקוחות</option>
           <option value="option2">טלפון</option>
           <option value="option3">ת.ז.</option>
@@ -37,7 +33,6 @@
       </div>
     </div>
   </div>
-
 
   <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
     <p-footer>
@@ -70,7 +65,7 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-client let-columns="columns">
-      <tr (click)="selectClientFromList(client)">
+      <tr>
         <td>
           <input type="checkbox" [checked]="isClientChoosed(client)"
             (click)=" $event.stopPropagation(); updateChoosedClients(client, $event.target.checked)" />
@@ -81,16 +76,18 @@
             (click)="$event.stopPropagation(); isFavoriteClient(client)?removeFromFavorite(client):addToFavorite(client)"></i>
         </td>
         <td><i class="pi pi-tag" [style.color]="client.tag?.color || '#000'"></i></td>
-        <td>{{client.companyName}}</td>
-        <td>{{client.firstName+" "+client.lastName}}</td>
+        <td>
+          <span class="clickable-text" (click)="selectClientFromList(client)">{{client.companyName}}</span>
+        </td>
+        <td>
+          <span class="clickable-text" (click)="selectClientFromList(client)">{{client.firstName + " " + client.lastName}}</span>
+        </td>
         <td>{{client.tz}}</td>
         <td>{{client.phone}}</td>
       </tr>
     </ng-template>
   </p-table>
 
-  <!-- <button pButton class="styleCliennt" (click)="openContactFormDialog()">הוספת לקוח חדש</button> -->
-  <!-- <app-add-client *ngIf="displayDialog" (close)="closeDialog()"></app-add-client> -->
   <button pButton class="styleCliennt" (click)="addNewClient()">הוספת לקוח חדש</button>
 
   <router-outlet></router-outlet>
