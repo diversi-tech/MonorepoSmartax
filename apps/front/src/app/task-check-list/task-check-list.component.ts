@@ -50,14 +50,16 @@ export class TaskCheckListComponent implements OnInit {
     }
   }
 
-  deleteList(): void { this.delete.emit(this.checkList._id) }
+  deleteList(): void {
+    this.delete.emit(this.checkList._id)
+  }
 
   updateItem(item: CheckListItem | null): void {
-    this.editNameInput = false
+    // this.editNameInput = true
+    this.editNewItem = false
     let res1: any | null
-    let res2: any | null
     let copy: any | null
-    if (item && item._id != "1234") {
+    if (item._id != "1234") {
       try {
         let prev = this.checkList.items.find(item => item._id === item._id)
         if (prev) {
@@ -83,19 +85,15 @@ export class TaskCheckListComponent implements OnInit {
       }
     }
     else {
-      if (item) {
-        this.saveItem(item)
-      } else {
-        this.save.emit(this.checkList)
-      }
+      this.saveItem(item)
     }
   }
 
   deleteItem(_id: string): void {
     try {
-      if (_id) {
+      if (_id!="1234") {
         const index = this.checkList.items.findIndex(item => item._id === _id)
-        if (index||index==0) {
+        if (index || index == 0) {
           this.checkList.items.splice(index, 1);
           this.checkListService.updateCheckList(this.checkList);
         }
@@ -105,7 +103,7 @@ export class TaskCheckListComponent implements OnInit {
 
       }
       else {
-        throw new Error('Item not found');
+       this.editNewItem = false
       }
     } catch (err) {
       console.log(err);
@@ -117,6 +115,7 @@ export class TaskCheckListComponent implements OnInit {
   newItem: CheckListItem = { _id: "1234", description: 'משימה חדשה', isDone: false }
   addItem(): void {
     this.editNewItem = true;
+    this.newItem = { _id: "1234", description: 'משימה חדשה', isDone: false }
   }
 
   deleteName(): boolean {
@@ -125,23 +124,30 @@ export class TaskCheckListComponent implements OnInit {
 
   editNameInput: boolean = true;
   editName(): void {
-
     this.editNameInput = !this.editNameInput;
+  }
+
+  saveName() {
+    this.save.emit(this.checkList)
   }
 
   saveItem(item: CheckListItem): void {
     try {
-      const maxId: string = this.checkList.items.reduce((max, item) => (item._id > max ? item._id : max), this.checkList.items[0]._id);
-      if (maxId) { item._id = (parseInt(maxId) + 1).toString() }
-      else item._id = "0"
+      this.newItem = { _id: "1234", description: 'משימה חדשה', isDone: false }
+      if (this.checkList.items.length > 0) {
+        {
+          const maxId: string = this.checkList.items!.reduce((max, item) => (item._id > max ? item._id : max), this.checkList.items[0]._id);
+          if (maxId) { item._id = (parseInt(maxId) + 1).toString() }
+          else item._id = "0"
+        }
+      }
+      else item._id = "0";
       this.checkList.items.push(item);
       this.checkListService.updateCheckList(this.checkList);
-      this.newItem = { _id: "1234", description: 'משימה חדשה', isDone: false }
       this.editNewItem = false
     }
     catch (err) {
-      console.log("ההוספה נכשלה, אנא נסה שוב");
-      this.editNewItem = false
+      alert("ההוספה נכשלה, אנא נסה שוב");
     }
   }
 

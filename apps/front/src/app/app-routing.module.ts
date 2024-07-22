@@ -221,14 +221,10 @@ import { TableComponent } from './table/table.component';
          {path: 'steps', component:TaxRefundsStepsComponent}
         ]
        },
-
-      { path: 'clientBillings', component: ClientBillingsComponent },
-      { path: 'clientTypeTab', component: ClientTypeTabComponent },
-      { path: 'clientType', component: ClientTypeComponent },
-      { path: 'clientTypeTag', component: ClientTypeTagComponent },
       { path: 'monthlyReport', component: MonthlyReportComponent },
-      { path: 'taxRefunds', component: TaxRefundsComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
+      {path:'sensitiveDetails', component:SensitiveDetailsComponent}
+  
     ],
   },
   { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
@@ -253,7 +249,6 @@ import { TableComponent } from './table/table.component';
   ]
 }
 
-,  { path: 'checklist', component: ClientTypeComponent , data:{ authType: 3, forToolbar:true, icon: '', label:"רשימת משימות" }}
 
 ]
 ;
