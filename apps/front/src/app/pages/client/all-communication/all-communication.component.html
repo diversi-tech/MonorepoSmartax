@@ -24,7 +24,7 @@
   (click)="showConfirmationDelete()"></button>
 
 <p-table [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications"
-  [tableStyle]="{'min-width': '80rem'}">
+  >
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th>סוג השיחה </th>
@@ -42,7 +42,7 @@
       <td *ngIf="communication.Status === 'true'">ליד</td>
       <td *ngIf="communication.Status === 'false'">מעקב</td>
       <td>{{communication.client}}</td>
-      <td>{{communication.date | date: 'yyyy-MM-dd' }}</td>
+      <td>{{communication.date | date: 'dd-MM-yyy' }}</td>
       <td>{{communication.Subject}}</td>
       <td>{{communication.summary}}</td>
       <!-- <td> <button class="p-button p-button-warning p-button-sm p-float-right p-ml-2"

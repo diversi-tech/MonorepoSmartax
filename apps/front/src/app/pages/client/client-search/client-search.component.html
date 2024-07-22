@@ -62,9 +62,9 @@
   <button *ngIf="isChoosedAllClient" pButton (click)="removeAllClients()" label="הסר הכל"></button>
   <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים" (click)="$event.stopPropagation(); addFavoritesClient()" ></button>
   <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה" class="p-button-danger" (click)=" $event.stopPropagation(); showConfirmation()" ></button>
-  <p-table dir="rtl"
+  <p-table dir="rtl" 
     [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients"
-    [tableStyle]="{ 'min-width': '80rem' }">
+    >
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th><button *ngIf="!isChoosedAllClient" pButton (click)="$event.stopPropagation(); chooseAllClients()"label="בחר הכל"></button></th>
