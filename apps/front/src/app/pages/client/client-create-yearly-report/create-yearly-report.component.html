@@ -1,12 +1,7 @@
-<p-button label="Open Form" icon="pi pi-external-link" (click)="showModalDialog()"></p-button>
-
 <p-dialog header="Yearly Report Form" [(visible)]="displayModal" modal="true" [style]="{width: '25vW'}" [draggable]="false" [resizable]="false" class="mydialog">
   <ng-template pTemplate="header">
     <div class="flex justify-content-between align-items-center">
       <span>Yearly Report Form</span>
-      <!-- <button type="button" class="p-dialog-header-icon p-link" (click)="hideModalDialog()"> -->
-        <!-- <span class="pi pi-times"></span> -->
-      <!-- </button> -->
     </div>
   </ng-template>
   <ng-template pTemplate="content">
@@ -84,10 +79,7 @@
         </div>
       </div>
 
-      <p-button type="submit" label="יצירת דוח שנתי חדש"></p-button>
-      <div *ngIf="formSubmitted && yearlyReportForm.invalid" class="error">
-        All fields are required.
-      </div>
+      <button type="submit" pButton label="Submit" class="custom-button"></button>
     </form>
   </ng-template>
 </p-dialog>

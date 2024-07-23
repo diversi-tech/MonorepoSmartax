@@ -33,6 +33,7 @@ export class YearlyReportComponent implements OnInit {
   client: Client;
   employeName: any| undefined;
   allEmploye:User[]
+  
 
   constructor(private stepFieldsService: stepFieldService,
               private yearlyReportService: YearlyReportService,
@@ -79,7 +80,7 @@ export class YearlyReportComponent implements OnInit {
   goToSteps(task: any){
     console.log(task)
 debugger
-    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps',this.router], { state: { data: task } });
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/steps',this.router], { state: { data: task ,client: this.client} });
 
   }
   getEmployeName(idEmploye: string): any {
@@ -87,6 +88,8 @@ debugger
     return this.allEmploye.find(x=>x._id==idEmploye)
     
   }
+
+  
   
   
 
