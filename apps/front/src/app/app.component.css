@@ -12,3 +12,16 @@ body {
     text-align: right;
     font-family: "Inter var", sans-serif;
 }
+
+.smarttax-logo {
+    width: 200px; /* הגדר את הרוחב הרצוי לתמונה */
+    height: 45px; /* הגדר את הגובה הרצוי לתמונה */
+    background-image: url('../assets/image/logo1.png'); /* הנתיב לתמונה */
+    background-size: contain; /* התמונה תותאם בגודלה לפי האלמנט */
+    background-repeat: no-repeat; /* לא לחזור על התמונה */
+    background-position: center; /* מרכז את התמונה באלמנט */
+    display: inline-block; /* התמונה תתנהג כמו בלוק בתוך השורה */
+    text-indent: -9999px; /* הסתרת הטקסט */
+  }
+  
+  

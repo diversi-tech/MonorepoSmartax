@@ -78,6 +78,8 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
 import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yearly-report/edit-client-yearly-report.component';
 import { ManagerNavbarComponent } from './pages/Manager/edit-client-yearly-report/manager-navbar/manager-navbar.component';
 import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearly-report/edit-client-tax-refuned/edit-client-tax-refuned.component';
+import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
+import { DashboardUserComponent } from './dashboard-user/dashboard-user.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -226,6 +228,9 @@ import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearl
   { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
   { path:'checklist', component:TaskCheckListComponent},
   { path:'re', component:TaskRepeatableListComponent},
+  { path:'da', component:DashboardAdminComponent},
+  { path:'du', component:DashboardUserComponent},
+
 
   { path:'checklist', component:TaskCheckListComponent},
   {path:'add-new-client',component:AddClientComponent,data: { authType: 6}},

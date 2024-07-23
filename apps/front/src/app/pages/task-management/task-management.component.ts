@@ -298,8 +298,8 @@ export class TaskManagementComponent implements OnInit {
         return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
       }
       if (field === 'dueDate') {
-        const dateA = new Date(a.dueDate).getTime();
-        const dateB = new Date(b.dueDate).getTime();
+        const dateA = new Date(a.deadline).getTime();
+        const dateB = new Date(b.deadline).getTime();
         return reverse ? dateB - dateA : dateA - dateB;
       }
       if (field === 'tags') {
