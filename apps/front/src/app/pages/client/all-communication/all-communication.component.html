@@ -1,5 +1,6 @@
 
 <h1 (click)="onSelectionChange(1)">רשימת שיחות</h1>
+<p-button (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
 <button *ngIf="this.currentCommunication" pButton class="pi pi-pencil p-button"
   (click)="selectCommunication(this.currentCommunication); showConfirmationEdit()"></button>
 <button *ngIf="this.currentCommunication" pButton class="pi pi-trash p-button"
@@ -17,19 +18,21 @@
     <th>
       <span (click)="onSelectionChange(3)">תאריך</span>
      <div>
-      <input *ngIf="isSelected == 3" type="date" class="filter-input" [(ngModel)]="filterdate" (input)="filterByDate()">
+      <input *ngIf="isSelected == 2" type="date" class="filter-input" [(ngModel)]="filterdate" (input)="filterByDate()">
      </div> 
     </th>
     <th>
         <span (click)="onSelectionChange(4)">סוג השיחה</span>
        <div>
-        <input *ngIf="isSelected == 4" type="text" class="filter-input" [(ngModel)]="filterstatus" (input)="filterByStatus()">
+        <select *ngIf="isSelected == 2"  [(ngModel)]="selectedCallStatus" (change)="filterByStatus($event)">
+          <option >מעקב</option>
+          <option >ליד</option>
+        </select>
       </div>
-       </th>
-      
+       </th> 
       <th>
         <span (click)="onSelectionChange(5)">נושא שיחה</span>
-        <div *ngIf="isSelected == 5 ">
+        <div *ngIf="isSelected == 2 ">
           <select [(ngModel)]="selectedCallTopic" (change)="filterByCallTopic($event)">
             <option *ngFor="let topic of callTopics" [value]="topic.name">{{ topic.name }}</option>
           </select>

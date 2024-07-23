@@ -54,6 +54,7 @@ export class AllCommunicationComponent {
   filterCallTopic: string = "";
   callTopics: callTopicSchema[] = [];
   selectedCallTopic: string = '';
+  selectedCallStatus: string ="";
   selectedCallTopic2: callTopicSchema | null = null;
   filteredCallTopic: callTopicSchema[] = [];
   callTopics2: callTopicSchema[] = [{ name: "לא נמצא" }]
@@ -131,13 +132,11 @@ export class AllCommunicationComponent {
       });
   }
   onSelectionChange(a : any) {
-    // alert( (event.target as HTMLSelectElement).value)
-    // debugger
-    // const selectedValue = (event.target as HTMLSelectElement).value;
     this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;
   }
   filterByCallTopic(event: Event) {
+    this.filteredCommunicatio = this.communications;
     this.filterCallTopic = (event.target as HTMLSelectElement).value
     if (this.filterCallTopic != "")
       this.filteredCommunicatio = this.communications.filter(communication => communication.Subject.includes(this.filterCallTopic));
@@ -145,12 +144,15 @@ export class AllCommunicationComponent {
       this.filteredCommunicatio = this.communications;
   }
   filterClientsByname(): void {
+    this.filteredCommunicatio = this.communications;
     if (this.filtername != "")
       this.filteredCommunicatio = this.communications.filter(communication => communication.client.includes(this.filtername));
     else
       this.filteredCommunicatio = this.communications;
   }
-  filterByStatus(): void {
+  filterByStatus(event: Event): void { 
+    this.filteredCommunicatio = this.communications;
+    this.filterstatus=(event.target as HTMLSelectElement).value
     if (this.filterstatus == "ליד")
       this.filterBySTtetus2('true');
     else if (this.filterstatus == "מעקב")
@@ -159,9 +161,11 @@ export class AllCommunicationComponent {
       this.filteredCommunicatio = this.communications;
   }
   filterBySTtetus2(status): void {
+    
     this.filteredCommunicatio = this.communications.filter(communication => communication.Status === status);
   }
   filterByDate(): void {
+    this.filteredCommunicatio = this.communications;
     if (this.filterdate) {
       // המרת התאריך ממחרוזת לאובייקט Date
       const selectedDate = new Date(this.filterdate);
@@ -180,7 +184,7 @@ export class AllCommunicationComponent {
     }
   }
   filterByNameCallTopic(value: string): void {
-
+    this.filteredCommunicatio = this.communications;
     if (value != "") {
       this.is = false
       const query = value.toLowerCase();
