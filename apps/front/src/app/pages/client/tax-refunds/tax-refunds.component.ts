@@ -65,7 +65,6 @@ export class TaxRefundsComponent implements OnInit{
    }
  
   onStepSelected(panel: any) {
-    debugger
     const selectedStep = this.stepData.find(step => step.label === panel.header);
     console.log(selectedStep.label, selectedStep.value);
   }
@@ -89,7 +88,6 @@ export class TaxRefundsComponent implements OnInit{
     return this.stepFieldsService.updateStepField(task);
   }
   getTaxRefundsForClient(): void {
-    debugger
     const clientId = this.client._id
     this.taxRefundsService.getTaxRefundsForClient(clientId).subscribe(
       (reports) => {

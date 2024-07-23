@@ -515,7 +515,6 @@ export class TaskComponent implements OnInit {
     // After creating event, save the meeting
     createEventPromise
       .then(() => {
-        debugger;
         // alert('הפגישה נוספה בהצלחה');
         this.subscribeToEventData();
         setTimeout(() => {

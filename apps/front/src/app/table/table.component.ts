@@ -28,14 +28,12 @@ export class TableComponent implements OnInit {
   getAllTables() {
     return this.tableService.getAllTables().subscribe(
       data => {
-        debugger
         this.tables=data
         console.log(this.tables)
         this.getTableNames()
 
       },
       error=>{
-        debugger
         console.log(error)
       }
     )

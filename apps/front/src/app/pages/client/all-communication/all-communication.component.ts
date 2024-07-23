@@ -91,7 +91,6 @@ export class AllCommunicationComponent {
   }
 
   selectCommunication(communication: Communication): void {
-    debugger
     this.selectedCommunication = { ...communication }; // Clone the communication for editing
   }
 
@@ -112,7 +111,6 @@ export class AllCommunicationComponent {
   }
 
   deleteCommunication(): void {
-    debugger
     this.communicationService.deleteCommunication(this.currentCommunication._id)
       .subscribe(() => {
         this.communications = this.communications.filter(c => c._id !== this.currentCommunication._id);
@@ -132,7 +130,6 @@ export class AllCommunicationComponent {
   }
   onSelectionChange(a : any) {
     // alert( (event.target as HTMLSelectElement).value)
-    // debugger
     // const selectedValue = (event.target as HTMLSelectElement).value;
     this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;
@@ -215,12 +212,10 @@ export class AllCommunicationComponent {
   }
 
   selectCurrentCommunication(communication: Communication) {
-    debugger
     this.currentCommunication = communication;
   }
 
   showConfirmationEdit(): void {
-    debugger
     this.confirmationService.confirm({
       header: 'עריכת שיחה',
       icon: 'pi pi-pencil',
@@ -229,7 +224,6 @@ export class AllCommunicationComponent {
   }
 
   showConfirmationDelete(): void {
-    debugger
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this communication?',
       header: 'Confirmation',

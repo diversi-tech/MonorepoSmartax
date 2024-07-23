@@ -212,7 +212,6 @@ addToFavorite(client:Client){
   this.updateFavorite();
 }
   showConfirmation(): void {
-    debugger
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this clients?',
       header: 'Confirmation',

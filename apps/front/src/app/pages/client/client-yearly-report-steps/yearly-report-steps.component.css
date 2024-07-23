@@ -9,9 +9,17 @@
     width: 100%; /* תן רוחב מלא */
     text-align: right; /* טקסט מימין */
 }
-.completed {
+:host ::ng-deep.completed .p-stepper-number {
     background-color: green; /* Change to your desired color */
     color: white; /* Change text color if needed */
-    color: green;
+  }
+  :host ::ng-deep.completed-step {
+    background-color: yellow; /* צבע רקע צהוב לשלבים מושלמים */
+    color: black; /* צבע טקסט שחור */
+  }
+  
+  :host ::ng-deep.incomplete-step {
+    background-color: gray; /* צבע רקע אפור לשלבים לא מושלמים */
+    color: white; /* צבע טקסט לבן */
   }
   
