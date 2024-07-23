@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { WorkLog } from '../_models/workLog.model';
-import { UpdateTimeEntryDto } from "../../../../../server/src/Models/dto/workLog.dto";
+import { UpdateTimeEntryDto } from '../../../../../server/src/Models/dto/workLog.dto';
 
 @Injectable({
   providedIn: 'root'

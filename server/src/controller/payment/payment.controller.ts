@@ -37,7 +37,9 @@ export class PaymentController {
     return await this.PaymentService.searchPayment(body.id);
   }
   @Put()
-  async updatePayment(@Body(new ValidationPipe()) updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
+  async updatePayment(@Body() updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
+    console.log('start update in controller');
+    
     return await this.PaymentService.updatePayment(updatePaymentDto);
   }
   @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })

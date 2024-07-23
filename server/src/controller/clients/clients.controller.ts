@@ -24,7 +24,7 @@ export class ClientController {
     async getAllClients(): Promise<Client[]> {
         return await this.clientService.getAllClients();
     }
-    @UseGuards(AuthGuard, RoleGuard(3))
+    // @UseGuards(AuthGuard, RoleGuard(3))
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
     @Post('searchClient')
     async searchClient(@Body(new ValidationPipe()) body: {"id": string}): Promise<Client> {
@@ -34,7 +34,7 @@ export class ClientController {
     @Put()
     @ApiBody({ type: UpdateClientDto })
     async updateClient(@Body() updateClientDto: UpdateClientDto): Promise<Client> {
-        return await this.clientService.updateClient(updateClientDto.id, updateClientDto);
+        return await this.clientService.updateClient(updateClientDto._id, updateClientDto);
     }
     @UseGuards(AuthGuard, RoleGuard(3))
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
@@ -43,4 +43,3 @@ export class ClientController {
         return await this.clientService.deleteClient(id.id);
     }
 }
-    // הוספת פרופרטי tag למוצא לבדוק אם הכול עובד כרגיל וכן להוסיף את לא אם Even the Their

@@ -27,7 +27,6 @@ import { TaskComponent } from './task/task.component';
 import { MeetComponent } from './meet/meet.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { ClientAddCommunicationComponent } from './pages/client/client-add-communication/client-add-communication.component';
-import { ClientTaskManagementComponent } from './pages/client/client-task-management/client-task-management.component';
 import { ClientBillingsComponent } from './pages/client/client-billings/client-billings.component';
 import { TaskInListComponent } from './task-in-list/task-in-list.component';
 import { icons } from './icons';
@@ -47,11 +46,12 @@ import { FinancialStatementComponent } from './pages/client/financial-statement/
 import { YearlyReportComponent } from './pages/client/client-yearlyReport/yearly-report.component';
 import { CreateYearlyReportComponent } from './pages/client/client-create-yearly-report/create-yearly-report.component';
 import { YearlyReportStepsComponent } from './pages/client/client-yearly-report-steps/yearly-report-steps.component';
-import { PaymentComponent } from './pages/payment/payment.component';
+import { PaymentComponent } from './pages/client/payment/payment.component';
 import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
 import { TypeClientCreateComponent } from './pages/client/type-client-edit-create/type-client-create.component';
 import { AddClientComponent } from './pages/client/add-client/add-client.component';
 
+import { TaxRefundsStepsComponent } from './pages/client/tax-refunds-steps/tax-refunds-steps.component';
 // import { MeetComponent } from './meet/meet.component';
 // import { TaskInListComponent } from './task-in-list/task-in-list.component';
 // import { CalendarComponent } from './calendar/calendar.component';
@@ -75,6 +75,10 @@ import { customfieldComponent } from './custom-field/custom-field.component';
 //dashboard, clients, tasks, payments, sessions, reports, users, schedule
 import { FieldManagementComponent } from './pages/fieldManagement/fieldManagement.component';
 import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yearly-report/edit-client-yearly-report.component';
+import { ManagerNavbarComponent } from './pages/Manager/edit-client-yearly-report/manager-navbar/manager-navbar.component';
+import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearly-report/edit-client-tax-refuned/edit-client-tax-refuned.component';
+import { TableComponent } from './table/table.component';
+import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -93,7 +97,28 @@ import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yea
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'שכחתי סיסמה', icon: '' } },
   { path: 'restartPassword/:email', component: RestartPasswordComponent },
   { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
-  { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard], data: { authType: 6 ,forToolbar: true, label: ' לוח שנה', icon:'pi-calendar' } },
+  {
+    path: 'calendar',
+    component: CalendarComponent,
+    canActivate: [AuthGuard],
+    data: {
+      authType: 6,
+      forToolbar: true,
+      label:  'לוח שנה',
+      icon: icons.calendar,
+    },
+  },
+  {
+    path: 'table',
+    component: TableComponent,
+    canActivate: [AuthGuard],
+    data: {
+      authType: 3,
+      forToolbar: true,
+      label: 'יצוא לאקסל',
+      icon: icons.export,
+    },
+  },
   {
     path: 'reports',
     component: ReportsComponent,
@@ -140,17 +165,7 @@ import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yea
       icon: icons.employees,
     },
   },
-  {
-    path: 'payment',
-    component: PaymentComponent,
-    canActivate: [AuthGuard],
-    data: {
-      authType: 6,
-      forToolbar: true,
-      label: 'כרטיס גביה',
-      icon: icons.employees,
-    },
-  },
+  
 
   {
     path: '',
@@ -186,9 +201,10 @@ import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yea
       },
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       {
-        path: 'clientTaskManagement',
-        component: ClientTaskManagementComponent,
+        path: 'clientTasks',
+        component: ClientTasksComponent,
       },
+      { path: 'payments', component: PaymentComponent},
       { path: 'clientBillings', component: ClientBillingsComponent },
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
@@ -200,31 +216,39 @@ import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yea
         {path: 'steps', component:YearlyReportStepsComponent}
        ]
       },
-
-      { path: 'clientBillings', component: ClientBillingsComponent },
-      { path: 'clientTypeTab', component: ClientTypeTabComponent },
-      { path: 'clientType', component: ClientTypeComponent },
-      { path: 'clientTypeTag', component: ClientTypeTagComponent },
+      { path: 'taxRefunds', component: TaxRefundsComponent ,
+        children: [
+         {path: 'steps', component:TaxRefundsStepsComponent}
+        ]
+       },
       { path: 'monthlyReport', component: MonthlyReportComponent },
-      { path: 'taxRefunds ', component: TaxRefundsComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
+      {path:'sensitiveDetails', component:SensitiveDetailsComponent}
+  
     ],
   },
   { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
+  { path: 'taxRefunds',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
   { path: 'allCommunication', component: AllCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'כלל השיחות', icon: icons.communications  } },
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:false, icon: '' }},
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:false, icon: '' }},
   { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
   { path:'checklist', component:TaskCheckListComponent},
-  
+  { path:'re', component:TaskRepeatableListComponent},
+
   { path:'checklist', component:TaskCheckListComponent},
   {path:'add-new-client',component:AddClientComponent,data: { authType: 6}},
 
   { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   {path:'fieldMamagement',component:FieldManagementComponent,data:{authType:3,forToolbar:true,label:'ניהול שדות',icon:''}},
-  {path: 'editClientYearlyReport',component:EditClientYearlyReportComponent}
+  {path: 'manager',component:ManagerNavbarComponent,data:{ authType: 3, forToolbar:true, icon: icons.manager, label:"מנהל" },
+  children:[
+    {path: 'editClientYearlyReport',component:EditClientYearlyReportComponent},
+    {path: 'editTaxRefuned',component:EditClientTaxRefunedComponent}
 
-,  { path: 'checklist', component: ClientTypeComponent , data:{ authType: 3, forToolbar:true, icon: '', label:"רשימת משימות" }}
+  ]
+}
+
 
 ]
 ;

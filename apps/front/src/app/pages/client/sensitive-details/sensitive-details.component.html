@@ -1,9 +1,57 @@
-<div [formGroup]="passwordForm">
-  <label for="password">הכנס סיסמא:</label>
-  <input id="password" type="password" formControlName="password">
-  <button (click)="onSubmit()">שלח</button>
+<div>
+  <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()" *ngIf="formShow" class="form-inline">
+    <button type="submit" pButton label="שלח" class="form-button"></button>
+
+    <input id="password" formControlName="password" type="password" placeholder="הכנס סיסמא" class="form-input">
+  </form>
 </div>
 
-<div *ngIf="sensitiveDataVisible">
-  <p>{{ sensitiveData }}</p>
-</div>
+
+<!-- <div *ngIf="sensitiveDataVisible; else noData">
+  <h2>פרטים רגישים</h2>
+  <div *ngFor="let data of sensitiveDataList">
+    <p-card>
+      <ng-container *ngIf="data.isCreditCard; else bankDetails">
+        <div class="p-field">
+          <label for="creditCardNumber">Credit Card Number:</label>
+          <span id="creditCardNumber">{{ data.creditCardCNumber }}</span>
+        </div>
+        <div class="p-field">
+          <label for="creditCardValidity">Credit Card Validity:</label>
+          <span id="creditCardValidity">{{ data.creditCardCValidity }}</span>
+        </div>
+        <div class="p-field">
+          <label for="digitsOnTheBack">Digits on the Back:</label>
+          <span id="digitsOnTheBack">{{ data.digitsOnTheBack }}</span>
+        </div>
+      </ng-container>
+      <ng-template #bankDetails>
+        <div class="p-field">
+          <label for="bankDetail">Bank Detail:</label>
+          <span id="bankDetail">{{ data.bankDetail }}</span>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div> -->
+
+  <div *ngIf="showSensitiveDetails">
+    <h4 (click)="sensitiveDataShow()" >
+      <!-- <i class="pi pi-angle-down" [ngClass]="{'pi-angle-down'}"></i> -->
+      <i class="pi pi-angle-down" ></i>
+
+      :פרטים רגישים
+    </h4>
+    <div *ngFor="let data of sensitiveDataList">
+    <ng-container  >
+      <p class="card-text">{{ data.creditCardCNumber }} :מספר אשראי <i class="pi pi-credit-card"></i></p>
+      <p class="card-text">{{ data.creditCardCValidity }} :תוקף אשראי <i class="pi pi-calendar"></i></p>
+      <p class="card-text">{{ data.digitsOnTheBack }} :ספרות בגב הכרטיס <i class="pi pi-shield"></i></p>
+      <p class="card-text">{{ data.bankDetail }}: פרטי בנק <i class="pi pi-money-bill"></i></p>
+      
+   
+    </ng-container></div>
+  </div>
+<ng-template #noData>
+  <p>הפרטים אינם זמינים , נא להכניס סיסמא</p>
+</ng-template>

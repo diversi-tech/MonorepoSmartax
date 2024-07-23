@@ -1,7 +1,12 @@
 .highlight {
     /* color: rgb(240, 112, 112); */
-    background-color: #f0f0f0;
-}
+    background-color: #edecec;
+}  
+th,td {
+    text-align: center;
+  }
+  
+
 
 /* .p-button-rounded {
     border-radius: 20%; 

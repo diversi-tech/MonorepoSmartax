@@ -14,6 +14,7 @@ import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ImportClientComponent } from '../import-clients/import-client.component';
 
 @Component({
   selector: 'app-client-search',
@@ -30,11 +31,13 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     AddClientComponent,
     RouterOutlet,
     Button,
-    RouterLink
+    RouterLink,
+    ImportClientComponent
   ],
 })
 export class ClientSearchComponent implements OnInit {
   filterNumber: string = '';
+  filterTZ: string = '';
   isSelected: number = 0;
   clients: Client[] = [];
   filteredClients: Client[] = [];
@@ -44,6 +47,8 @@ export class ClientSearchComponent implements OnInit {
   choosedClients: Client[] = [];
   user: User;
   isChoosedAllClient: boolean = false;
+  displayDialog: boolean;
+  filternamecom: string='';
 
   constructor(
     private clientService: ClientService,
@@ -93,9 +98,9 @@ export class ClientSearchComponent implements OnInit {
     });
   }
 
-  onSelectionChange(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.isSelected = Number(selectedValue.substring(6));
+  onSelectionChange(a:any) {
+    // const selectedValue = (event.target as HTMLSelectElement).value;
+    this.isSelected = Number(a);
   }
 
   filterClientsByNameAndBusinessName(value: string): void {
@@ -103,19 +108,35 @@ export class ClientSearchComponent implements OnInit {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
         (client.firstName && client.firstName.toLowerCase().includes(query)) ||
+        (client.lastName && client.lastName.toLowerCase().includes(query))||
         (client.companyName && client.companyName.toLowerCase().includes(query))
       );
     }
-    this.selectedClient = null;
+    // this.selectedClient = null;
   }
-
+  filterClientsBynamecom(): void {
+   
+    if (this.filternamecom != "")
+      { alert(this.filternamecom)
+      this.filteredClients = this.clients.filter(client => client.companyName.includes(this.filternamecom));
+    }else
+      this.filteredClients = this.clients;
+  }
   filterClientsByNumber(): void {
     if (this.filterNumber != "")
       this.filteredClients = this.clients.filter(client => client.phone.includes(this.filterNumber));
     else
       this.filteredClients = this.clients;
   }
-
+  filterClientsByTZ(): void {
+    if (this.filterTZ != "")
+      this.filteredClients = this.clients.filter(client => client.tz.includes(this.filterTZ));
+    else
+      this.filteredClients = this.clients;
+  }
+  openContactFormDialog() {
+    this.displayDialog = true;
+}
   addNewClient() {
     console.log("in")
     // this.displayDialog = true;

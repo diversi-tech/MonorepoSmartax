@@ -16,14 +16,16 @@ export class SensitiveData extends Document {
   @Prop({
     set: (value: string) => encrypt(value),
     get: (value: string) => decrypt(value),
+    toJSON: { getters: true },
+
   })
   bankDetail: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   userName: string;
 
   @Prop({
-    required: true,
+    required: false,
     set: (value: string) => encrypt(value),
     get: (value: string) => decrypt(value),
     toJSON: { getters: true },
@@ -33,18 +35,24 @@ export class SensitiveData extends Document {
   @Prop({
     set: (value: string) => encrypt(value),
     get: (value) => decrypt(value),
+    toJSON: { getters: true },
+
   })
   creditCardCNumber: string;
 
   @Prop({
     set: (value: string) => encrypt(value),
     get: (value: string) => decrypt(value),
+    toJSON: { getters: true },
+
   })
   creditCardCValidity: string;
 
   @Prop({
     set: (value: string) => encrypt(value),
     get: (value: string) => decrypt(value),
+    toJSON: { getters: true },
+
   })
   digitsOnTheBack: string;
 
