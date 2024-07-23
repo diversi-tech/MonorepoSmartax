@@ -195,15 +195,9 @@ import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.c
     component: ClientNavbarComponent,
     data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' },
     children: [
-      {
-        path: 'clientCommunicationLogs',
-        component: ClientCommunicationLogsComponent,
-      },
+      { path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent, },
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
-      {
-        path: 'clientTasks',
-        component: ClientTasksComponent,
-      },
+      { path: 'clientTasks', component: ClientTasksComponent, },
       { path: 'payments', component: PaymentComponent},
       { path: 'clientBillings', component: ClientBillingsComponent },
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
