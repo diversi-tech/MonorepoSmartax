@@ -10,6 +10,7 @@ import { catchError } from 'rxjs';
 import { error } from 'console';
 import { Billing } from '../../_models/billing.module';
 import { PanelModule } from 'primeng/panel';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-payments-reports',
   standalone: true,
@@ -19,7 +20,7 @@ import { PanelModule } from 'primeng/panel';
 })
 export class PaymentsReportsComponent implements OnInit {
 
-  constructor(private paymentServise: PaymentService, private clientService: ClientService) { }
+  constructor(private router:Router,private paymentServise: PaymentService, private clientService: ClientService) { }
 
   clients: Client[] = [];
   payments: { client: Client, payment: Payment }[] = [];
@@ -74,20 +75,17 @@ export class PaymentsReportsComponent implements OnInit {
   async sortByPayments() {
     console.log("sort payments");
     //sort by payment type
-    this.payments.forEach(p => {
-      console.log(p.payment.paymentMethod.name);
-    })
 
     if (this.payments != undefined) {
-      this.clientsWithoutHOC = this.payments!.filter(c => c.payment.paymentMethod.name != "Credit Card")
-        .map(c => ({ name: c.client.firstName, serviceStartDate: c.payment.mainPaymentDetails.dateStart.toString(), totalDebtAmount: c.payment.totalPayment }));
+      this.clientsWithoutHOC = this.payments!.filter(c => c.payment.paymentMethod!.name != "Credit Card")
+        .map(c => ({_id:c.client._id, name: c.client.firstName, serviceStartDate: c.payment.mainPaymentDetails.dateStart, totalDebtAmount: c.payment.totalPayment }));
       console.log("clientsWithoutHOC", this.clientsWithoutHOC);
 
 
       this.clientsWithReturnedHOC = this.payments!.filter
-        (c => c.payment.paymentMethod.name == "Credit Card"
+        (c => c.payment.paymentMethod!.name == "Credit Card"
           && (this.returnedHOC(c.payment.billingHistory).res))
-        .map(c => ({ name: c.client.firstName, returnedHOCNumber: this.returnedHOC(c.payment.billingHistory).count, totalDebtAmount: c.payment.totalPayment }))
+        .map(c => ({_id:c.client._id,  name: c.client.firstName, returnedHOCNumber: this.returnedHOC(c.payment.billingHistory).count, totalDebtAmount: c.payment.totalPayment }))
       console.log("clientsWithReturnedHOC", this.clientsWithReturnedHOC);
     }
     console.log("finish sort payments");
@@ -129,7 +127,9 @@ export class PaymentsReportsComponent implements OnInit {
     return { res, count }
   }
 
-  openClientPayment() { }
+  openClientPayment(_id:string) {
+    this.router.navigate(['clientSearch/clientManagement/clientNavbar/payments'], { state: { client: this.clients.find(c => c._id == _id) } });
+   }
 
 }
 
