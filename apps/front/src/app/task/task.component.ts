@@ -63,7 +63,7 @@ import { MenuItem, SelectItem, SelectItemGroup } from 'primeng/api';
 import { TaskCheckListComponent } from '../task-check-list/task-check-list.component';
 import { TabViewModule } from 'primeng/tabview';
 import { SubTaskComponent } from '../sub-task/sub-task.component';
-import { TimerComponent } from '../timer/timer.component';  // וודא שהנתיב נכון
+import { TimerComponent } from '../timer/timer.component'; // וודא שהנתיב נכון
 
 import { SocketService } from '../_services/socket.service';
 import { DialogModule } from 'primeng/dialog';
@@ -146,6 +146,7 @@ export class TaskComponent implements OnInit {
   taskNotAssigned: any = null;
   checkedDialog: boolean = false;
   visible: boolean = false;
+  visiblePopup: boolean = false;
   // service
   private eventDataSubscription: Subscription;
   public eventId: string;
@@ -195,14 +196,12 @@ export class TaskComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId) this.id = this.taskId;
     console.log(this.id);
     if (this.id != 'create') {
       this.tasksService.searchTask(this.id!).subscribe({
         next: (data) => {
-          console.log('tasks: ', data);
           this.currentTask = data;
           this.selectStatus = this.currentTask.status;
           this.selectedPriority = this.currentTask.priority;
@@ -226,7 +225,7 @@ export class TaskComponent implements OnInit {
           }));
           this.selectedTags = this.currentTask.tags;
           this.eventId = this.currentTask.googleId;
-          console.log("checkList", this.currentTask.checkList);
+          console.log('checkList', this.currentTask.checkList);
           this.currentTask.checkList?.forEach((listId: string) => {
             console.log("listId", listId);
 
@@ -234,6 +233,16 @@ export class TaskComponent implements OnInit {
               this.checkList.push(data);
             });
           })
+
+          this.clientService.searchClient(this.selectedClient).subscribe({
+            next: (dataClients) => {
+              console.log(dataClients);
+              this.selectedClient = dataClients;
+            },
+            error: (errClients) => {
+              console.log(errClients);
+            },
+          });
 
         },
         error: (err) => {
@@ -243,9 +252,9 @@ export class TaskComponent implements OnInit {
       console.log("checkList in task comp");
 
       this.checkList.forEach((check) => {
-        console.log("check", check);
-        console.log("*");
-      })
+        console.log('check', check);
+        console.log('*');
+      });
     }
     //users
     this.userSErvice.getAllUsers().subscribe({
@@ -322,15 +331,15 @@ export class TaskComponent implements OnInit {
             {
               label: 'בחר מתוך רשימות',
               value: 'old',
-              items: [{ label: 'אין רשימות', value: null }]
+              items: []
             }
           ];
           console.log('No checklist data');
           return;
         }
 
-        const checklists = lists.map(list => ({ label: list.name, value: list._id }));
-
+        const checklists = lists.filter(item => this.notInThisTask(item._id))
+          .map(list => ({ label: list.name, value: list._id }));
         this.groupedLists = [
           {
             label: "חדש",
@@ -351,23 +360,32 @@ export class TaskComponent implements OnInit {
 
     // socket
     // Listen for tasks that are not assigned to anyone
-    this.socketService.onTaskNotAssigned().subscribe((task) => {
-      this.taskNotAssigned = task;
-    });
+    // this.socketService.onTaskNotAssigned().subscribe((task) => {
+    //   this.taskNotAssigned = task;
+    // });
 
-    // Listen for tasks assigned to the current client
-    this.socketService.onTaskAssignedToYou().subscribe((task) => {
-      // Show notification or handle task assignment to the current user
-      console.log('Task assigned to you:', task);
-    });
+    // // Listen for tasks assigned to the current client
+    // this.socketService.onTaskAssignedToYou().subscribe((task) => {
+    //   // Show notification or handle task assignment to the current user
+    //   console.log('Task assigned to you:', task);
+    // });
 
     // Listen for tasks assigned to someone else
-    this.socketService.onTaskAssigned().subscribe((data) => {
-      const { taskId, assignedTo } = data;
-      // Handle UI updates or notifications for tasks assigned to others
-      console.log(`Task ${taskId} assigned to ${assignedTo}`);
-    });
+    // this.socketService.onTaskAssigned().subscribe((data) => {
+    //   const { taskId, assignedTo } = data;
+    //   // Handle UI updates or notifications for tasks assigned to others
+    //   console.log(`Task ${taskId} assigned to ${assignedTo}`);
+    // });
   }
+
+  notInThisTask(id: string) {
+    this.currentTask.checkList.forEach(item=>{
+      if(item===id)
+        return false
+    })
+    return true
+  }
+
 
   showDialog() {
     if (this.id == 'create') {
@@ -513,6 +531,11 @@ export class TaskComponent implements OnInit {
 
   //functions
   save() {
+    // בדוק אם המשימה אינה משויכת לאף משתמש
+    // if (!this.selectedUsers || this.selectedUsers.length === 0) {
+    //   this.visiblePopup = true;
+    //   return;
+    // }
     //create task
     const newTask: Task = {
       // client: this.selectedClient,
@@ -542,16 +565,18 @@ export class TaskComponent implements OnInit {
     if (this.selectedPriority) newTask.priority = this.selectedPriority;
     if (this.dueDate) newTask.dueDate = this.dueDate;
     if (this.eventId) newTask.googleId = this.eventId;
-    newTask.checkList = this.currentTask.checkList;
+    // newTask.checkList = this.currentTask.checkList;
     console.log(this.eventId);
 
     if (this.id == 'create') {
       this.tasksService.createTask(newTask).subscribe({
-        next: (dataClients) => {
-          console.log(dataClients);
-          if ((this.selectedUsers = [])) {
-            // Task not assigned, notify all clients
-            this.socketService.addTask(newTask);
+        next: (task) => {
+          console.log(task);
+          if (!this.selectedUsers || this.selectedUsers.length === 0) {
+            console.log('מממממלא משויכת לאף אחד');
+            console.log(this.selectedUsers);
+            
+            this.socketService.addTask(task);
           }
         },
         error: (errClients) => {
@@ -667,39 +692,37 @@ export class TaskComponent implements OnInit {
 
   //checkList
   newList: boolean = false;
-  showNewList() {
-      this.newList = true;
-  
-  }
-  addNewList(){
-    this.newList = false;
-    if(this.newListName)
-      {      let l: CheckList = { name: this.newListName, items: [] }
-            this.checkListServise.createCheckList(l).subscribe({
-              next
-                : (newList) => {
-      
-                  this.save()
-      
-                  this.currentTask.checkList.push(newList._id)
-                  this.checkList.push(newList)
-                },
-              error
-                : (err) => {
-                  console.log(err);
-                  alert("ההוספה נכשלה, אנא נסה שנית")
-                },
-            })}
-            else{
-              alert("יש להזין שם")
-            }
-  }
   selectedList: string | undefined
   groupedLists: SelectItemGroup[] = []
-  editNewList = false
-  newListName:string|null
+  newListName: string | null
+
   selectPlaceholder = 'בחר רשימה'
-  addList(i: any) {
+
+  addNewList() {
+    this.newList = false;
+    if (this.newListName) {
+      let l: CheckList = { name: this.newListName, items: [] }
+      this.checkListServise.createCheckList(l).subscribe({
+        next
+          : (newList) => {
+            this.currentTask.checkList.push(newList._id)
+            this.checkList.push(newList)
+            this.save()
+          },
+        error
+          : (err) => {
+            console.log(err);
+            alert("ההוספה נכשלה, אנא נסה שנית")
+          },
+      })
+    }
+    else {
+      alert("יש להזין שם")
+    }
+  }
+
+  // create new list
+  createList(i: any) {
     this.selectedList = i.value
     if (this.selectedList && this.selectedList != "new") {
       this.checkListServise.getCheckLists(this.selectedList).subscribe({
@@ -708,11 +731,9 @@ export class TaskComponent implements OnInit {
           this.checkListServise.createCheckList(l).subscribe({
             next
               : (newList) => {
-
-                this.save()
-
                 this.currentTask.checkList.push(newList._id)
                 this.checkList.push(newList)
+                this.save()
               },
             error
               : (err) => {
@@ -725,15 +746,15 @@ export class TaskComponent implements OnInit {
 
     }
     else {
-      this.editNewList = true
       this.newList = true;
-
     }
+
     this.selectedList = undefined
   }
-  saveList(list: CheckList) {
-    this.editNewList = false
-    if (list._id != "0") {
+
+  //update list
+  updateList(list: CheckList) {
+    if (list._id) {
       this.checkListServise.updateCheckList(list).subscribe({
         next: (newList) => {
           console.log(newList);
@@ -759,29 +780,22 @@ export class TaskComponent implements OnInit {
     //   })
     // }
   }
+
   deleteList(_id: string) {
     if (_id != "1234") {
       let i = this.currentTask.checkList.findIndex(item => item === _id)
-      this.currentTask.checkList.forEach((element, index) => {
-        if (element === _id) {
-          console.log(element, index);
-          i=index
-        }
-      })
-      this.currentTask.checkList.splice(i, 1)//delete from current-task.checklist
-      console.log(this.currentTask);
-      
-      this.checkList.splice(i, 1)//delete from checklist
-
+      const a = this.currentTask.checkList.splice(i, 1)//delete from current-task.checklist
+      const b = this.checkList.splice(i, 1)//delete from checklist
+      const c = this.groupedLists[1].items!.splice(i, 1)//delete from group options
       this.save();
       this.checkListServise.deleteCheckList(_id).subscribe({
         next: (data) => {
-          console.log(data);
-          let prev = this.checkList.findIndex(c => c._id === _id)
-          // this.checkList.slice(prev, 1)
         },
         error: (err) => {
           console.log(err);
+          this.currentTask.checkList.push(a[0])//delete from current-task.checklist
+          this.checkList.push(b[0])//delete from checklist
+          this.groupedLists[1].items.push(c[0])
           alert("המחיקה נכשלה, אנא נסה שנית")
         },
       })
