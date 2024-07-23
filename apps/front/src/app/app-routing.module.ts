@@ -210,17 +210,15 @@ import { TableComponent } from './table/table.component';
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
       { path: 'clientField' , component:ClientFieldComponent},
-      { path: 'yearlyReport', component: YearlyReportComponent , 
-        children:[
-          {path:  'createYearlyReport', component:CreateYearlyReportComponent},
+      { path: 'yearlyReport', component: YearlyReportComponent ,
+       children: [
 
-        ]
+        {path: 'createYearlyReport', component:CreateYearlyReportComponent},
+
+       ]
       },
-      {path: 'steps', component:YearlyReportStepsComponent,
-          children:[
-            {path:  'createYearlyReport', component:CreateYearlyReportComponent},
-          ]
-      },
+        {path: 'steps', component:YearlyReportStepsComponent},
+        {path: 'createYearlyReport', component:CreateYearlyReportComponent},
       { path: 'taxRefunds', component: TaxRefundsComponent ,
         children: [
          {path: 'steps', component:TaxRefundsStepsComponent}

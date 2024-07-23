@@ -41,13 +41,10 @@ export class YearlyReportStepsComponent implements OnInit {
 
   ngOnInit() {
     this.responseData = history.state.data;
-    this.client= history.state.client
+    this.client = history.state.client
     this.allStep = this.responseData.stepsList
     this.groupSteps();
-
   }
-
-
 
   groupSteps() {
     // console.log("task",history.state.task)
@@ -90,7 +87,6 @@ export class YearlyReportStepsComponent implements OnInit {
     }
   }
 
-
   async submitChanges() {
     console.log("Submitting changes:", this.changes);
 
@@ -114,10 +110,9 @@ export class YearlyReportStepsComponent implements OnInit {
 
   checkAndChangeHeaderColor() {
     if (this.isAllTasksCompleted(5)) {
-      // שנה את צבע הכותרת של שלב 5
       const step5Header = document.querySelector('p-stepperPanel[header*="שלב V"]') as HTMLElement;
       if (step5Header) {
-        step5Header.style.color = 'red'; // תחליף את הצבע הרצוי כאן
+        step5Header.style.color = 'red';
       }
     }
   }
@@ -128,7 +123,6 @@ export class YearlyReportStepsComponent implements OnInit {
 
   nextStep() {
     if (this.activeStep === 0 && !this.isStepOneComplete()) {
-      // אם השלב הראשון לא הושלם, אל תאפשר מעבר לשלב הבא
       return;
     }
     this.activeStep++;
@@ -143,13 +137,10 @@ export class YearlyReportStepsComponent implements OnInit {
     return tasks.every(task => task.isComplete);
   }
 
-  goBack(){
+  goBack() {
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport'], { state: { client: this.client } });
   }
-  goToUpdate(){
-    console.log("goToUpdate")
-   
-    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/createYearlyReport'],{state:{client: this.client,report:this.responseData}});
-    
+  goToUpdate() {
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
   }
 }

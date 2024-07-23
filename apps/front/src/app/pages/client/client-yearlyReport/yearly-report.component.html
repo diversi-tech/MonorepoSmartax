@@ -1,4 +1,3 @@
-
 <br><br>
 <p-button (click)="createReprtTag()" label="יצירת דוח שנתי חדש" />
 <router-outlet></router-outlet>
@@ -20,6 +19,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-task>
         <tr>
+            <!-- <td><p-button (click)="goToUpdate(task)" label="עריכת פרטים" /></td> -->
             <td><p-button (click)="goToSteps(task)" label="עדכן" /></td>
             <td>בטיפול</td>
             <td>{{task.entityType}}</td>

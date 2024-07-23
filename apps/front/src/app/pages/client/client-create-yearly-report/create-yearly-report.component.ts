@@ -88,10 +88,13 @@ export class CreateYearlyReportComponent implements OnInit {
 
   showModalDialog() {
     this.displayModal = true;
+
   }
 
   hideModalDialog() {
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport'], { state: { client: this.client } });
     this.displayModal = false;
+
   }
 
   ngOnInit(): void {
@@ -146,10 +149,11 @@ export class CreateYearlyReportComponent implements OnInit {
       (response) => {
         console.log(response);
         this.router.navigate(
-          ['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps'],
-          { state: { data: response } ,
-         
-       } );
+          ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
+          {
+            state: { data: response, client: this.client },
+
+          });
       },
       (error) => {
         console.log(error);
@@ -172,18 +176,17 @@ export class CreateYearlyReportComponent implements OnInit {
       .then(
         (response) => {
           console.log(response);
-          if (response) alert('update yearly report succ');
-          this.router.navigate(
-            ['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps'],
-            { state: { data: response } ,
-           
-         } );
-
+          if (response)
+            this.router.navigate(
+              ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
+              {
+                state: { data: response, client: this.client },
+              });
         },
         (error) => {
           console.log(error);
         }
       );
-      
   }
+
 }
