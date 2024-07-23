@@ -47,6 +47,8 @@ export class WorkLogComponent implements OnInit {
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('_id');
     this.userRole = this.tokenService.getCurrentDetail('role').level;
+    console.log(this.userRole);
+    
   }
 
   ngOnInit() {

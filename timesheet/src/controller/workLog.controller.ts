@@ -92,111 +92,28 @@
 //     }
 //   }
 // }
-// import { Controller, HttpStatus } from '@nestjs/common';
-// import { WorkLogService } from 'src/service/workLog.service';
-// import { CreateWorkLogDto, UpdateWorkLogDto, UpdateTimeEntryDto } from '../dto/workLog.dto';
-// import { WorkLog } from 'src/model/workLog.model';
-// import { Response } from 'express';
-// import { MessagePattern } from '@nestjs/microservices';
 
-// @Controller('worklogs')
-// export class WorkLogController {
-//   constructor(private readonly workLogService: WorkLogService) { }
-
-//   @MessagePattern({ cmd: 'create' })
-//   async create(data: { createWorkLogDto: CreateWorkLogDto }): Promise<{ data: WorkLog }> {
-//     const workLog = await this.workLogService.create(data.createWorkLogDto);
-//     return { data: workLog };
-//   }
-
-//   @MessagePattern({ cmd: 'update' })
-//   async update(data: { id: string, updateWorkLogDto: UpdateWorkLogDto }): Promise<{ data: WorkLog }> {
-//     const workLog = await this.workLogService.update(data.id, data.updateWorkLogDto);
-//     return { data: workLog };
-//   }
-
-//   @MessagePattern({ cmd: 'updateTimeEntry' })
-//   async updateTimeEntry(data: { id: string, updateTimeEntryDto: UpdateTimeEntryDto }): Promise<{ data: WorkLog }> {
-//     const workLog = await this.workLogService.updateTimeEntry(data.id, data.updateTimeEntryDto);
-//     return { data: workLog };
-//   }
-
-//   @MessagePattern({ cmd: 'findOne' })
-//   async findOne(data: { id: string }): Promise<{ data: WorkLog }> {
-//     const workLog = await this.workLogService.findOne(data.id);
-//     return { data: workLog };
-//   }
-
-//   @MessagePattern({ cmd: 'findAll' })
-//   async findAll(): Promise<{ data: WorkLog[] }> {
-//     const workLogs = await this.workLogService.findAll();
-//     return { data: workLogs };
-//   }
-
-//   @MessagePattern({ cmd: 'findByEmployeeId' })
-//   async findByEmployeeId(data: { employeeId: string }): Promise<{ data: WorkLog[] }> {
-//     const workLogs = await this.workLogService.findByEmployeeId(data.employeeId);
-//     return { data: workLogs };
-//   }
-
-//   @MessagePattern({ cmd: 'export' })
-//   async exportWorkLogs(
-//     data: { month: number, year: number, res: Response }
-//   ): Promise<void> {
-//     const { month, year, res } = data;
-//     console.log(`Received request to export work logs for month: ${month}, year: ${year}`);
-//     try {
-//       const buffer = await this.workLogService.exportWorkLogs(month, year);
-//       res.set({
-//         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-//         'Content-Disposition': 'attachment; filename=worklogs.xlsx',
-//         'Content-Length': buffer.length.toString(),
-//       });
-//       res.status(HttpStatus.OK).send(buffer);
-//     } catch (error) {
-//       console.error('Error exporting work logs:', error);
-//       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs');
-//     }
-//   }
-
-//   @MessagePattern({ cmd: 'exportForEmployee' })
-//   async exportWorkLogsForEmployee(
-//     data: { employeeId: string, month: number, year: number, res: Response }
-//   ): Promise<void> {
-//     const { employeeId, month, year, res } = data;
-//     console.log(`Received request to export work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`);
-//     try {
-//       const buffer = await this.workLogService.exportWorkLogsForEmployee(employeeId, month, year);
-//       res.set({
-//         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-//         'Content-Disposition': 'attachment; filename=worklogs.xlsx',
-//         'Content-Length': buffer.length.toString(),
-//       });
-//       res.status(HttpStatus.OK).send(buffer);
-//     } catch (error) {
-//       console.error('Error exporting work logs for employee:', error);
-//       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs for employee');
-//     }
-//   }
-// }
-
-// workLog.controller.ts
-import { Controller, HttpStatus } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { WorkLogService } from 'src/service/workLog.service';
 import { CreateWorkLogDto, UpdateWorkLogDto, UpdateTimeEntryDto } from '../dto/workLog.dto';
 import { WorkLog } from 'src/model/workLog.model';
-import { Response } from 'express';
-import { MessagePattern } from '@nestjs/microservices';
 
 @Controller('worklogs')
 export class WorkLogController {
   constructor(private readonly workLogService: WorkLogService) { }
 
+  
   @MessagePattern({ cmd: 'create' })
-  async create(data: { createWorkLogDto: CreateWorkLogDto }): Promise<{ data: WorkLog }> {
-    const workLog = await this.workLogService.create(data.createWorkLogDto);
+  async create(data: any): Promise<{ data: WorkLog }> {
+    if (!data.date || !data.employeeId) {
+      throw new Error('Missing required fields: date and employeeId');
+    }
+  
+    const workLog = await this.workLogService.create(data);
     return { data: workLog };
   }
+  
 
   @MessagePattern({ cmd: 'update' })
   async update(data: { id: string, updateWorkLogDto: UpdateWorkLogDto }): Promise<{ data: WorkLog }> {
@@ -224,13 +141,14 @@ export class WorkLogController {
 
   @MessagePattern({ cmd: 'findByEmployeeId' })
   async findByEmployeeId(data: { employeeId: string }): Promise<{ data: WorkLog[] }> {
+    console.log(data.employeeId);
     const workLogs = await this.workLogService.findByEmployeeId(data.employeeId);
     return { data: workLogs };
   }
 
   @MessagePattern({ cmd: 'export' })
   async exportWorkLogs(data: { month: number, year: number }): Promise<Buffer> {
-    const { month, year } = data;
+    const { month, year } = data; // Fixed the destructuring
     console.log(`Received request to export work logs for month: ${month}, year: ${year}`);
     try {
       const buffer = await this.workLogService.exportWorkLogs(month, year);
@@ -254,3 +172,6 @@ export class WorkLogController {
     }
   }
 }
+
+
+

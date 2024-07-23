@@ -1,78 +1,38 @@
-// import { Controller, Post, Body, Param, Inject, Get } from '@nestjs/common';
-// import { ClientProxy } from '@nestjs/microservices';
-
-// @Controller('api')
-// export class ApiGatewayController {
-//   constructor(
-//     @Inject('TIMESHEET') private readonly WorkLodService: ClientProxy,
-
-//   ) {}
-
-//   @Get(':service/:cmd')
-//   async handleRequestGet(
-//     @Param('service') service: string,
-//     @Param('cmd') cmd: string,
-//     @Body() data: any
-//   ) {
-//     let client: ClientProxy;
-    
-//     switch (service) {
-//       case 'worklogs':
-//         client = this.WorkLodService;
-//         break;
-//       default:
-//         throw new Error('Unknown service');
-//     }
-
-//     return client.send({ cmd }, data).toPromise();
-//   }
-
-//   @Post(':service/:cmd')
-//   async handleRequestPost(
-//     @Param('service') service: string,
-//     @Param('cmd') cmd: string,
-//     @Body() data: any
-//   ) {
-//     let client: ClientProxy;
-    
-//     switch (service) {
-//       case 'worklogs':
-//         client = this.WorkLodService;
-//         break;
-//       default:
-//         throw new Error('Unknown service');
-//     }
-
-//     return client.send({ cmd }, data).toPromise();
-//   }
-// }
-// api-gateway.controller.ts
-import { Controller, Post, Body, Param, Inject, Get } from '@nestjs/common';
-import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
+import { Controller, Post, Body, Param, Inject, Get, Put, Delete, Query } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('api')
 export class ApiGatewayController {
   constructor(
     @Inject('TIMESHEET') private readonly workLogService: ClientProxy,
-  ) {}
+    // @Inject('OTHER_SERVICE') private readonly otherService: ClientProxy, // הוסף כאן שירותים נוספים לפי הצורך
+  ) { }
 
-  @Get(':service/:cmd')
-  async handleRequestGet(
-    @Param('service') service: string,
-    @Param('cmd') cmd: string,
-    @Body() data: any
-  ) {
-    let client: ClientProxy;
-    
+  private getClientProxy(service: string): ClientProxy {
     switch (service) {
       case 'worklogs':
-        client = this.workLogService;
-        break;
+        return this.workLogService;
+      // case 'otherService':
+      // return this.otherService;
+      // הוסף כאן שירותים נוספים לפי הצורך
       default:
         throw new Error('Unknown service');
     }
+  }
 
-    return client.send({ cmd }, data).toPromise();
+  @Get(':service/:cmd/:id?')
+  async handleRequestGet(
+    @Param('service') service: string,
+    @Param('cmd') cmd: string,
+    @Param('id') id?: string
+  ) {
+    const client = this.getClientProxy(service);
+    console.log('handleRequestGet called with:', { service, cmd, id });
+
+    const requestPayload = id ? { employeeId: id } : {};
+    console.log('Request Payload:', requestPayload);
+
+    return client.send({ cmd }, requestPayload).toPromise();
   }
 
   @Post(':service/:cmd')
@@ -81,29 +41,61 @@ export class ApiGatewayController {
     @Param('cmd') cmd: string,
     @Body() data: any
   ) {
-    let client: ClientProxy;
-    
-    switch (service) {
-      case 'worklogs':
-        client = this.workLogService;
-        break;
-      default:
-        throw new Error('Unknown service');
-    }
-
+    const client = this.getClientProxy(service);
     return client.send({ cmd }, data).toPromise();
   }
+
+  @Get(':service/:cmd/:month/:year')
+  async handleRequestPostWithParams(
+    @Param('service') service: string,
+    @Param('cmd') cmd: string,
+    @Param('month') month: number,
+    @Param('year') year: number,
+    @Body() data: any
+  ) {
+    const client = this.getClientProxy(service);
+    return client.send({ cmd }, { month, year, ...data }).toPromise();
+  }
+  @Get(':service/:cmd/:employeeId/:month/:year')
+  async handleRequestGetForExport(
+    @Param('service') service: string,
+    @Param('cmd') cmd: string,
+    @Param('employeeId') employeeId: string,
+    @Param('month') month: number,
+    @Param('year') year: number
+  ) {
+    const client = this.getClientProxy(service);
+    console.log('handleRequestGetForExport called with:', { service, cmd, employeeId, month, year });
+
+    const requestPayload = { employeeId, month, year };
+    console.log('Request Payload:', requestPayload);
+
+    return client.send({ cmd }, requestPayload).toPromise();
+  }
+
+  @Put(':service/:cmd/:id?')
+  async handleRequestPut(
+    @Param('service') service: string,
+    @Param('cmd') cmd: string,
+    @Param('id') id?: string,
+    @Body() data?: any
+  ) {
+    const client = this.getClientProxy(service);
+    return client.send({ cmd }, id ? { id, ...data } : data).toPromise();
+  }
+
+
+
+  @Delete(':service/:cmd/:id')
+  async handleRequestDelete(
+    @Param('service') service: string,
+    @Param('cmd') cmd: string,
+    @Param('id') id: string // Required parameter
+  ) {
+    const client = this.getClientProxy(service);
+    return client.send({ cmd }, { id }).toPromise();
+  }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

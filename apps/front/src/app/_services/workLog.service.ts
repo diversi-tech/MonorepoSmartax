@@ -15,7 +15,9 @@ constructor(private http: HttpClient) {}
 getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
   let url = this.apiUrl;
   if (employeeId) {
-    url += `/${employeeId}`;
+    console.log("etty");
+    
+    url += `/findByEmployeeId/${employeeId}`;
   }
   url += '/findAll';
   return this.http.get<{ data: WorkLog[] }>(url).pipe(
@@ -25,18 +27,20 @@ getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
 
 
   createWorkLog(workLog: WorkLog): Observable<WorkLog> {
-    return this.http.post<{ data: WorkLog }>(this.apiUrl, workLog).pipe(
+    let url = `${this.apiUrl}/create`;
+    return this.http.post<{ data: WorkLog }>(url, workLog).pipe(
       map(response => response.data)
     );
   }
 
   updateWorkLog(id: string, timeEntries: any[]): Observable<WorkLog> {
-    return this.http.put<{ data: WorkLog }>(`${this.apiUrl}/${id}`, { timeEntries }).pipe(
+    return this.http.put<{ data: WorkLog }>(`${this.apiUrl}/update/${id}`, { updateWorkLogDto: { timeEntries } }).pipe(
       map(response => response.data)
     );
   }
+
   updateTimeEntry(id: string, updateTimeEntryDto: UpdateTimeEntryDto): Observable<WorkLog> {
-    return this.http.put<{ data: WorkLog }>(`${this.apiUrl}/${id}/time-entries`, updateTimeEntryDto).pipe(
+    return this.http.put<{ data: WorkLog }>(`${this.apiUrl}/findByEmployeeId/${id}`, updateTimeEntryDto).pipe(
       map(response => response.data)
     );
   }
@@ -50,7 +54,8 @@ getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
     return this.http.get(url, { responseType: 'blob' });
   }
    getWorkLogsByEmployeeId(employeeId: string): Observable<WorkLog[]> {
-    const url = `${this.apiUrl}/employee/${employeeId}`;
+    console.log(employeeId);
+    const url = `${this.apiUrl}/findByEmployeeId/${employeeId}`;
     return this.http.get<{ data: WorkLog[] }>(url).pipe(
       map(response => response.data)
     );
