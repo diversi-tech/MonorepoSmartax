@@ -8,24 +8,25 @@
   <ng-template pTemplate="header" let-columns>
     <tr (click)="selectCurrentCommunication(communication)"
     [ngClass]="{ 'highlight': currentCommunication === communication }">
-      <th>
+    <th>
+      <span (click)="onSelectionChange(2)">שם לקוח</span>
+    <div>
+      <input *ngIf="isSelected == 2" type="text" class="filter-input" [(ngModel)]="filtername" (input)="filterClientsByname()">
+    </div>
+    </th>
+    <th>
+      <span (click)="onSelectionChange(3)">תאריך</span>
+     <div>
+      <input *ngIf="isSelected == 3" type="date" class="filter-input" [(ngModel)]="filterdate" (input)="filterByDate()">
+     </div> 
+    </th>
+    <th>
         <span (click)="onSelectionChange(4)">סוג השיחה</span>
        <div>
         <input *ngIf="isSelected == 4" type="text" class="filter-input" [(ngModel)]="filterstatus" (input)="filterByStatus()">
       </div>
        </th>
-      <th>
-        <span (click)="onSelectionChange(2)">שם לקוח</span>
-      <div>
-        <input *ngIf="isSelected == 2" type="text" class="filter-input" [(ngModel)]="filtername" (input)="filterClientsByname()">
-      </div>
-      </th>
-      <th>
-        <span (click)="onSelectionChange(3)">תאריך</span>
-       <div>
-        <input *ngIf="isSelected == 3" type="date" class="filter-input" [(ngModel)]="filterdate" (input)="filterByDate()">
-       </div> 
-      </th>
+      
       <th>
         <span (click)="onSelectionChange(5)">נושא שיחה</span>
         <div *ngIf="isSelected == 5 ">
@@ -39,10 +40,10 @@
   </ng-template>
   <ng-template pTemplate="body" let-communication>
     <tr (click)="selectCurrentCommunication(communication)" [ngClass]="{ 'highlight': currentCommunication === communication }">
-      <td *ngIf="communication.Status === 'true'">ליד</td>
-      <td *ngIf="communication.Status === 'false'">מעקב</td>
       <td>{{communication.client}}</td>
       <td>{{communication.date | date: 'dd-MM-yyy' }}</td>
+      <td *ngIf="communication.Status === 'true'">ליד</td>
+      <td *ngIf="communication.Status === 'false'">מעקב</td>
       <td>{{communication.Subject}}</td>
       <td>{{communication.summary}}</td>
     </tr>
