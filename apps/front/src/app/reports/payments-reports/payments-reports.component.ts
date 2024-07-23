@@ -131,5 +131,10 @@ export class PaymentsReportsComponent implements OnInit {
     this.router.navigate(['clientSearch/clientManagement/clientNavbar/payments'], { state: { client: this.clients.find(c => c._id == _id) } });
    }
 
+   openClientPaymentHistory(_id:string){
+    // this.router.navigate(['paymentsHistory'], { state: { client: this.clients.find(c => c._id == _id) } });
+
+   }
+
 }
 
