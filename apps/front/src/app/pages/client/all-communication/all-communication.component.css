@@ -1,4 +1,17 @@
 .highlight {
     /* color: rgb(240, 112, 112); */
-    background-color: #edecec;
-}  
+    background-color: #f0f0f0;
+}
+
+/* .p-button-rounded {
+    border-radius: 20%; 
+  } */
+
+.p-button-rounded {
+    border-radius: 20%;
+    width: 80px;
+}
+
+.p-button-warning {
+    color: #10c2b0;
+}

@@ -4,7 +4,7 @@ import { ClientService } from '../../../_services/client.service';
 import { FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { ConfirmationService, PrimeNGConfig, PrimeTemplate } from 'primeng/api';
-import { AutoCompleteModule, AutoCompleteSelectEvent,} from 'primeng/autocomplete';
+import { AutoCompleteModule, AutoCompleteSelectEvent, } from 'primeng/autocomplete';
 import { NgIf } from '@angular/common';
 import { Router, RouterOutlet, RouterLink, } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
@@ -84,7 +84,7 @@ export class ClientSearchComponent implements OnInit {
   selectClient(event: AutoCompleteSelectEvent): void {
     const client = event.value as Client;
     this.router.navigate(['/clientSearch/clientManagement'], { state: { client } });
-    
+
   }
 
   selectClientFromList(client: Client): void {
@@ -155,12 +155,12 @@ export class ClientSearchComponent implements OnInit {
   isClientChoosed(client: Client): boolean {
     return this.choosedClients.includes(client);
   }
-  
-isFavoriteClient(client:Client){
-  return this.user.favoritesClient.find(c=>c._id===client._id)!=undefined;
-}
+
+  isFavoriteClient(client: Client) {
+    return this.user.favoritesClient.find(c => c._id === client._id) != undefined;
+  }
   addFavoritesClient() {
-    this.user.favoritesClient.push(...this.choosedClients.filter(c=>!this.isFavoriteClient(c)))
+    this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)))
     this.updateFavorite();
   }
   updateFavorite() {
@@ -182,14 +182,14 @@ isFavoriteClient(client:Client){
         },
       });
   }
-removeFromFavorite(client:Client){
-  this.user.favoritesClient=this.user.favoritesClient.filter(c=>c._id!=client._id);
-  this.updateFavorite();
-}
-addToFavorite(client:Client){
-  this.user.favoritesClient.push(client);
-  this.updateFavorite();
-}
+  removeFromFavorite(client: Client) {
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
+    this.updateFavorite();
+  }
+  addToFavorite(client: Client) {
+    this.user.favoritesClient.push(client);
+    this.updateFavorite();
+  }
   showConfirmation(): void {
     debugger
     this.confirmationService.confirm({
