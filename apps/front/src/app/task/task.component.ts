@@ -190,7 +190,7 @@ export class TaskComponent implements OnInit {
     private socketService: SocketService,
     private googleTask: GoogleTaskService,
     private checkListServise: CheckListService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -227,19 +227,19 @@ export class TaskComponent implements OnInit {
           console.log("checkList", this.currentTask.checkList);
           this.currentTask.checkList?.forEach((listId: string) => {
             console.log("listId", listId);
-            
+
             this.checkListServise.getCheckLists(listId).subscribe((data: CheckList) => {
               this.checkList.push(data);
             });
           })
-          
+
         },
         error: (err) => {
           console.log(err);
         },
       });
       console.log("checkList in task comp");
-    
+
       this.checkList.forEach((check) => {
         console.log("check", check);
         console.log("*");
@@ -337,6 +337,7 @@ export class TaskComponent implements OnInit {
     this.visible = false;
     this.save();
   }
+
 
   // createGoogleTask() {
   //   this.visible = false;
@@ -617,6 +618,42 @@ export class TaskComponent implements OnInit {
     const imageUrl = `http://localhost:8080/uploads/ttt.png`;
     FileSaver.saveAs(imageUrl, 'ttt.png');
   }
+
+  //checkList
+  editNewList = false
+  addList() {
+    this.editNewList = true
+  }
+  saveList(list: CheckList) {
+    this.editNewList = false
+    if (list._id != "0") {
+      this.checkListServise.updateCheckList(list).subscribe({
+        next: (newList) => {
+          console.log(newList);
+          let prev=this.checkList.findIndex(c=>c._id===newList._id)
+          this.checkList[prev]=newList
+        },
+        error: (err) => {
+          console.log(err);
+          alert("העדכון נכשל, אנא נסה שנית")
+        },
+      })
+    }
+    else {
+      this.checkListServise.createCheckList(list, this.taskId).subscribe({
+        next: (newList) => {
+          console.log(newList);
+          this.checkList.push(newList);
+        },
+        error: (err) => {
+          console.log(err);
+          alert("ההוספה נכשלה, אנא נסה שנית")
+        },
+      })
+    }
+  }
+
+
   //description
   response: any;
   handleResponse(event: any) {

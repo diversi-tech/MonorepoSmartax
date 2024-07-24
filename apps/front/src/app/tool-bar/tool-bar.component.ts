@@ -4,13 +4,14 @@ import { TabMenu, TabMenuModule } from 'primeng/tabmenu';
 import { ToolBarService } from '../_services/tool-bar.service';
 import { NgFor, NgIf } from '@angular/common';
 import { PrimeTemplate } from 'primeng/api';
-
+import { DropdownModule } from 'primeng/dropdown';
+import { MenubarModule } from 'primeng/menubar';
 @Component({
   selector: 'app-tool-bar',
   templateUrl: './tool-bar.component.html',
   styleUrls: ['./tool-bar.component.css'],
   standalone: true,
-  imports: [TabMenuModule, PrimeTemplate, NgIf, RouterLink, NgFor]
+  imports: [TabMenuModule, PrimeTemplate, NgIf, RouterLink, NgFor, DropdownModule, MenubarModule]
 })
 export class ToolBarComponent implements OnInit {
   @ViewChild
@@ -22,19 +23,7 @@ export class ToolBarComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    console.log("items", this.items);
-    this.items.forEach(element => {
-      try {
-        if (element.label! == 'דוחות')
-          console.log(element.children![0].data!['label']!);
-        else
-          console.log("no!!!");
-      } catch (e) {
-        console.log("error: " + e);
 
-      }
-
-    })
   }
 
   onTabChange(event: any) {

@@ -16,7 +16,6 @@ import {
 } from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
-import { every } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
@@ -75,18 +74,18 @@ export class TaskManagementComponent implements OnInit {
   showFilter: boolean = false;
 
   filter: {
-    deadlineRange: [Date, Date] | null;
+    deadline: Date | null;
     client: Client | null;
     user: User | null;
     task: Task | null;
     tags: Tag[];
   } = {
-    deadlineRange: null,
-    client: null,
-    user: null,
-    task: null,
-    tags: [],
-  };
+    deadline: null,
+      client: null,
+      user: null,
+      task: null,
+      tags: []
+    };
 
   clientSuggestions: Client[] = [];
   userSuggestions: User[] = [];
@@ -223,12 +222,9 @@ export class TaskManagementComponent implements OnInit {
     this.filteredTasks = this.tasks.filter((task) => {
       this.filterFirstStatus = false;
 
-      const deadlineMatch =
-        !this.filter.deadlineRange ||
-        (task.dueDate >= this.filter.deadlineRange[0] &&
-          task.dueDate <= this.filter.deadlineRange[1]);
+      const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
-      const clientMatch = !this.filter.client || task.client[0].firstName.includes(this.filter.client.firstName);
+      const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
 
         const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
         
@@ -257,37 +253,62 @@ export class TaskManagementComponent implements OnInit {
   }
   // sort
   // בקומפוננטה שלך
-  sortTasks(field: string, list: Task[], reverse: boolean) {
-    // debugger
-    console.log(this.filteredTasks);
+  // sortTasks(field: string, list: Task[], reverse: boolean) {
+  //   // debugger
+  //   console.log(this.filteredTasks);
 
+  //   list.sort((a, b) => {
+  //     // כאן אתה יכול להוסיף לוגיקה למיון על פי השדה שנבחר
+  //     if (field === 'taskName') {
+  //       if (reverse) {
+  //         return b.taskName.localeCompare(a.taskName);
+  //       }
+  //       return a.taskName.localeCompare(b.taskName); // מיון לפי שם המשימה
+  //     }
+  //     if (field === 'assignedTo') {
+  //       if (reverse) {
+  //         return b.assignedTo.length - a.assignedTo.length;
+  //       }
+  //       return a.assignedTo.length - b.assignedTo.length; 
+  //     }
+  //     if (field === 'dueDate') {
+  //       if (reverse) {
+  //         return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate();
+  //       }
+  //       return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate(); // מיון לפי תאריך יעד
+  //     }
+  //     if (field === 'tags') {
+  //       if (reverse) {
+  //         return b.tags.length - a.tags.length;
+  //       }
+  //       return a.tags.length - b.tags.length; // מיון לפי מספר התגיות של המשימה
+  //     }
+  //     return 0; // במקרה שלא נמצא שדה תואם
+  //   });
+  // }
+
+  sortTasks(field: string, list: Task[], reverse: boolean) {
     list.sort((a, b) => {
-      // כאן אתה יכול להוסיף לוגיקה למיון על פי השדה שנבחר
       if (field === 'taskName') {
-        if (reverse) {
-          return b.taskName.localeCompare(a.taskName);
-        }
-        return a.taskName.localeCompare(b.taskName); // מיון לפי שם המשימה
+        return reverse ? b.taskName.localeCompare(a.taskName) : a.taskName.localeCompare(b.taskName);
       }
       if (field === 'assignedTo') {
-        if (reverse) {
-          return b.assignedTo.length - a.assignedTo.length;
-        }
-        return a.assignedTo.length - b.assignedTo.length; 
+        const nameA = a.assignedTo.map(user => user.userName).join(', ');
+        const nameB = b.assignedTo.map(user => user.userName).join(', ');
+        return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
       }
       if (field === 'dueDate') {
-        if (reverse) {
-          return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate();
-        }
-        return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate(); // מיון לפי תאריך יעד
+        const dateA = new Date(a.dueDate).getTime();
+        const dateB = new Date(b.dueDate).getTime();
+        return reverse ? dateB - dateA : dateA - dateB;
       }
       if (field === 'tags') {
-        if (reverse) {
-          return b.tags.length - a.tags.length;
-        }
-        return a.tags.length - b.tags.length; // מיון לפי מספר התגיות של המשימה
+        const tagsA = a.tags.map(tag => tag.text).join(', ');
+        const tagsB = b.tags.map(tag => tag.text).join(', ');
+        return reverse ? tagsB.localeCompare(tagsA) : tagsA.localeCompare(tagsB);
       }
-      return 0; // במקרה שלא נמצא שדה תואם
+      return 0;
     });
-  }
+}
+
 }
