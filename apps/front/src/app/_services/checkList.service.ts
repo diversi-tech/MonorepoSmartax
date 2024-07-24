@@ -14,8 +14,8 @@ export class CheckListService {
     url = CHECKLIST_ENDPOINT
 
     // פונקציה להוספת נתונים
-    createCheckList(checkList: CheckList, taskId: string): Observable<CheckList> {
-        return this.http.post<CheckList>(`${CHECKLIST_ENDPOINT}`, { checkList, taskId });
+    createCheckList(checkList: CheckList): Observable<CheckList> {
+        return this.http.post<CheckList>(`${CHECKLIST_ENDPOINT}`,  checkList );
     }
 
     // פונקציה לקריאת כל הנתונים
@@ -34,13 +34,16 @@ export class CheckListService {
     // פונקציה לעדכון נתונים
     updateCheckList(checkList: CheckList): Observable<CheckList> {
         try {
+            alert(JSON.stringify(checkList))
             const res = this.http.put<CheckList>(`${this.url}/${checkList._id}`, checkList)
             res.subscribe(data =>
-                alert(data),
+                // alert(data),
+                console.log(data),
+                
             )
             return res
         } catch (err) {
-            alert(err)
+            // alert(err)
             console.log(err);
         }
     }

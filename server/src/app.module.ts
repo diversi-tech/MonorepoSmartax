@@ -81,9 +81,9 @@ import {
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
-import { Timer, TimerModel } from './Models/timer';
+import { Timer, TimerModel } from './Models/timer.model';
 import { TimerController } from './controller/timer/timer.controller';
-import { TimerService } from './services/timer';
+import { TimerService } from './services/timer.service';
 import { WorkLogController } from './controller/workLog/workLog.controller';
 import { WorkLogService } from './services/workLog.service';
 import { WorkLogModel, WorkLog } from './Models/workLog.model';
@@ -143,6 +143,9 @@ import { TableService } from './services/table.service';
 import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.model';
 import { RepeatableTaskController } from './controller/repeatableTask/repeatableTask.controller';
 import { repeatableTaskService } from './services/repeatableTask.service';
+import { TasksGateway } from './services/socket/socket.gateway';
+// import { PopupGateway } from './services/socket/socket.gateway';
+// import { PopupController } from './controller/socket/popUp.controller';
 // import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -153,6 +156,9 @@ import { repeatableTaskService } from './services/repeatableTask.service';
 import { TaxRefundsService } from './services/taxRefunds.service';
 import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
 import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
+import { MonthlyReportService } from './services/monthlyReport.service';
+import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
+import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
 
 @Module({
   //add
@@ -236,6 +242,9 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     MongooseModule.forFeature([
       { name: TaxRefunds.name, schema: taxRefundsModel },
     ]),
+    MongooseModule.forFeature([
+      { name: MonthlyReport.name, schema: MonthlyReportModel },
+    ]),
     JwtModule,
   ],
   controllers: [
@@ -278,6 +287,7 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     RepeatableTaskController,
     FrequencyController,
     TaxRefundsController,
+    MonthlyReportController
   ],
 
   providers: [
@@ -320,11 +330,13 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
       useClass: HttpErrorFilter,
     },
     CommunicationArchiveService,
-
+    MonthlyReportService,
     StepFieldService,
     YearlyReportService,
     YearService,
     TableService,
+    TasksGateway,
+    // PopupGateway,
   ],
 })
 export class AppModule {}

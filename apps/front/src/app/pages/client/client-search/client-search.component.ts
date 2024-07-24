@@ -48,6 +48,7 @@ export class ClientSearchComponent implements OnInit {
   user: User;
   isChoosedAllClient: boolean = false;
   displayDialog: boolean;
+  filternamecom: string='';
 
   constructor(
     private clientService: ClientService,
@@ -97,13 +98,12 @@ export class ClientSearchComponent implements OnInit {
     });
   }
 
-  onSelectionChange(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.isSelected = Number(selectedValue.substring(6));
+  onSelectionChange(a:any) {
+    // const selectedValue = (event.target as HTMLSelectElement).value;
+    this.isSelected = Number(a);
   }
 
   filterClientsByNameAndBusinessName(value: string): void {
-    
     if (value !== '') {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
@@ -112,9 +112,16 @@ export class ClientSearchComponent implements OnInit {
         (client.companyName && client.companyName.toLowerCase().includes(query))
       );
     }
-    this.selectedClient = null;
+    // this.selectedClient = null;
   }
-
+  filterClientsBynamecom(): void {
+   
+    if (this.filternamecom != "")
+      { alert(this.filternamecom)
+      this.filteredClients = this.clients.filter(client => client.companyName.includes(this.filternamecom));
+    }else
+      this.filteredClients = this.clients;
+  }
   filterClientsByNumber(): void {
     if (this.filterNumber != "")
       this.filteredClients = this.clients.filter(client => client.phone.includes(this.filterNumber));

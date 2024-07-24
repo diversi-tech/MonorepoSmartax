@@ -22,6 +22,7 @@
             icon="pi pi-times"
             rounded="true"
             text="true"
+            severity="secondary"
           />
           <!-- v -->
           <p-button
@@ -42,7 +43,6 @@
       <p>משימות</p>
       <div style="width: 100%; display: flex; align-items: center">
         <i
-          (click)="addTask()"
           class="pi pi-plus"
           style="
             font-size: 2rem;
@@ -50,6 +50,7 @@
             cursor: pointer;
             color: blue;
           "
+          [routerLink]="['/taskSpe/create']"
         ></i>
 
         <div style="width: 100%">
@@ -95,7 +96,6 @@
 
       <div style="width: 100%; display: flex; align-items: center">
         <i
-          (click)="addField()"
           class="pi pi-plus"
           style="
             font-size: 2rem;
@@ -103,6 +103,7 @@
             cursor: pointer;
             color: blue;
           "
+          [routerLink]="['/taskSpe/create']"
         ></i>
 
         <div style="width: 100%">

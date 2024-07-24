@@ -14,10 +14,14 @@ export class CreatePaymentDto {
     @Type(() => PaymentDetails)
     mainPaymentDetails: PaymentDetails;
 
-    @ApiProperty({ type: PaymentDetails })
-    @ValidateNested()
-    @Type(() => PaymentDetails)
-    morePaymentDetails: PaymentDetails[];
+    // @ApiProperty({ type: PaymentDetails , default: []})
+    // @ValidateNested()
+    // @Type(() => PaymentDetails)
+    @ApiProperty({ required: false, default: [] })
+    @IsArray()
+    @IsOptional()
+
+    morePaymentDetails: PaymentDetails[] = [];
 
     @ApiProperty({ type: Number, default: 0 })
     @IsOptional()
@@ -47,7 +51,7 @@ export class UpdatePaymentDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsMongoId()
-    id: string;
+    _id: string;
 
     @ApiProperty({ type: PaymentDetails, required: false })
     @IsOptional()
@@ -55,10 +59,13 @@ export class UpdatePaymentDto {
     @Type(() => PaymentDetails)
     mainPaymentDetails?: PaymentDetails;
 
-    @ApiProperty({ type: PaymentDetails })
+    // @ApiProperty({ type: PaymentDetails })
+    // @IsOptional()
+    // @ValidateNested()
+    // @Type(() => PaymentDetails)
+    @ApiProperty({ required: false, default: [] })
     @IsOptional()
-    @ValidateNested()
-    @Type(() => PaymentDetails)
+    @IsArray()
     morePaymentDetails?: PaymentDetails[];
 
     @ApiProperty({ type: Number, required: false, default: 0 })

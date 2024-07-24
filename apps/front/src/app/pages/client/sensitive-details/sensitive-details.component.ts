@@ -9,6 +9,7 @@ import { CreateSensitiveDataDto } from '../../../../../../../server/src/Models/d
 import { Client } from '../../../../../../../server/src/Models/client.model'; // Make sure this path is correct
 import { log } from 'console';
 import { Router } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-sensitive-details',
@@ -19,7 +20,8 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     CommonModule,
     CardModule,
-    ButtonModule
+    ButtonModule,
+    InputTextModule
   ],
 })
 export class SensitiveDetailsComponent implements OnInit {
@@ -29,6 +31,9 @@ export class SensitiveDetailsComponent implements OnInit {
   timer: any;
   client: Client | null = null;
   clientId: string | null = null; 
+   showSensitiveDetails: boolean = false;
+  formShow: boolean = true;
+
 
 
   constructor(
@@ -62,6 +67,8 @@ export class SensitiveDetailsComponent implements OnInit {
     const password = this.passwordForm.get('password')?.value;
     if (password === '123456') {
       this.fetchClientSensitiveData();
+      this.formShow=false;
+      this.showSensitiveDetails=true;
     } else {
       alert('סיסמא שגויה');
     }
@@ -92,5 +99,8 @@ export class SensitiveDetailsComponent implements OnInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
+  }
+  sensitiveDataShow() {
+    this.showSensitiveDetails = !this.showSensitiveDetails;
   }
 }
