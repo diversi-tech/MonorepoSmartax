@@ -1,6 +1,7 @@
 import { StepField } from "./stepField.module";
 
 export interface YearlyReport {
+  _id?: string;
   idUser: string;
   assignee: string[];
   idEmploye: string;

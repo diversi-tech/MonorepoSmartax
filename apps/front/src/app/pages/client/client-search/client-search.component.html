@@ -15,22 +15,9 @@
 
       <p-button label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
 
-      <div class="my3">
-        <p-button label="מיין לפי  ->  " routerLinkActive="active"></p-button>
+      
 
-        <select class="my2" (change)="onSelectionChange($event)">
-          <option value="option1">כל הלקוחות</option>
-          <option value="option2">טלפון</option>
-          <option value="option3">ת.ז.</option>
-        </select>
-
-        <input *ngIf="isSelected == 2" type="text" placeholder="contactInfo" [(ngModel)]="filterNumber"
-          (input)="filterClientsByNumber()" />
-        <input *ngIf="isSelected == 3" type="text" placeholder="id" [(ngModel)]="filterTZ"
-          (input)="filterClientsByTZ()" />
-
-        <br />
-      </div>
+        
     </div>
   </div>
 
@@ -43,7 +30,7 @@
     </p-footer>
   </p-confirmDialog>
 
-  <h3>רשימת לקוחות</h3>
+  <h3 (click)="onSelectionChange(1)" >רשימת לקוחות</h3>
 
   <button *ngIf="isChoosedAllClient" pButton (click)="removeAllClients()" label="הסר הכל"></button>
   <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים"
@@ -52,7 +39,7 @@
     class="p-button-danger" (click)=" $event.stopPropagation(); showConfirmation()"></button>
 
   <p-table dir="rtl" [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients"
-    [tableStyle]="{ 'min-width': '80rem' }">
+    >
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th><button *ngIf="!isChoosedAllClient" pButton (click)="$event.stopPropagation(); chooseAllClients()"

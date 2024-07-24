@@ -71,6 +71,9 @@
                 <ng-container *ngIf="showSensitiveDetails">
                     <app-sensitive-details [client]="client"></app-sensitive-details>
                 </ng-container>
+                <p-button type="button" class="custom-button" (onClick)="editClient()" >
+                    עריכה  <i class="pi pi-pencil"></i>
+                </p-button>
             </div>
         </div>
     </div>
