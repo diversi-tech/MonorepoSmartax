@@ -21,7 +21,7 @@ import { PanelModule } from 'primeng/panel';
 import { SplitterModule } from 'primeng/splitter';
 import { Task } from '../_models/task.module';
 import { TimerService } from '../_services/timer.service';
-import { Timer } from '../_models/timer';
+import { Timer } from '../_models/timer.model';
 
 @Component({
   selector: 'app-dashboard-user',
