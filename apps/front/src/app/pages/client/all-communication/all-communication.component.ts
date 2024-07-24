@@ -130,10 +130,11 @@ export class AllCommunicationComponent {
         }));
       });
   }
-  onSelectionChange(event: Event) {
-    debugger
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.isSelected = Number(selectedValue.substring(6));
+  onSelectionChange(a : any) {
+    // alert( (event.target as HTMLSelectElement).value)
+    // debugger
+    // const selectedValue = (event.target as HTMLSelectElement).value;
+    this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;
   }
   filterByCallTopic(event: Event) {

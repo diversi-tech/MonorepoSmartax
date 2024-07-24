@@ -51,8 +51,6 @@ export class CheckListController {
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateCheckListDto: UpdateCheckListDto): Promise<CheckList> {
     try {
-      console.log("try update checkList");
-      
       return this.checkListService.update(id, updateCheckListDto);
     }
     catch (err) {

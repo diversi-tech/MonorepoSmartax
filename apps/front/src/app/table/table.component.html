@@ -1,0 +1,27 @@
+<p-button class="fixed-button" label="ייצוא לאקסל" icon="pi pi-file-excel" (click)="exportToExcel()"></p-button>
+
+<div *ngFor="let tableName of tablesNames">
+    <div class="card" style="max-width: 50rem">
+      <p-panel [toggleable]="true" [collapsed]="true">
+        <ng-template pTemplate="header">
+          <!-- כותרת הפנל -->
+          <span>{{ tableName }}</span>
+        </ng-template>
+  
+        <ng-template pTemplate="content">
+          <!-- תוכן הפנל -->
+          <p>:עמודות הטבלה</p>
+          <div *ngFor="let fieldName of getFieldNames(tableName)" class="checkbox-container">
+            <label class="label" for="{{ tableName }}-{{ fieldName }}">{{ fieldName }}</label>
+            <p-checkbox 
+            name="{{ tableName }}-{{ fieldName }}" 
+            [(ngModel)]="selectedValues[tableName][fieldName]" 
+              
+              binary="true">
+            </p-checkbox>
+            
+          </div>
+        </ng-template>
+      </p-panel>
+    </div>
+  </div>
