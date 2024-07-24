@@ -14,7 +14,7 @@ import { RoleGuard } from 'server/src/guards/role.guard';
 export class ClientController {
 
     constructor(private readonly clientService: ClientService) { }
-    @UseGuards(AuthGuard, RoleGuard(3))
+    // @UseGuards(AuthGuard, RoleGuard(3))
     @Post()
     async createClient(@Body(new ValidationPipe()) createClientDto: CreateClientDto): Promise<Client> {
         return await this.clientService.createClient(createClientDto);

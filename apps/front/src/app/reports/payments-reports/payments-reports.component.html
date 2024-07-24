@@ -10,9 +10,9 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-client>
-          <tr (click)="openClientPayment()" class="p-datatable-row-custom">
+          <tr (click)="openClientPayment(client._id)" class="p-datatable-row-custom">
             <td>{{ client.name }}</td>
-            <td>{{ client.serviceStartDate }}</td>
+            <td>{{ client.serviceStartDate | date: 'dd-MM-yyy'  }}</td>
             <td>{{ client.totalDebtAmount }}</td>
           </tr>
         </ng-template>
@@ -31,7 +31,7 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-client>
-          <tr (click)="openClientPaymentHistory()" class="p-datatable-row-custom">
+          <tr (click)="openClientPaymentHistory(client._id)" class="p-datatable-row-custom">
             <td>{{ client.firstName }}</td>
             <td>{{ client.returnedHOCNumber }}</td>
             <td>{{ client.totalDebtAmount }}</td>
