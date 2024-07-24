@@ -44,34 +44,7 @@ export class ApiGatewayController {
     const client = this.getClientProxy(service);
     return client.send({ cmd }, data).toPromise();
   }
-
-  // @Get(':service/:cmd/:month/:year')
-  // async handleRequestPostWithParams(
-  //   @Param('service') service: string,
-  //   @Param('cmd') cmd: string,
-  //   @Param('month') month: number,
-  //   @Param('year') year: number,
-  //   @Body() data: any
-  // ) {
-  //   const client = this.getClientProxy(service);
-  //   return client.send({ cmd }, { month, year, ...data }).toPromise();
-  // }
-  // @Get(':service/:cmd/:employeeId/:month/:year')
-  // async handleRequestGetForExport(
-  //   @Param('service') service: string,
-  //   @Param('cmd') cmd: string,
-  //   @Param('employeeId') employeeId: string,
-  //   @Param('month') month: number,
-  //   @Param('year') year: number
-  // ) {
-  //   const client = this.getClientProxy(service);
-  //   console.log('handleRequestGetForExport called with:', { service, cmd, employeeId, month, year });
-
-  //   const requestPayload = { employeeId, month, year };
-  //   console.log('Request Payload:', requestPayload);
-
-  //   return client.send({ cmd }, requestPayload).toPromise();
-  // }
+ 
   @Get(':service/export/:month/:year')
   async exportWorkLogs(
     @Param('service') service: string,
@@ -82,14 +55,12 @@ export class ApiGatewayController {
     const client = this.getClientProxy(service);
     console.log(`Received request to export work logs for month: ${month}, year: ${year}`);
     try {
-      const buffer = await client.send<Buffer>({ cmd: 'export' }, { month, year }).toPromise();
-
-      if (!buffer) {
-        console.error('No data returned from service');
-        res.status(HttpStatus.NO_CONTENT).send('No data available');
-        return;
+      const result = await client.send<{ type: string; data: number[] }>({ cmd: 'export' }, { month, year }).toPromise();
+      if (!result || !result.data) {
+        throw new Error('Buffer is undefined');
       }
-
+      const buffer = Buffer.from(result.data);
+      console.log('Buffer received:', buffer);
       res.set({
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'Content-Disposition': 'attachment; filename=worklogs.xlsx',
@@ -113,14 +84,12 @@ export class ApiGatewayController {
     const client = this.getClientProxy(service);
     console.log(`Received request to export work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`);
     try {
-      const buffer = await client.send<Buffer>({ cmd: 'exportForEmployee' }, { employeeId, month, year }).toPromise();
-
-      if (!buffer) {
-        console.error('No data returned from service');
-        res.status(HttpStatus.NO_CONTENT).send('No data available');
-        return;
+      const result = await client.send<{ type: string; data: number[] }>({ cmd: 'exportForEmployee' }, { employeeId, month, year }).toPromise();
+      if (!result || !result.data) {
+        throw new Error('Buffer is undefined');
       }
-
+      const buffer = Buffer.from(result.data);
+      console.log('Buffer received:', buffer);
       res.set({
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'Content-Disposition': 'attachment; filename=worklogs.xlsx',
@@ -132,7 +101,6 @@ export class ApiGatewayController {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs for employee');
     }
   }
-
   @Put(':service/:cmd/:id?')
   async handleRequestPut(
     @Param('service') service: string,

@@ -93,11 +93,13 @@
   // }
 // }
 
-import { Controller } from '@nestjs/common';
+import { Controller, HttpStatus, Res } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { WorkLogService } from 'src/service/workLog.service';
 import { CreateWorkLogDto, UpdateWorkLogDto, UpdateTimeEntryDto } from '../dto/workLog.dto';
 import { WorkLog } from 'src/model/workLog.model';
+import { Response } from 'express';
+
 
 @Controller('worklogs')
 export class WorkLogController {
@@ -151,25 +153,32 @@ export class WorkLogController {
     console.log(`Received request to export work logs for month: ${month}, year: ${year}`);
     try {
       const buffer = await this.workLogService.exportWorkLogs(month, year);
+      if (!buffer) {
+        throw new Error('Buffer is undefined');
+      }
       return buffer;
     } catch (error) {
       console.error('Error exporting work logs:', error);
       throw error;
     }
   }
-
+  
   @MessagePattern({ cmd: 'exportForEmployee' })
   async exportWorkLogsForEmployee(data: { employeeId: string, month: number, year: number }): Promise<Buffer> {
     const { employeeId, month, year } = data;
     console.log(`Received request to export work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`);
     try {
       const buffer = await this.workLogService.exportWorkLogsForEmployee(employeeId, month, year);
+      if (!buffer) {
+        throw new Error('Buffer is undefined');
+      }
       return buffer;
     } catch (error) {
       console.error('Error exporting work logs for employee:', error);
       throw error;
     }
   }
+  
 }
 
 
