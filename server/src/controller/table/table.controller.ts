@@ -1,4 +1,4 @@
-import { Controller, Get, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseFilters } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'server/src/common/filters/http-exception.filter';
 import { TableService } from 'server/src/services/table.service';
@@ -11,7 +11,17 @@ export class TableController {
 
   @Get()
   @ApiOperation({ summary: 'Get all tables with properties' })
-  async getAllCollections(): Promise<any> {
-    return await this.tableService.getAllCollections();
+  async getAllCollections(){
+    try {
+      return await this.tableService.getNestedTables();
+    } catch (error) {
+      throw new Error('Failed to get collections in controller');
+    }
 }
+
+@Post()
+@ApiOperation({ summary: 'Get the data based on selected fields' })
+  async fetchSelectedFields(@Body() selectedValues: { [key: string]: { [field: string]: boolean } }) {
+    return this.tableService.fetchSelectedFields(selectedValues);
+  }
 }
