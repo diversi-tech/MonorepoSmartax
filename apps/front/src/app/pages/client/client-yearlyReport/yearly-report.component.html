@@ -6,20 +6,21 @@
     <ng-template pTemplate="header">
         <tr>
             <th></th>
-            <th></th>
             <th>סטטוס</th>
             <th>ישות</th>
             <th>עובד מטפל</th>
             <th>יתרה לתשלום</th>
             <th>סכום ששולם</th>
             <th>מחיר</th>
+            
             <th>תאריך יצירה</th>
-            <th>שנה</th>
+            <th pSortableColumn="yearReport">
+                :שנה <p-sortIcon field="yearReport" />
+            </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-task>
         <tr>
-            <!-- <td><p-button (click)="goToUpdate(task)" label="עריכת פרטים" /></td> -->
             <td><p-button (click)="goToSteps(task)" label="עדכן" /></td>
             <td>בטיפול</td>
             <td>{{task.entityType}}</td>

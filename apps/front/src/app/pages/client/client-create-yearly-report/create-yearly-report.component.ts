@@ -18,7 +18,8 @@ import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { DialogModule } from 'primeng/dialog';
 import { error } from 'console';
-
+import { Location } from '@angular/common';
+import { InputNumberModule } from 'primeng/inputnumber';
 @Component({
   selector: 'app-create-yearly-report',
   standalone: true,
@@ -32,6 +33,7 @@ import { error } from 'console';
     InputOtpModule,
     ReactiveFormsModule,
     DialogModule,
+    InputNumberModule
   ],
   templateUrl: './create-yearly-report.component.html',
   styleUrl: './create-yearly-report.component.css',
@@ -61,7 +63,8 @@ export class CreateYearlyReportComponent implements OnInit {
     private yearService: YearService,
     private tokenService: TokenService,
     private router: Router,
-    private route: ActivatedRoute // Inject ActivatedRoute
+    private route: ActivatedRoute ,// Inject ActivatedRoute
+    private location: Location
 
   ) {
     this.loadData();
@@ -92,7 +95,6 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   hideModalDialog() {
-    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport'], { state: { client: this.client } });
     this.displayModal = false;
 
   }
@@ -129,6 +131,8 @@ export class CreateYearlyReportComponent implements OnInit {
       }
     }
     this.hideModalDialog(); //
+    // this.location.back();
+
   }
 
   createYearlyReport(yearlyReport: any) {
@@ -177,16 +181,16 @@ export class CreateYearlyReportComponent implements OnInit {
         (response) => {
           console.log(response);
           if (response)
-            this.router.navigate(
-              ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
-              {
-                state: { data: response, client: this.client },
-              });
+            this.location.back();
+
         },
         (error) => {
           console.log(error);
         }
       );
+  }
+  goBack():void{
+    this.location.back();
   }
 
 }

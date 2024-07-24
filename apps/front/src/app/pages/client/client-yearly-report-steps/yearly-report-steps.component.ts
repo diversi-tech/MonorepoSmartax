@@ -11,6 +11,7 @@ import { StepsModule } from 'primeng/steps';
 import { Router } from '@angular/router';
 import { Client } from '../../../_models/client.module';
 import { YearlyReport } from '../../../_models/yearlyReport.module';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -34,7 +35,10 @@ export class YearlyReportStepsComponent implements OnInit {
   changes: { [key: string]: boolean } = {};
   client: Client;
 
-  constructor(private yearlyReportService: YearlyReportService, private router: Router) {
+  constructor(private yearlyReportService: YearlyReportService,
+               private router: Router,
+               private location: Location
+              ) {
 
   };
 
@@ -137,10 +141,11 @@ export class YearlyReportStepsComponent implements OnInit {
     return tasks.every(task => task.isComplete);
   }
 
-  goBack() {
-    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport'], { state: { client: this.client } });
-  }
   goToUpdate() {
-    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
+    this.router.navigate(['steps/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
   }
+  goBack() {
+    this.location.back();
+  }
+
 }
