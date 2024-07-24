@@ -31,6 +31,17 @@ export class PaymentController {
   async getAllPayments(): Promise<Payment[]> {
     return await this.PaymentService.getAllPayments();
   }
+
+  @Get(':id')
+  async getPaymentById(@Param('id') id: string): Promise<Payment> {
+    try{
+      return await this.PaymentService.getPaymentById(id);
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
+
   @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
   @Post('searchPayment')
   async searchPayment(@Body(new ValidationPipe()) body: { "id": string }): Promise<Payment[]> {
