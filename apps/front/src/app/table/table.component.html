@@ -1,3 +1,5 @@
+<p-button class="fixed-button" label="ייצוא לאקסל" icon="pi pi-file-excel" (click)="exportToExcel()"></p-button>
+
 <div *ngFor="let tableName of tablesNames">
     <div class="card" style="max-width: 50rem">
       <p-panel [toggleable]="true" [collapsed]="true">
@@ -23,6 +25,3 @@
       </p-panel>
     </div>
   </div>
-
-  <!-- [(ngModel)]="selectedValues[tableName][fieldName]"  -->
-  <!-- [(ngModel)]="selectedValues[tableName]?.[field.name]"  -->
