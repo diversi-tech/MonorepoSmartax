@@ -1,6 +1,6 @@
-import { Controller, Post, Body, Param, Inject, Get, Put, Delete, Query } from '@nestjs/common';
+import { Controller, Post, Body, Param, Inject, Get, Put, Delete, Query, Res, HttpStatus } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-
+import { Response } from 'express'; // ייבוא Response מ-express
 @Controller('api')
 export class ApiGatewayController {
   constructor(
@@ -45,32 +45,92 @@ export class ApiGatewayController {
     return client.send({ cmd }, data).toPromise();
   }
 
-  @Get(':service/:cmd/:month/:year')
-  async handleRequestPostWithParams(
+  // @Get(':service/:cmd/:month/:year')
+  // async handleRequestPostWithParams(
+  //   @Param('service') service: string,
+  //   @Param('cmd') cmd: string,
+  //   @Param('month') month: number,
+  //   @Param('year') year: number,
+  //   @Body() data: any
+  // ) {
+  //   const client = this.getClientProxy(service);
+  //   return client.send({ cmd }, { month, year, ...data }).toPromise();
+  // }
+  // @Get(':service/:cmd/:employeeId/:month/:year')
+  // async handleRequestGetForExport(
+  //   @Param('service') service: string,
+  //   @Param('cmd') cmd: string,
+  //   @Param('employeeId') employeeId: string,
+  //   @Param('month') month: number,
+  //   @Param('year') year: number
+  // ) {
+  //   const client = this.getClientProxy(service);
+  //   console.log('handleRequestGetForExport called with:', { service, cmd, employeeId, month, year });
+
+  //   const requestPayload = { employeeId, month, year };
+  //   console.log('Request Payload:', requestPayload);
+
+  //   return client.send({ cmd }, requestPayload).toPromise();
+  // }
+  @Get(':service/export/:month/:year')
+  async exportWorkLogs(
     @Param('service') service: string,
-    @Param('cmd') cmd: string,
     @Param('month') month: number,
     @Param('year') year: number,
-    @Body() data: any
-  ) {
+    @Res() res: Response
+  ): Promise<void> {
     const client = this.getClientProxy(service);
-    return client.send({ cmd }, { month, year, ...data }).toPromise();
+    console.log(`Received request to export work logs for month: ${month}, year: ${year}`);
+    try {
+      const buffer = await client.send<Buffer>({ cmd: 'export' }, { month, year }).toPromise();
+
+      if (!buffer) {
+        console.error('No data returned from service');
+        res.status(HttpStatus.NO_CONTENT).send('No data available');
+        return;
+      }
+
+      res.set({
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Disposition': 'attachment; filename=worklogs.xlsx',
+        'Content-Length': buffer.length.toString(),
+      });
+      res.status(HttpStatus.OK).send(buffer);
+    } catch (error) {
+      console.error('Error exporting work logs:', error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs');
+    }
   }
-  @Get(':service/:cmd/:employeeId/:month/:year')
-  async handleRequestGetForExport(
+
+  @Get(':service/export/:employeeId/:month/:year')
+  async exportWorkLogsForEmployee(
     @Param('service') service: string,
-    @Param('cmd') cmd: string,
     @Param('employeeId') employeeId: string,
     @Param('month') month: number,
-    @Param('year') year: number
-  ) {
+    @Param('year') year: number,
+    @Res() res: Response
+  ): Promise<void> {
     const client = this.getClientProxy(service);
-    console.log('handleRequestGetForExport called with:', { service, cmd, employeeId, month, year });
+    console.log(`Received request to export work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`);
+    try {
+      const buffer = await client.send<Buffer>({ cmd: 'exportForEmployee' }, { employeeId, month, year }).toPromise();
 
-    const requestPayload = { employeeId, month, year };
-    console.log('Request Payload:', requestPayload);
+      if (!buffer) {
+        console.error('No data returned from service');
+        res.status(HttpStatus.NO_CONTENT).send('No data available');
+        return;
+      }
 
-    return client.send({ cmd }, requestPayload).toPromise();
+      res.set({
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Disposition': 'attachment; filename=worklogs.xlsx',
+        'Content-Length': buffer.length.toString(),
+      });
+      res.status(HttpStatus.OK).send(buffer);
+    } catch (error) {
+      console.error('Error exporting work logs for employee:', error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs for employee');
+    }
   }
 
   @Put(':service/:cmd/:id?')

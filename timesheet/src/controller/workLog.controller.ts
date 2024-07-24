@@ -50,47 +50,47 @@
 //     return { data: workLogs };
 //   }
 
-//   @Get('export/:month/:year')
-//   async exportWorkLogs(
-//     @Param('month') month: number,
-//     @Param('year') year: number,
-//     @Res() res: Response
-//   ): Promise<void> {
-//     console.log(`Received request to export work logs for month: ${month}, year: ${year}`);
-//     try {
-//       const buffer = await this.workLogService.exportWorkLogs(month, year);
-//       res.set({
-//         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-//         'Content-Disposition': 'attachment; filename=worklogs.xlsx',
-//         'Content-Length': buffer.length.toString(),
-//       });
-//       res.status(HttpStatus.OK).send(buffer);
-//     } catch (error) {
-//       console.error('Error exporting work logs:', error);
-//       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs');
-//     }
-//   }
-//   @Get('export/:employeeId/:month/:year')
-//   async exportWorkLogsForEmployee(
-//     @Param('employeeId') employeeId: string,
-//     @Param('month') month: number,
-//     @Param('year') year: number,
-//     @Res() res: Response
-//   ): Promise<void> {
-//     console.log(`Received request to export work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`);
-//     try {
-//       const buffer = await this.workLogService.exportWorkLogsForEmployee(employeeId, month, year);
-//       res.set({
-//         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-//         'Content-Disposition': 'attachment; filename=worklogs.xlsx',
-//         'Content-Length': buffer.length.toString(),
-//       });
-//       res.status(HttpStatus.OK).send(buffer);
-//     } catch (error) {
-//       console.error('Error exporting work logs for employee:', error);
-//       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs for employee');
-//     }
-//   }
+  // @Get('export/:month/:year')
+  // async exportWorkLogs(
+  //   @Param('month') month: number,
+  //   @Param('year') year: number,
+  //   @Res() res: Response
+  // ): Promise<void> {
+  //   console.log(`Received request to export work logs for month: ${month}, year: ${year}`);
+  //   try {
+  //     const buffer = await this.workLogService.exportWorkLogs(month, year);
+  //     res.set({
+  //       'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  //       'Content-Disposition': 'attachment; filename=worklogs.xlsx',
+  //       'Content-Length': buffer.length.toString(),
+  //     });
+  //     res.status(HttpStatus.OK).send(buffer);
+  //   } catch (error) {
+  //     console.error('Error exporting work logs:', error);
+  //     res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs');
+  //   }
+  // }
+  // @Get('export/:employeeId/:month/:year')
+  // async exportWorkLogsForEmployee(
+  //   @Param('employeeId') employeeId: string,
+  //   @Param('month') month: number,
+  //   @Param('year') year: number,
+  //   @Res() res: Response
+  // ): Promise<void> {
+  //   console.log(`Received request to export work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`);
+  //   try {
+  //     const buffer = await this.workLogService.exportWorkLogsForEmployee(employeeId, month, year);
+  //     res.set({
+  //       'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  //       'Content-Disposition': 'attachment; filename=worklogs.xlsx',
+  //       'Content-Length': buffer.length.toString(),
+  //     });
+  //     res.status(HttpStatus.OK).send(buffer);
+  //   } catch (error) {
+  //     console.error('Error exporting work logs for employee:', error);
+  //     res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs for employee');
+  //   }
+  // }
 // }
 
 import { Controller } from '@nestjs/common';
@@ -114,7 +114,6 @@ export class WorkLogController {
     return { data: workLog };
   }
   
-
   @MessagePattern({ cmd: 'update' })
   async update(data: { id: string, updateWorkLogDto: UpdateWorkLogDto }): Promise<{ data: WorkLog }> {
     const workLog = await this.workLogService.update(data.id, data.updateWorkLogDto);
@@ -148,7 +147,7 @@ export class WorkLogController {
 
   @MessagePattern({ cmd: 'export' })
   async exportWorkLogs(data: { month: number, year: number }): Promise<Buffer> {
-    const { month, year } = data; // Fixed the destructuring
+    const { month, year } = data;
     console.log(`Received request to export work logs for month: ${month}, year: ${year}`);
     try {
       const buffer = await this.workLogService.exportWorkLogs(month, year);
@@ -172,6 +171,7 @@ export class WorkLogController {
     }
   }
 }
+
 
 
 
