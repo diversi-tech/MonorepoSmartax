@@ -83,7 +83,7 @@ export class TaskRepeatableListComponent {
   toDoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
   doneTasks: Task[] = [];
-  filteredTasks: Task[] = [];
+  filteredTasks: RepeatableTask[] = [];
   selectedTask!: RepeatableTask;
 
   searchTerm: string = '';
