@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import {TIMER_ENDPOINT } from '../api-urls';
-import { Timer } from "../_models/timer";
+import { Timer } from "../_models/timer.model";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -16,10 +16,7 @@ import { Observable } from "rxjs";
     constructor(private http: HttpClient) { }
   
     saveTime(timer: Timer): Observable<Timer> {
-        debugger
-        var e= this.http.put<Timer>(this.url, timer)
-        debugger
-        return e
+        return this.http.put<Timer>(this.url, timer)
       }
     
   

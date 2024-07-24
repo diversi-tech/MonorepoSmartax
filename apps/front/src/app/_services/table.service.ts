@@ -13,9 +13,10 @@ export class TableService {
   constructor(private http: HttpClient) { }
 
   getAllTables(): Observable<any> {
-    debugger
-    var e= this.http.get<any>(this.url)
-    debugger
-    return e
+    return this.http.get<any>(this.url)
+  }
+
+  getData(selectedValues: { [key: string]: { [field: string]: boolean } }):Observable<any> {
+    return this.http.post<any>(this.url, selectedValues);
   }
 }
