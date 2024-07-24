@@ -8,7 +8,7 @@ import { MonthlyReportService } from "server/src/services/monthlyReport.service"
 @ApiTags('monthly-report')
 @Controller('monthly-report')
 @UseFilters(HttpErrorFilter)
-export class TaxRefundsController{
+export class MonthlyReportController{
     constructor(private readonly MonthlyReportService: MonthlyReportService) {}
 
   @Post('create')
