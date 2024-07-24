@@ -130,12 +130,15 @@ export class AllCommunicationComponent {
         }));
       });
   }
-  onSelectionChange(event: Event) {
-    debugger
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.isSelected = Number(selectedValue.substring(6));
+
+  onSelectionChange(a : any) {
+    // alert( (event.target as HTMLSelectElement).value)
+    // debugger
+    // const selectedValue = (event.target as HTMLSelectElement).value;
+    this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;
   }
+
   filterByCallTopic(event: Event) {
     this.filterCallTopic = (event.target as HTMLSelectElement).value
     if (this.filterCallTopic != "")
@@ -143,12 +146,14 @@ export class AllCommunicationComponent {
     else
       this.filteredCommunicatio = this.communications;
   }
+
   filterClientsByname(): void {
     if (this.filtername != "")
       this.filteredCommunicatio = this.communications.filter(communication => communication.client.includes(this.filtername));
     else
       this.filteredCommunicatio = this.communications;
   }
+
   filterByStatus(): void {
     if (this.filterstatus == "ליד")
       this.filterBySTtetus2('true');
@@ -157,9 +162,11 @@ export class AllCommunicationComponent {
     else
       this.filteredCommunicatio = this.communications;
   }
+
   filterBySTtetus2(status): void {
     this.filteredCommunicatio = this.communications.filter(communication => communication.Status === status);
   }
+
   filterByDate(): void {
     if (this.filterdate) {
       // המרת התאריך ממחרוזת לאובייקט Date
@@ -178,6 +185,7 @@ export class AllCommunicationComponent {
       this.filteredCommunicatio = this.communications;
     }
   }
+
   filterByNameCallTopic(value: string): void {
 
     if (value != "") {
@@ -200,11 +208,13 @@ export class AllCommunicationComponent {
     this.selectedCallTopic2 = null;
 
   }
+
   select(event: AutoCompleteSelectEvent): void {
 
     const callTopic = event.value as callTopicSchema;
     this.thisSubject = callTopic.name
   }
+  
   add() {
     this.newcallTopicSchema.name = this.thisSubject2
     this.callTopicService.createCallTopic(this.newcallTopicSchema).subscribe(response => {

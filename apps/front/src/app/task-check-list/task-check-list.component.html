@@ -1,27 +1,31 @@
 <p-card header="{{checkList.name}}">
-  <!-- edit task name -->
-  <div>
-    <i *ngIf="editNameInput" (click)="editName()" class="pi pi-pencil" style="top:0;color: blue;cursor: pointer;"></i>
+
+  <!-- edit task -->
+  <div style="display: flex; flex-direction: row;">
+
+    <!-- edit name -->
+    <i *ngIf="editNameInput" (click)="editName()" class="pi pi-pencil"
+      style="top:0;color: blue;cursor: pointer; padding-left: 5px;"></i>
     <!-- add item -->
-    <i (click)="addItem()" class="pi pi-plus" style="color:rgb(0, 255, 21); cursor: pointer;"></i>
-    <i class="pi pi-trash" (click)="deleteList()" style="color: red;cursor: pointer;"></i>
+    <i (click)="addItem()" class="pi pi-plus" style="color:rgb(0, 255, 21); cursor: pointer; padding-left: 5px;"></i>
+    <!-- delete task -->
+    <i class="pi pi-trash" (click)="deleteList()" style="color: red;cursor: pointer; padding-left: 5px;"></i>
 
-    <!-- new item -->
-    <app-check-list-item *ngIf="editNewItem" [item]="newItem" [newItem]="true" (delete)="deleteItem('1234')"
-      (update)="updateItem($event)"></app-check-list-item>
   </div>
-  <div class="p-field" style="display: flex; flex-direction: row;">
-    <!-- <p-divider /> -->
 
+  <div class="p-field" style="display: flex; flex-direction: row;">
+    <!-- edit task name -->
     <div *ngIf="!editNameInput" style="display: flex; flex-direction: row;">
       <input pInputText type="text" id="name" [(ngModel)]="checkList.name" value="{{checkList.name}}">
+        <i (click)="editName()" class="pi pi-times" style="color: red ;cursor: pointer;"></i>
+    
+        <i (click)="saveName()" class="pi pi-check" style="color:blue;cursor: pointer;"></i>
+    </div>
 
-      <div (click)="updateItem()">
-        <i class="pi pi-check" style="color: blue ;cursor: pointer;"></i>
-      </div>
-      <div (click)="editName()">
-        <i class="pi pi-times" style="color:red;cursor: pointer;"></i>
-      </div>
+      <!--add new item -->
+    <div>
+      <app-check-list-item *ngIf="editNewItem" [item]="newItem" [newItem]="true" (delete)="deleteItem($event)"
+        (update)="updateItem($event)"></app-check-list-item>
     </div>
   </div>
 

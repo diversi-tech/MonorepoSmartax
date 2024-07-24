@@ -1,17 +1,80 @@
 <div class="container">
-  <div class="card">
-    <div class="card-header">
-      <h2 (click)="toggleDetails()" class="card-title">{{ client?.firstName }}</h2>
+
+
+    <div class="header-icons">
+        <!-- Existing profile icon -->
+        {{ client?.firstName }} {{ client?.lastName }}
+
+        <app-icon-profile [userName]="client?.firstName && client?.lastName" style="width: 50px;">
+        </app-icon-profile>
+
     </div>
-    <div class="card-body">
-      <div *ngIf="showDetails">
-        <p class="card-text"><strong>Contact Info:</strong> {{ client?.contactInfo }}</p>
-        <p class="card-text"><strong>Business Name:</strong> {{ client?.businessName }}</p>
-        <p class="card-text"><strong>Source:</strong> {{ client?.source }}</p>
-        <p class="card-text"><strong>Status:</strong> {{ client?.status }}</p>
-        <p class="card-text"><strong>Created Date:</strong> {{ client?.createdDate | date }}</p>
-        <button (click)="navigateToSensitiveDetails()" class="btn btn-primary mt-3">הצגת פרטים רגישים</button>
-      </div>
-    </div>
-  </div>
+    <p-button type="button" class="custom-button" (onClick)="sidebarVisible2 = true" (onClick)="showDetails = true"
+        style="background-color: #ffffff; color: rgb(0, 0, 0); border: none; border-radius: 4px; padding: 10px 20px; font-size: 16px; font-weight: bold; cursor: pointer;">
+        לכל הפרטים
+    </p-button>
+
 </div>
+
+
+<p-sidebar [(visible)]="sidebarVisible2" position="right" [modal]="false">
+    <div class="sidebar-header">
+        <!-- Move pin icon to the right of the close button -->
+        <!-- <i class="pi pi-thumbtack pin-icon" ></i> -->
+        {{ client?.firstName }} {{ client?.lastName }}
+
+        <app-icon-profile [userName]="client?.firstName && client?.lastName">
+        </app-icon-profile>
+
+    </div>
+
+    <div class="card-body">
+        <div *ngIf="showDetails">
+            <div>
+                <h4 (click)="togglePersonalDetails()">
+                    <i class="pi pi-angle-down"
+                        [ngClass]="{'pi-angle-down': !showPersonalDetails, 'pi-chevron-down': showPersonalDetails}"></i>
+                    פרטים אישיים
+                </h4>
+                <ng-container *ngIf="showPersonalDetails">
+                    <p class="card-text"> {{ client?.firstName }} {{ client?.lastName }} <i class="pi pi-user"></i></p>
+                    <p class="card-text"> {{ client?.tz }} <i class="pi pi-id-card"></i></p>
+                    <p class="card-text"> {{ client?.phone }} <i class="pi pi-phone"></i></p>
+                    <p class="card-text"> {{ client?.whatsapp }} <i class="pi pi-whatsapp"></i></p>
+                    <p class="card-text"> {{ client?.isPreferWhatsapp }} ?מעדיף ווטאצפ <i class="pi pi-whatsapp"></i>
+                    </p>
+                    <p class="card-text"> {{ client?.email }} <i class="pi pi-envelope"></i></p>
+                    <p class="card-text"> {{ client?.address }} <i class="pi pi-home"></i></p>
+                    <p class="card-text"> {{ client?.payment }} :תשלום <i class="pi pi-money-bill"></i></p>
+                </ng-container>
+            </div>
+
+            <div>
+                <h4 (click)="toggleBusinessDetails()">
+                    <i class="pi pi-angle-down"
+                        [ngClass]="{'pi-angle-down': !showBusinessDetails, 'pi-chevron-down': showBusinessDetails}"></i>
+                    פרטי עסק
+                </h4>
+                <ng-container *ngIf="showBusinessDetails">
+                    <p class="card-text"> {{ client?.companyName }} :שם חברה <i class="pi pi-briefcase"></i></p>
+                    <p class="card-text">{{ client?.contactPersonName }}: איש קשר <i class="pi pi-user"></i></p>
+                    <p class="card-text"> {{ client?.spouseName }} :שם בן זוג <i class="pi pi-user"></i></p>
+                    <p class="card-text"> {{ client?.spouseTZ }} :ת.ז בן זוג <i class="pi pi-id-card"></i></p>
+                </ng-container>
+            </div>
+
+            <div>
+                <h4 (click)="toggleSensitiveDetails()">
+                    <i class="pi pi-lock"></i>
+                    הצגת פרטים רגישים
+                </h4>
+                <ng-container *ngIf="showSensitiveDetails">
+                    <app-sensitive-details [client]="client"></app-sensitive-details>
+                </ng-container>
+                <p-button type="button" class="custom-button" (onClick)="editClient()" >
+                    עריכה  <i class="pi pi-pencil"></i>
+                </p-button>
+            </div>
+        </div>
+    </div>
+</p-sidebar>

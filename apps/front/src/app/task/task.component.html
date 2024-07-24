@@ -1,5 +1,5 @@
 <!-- ===================== -->
-<div style="margin-top: 10%">
+<div style="margin-top: 10%" id="container">
   <p-card
     header="משימה"
     subheader="ליצור ולערוך משימות"
@@ -422,12 +422,12 @@
       <p-tabView>
         <p-tabPanel header="רשימות">
           <div *ngFor="let list of checkList" style="padding: 5px;">
-            <app-task-check-list [checkList]=" list" (save)="saveList($event)" (delete)="deleteList($event)"> </app-task-check-list>          
+            <app-task-check-list [checkList]=" list" (save)="updateList($event)" (delete)="deleteList($event)"> </app-task-check-list>          
           </div>
           <p *ngIf="checkList.length==0">אין רשימות</p>
 
           <!-- create new list -->
-          <p-dropdown (onChange)="addList($event)" [options]="groupedLists" [(ngModel)]="selectedList"
+          <p-dropdown (onChange)="createList($event)" [options]="groupedLists" [(ngModel)]="selectedList"
             placeholder="{{selectPlaceholder}}" [group]="true" ngModel #dropdownModel="ngModel" name="selectedList">
             <ng-template let-group pTemplate="group">
               <div class="flex align-items-center">

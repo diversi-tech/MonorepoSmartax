@@ -18,6 +18,9 @@ export class YearlyReportController{
     return this.yearlyReportService.createYearlyReport(createYearlyReportDto);
   }
 
+
+
+
   @Post('update/:id')
   @ApiOperation({ summary: 'Update a yearly report by ID' })
   @ApiBody({ type: UpdateYearlyReportDto })
