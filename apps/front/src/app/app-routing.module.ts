@@ -78,6 +78,7 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
 import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yearly-report/edit-client-yearly-report.component';
 import { ManagerNavbarComponent } from './pages/Manager/edit-client-yearly-report/manager-navbar/manager-navbar.component';
 import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearly-report/edit-client-tax-refuned/edit-client-tax-refuned.component';
+import { CreatePaymentComponent } from './pages/client/create-payment/createPayment.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -140,6 +141,17 @@ import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearl
       authType: 3,
       forToolbar: true,
       label: 'עובדים',
+      icon: icons.employees,
+    },
+  },
+  {
+    path: 'createPayment',
+    component: CreatePaymentComponent,
+    canActivate: [AuthGuard],
+    data: {
+      authType: 6,
+      forToolbar: true,
+      label: 'יצירת תשלום',
       icon: icons.employees,
     },
   },
