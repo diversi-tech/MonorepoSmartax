@@ -187,7 +187,7 @@ export class DashboardAdminComponent implements OnInit {
         y: {
           beginAtZero: true,
           ticks: {
-            color: textColorSecondary,
+            coenelor: textColorSecondary,
           },
           grid: {
             color: surfaceBorder,
@@ -432,14 +432,6 @@ export class DashboardAdminComponent implements OnInit {
       (a, b) => b.totalHoursWorked - a.totalHoursWorked
     );
     this.bestUser = this.groupedWorkLogs.slice(0, 3);
-    // let v1=0
-    // let v2=0
-    // let v3=0
-    // this.groupedWorkLogs.sort((a, b) => b.totalHoursWorked - a.totalHoursWorked);
-    // for (let i = 0; i < 3; i++) {
-    //   v1 = this.groupedWorkLogs[i].totalHoursWorked;
-
-    // }
     console.log(this.bestUser);
 
     this.valueUser1 = [

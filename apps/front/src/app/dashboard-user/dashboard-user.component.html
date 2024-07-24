@@ -1,64 +1,64 @@
 <div style="margin-top: 2%; margin-bottom: 2%" class="card">
-    <div style="display: flex">
-      <div [routerLink]="['/employeesTable']" class="info-card p-shadow-2">
-        <div class="info-card-header">
-          <h2>משימות אישיות</h2>
-          <i class="pi pi-check"></i>
-        </div>
-        <div class="info-card-body">
-          <h1>{{ users.length }}</h1>
-          <p>
-            <span style="color: rgb(56, 56, 160)" class="new-orders">
-              {{ myTasks.length }} </span
-            >משימות שאתה משויך
-          </p>
-        </div>
+  <div style="display: flex">
+    <div [routerLink]="['/employeesTable']" class="info-card p-shadow-2">
+      <div class="info-card-header">
+        <h2>משימות אישיות</h2>
+        <i class="pi pi-check"></i>
       </div>
-      <div [routerLink]="['/tasks']" class="info-card p-shadow-2">
-        <div class="info-card-header">
-          <h2>משימות</h2>
-          <i style="color: orange" class="pi pi-list"></i>
-        </div>
-        <div class="info-card-body">
-          <h1>{{ tasks.length }}</h1>
-          <p>
-            <span style="color: orange" class="new-orders">{{ newTask() }} </span
-            >משימות צריכות להסתיים היום
+      <div class="info-card-body">
+        <h1>{{ myTasks.length }}</h1>
+        <p>
+          <span style="color: rgb(56, 56, 160)" class="new-orders">
+            {{ newMyTask() }} </span
+            >משימות שצריכות להסתיים היום
           </p>
-        </div>
-      </div>
-      <div [routerLink]="['/clientSearch']" class="info-card p-shadow-2">
-        <div class="info-card-header">
-          <h2>לקוחות שלך</h2>
-          <i class="pi pi-users"></i>
-        </div>
-        <div class="info-card-body">
-          <h1>{{ myClient() }}</h1>
-          <p>
-            <span style="color: rgb(56, 56, 160)" class="new-orders">{{
-              todayClient()
-            }}</span>
-            לקוחות חדשים מהיום
-          </p>
-        </div>
-      </div>
-      <div [routerLink]="['/calendar']" class="info-card p-shadow-2">
-        <div class="info-card-header">
-          <h2>פגישות אתך</h2>
-          <i style="color: green" class="pi pi-comments"></i>
-        </div>
-        <div class="info-card-body">
-          <h1>{{ myMeet() }}</h1>
-          <p>
-            <span class="new-orders">{{ todayMeet() }}</span> פגישות נקבעו להיום
-          </p>
-        </div>
       </div>
     </div>
-    <div class="large-panels">
-      <div class="large-panel">
-        <div style="width: 100%; height: 100%" class="card">
-          <h2 style="padding-right: 1rem; font-size: 1.25rem; color: #3c4043">
+    <div [routerLink]="['/tasks']" class="info-card p-shadow-2">
+      <div class="info-card-header">
+        <h2>משימות</h2>
+        <i style="color: orange" class="pi pi-list"></i>
+      </div>
+      <div class="info-card-body">
+        <h1>{{ tasks.length }}</h1>
+        <p>
+          <span style="color: orange" class="new-orders">{{ newTask() }} </span
+          >משימות צריכות להסתיים היום
+        </p>
+      </div>
+    </div>
+    <div [routerLink]="['/clientSearch']" class="info-card p-shadow-2">
+      <div class="info-card-header">
+        <h2>לקוחות שלך</h2>
+        <i class="pi pi-users"></i>
+      </div>
+      <div class="info-card-body">
+        <h1>{{ myClient() }}</h1>
+        <p>
+          <span style="color: rgb(56, 56, 160)" class="new-orders">{{
+            todayClient()
+          }}</span>
+          לקוחות חדשים מהיום
+        </p>
+      </div>
+    </div>
+    <div [routerLink]="['/calendar']" class="info-card p-shadow-2">
+      <div class="info-card-header">
+        <h2>פגישות אתך</h2>
+        <i style="color: green" class="pi pi-comments"></i>
+      </div>
+      <div class="info-card-body">
+        <h1>{{ myMeet() }}</h1>
+        <p>
+          <span class="new-orders">{{ todayMeet() }}</span> פגישות נקבעו להיום
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="large-panels">
+    <div class="large-panel">
+      <div style="width: 100%; height: 100%;" class="card">
+        <h2 style="padding-right: 1rem; font-size: 1.25rem; color: #3c4043">
             פילוח תשלומים חודשי
           </h2>
           <p-chart
@@ -67,33 +67,44 @@
             [data]="data"
             [options]="options"
           />
-        </div>
+        <!-- <h2 style="padding-right: 1rem; font-size: 1.25rem; color: #3c4043">
+          פילוח זמן עבודה על כל משימה מתוך הזמן הכללי
+        </h2>
+        <div class="card flex justify-content-center">
+          <p-chart type="pie" [data]="pieData" [options]="pieOptions" />
+        </div> -->
       </div>
-      <div class="large-panel">
-        <div style="width: 100%; height: 100%" class="card">
-          <div class="l1">
+    </div>
+    <div class="large-panel">
+      <div style="width: 100%; height: 100%" class="card">
+        <div  class="l1">
+          <h2 style="padding-right: 1rem; font-size: 1.25rem; color: #3c4043">
+            פילוח המשימות שלך לפי סטטוס
+          </h2>
+          <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
+        </div>
+
+        <div class="extra-panel">
+          <div style="width: 100%; height: 100%" class="card">
             <h2 style="padding-right: 1rem; font-size: 1.25rem; color: #3c4043">
-              פילוח המשימות שלך לפי סטטוס
-            </h2>
-            <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
-          </div>
-  
-          <div class="extra-panel">
-            <div style="width: 100%; height: 100%" class="card">
-              <h2 style="padding-right: 1rem; font-size: 1.25rem; color: #3c4043">
-                העובדים המצטיינים
+                פילוח זמן עבודה על כל משימה מתוך הזמן הכללי
               </h2>
-              <div class="card flex justify-content-center">
-                <p-chart type="pie" [data]="pieData" [options]="pieOptions" />
+              <div style="width: 64%; align-items: center;margin-left: 20%;border: none;" class="card flex justify-content-center">
+                <p-chart  style="width: 100%;" type="pie" [data]="pieData" [options]="pieOptions" />
             </div>
-            </div>
+            <!-- <h2 style="padding-right: 1rem; font-size: 1.25rem; color: #3c4043">
+              פילוח תשלומים חודשי
+            </h2>
+            <div>
+              <p-chart type="line" [data]="data" [options]="options" />
+            </div> -->
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- footer -->
-  <div class="footer">
-    <div class="image-container"></div>
-  </div>
-  
+</div>
+<!-- footer -->
+<div class="footer">
+  <div class="image-container"></div>
+</div>

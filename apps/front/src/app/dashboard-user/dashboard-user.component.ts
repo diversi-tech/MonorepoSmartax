@@ -86,6 +86,10 @@ export class DashboardUserComponent implements OnInit {
 
   myTimeByTask: any;
 
+  myTaskById: Task[] = [];
+
+  taskName: any;
+
   constructor(
     private taskService: TaskService,
     private statusService: StatusService,
@@ -104,6 +108,8 @@ export class DashboardUserComponent implements OnInit {
     this.taskService.getAllTasks().subscribe((data: any) => {
       this.tasks = data;
       console.log(data);
+      this.getNameById();
+
       this.myTask();
       this.filterTasks();
       this.chartTasks();
@@ -127,6 +133,7 @@ export class DashboardUserComponent implements OnInit {
     this.meetService.getAllMeetings().subscribe((data: any) => {
       this.meets = data;
       console.log(data);
+      this.myMeet();
       this.todayMeet();
     });
   }
@@ -143,6 +150,7 @@ export class DashboardUserComponent implements OnInit {
       this.timers = data;
       console.log(data);
       this.getTotalTimeByTaskId();
+      // this.chartPie();
     });
   }
 
@@ -168,16 +176,31 @@ export class DashboardUserComponent implements OnInit {
 
   myMeet() {
     return this.meets.filter((m) =>
-      m.usersId.some((assignee) => assignee._id === this.employeeId)
+      m.usersId.some((assignee) => String(assignee) === this.employeeId)
     ).length;
+  }
+
+  uniqueClient() {
+    const uniqueClientIds = new Set<string>();
+    console.log('countUniqueClientIds', this.myTasks);
+
+    this.myTasks.forEach((task) => {
+      uniqueClientIds.add(String(task.client));
+    });
+
+    return uniqueClientIds;
   }
 
   myClient() {
-    return this.clients.filter((c) =>
-      c.assignTo.some((assignee) => assignee._id === this.employeeId)
-    ).length;
-  }
+    const uniqueClientIds = new Set<string>();
+    console.log('countUniqueClientIds', this.myTasks);
 
+    this.myTasks.forEach((task) => {
+      uniqueClientIds.add(String(task.client));
+    });
+
+    return this.uniqueClient().size;
+  }
   // פונקציה שמחזירה את הזמן הכולל בכל taskId עבור userId מסוים
   getTotalTimeByTaskId() {
     // סינון האובייקטים לפי userId מסוים
@@ -209,6 +232,7 @@ export class DashboardUserComponent implements OnInit {
     }, {});
     console.log(result);
     this.myTimeByTask = result;
+    // this.chartPie();
     return result;
   }
 
@@ -267,7 +291,7 @@ export class DashboardUserComponent implements OnInit {
             color: surfaceBorder,
             drawBorder: false,
           },
-          max: this.tasks.length,
+          max: this.myTasks.length,
         },
         x: {
           ticks: {
@@ -360,33 +384,107 @@ export class DashboardUserComponent implements OnInit {
       },
     };
   }
+  generateRandomColor(): string {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+  generatePastelColor(): string {
+    // הפקת ערכים אקראיים של צבעים, עם נטייה ליצירת צבעים בהירים יותר
+    const r = Math.floor(Math.random() * 128) + 127; // טווח של 127-255
+    const g = Math.floor(Math.random() * 128) + 127; // טווח של 127-255
+    const b = Math.floor(Math.random() * 128) + 127; // טווח של 127-255
+    return `rgb(${r}, ${g}, ${b})`;
+  }
 
-  chartPie(){
+  generateLighterColor(color: string, percent: number): string {
+    const rgb = color.match(/\d+/g);
+    if (!rgb) return color;
+
+    const r = Math.min(
+      255,
+      parseInt(rgb[0]) + (255 - parseInt(rgb[0])) * percent
+    );
+    const g = Math.min(
+      255,
+      parseInt(rgb[1]) + (255 - parseInt(rgb[1])) * percent
+    );
+    const b = Math.min(
+      255,
+      parseInt(rgb[2]) + (255 - parseInt(rgb[2])) * percent
+    );
+
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  getNameById() {
+    this.taskName = this.tasks.reduce((map, task) => {
+      map[task._id] = task.taskName;
+      return map;
+    }, {} as Record<string, string>);
+    console.log('Task ID to Name Map:', this.taskName);
+    this.chartPie();
+
+    // console.log('Task ID to Name Map:', taskIdToNameMap);
+  }
+
+  chartPie() {
     const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        // const t = this.myTimeByTask.map(t => t.taskId);
+    const textColor = documentStyle.getPropertyValue('--text-color');
 
-        this.pieData = {
-            labels: ['A', 'B', 'C'],
-            datasets: [
-                {
-                    data: [540, 325, 702],
-                    backgroundColor: [documentStyle.getPropertyValue('--blue-500'), documentStyle.getPropertyValue('--yellow-500'), documentStyle.getPropertyValue('--green-500')],
-                    hoverBackgroundColor: [documentStyle.getPropertyValue('--blue-400'), documentStyle.getPropertyValue('--yellow-400'), documentStyle.getPropertyValue('--green-400')]
-                }
-            ]
-        };
+    // קבלת נתונים מהפונקציה
+    const timeData = this.getTotalTimeByTaskId();
+    const taskIds = Object.keys(timeData);
+    console.log(taskIds);
 
-        this.pieOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        color: textColor
-                    }
-                }
-            }
-        };
+    // יצירת מפת id לשם משימה
+    // const taskIdToNameMap = this.tasks.reduce((map, task) => {
+    //   map[task._id] = task.taskName;
+    //   return map;
+    // }, {} as Record<string, string>);
+    // console.log('Task ID to Name Map:', taskIdToNameMap);
+
+    const taskIdToNameMap = this.taskName;
+    const labels = taskIds.map(
+      (taskId) => taskIdToNameMap[taskId] || 'Unknown Task'
+    );
+    const data = taskIds.map((taskId) => {
+      const { hours, minutes, seconds } = timeData[taskId];
+      return hours + minutes / 60 + seconds / 3600;
+    });
+
+    // const backgroundColors = labels.map(() => this.generatePastelColor());
+    // // const hoverBackgroundColors = labels.map(() => this.generateRandomColor());
+    // const hoverBackgroundColors = backgroundColors.map((color) =>
+    //   this.generateLighterColor(color, 0.2)
+    // );
+    const backgroundColors = labels.map(() => this.generatePastelColor());
+    const hoverBackgroundColors = backgroundColors.map((color) =>
+      this.generateLighterColor(color, 0.2)
+    );
+
+    this.pieData = {
+      labels: labels,
+      datasets: [
+        {
+          data: data,
+          backgroundColor: backgroundColors,
+          hoverBackgroundColor: hoverBackgroundColors,
+        },
+      ],
+    };
+
+    this.pieOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: textColor,
+          },
+        },
+      },
+    };
   }
 
   // פונקציה שמחזירה את כל החודשים מתחילת השנה ועד החודש הנוכחי
@@ -421,13 +519,22 @@ export class DashboardUserComponent implements OnInit {
     this.chartPayment();
     this.getWorkLogs();
     this.getAllTimer();
-    this.chartPie();
   }
 
   newTask() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return this.tasks.filter((item) => {
+      const itemDate = new Date(item.deadline);
+      itemDate.setHours(0, 0, 0, 0);
+      return itemDate.getTime() === today.getTime();
+    }).length;
+  }
+
+  newMyTask() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return this.myTasks.filter((item) => {
       const itemDate = new Date(item.deadline);
       itemDate.setHours(0, 0, 0, 0);
       return itemDate.getTime() === today.getTime();
@@ -442,18 +549,23 @@ export class DashboardUserComponent implements OnInit {
       itemDate.setHours(0, 0, 0, 0);
       return (
         itemDate.getTime() === today.getTime() &&
-        item.usersId.some((assignee) => assignee._id === this.employeeId)
+        item.usersId.some((assignee) => String(assignee) === this.employeeId)
       );
     }).length;
   }
 
   todayClient() {
     const today = new Date();
+    const existingClients = new Set(this.uniqueClient());
+
     today.setHours(0, 0, 0, 0);
-    return this.clients.filter((item) => {
-      const itemDate = new Date(item.joinDate);
+    return this.tasks.filter((item) => {
+      const itemDate = new Date(item.startDate);
       itemDate.setHours(0, 0, 0, 0);
-      return itemDate.getTime() === today.getTime();
+      return (
+        itemDate.getTime() === today.getTime() &&
+        !existingClients.has(String(item.client))
+      );
     }).length;
   }
 
