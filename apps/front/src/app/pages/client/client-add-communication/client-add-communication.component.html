@@ -1,56 +1,44 @@
-<p-dialog header="" [(visible)]="displayDialog" [modal]="true" [responsive]="true" [closable]="true"
-  (onHide)="onClose()">
-  <div class="col-md-12">
-    <div class="card card-container">
-      <div class="p-grid">
-        <h2 class="p-my-4">Create New Communication</h2>
-        <form (ngSubmit)="createCommunication()" #createForm="ngForm" class="form-background">
-          <div class="p-field">
-            <label for="date">Date</label>
-            <input type="date" class="p-inputtext" id="date" [(ngModel)]="formattedDate" name="date" required
-              (dblclick)="setTodayDate()">
+<p-dialog header="הוספת שיחה חדשה" [(visible)]="displayDialog" [modal]="true" [responsive]="true" [closable]="true"
+  (onHide)="onClose()" [style]="{width: '25vw'}">
+  <div class="p-fluid">
+    <div class="card">
+      <div class="p-grid p-align-center p-justify-center">
+        <form (ngSubmit)="createCommunication()" #createForm="ngForm" class="form-background p-p-3">
+          <div class="p-field p-mb-3">
+            <label for="date" class="form-label">תאריך</label>
+            <input type="date" pInputText id="date" [(ngModel)]="formattedDate" name="date" required
+              (dblclick)="setTodayDate()" [style]="{width: '100%'}">
           </div>
-          <div class="p-field">
-            <!-- <label for="Subject">נושא שיחה </label> -->
-            <div class="container">
-              <div class="row">
-                <div class="col">
-                  <label for="searchName">בחר נושא שיחה:</label>
-                  <p-autoComplete [(ngModel)]="selectedCallTopic" [suggestions]="filteredCallTopic"
-                    (completeMethod)="filterByNameCallTopic($event.query)" [minLength]="1"
-                    placeholder="Search callTopics" field="name" [dropdown]="true" (onSelect)="select($event)">
-                    <ng-template let-callTopicSchema pTemplate="item">
-                      <div>
-                        callTopics - {{ callTopicSchema.name }}
-                        <ng-container *ngIf="is">
-                          <button (click)="add()"> רוצה להוסיף נושא שיחה הזה</button>
-                        </ng-container>
-                      </div>
-                    </ng-template>
-                  </p-autoComplete>
+          <div class="p-field p-mb-3">
+            <label for="searchName" class="form-label">נושא שיחה</label>
+            <p-autoComplete [(ngModel)]="selectedCallTopic" [suggestions]="filteredCallTopic"
+              (completeMethod)="filterByNameCallTopic($event.query)" [minLength]="1"
+              placeholder="Search callTopics" field="name" [dropdown]="true" (onSelect)="select($event)"
+              [style]="{width: '100%'}" required>
+              <ng-template let-callTopicSchema pTemplate="item">
+                <div class="p-d-flex p-ai-center">{{ callTopicSchema.name }}
+                  <ng-container *ngIf="is">
+                    <button type="button" pButton class="p-ml-2" (click)="add()"> רוצה להוסיף נושא שיחה הזה</button>
+                  </ng-container>
                 </div>
-              </div>
-            </div>
-            <!-- <textarea class="p-textarea" id="Subject" [(ngModel)]="newCommunication.Subject" name="Subject" rows="3" required></textarea> -->
+              </ng-template>
+            </p-autoComplete>
           </div>
-          <div class="p-field">
-            <label for="summary">Summary</label>
-            <textarea class="p-textarea" id="summary" [(ngModel)]="newCommunication.summary" name="summary" rows="3"
-              required></textarea>
+          <div class="p-field p-mb-3">
+            <label for="summary" class="form-label">סיכום השיחה</label>
+            <textarea pInputTextarea id="summary" [(ngModel)]="newCommunication.summary" name="summary" rows="5"
+              required [style]="{width: '100%'}"></textarea>
           </div>
-          <div class="p-field">
-            <label for="status">סוג שיחה</label>
-            <select (change)="onStatusChange($event.target.value)" [(ngModel)]="newCommunication.Status" name="status">
-              <option [ngValue]="true">ליד</option>
-              <option [ngValue]="false">מעקב</option>
-            </select>
+          <div class="p-field mb-5">
+            <label for="status" class="form-label">סוג שיחה</label>
+            <p-dropdown [options]="statusOptions" [(ngModel)]="newCommunication.Status" name="status" [style]="{width: '100%'}"
+              appendTo="body" required>
+            </p-dropdown>
           </div>
-          <div class="p-field">
-            <label for="assignedTo">Assigned To</label>
-            <p-dropdown [options]="users" [(ngModel)]="newCommunication.assignedTo" name="assignedTo"
-              optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
-          </div>
-          <button type="submit" class="p-button" [disabled]="!createForm.form.valid">Create Communication</button>
+            <button type="submit" pButton label="יצירת שיחה" icon="pi pi-check"  class="mb-2"
+            [disabled]="!createForm.form.valid"></button>
+            <button type="button" pButton label="ביטול" icon="pi pi-times"
+              (click)="onClose()"></button>
         </form>
       </div>
     </div>
