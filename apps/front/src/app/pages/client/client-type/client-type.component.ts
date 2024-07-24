@@ -54,7 +54,7 @@ export class ClientTypeComponent implements OnInit {
   selectedType: ClientType | null = null;
   displayDeleteDialog: boolean = false;
   selectedDeleteType: ClientType | null = null;
-  newClient: ClientType;
+  // newClient: ClientType;
   newC: boolean = false;
   create : boolean = false;
 
@@ -101,9 +101,9 @@ export class ClientTypeComponent implements OnInit {
     this.loadAllClientTypes();
     this.loadAllTasks();
     //init new client
-    this.newClient.name = '';
-    this.newClient.tasks = [];
-    this.newClient.fields = [];
+    // this.newClient.name = '';
+    // this.newClient.tasks = [];
+    // this.newClient.fields = [];
   }
 
   loadAllClientTypes(): void {
