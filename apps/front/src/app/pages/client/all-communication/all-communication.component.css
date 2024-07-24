@@ -1,22 +1,12 @@
 .highlight {
-    /* color: rgb(240, 112, 112); */
-    background-color: #edecec;
-}  
-th,td {
-    text-align: center;
-  }
-  
-
-
-/* .p-button-rounded {
-    border-radius: 20%; 
-  } */
-
-.p-button-rounded {
-    border-radius: 20%;
-    width: 80px;
+  background-color: #edecec;
 }
 
-.p-button-warning {
-    color: #10c2b0;
+th, td {
+  text-align: center;
+}
+
+.p-button-rounded {
+  border-radius: 20%;
+  margin: 1%;
 }

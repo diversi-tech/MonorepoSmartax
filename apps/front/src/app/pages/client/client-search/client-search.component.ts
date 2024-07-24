@@ -5,7 +5,7 @@ import { FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { ConfirmationService, PrimeNGConfig, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule, AutoCompleteSelectEvent, } from 'primeng/autocomplete';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Router, RouterOutlet, RouterLink, } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
@@ -19,7 +19,7 @@ import { ImportClientComponent } from '../import-clients/import-client.component
 @Component({
   selector: 'app-client-search',
   templateUrl: './client-search.component.html',
-  styleUrls: ['./client-search.component.scss'],
+  styleUrls: ['./client-search.component.css'],
   standalone: true,
   imports: [
     ConfirmDialogModule,
@@ -32,13 +32,15 @@ import { ImportClientComponent } from '../import-clients/import-client.component
     RouterOutlet,
     Button,
     RouterLink,
-    ImportClientComponent
+    ImportClientComponent,
+    NgClass,
   ],
 })
 export class ClientSearchComponent implements OnInit {
   filterNumber: string = '';
   filterTZ: string = '';
   isSelected: number = 0;
+  currentClient: Client | null = null;
   clients: Client[] = [];
   filteredClients: Client[] = [];
   searchName = new FormControl('');
@@ -207,10 +209,12 @@ export class ClientSearchComponent implements OnInit {
     this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
     this.updateFavorite();
   }
+
   addToFavorite(client: Client) {
     this.user.favoritesClient.push(client);
     this.updateFavorite();
   }
+
   showConfirmation(): void {
     debugger
     this.confirmationService.confirm({
@@ -242,5 +246,11 @@ export class ClientSearchComponent implements OnInit {
   @HostListener('document:click')
   onDocumentClick() {
     this.choosedClients = [];
+    this.isChoosedAllClient = false;
+  }
+
+  selectCurrentClient(client: Client) {
+    debugger
+    this.currentClient = client;
   }
 }

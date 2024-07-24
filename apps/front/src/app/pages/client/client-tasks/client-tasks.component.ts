@@ -1,5 +1,5 @@
 import { Component, NgModule, NgModuleRef, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { Client } from '../../../_models/client.module';
 import { TaskService } from '../../../_services/task.service';
 import { Task } from '../../../_models/task.module';
@@ -15,6 +15,9 @@ import { StatusService } from '../../../_services/status.service';
 import { Status } from '../../../_models/status.module';
 import { FormsModule, } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { PanelModule } from 'primeng/panel';
+import { TableModule } from 'primeng/table';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-tasks',
@@ -26,7 +29,10 @@ import { ButtonModule } from 'primeng/button';
     ConfirmDialogModule,
     SidebarModule,
     FormsModule,
-    ButtonModule
+    ButtonModule,
+    PanelModule,
+    TableModule,
+    NgTemplateOutlet,
   ],
 })
 export class ClientTasksComponent implements OnInit {
@@ -56,7 +62,7 @@ export class ClientTasksComponent implements OnInit {
     task: Task | null;
     tags: Tag[];
   } = {
-    deadline: null,
+      deadline: null,
       client: null,
       user: null,
       task: null,
@@ -66,6 +72,7 @@ export class ClientTasksComponent implements OnInit {
 
 
   constructor(
+    private router: Router,
     private taskService: TaskService,
     private userService: UserService,
     private clientService: ClientService,
@@ -77,7 +84,7 @@ export class ClientTasksComponent implements OnInit {
 
   ngOnInit(): void {
     this.client = history.state.client;
-    // this.getTasks();
+    this.getTasks();
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
       this.tagSuggestions = tags;
     });
@@ -87,20 +94,40 @@ export class ClientTasksComponent implements OnInit {
     });
   }
 
+
+editTask(task : Task){
+  debugger
+  this.router.navigate(['/taskSpe', task._id]);
+}
+
+createTask(){
+  this.router.navigate(['/taskSpe', 'create']);
+}
+
+
   getTasks(): void {
     debugger
     console.log(this.client._id)
-    this.taskService.getTasksByClientId(this.client._id)
-      .subscribe(task => { this.tasks = task });
-    console.log(this.client._id, this.tasks)
-    this.filteredTasks = this.tasks;
+    this.taskService.getTasksByClientId(this.client._id).subscribe(
+      (data) => {
+        console.log(data);
+        this.tasks = data;
+        console.log("gettasks", this.tasks);
+      },
+      (error) => {
+        console.log('Failed to fetch users:', error);
+      })
+    //   this.filteredTasks = this.tasks;
   }
 
+
   categorizeTasks(status: Status): Task[] {
-    // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
+    debugger
+    console.log(status.name)
+    console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
-      // console.log('Task status:', task.status); // הדפסת המצב של המשימה
-      { return task.status && task.status.name === status.name; }
+      console.log('Task status:', task.status); // הדפסת המצב של המשימה
+      return task.status && task.status.name === status.name;
     });
   }
 
@@ -155,7 +182,8 @@ export class ClientTasksComponent implements OnInit {
   }
 
   toggleFilter(): void {
-    this.showFilter = !this.showFilter;
+    debugger
+    this.showFilter = true;
   }
 
   searchClients(event: any): void {
@@ -200,9 +228,9 @@ export class ClientTasksComponent implements OnInit {
 
       const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
 
-        const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
-        
-        const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
+      const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
+
+      const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
       let tagsMatch = true;
       if (this.filter.tags && this.filter.tags.length > 0) {
         tagsMatch = this.filter.tags.every((filterTag) => {
@@ -212,7 +240,7 @@ export class ClientTasksComponent implements OnInit {
         });
       }
 
-      console.log( deadlineMatch, clientMatch, userMatch, taskNameMatch, tagsMatch );
+      console.log(deadlineMatch, clientMatch, userMatch, taskNameMatch, tagsMatch);
 
       return (
         deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
@@ -277,6 +305,6 @@ export class ClientTasksComponent implements OnInit {
       }
       return 0;
     });
-}
+  }
 
 }

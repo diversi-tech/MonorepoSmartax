@@ -117,9 +117,10 @@ export class TaskManagementComponent implements OnInit {
   }
 
   categorizeTasks(status: Status): Task[] {
-    // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
+    console.log(status.name);
+    console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
-      // console.log('Task status:', task.status); // הדפסת המצב של המשימה
+      console.log('Task status:', task.status); // הדפסת המצב של המשימה
       { return task.status && task.status.name === status.name; }
     });
   }
