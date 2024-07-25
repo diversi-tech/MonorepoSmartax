@@ -87,11 +87,9 @@
 <div class="g_id_signin" data-type="standard"></div>
 <button type="submit" (click)="loadGoogleApi()" class="submit-button"><i class="pi pi-google"></i></button> -->
 <!-- login.component.html -->
-<div class="login-container">
-  <button type="button" (click)="loadGoogleApi()" class="submit-button">
-    <i class="pi pi-google"></i> Sign in with Google
-  </button>
-</div>
+<div id="googleSignInButton"></div>
+<!-- <button (click)="signInWithGoogle()">Sign in with Google</button> -->
+
 
 <!-- <button type="submit" (click)="loadGoogleApi()" class="submit-button"><i class="pi pi-google"></i></button> -->
 <router-outlet/>
