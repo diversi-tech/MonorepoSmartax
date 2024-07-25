@@ -1,15 +1,13 @@
 <app-client-profile></app-client-profile>
-<p-button label="שיחות" (click)="navigateTo('clientCommunicationLogs')"></p-button>
-<p-button label="מסמכים" (click)="navigateTo('clientUploadDoc')"></p-button>
-<p-button label="משימות" (click)="navigateTo('clientTaskManagement')"></p-button>
-<p-button label="תשלום" (click)="navigateTo('payments')"></p-button>
-<p-button label="דוחות חודשיים" routerLink='monthlyReport' routerLinkActive="active"></p-button>
-<p-button label="הצהרת הון" routerLink='financialStatement' routerLinkActive="active"></p-button>
-<p-button label="החזרי מס\שבח" routerLink='taxRefunds ' routerLinkActive="active"></p-button>
-<p-button label="פרטי לקוח" (click)="navigateTo('clientTypeTab')"></p-button>
-
-<p-button label="דוחות שנתיים" (click)="navigateTo('yearlyReport')"></p-button>
-
+<div class="b">
+<p-button  label="שיחות" [link]="true" (click)="navigateTo('clientCommunicationLogs')"></p-button>
+<p-button  label="מסמכים" [link]="true"(click)="navigateTo('clientUploadDoc')"></p-button>
+<p-button  label="משימות"[link]="true" (click)="navigateTo('clientTaskManagement')"></p-button>
+<p-button  label="תשלום" [link]="true"(click)="navigateTo('payments')"></p-button>
+<p-button  label="דוחות חודשיים" [link]="true"(click)="navigateTo('monthlyReport')" ></p-button>
+<p-button  label="הצהרת הון" [link]="true"(click)="navigateTo('financialStatement')"></p-button>
+<p-button  label="החזרי מס\שבח"[link]="true" (click)="navigateTo('taxRefunds')"></p-button>
+<p-button  label="פרטי לקוח" [link]="true"(click)="navigateTo('clientTypeTab')"></p-button>
+<p-button  label="דוחות שנתיים"[link]="true" (click)="navigateTo('yearlyReport')" ></p-button> 
+</div>
 <router-outlet></router-outlet>
-
-
