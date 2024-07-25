@@ -1,53 +1,37 @@
 <h1 (click)="onSelectionChange(1)">רשימת שיחות</h1>
-<h1>מיין לפי</h1>
-<select (change)="onSelectionChange($event)">
-  <option value="option1">כל השיחות</option>
-  <option value="option5">נושא שיחה </option>
-  <option value="option2">שם לקוח</option>
-  <option value="option3">תאריך</option>
-  <option value="option4">סוג שיחה</option>
-
-</select>
-<input *ngIf="isSelected == 2" type="text" placeholder="client" [(ngModel)]="filtername"
-  (input)="filterClientsByname()" />
-<input *ngIf="isSelected == 3" type="date" placeholder="date" [(ngModel)]="filterdate" (input)="filterByDate()" />
-<input *ngIf="isSelected == 4" type="text" placeholder="Status" [(ngModel)]="filterstatus" (input)="filterByStatus()" />
-<div *ngIf="isSelected == 5 ">
-  <select [(ngModel)]="selectedCallTopic" (change)="filterByCallTopic($event)">
-    <option *ngFor="let topic of callTopics" [value]="topic.name">{{ topic.name }}</option>
-  </select>
-</div>
-
-<h3>שיחות</h3>
-
-<p-table [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications">
+<p-button (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
+<button *ngIf="this.currentCommunication" pButton class="pi pi-pencil p-button"
+  (click)="selectCommunication(this.currentCommunication); showConfirmationEdit()"></button>
+<button *ngIf="this.currentCommunication" pButton class="pi pi-trash p-button"
+  (click)="showConfirmationDelete()"></button>
+<p-table  [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications">
   <ng-template pTemplate="header" let-columns>
-    <tr>
-      <th></th>
-      <th>
+    <tr (click)="selectCurrentCommunication(communication)"
+    [ngClass]="{ 'highlight': currentCommunication === communication }">
+    <th>
+      <span (click)="onSelectionChange(2)">שם לקוח</span>
+    <div>
+      <input *ngIf="isSelected == 2" type="text" class="filter-input" [(ngModel)]="filtername" (input)="filterClientsByname()">
+    </div>
+    </th>
+    <th>
+      <span (click)="onSelectionChange(3)">תאריך</span>
+     <div>
+      <input *ngIf="isSelected == 2" type="date" class="filter-input" [(ngModel)]="filterdate" (input)="filterByDate()">
+     </div> 
+    </th>
+    <th>
         <span (click)="onSelectionChange(4)">סוג השיחה</span>
-        <div>
-          <input *ngIf="isSelected == 4" type="text" class="filter-input" [(ngModel)]="filterstatus"
-            (input)="filterByStatus()">
-        </div>
-      </th>
-      <th>
-        <span (click)="onSelectionChange(2)">שם לקוח</span>
-        <div>
-          <input *ngIf="isSelected == 2" type="text" class="filter-input" [(ngModel)]="filtername"
-            (input)="filterClientsByname()">
-        </div>
-      </th>
-      <th>
-        <span (click)="onSelectionChange(3)">תאריך</span>
-        <div>
-          <input *ngIf="isSelected == 3" type="date" class="filter-input" [(ngModel)]="filterdate"
-            (input)="filterByDate()">
-        </div>
-      </th>
+       <div>
+        <select *ngIf="isSelected == 2"  [(ngModel)]="selectedCallStatus" (change)="filterByStatus($event)">
+          <option >מעקב</option>
+          <option >ליד</option>
+        </select>
+      </div>
+       </th> 
       <th>
         <span (click)="onSelectionChange(5)">נושא שיחה</span>
-        <div *ngIf="isSelected == 5 ">
+        <div *ngIf="isSelected == 2 ">
           <select [(ngModel)]="selectedCallTopic" (change)="filterByCallTopic($event)">
             <option *ngFor="let topic of callTopics" [value]="topic.name">{{ topic.name }}</option>
           </select>
@@ -68,10 +52,11 @@
           class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
           (click)="showConfirmationDelete()"></button>
       </td>
-      <td *ngIf="communication.Status === 'true'">ליד</td>
-      <td *ngIf="communication.Status === 'false'">מעקב</td>
+    <tr (click)="selectCurrentCommunication(communication)" [ngClass]="{ 'highlight': currentCommunication === communication }">
       <td>{{communication.client}}</td>
       <td>{{communication.date | date: 'dd-MM-yyy' }}</td>
+      <td *ngIf="communication.Status === 'true'">ליד</td>
+      <td *ngIf="communication.Status === 'false'">מעקב</td>
       <td>{{communication.Subject}}</td>
       <td>{{communication.summary}}</td>
     </tr>

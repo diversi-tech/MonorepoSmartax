@@ -103,6 +103,7 @@ export class ClientSearchComponent implements OnInit {
   onSelectionChange(a: any) {
     // const selectedValue = (event.target as HTMLSelectElement).value;
     this.isSelected = Number(a);
+    this.filteredClients = this.clients;
   }
 
   filterClientsByNameAndBusinessName(value: string): void {
@@ -117,20 +118,22 @@ export class ClientSearchComponent implements OnInit {
     // this.selectedClient = null;
   }
   filterClientsBynamecom(): void {
-
-    if (this.filternamecom != "") {
-      alert(this.filternamecom)
+    this.filteredClients = this.clients;
+    if (this.filternamecom != ""){
       this.filteredClients = this.clients.filter(client => client.companyName.includes(this.filternamecom));
-    } else
+    }
+    else
       this.filteredClients = this.clients;
   }
   filterClientsByNumber(): void {
+    this.filteredClients = this.clients;
     if (this.filterNumber != "")
       this.filteredClients = this.clients.filter(client => client.phone.includes(this.filterNumber));
     else
       this.filteredClients = this.clients;
   }
   filterClientsByTZ(): void {
+    this.filteredClients = this.clients;
     if (this.filterTZ != "")
       this.filteredClients = this.clients.filter(client => client.tz.includes(this.filterTZ));
     else
