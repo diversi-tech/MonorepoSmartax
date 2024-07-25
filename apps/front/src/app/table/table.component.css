@@ -1,12 +1,24 @@
 .checkbox-container {
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* מיקום בצד ימין */
+    justify-content: flex-end;
 }
 
 .checkbox-container label {
-    margin-left: 8px; /* מרווח בין ה-checkbox לטקסט */
+    margin-left: 8px; 
 }
 .label{
     margin-right: 10px;
 }
+.fixed-button {
+    position: fixed;
+    top: 160px; 
+    right: 20px; 
+    z-index: 1000; 
+}
+/* .fixed-button {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+    z-index: 1000; 
+} */

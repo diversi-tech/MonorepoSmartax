@@ -131,10 +131,12 @@ export class AllCommunicationComponent {
         }));
       });
   }
+
   onSelectionChange(a : any) {
     this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;
   }
+
   filterByCallTopic(event: Event) {
     this.filteredCommunicatio = this.communications;
     this.filterCallTopic = (event.target as HTMLSelectElement).value
@@ -143,6 +145,7 @@ export class AllCommunicationComponent {
     else
       this.filteredCommunicatio = this.communications;
   }
+
   filterClientsByname(): void {
     this.filteredCommunicatio = this.communications;
     if (this.filtername != "")
@@ -160,10 +163,12 @@ export class AllCommunicationComponent {
     else
       this.filteredCommunicatio = this.communications;
   }
+
   filterBySTtetus2(status): void {
     
     this.filteredCommunicatio = this.communications.filter(communication => communication.Status === status);
   }
+
   filterByDate(): void {
     this.filteredCommunicatio = this.communications;
     if (this.filterdate) {
@@ -183,6 +188,7 @@ export class AllCommunicationComponent {
       this.filteredCommunicatio = this.communications;
     }
   }
+
   filterByNameCallTopic(value: string): void {
     this.filteredCommunicatio = this.communications;
     if (value != "") {
@@ -205,11 +211,13 @@ export class AllCommunicationComponent {
     this.selectedCallTopic2 = null;
 
   }
+
   select(event: AutoCompleteSelectEvent): void {
 
     const callTopic = event.value as callTopicSchema;
     this.thisSubject = callTopic.name
   }
+  
   add() {
     this.newcallTopicSchema.name = this.thisSubject2
     this.callTopicService.createCallTopic(this.newcallTopicSchema).subscribe(response => {

@@ -1,42 +1,43 @@
 <div id="container">
   <div>
-    <h2>לקוחות שאין להם הו"ק</h2>
-    <p-table [value]="clientsWithoutHOC" [style]="{ width: '400px' }">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>שם</th>
-          <th>תאריך תחילת השירות</th>
-          <th>סכום חוב כולל</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-client>
-        <tr (click)="openClientPayment()">
-          <td>{{ client.firstName }}</td>
-          <td>{{ client.serviceStartDate }}</td>
-          <td>{{ client.totalDebtAmount }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
+    <p-panel header="לקוחות שאין להם הו&quot;ק" dir="rtl">
+      <p-table [value]="clientsWithoutHOC" [style]="{ width: '400px' }" class="p-datatable-custom">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>שם</th>
+            <th>תאריך תחילת השירות</th>
+            <th>סכום חוב כולל</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-client>
+          <tr (click)="openClientPayment(client._id)" class="p-datatable-row-custom">
+            <td>{{ client.name }}</td>
+            <td>{{ client.serviceStartDate | date: 'dd-MM-yyy'  }}</td>
+            <td>{{ client.totalDebtAmount }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
   </div>
-  
+
   <div>
-    <h2>לקוחות שהו"ק שלהם חזרה</h2>
-    <p-table [value]="clientsWithReturnedHOC" [style]="{ width: '400px' }">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>לקוח</th>
-          <th>כמות הו"ק שחזרו</th>
-          <th>סכום חוב כולל</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-client>
-        <tr (click)="openClientPaymentHistory()">
-          <td>{{ client.firstName }}</td>
-          <td>{{ client.returnedHOCNumber }}</td>
-          <td>{{ client.totalDebtAmount }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
+    <p-panel header="לקוחות שהו&quot;ק שלהם חזרה" dir="rtl">
+      <p-table [value]="clientsWithReturnedHOC" [style]="{ width: '400px' }" class="p-datatable-custom">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>לקוח</th>
+            <th>כמות הו&quot;ק שחזרו</th>
+            <th>סכום חוב כולל</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-client>
+          <tr (click)="openClientPaymentHistory(client._id)" class="p-datatable-row-custom">
+            <td>{{ client.firstName }}</td>
+            <td>{{ client.returnedHOCNumber }}</td>
+            <td>{{ client.totalDebtAmount }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
   </div>
 </div>
-

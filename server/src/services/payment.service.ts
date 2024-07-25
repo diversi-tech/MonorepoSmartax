@@ -22,7 +22,7 @@ export class PaymentService {
 
     async createPayment(createPaymentDto: CreatePaymentDto): Promise<Payment> {
         console.log('start create payment');
-        
+
         const { mainPaymentDetails, morePaymentDetails, totalPayment, paymentMethod, paymentHistory, billingHistory } = createPaymentDto;
         console.log(mainPaymentDetails, morePaymentDetails, totalPayment, paymentMethod, paymentHistory, billingHistory);
 
@@ -36,6 +36,7 @@ export class PaymentService {
     async getAllPayments(): Promise<Payment[]> {
         return await this.PaymentModel.find().exec();
     }
+
     async searchPayment(id: string): Promise<Payment[]> {
         const Payment = await this.PaymentModel.find({ "_id": id }).exec();
         if (!Payment || Payment.length === 0) {
@@ -43,26 +44,40 @@ export class PaymentService {
         }
         return Payment;
     }
+
+    async getPaymentById(id: string): Promise<Payment> {
+        try {
+            const Payment = await this.PaymentModel.findById(id).exec();
+            if (!Payment) {
+                throw new NotFoundException('Payment not found');
+            }
+            return Payment;
+        } catch (err) {
+            console.log(err);
+
+        }
+    }
+
     async updatePayment(updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
         console.log('start update');
-        
+
         const { _id, ...updateData } = updatePaymentDto;
-        console.log( _id+' ');
+        console.log(_id + ' ');
         updateData.morePaymentDetails.forEach(element => {
             console.log(element);
-            
+
         });
         console.log("***********************************");
-        
-        
+
+
         const updatedPayment = await this.PaymentModel.findByIdAndUpdate(_id, updateData, { new: true });
         console.log('update');
         console.log(updatedPayment);
         // updatedPayment.morePaymentDetails.forEach(element => {
         //     console.log(element);
-            
+
         // });
-        
+
         if (!updatedPayment) {
             throw new NotFoundException(`Payment with ID ${_id} not found`);
         }
@@ -113,20 +128,20 @@ export class PaymentService {
 
     async addMorePaymentDetails(paymentId: string, newPaymentDetails: CreatePaymentDetailsDto): Promise<Payment> {
         console.log(newPaymentDetails);
-        
+
         const payment = await this.PaymentModel.findById(paymentId);
         if (!payment) {
             throw new NotFoundException('Payment not found');
         }
         console.log('payment found');
         console.log(payment);
-        
-        
+
+
         const newMorePaymentDetails = await this.PaymentDetailsService.createPaymentDetails(newPaymentDetails);
-        if (newMorePaymentDetails){
+        if (newMorePaymentDetails) {
             console.log('payment created');
-            if(!payment.morePaymentDetails){
-                payment.morePaymentDetails=[]
+            if (!payment.morePaymentDetails) {
+                payment.morePaymentDetails = []
                 console.log(payment.morePaymentDetails);
 
             }
@@ -134,8 +149,8 @@ export class PaymentService {
             console.log('payment pushed');
 
         }
-        console.log( payment.morePaymentDetails);
-        
+        console.log(payment.morePaymentDetails);
+
         return payment.save();
     }
 
@@ -156,6 +171,6 @@ export class PaymentService {
             payment.morePaymentDetails = updatedMorePaymentDetails;
             await payment.save();
         }
-    
+
     }
 }
