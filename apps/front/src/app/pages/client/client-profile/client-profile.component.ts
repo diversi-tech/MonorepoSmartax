@@ -76,5 +76,11 @@ export class ClientProfileComponent implements OnInit {
   toggleSensitiveDetails() {
     this.showSensitiveDetails = !this.showSensitiveDetails;
   }
+
+  editClient(client:Client){
+    if (this.client) {
+      this.router.navigate(['/add-new-client'], { state: { client: this.client } });
+    }
+  }
   
 }

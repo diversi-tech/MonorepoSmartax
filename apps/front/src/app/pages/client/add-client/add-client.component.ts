@@ -19,10 +19,13 @@ import { User } from '../../../_models/user.module';
 import { NgIf } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../../_services/token.service';
+import { Router, ActivatedRoute } from '@angular/router'; // הוספתי את Router ו-ActivatedRoute
+import { ButtonModule } from 'primeng/button';
+
 @Component({
   selector: 'app-add-client',
   templateUrl: './add-client.component.html',
-  styleUrls:[ './add-client.component.css'],
+  styleUrls: ['./add-client.component.css'],
   providers: [ClientService],
   animations: [
     trigger('dialog', [
@@ -48,14 +51,15 @@ import { TokenService } from '../../../_services/token.service';
     ]),
   ],
   standalone: true,
-  imports: [DialogModule, FormsModule, ReactiveFormsModule,NgIf],
+  imports: [DialogModule, FormsModule, ReactiveFormsModule, NgIf,ButtonModule],
 })
-export class AddClientComponent {
+export class AddClientComponent implements OnInit { // הוספתי implements OnInit
   contactForm!: FormGroup;
   displayDialog: boolean = true;
   @Output() close = new EventEmitter<void>();
   savedData: any;
   newClient: any = {
+
     companyName: '',
     firstName: '',
     lastName: '',
@@ -70,7 +74,7 @@ export class AddClientComponent {
     encryptedPasswords: [],
     comments: '',
     lastUserUpdate: {
-      _id: '',
+      // _id: '',
       userName: '',
       email: '',
       passwordHash: '',
@@ -92,31 +96,35 @@ export class AddClientComponent {
     isOpenAccountWithUs: false,
     tag: { color: '', text: '' },
     payment: '',
-    isPreferWhatsapp:false
+    isPreferWhatsapp: false
   };
-  isWorkData: boolean= false
+  isWorkData: boolean = false;
   form: FormGroup;
+  editingClient: Client | null = null; // משתנה לשמירת הלקוח שנערך
 
   constructor(
     private formBuilder: FormBuilder,
-    private ClientServic: ClientService,
-    private tokenService: TokenService
+    private clientService: ClientService,
+    private tokenService: TokenService,
+    private router: Router, // הוספתי את Router
+    private route: ActivatedRoute // הוספתי את ActivatedRoute
   ) {}
+
   ngOnInit() {
     this.contactForm = this.formBuilder.group({
       companyName: ['', [Validators.maxLength(20)]],
       firstName: [
         '',
-        [Validators.required, Validators.pattern('[ a-zA-Zא-ת]{2,}'),,Validators.maxLength(25)],
+        [Validators.required, Validators.pattern('[ a-zA-Zא-ת]{2,}'), Validators.maxLength(25)],
       ],
       lastName: [
         '',
-        [Validators.required, Validators.pattern('[ a-zA-Zא-ת]{2,}'),Validators.maxLength(25)],
+        [Validators.required, Validators.pattern('[ a-zA-Zא-ת]{2,}'), Validators.maxLength(25)],
       ],
       contactPersonName: ['', [Validators.maxLength(20)]],
-      tz: ['', [Validators.required,Validators.pattern('[0-9]{9}')]],
+      tz: ['', [Validators.required, Validators.pattern('[0-9]{9}')]],
       spouseName: ['', [Validators.maxLength(20)]],
-      spouseTZ: ['',[Validators.pattern('[0-9]{9}')]],
+      spouseTZ: ['', [Validators.pattern('[0-9]{9}')]],
       phone: [
         '',
         [
@@ -132,77 +140,119 @@ export class AddClientComponent {
             '^0(2|3|4|8|9|7[1-46-9]|5[0-578])[.-:]?([2-9][0-9]{6})$'
           ),
         ],],
-      businessActivity:["",[Validators.maxLength(25)]],
-      email: ['',[Validators.required,Validators.email]],
-      address: ['',[Validators.maxLength(25)]],
+      businessActivity: ["", [Validators.maxLength(25)]],
+      email: ['', [Validators.required, Validators.email]],
+      address: ['', [Validators.maxLength(25)]],
       dateOfBirth: ['', Validators.required],
-      comments: ['',[Validators.maxLength(155)]],
+      comments: ['', [Validators.maxLength(155)]],
       isEmploysWorkers: [false],
       isWorkData: [false],
-      incomeTaxFileNumber: ['',[Validators.pattern('^[0-9]+$'), Validators.maxLength(10)]],
-      incomeTaxDeductions_registerID: ['',[Validators.pattern('^[0-9]+$'), Validators.maxLength(10)]],
+      incomeTaxFileNumber: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(10)]],
+      incomeTaxDeductions_registerID: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(10)]],
       VATFileNumber: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(10)]],
       reports: [''],
       isStatisticsData: [false],
-      referrerName: ['',[Validators.maxLength(25)]],
+      referrerName: ['', [Validators.maxLength(25)]],
       joinDate: [''],
       isAccounter: [false],
       isOpenAccountWithUs: [false],
-      isPreferWhatsapp:[false]
+      isPreferWhatsapp: [false]
     });
+
+    // בדיקה אם יש לקוח ב-state והגדרת קומפוננטת עריכה
+    // this.route.queryParams.subscribe(params => {
+    //   if (params['client']) {
+    //     this.editingClient = JSON.parse(params['client']);
+    //     this.populateForm(this.editingClient);
+    //   }
+    // });
+
+    if(history.state.client){
+      this.editingClient= history.state.client
+      this.populateForm(this.editingClient)
+    }
+
     this.onCHangeIsWorkData();
-    
   }
+
   get VATFileNumber() { return this.form.get('VATFileNumber'); }
-  onCHangeIsWorkData(): void{
-    
+
+  onCHangeIsWorkData(): void {
     this.isWorkData = this.contactForm.get('isWorkData')?.value;
   }
 
-  onSubmit() {
-    if (this.contactForm.valid) {
-      alert('נשמר בהצלחה');
-      this.savedData = this.contactForm.value;
-      this.newClient.companyName = this.savedData.companyName;
-      this.newClient.firstName = this.savedData.firstName;
-      this.newClient.lastName = this.savedData.lastName;
-      this.newClient.contactPersonName = this.savedData.contactPersonName;
-      this.newClient.tz = this.savedData.tz;
-      this.newClient.spouseName = this.savedData.spouseName;
-      this.newClient.spouseTZ = this.savedData.spouseTZ;
-      this.newClient.address = this.savedData.address;
-      this.newClient.comments = this.savedData.comments;
-      this.newClient.dateOfBirth = this.savedData.dateOfBirth;
-      this.newClient.email = this.savedData.email;
-      this.newClient.incomeTaxDeductions_registerID =
-        this.savedData.incomeTaxDeductions_registerID;
-      this.newClient.incomeTaxFileNumber = this.savedData.incomeTaxFileNumber;
-      this.newClient.isAccounter = this.savedData.isAccounter;
-      this.newClient.isEmploysWorkers = this.savedData.isEmploysWorkers;
-      this.newClient.isOpenAccountWithUs = this.savedData.isOpenAccountWithUs;
-      this.newClient.isStatisticsData = this.savedData.isStatisticsData;
-      this.newClient.isWorkData = this.savedData.isWorkData;
-      this.newClient.joinDate =new Date()
-      this.newClient.phone = this.savedData.phone;
-      this.newClient.referrerName = this.savedData.referrerName;
-      this.newClient.reports = this.savedData.reports;
-      this.newClient.whatsapp = this.savedData.whatsapp;
-      this.newClient.VATFileNumber = this.savedData.VATFileNumber;
-      this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-      this.newClient.isPreferWhatsapp=this.savedData.isPreferWhatsapp;
-      this.newClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-      this.newClient.tag.color = 'black';
-      this.newClient.tag.text = ' ';
-      console.log(this.newClient);
+  populateForm(client: Client) {
+    this.contactForm.patchValue({
+      companyName: client.companyName,
+      firstName: client.firstName,
+      lastName: client.lastName,
+      contactPersonName: client.contactPersonName,
+      tz: client.tz,
+      spouseName: client.spouseName,
+      spouseTZ: client.spouseTZ,
+      phone: client.phone,
+      whatsapp: client.whatsapp,
+      email: client.email,
+      address: client.address,
+      dateOfBirth: client.dateOfBirth,
+      comments: client.comments,
+      isEmploysWorkers: client.isEmploysWorkers,
+      isWorkData: client.isWorkData,
+      incomeTaxFileNumber: client.incomeTaxFileNumber,
+      incomeTaxDeductions_registerID: client.incomeTaxDeductions_registerID,
+      VATFileNumber: client.VATFileNumber,
+      reports: client.reports,
+      isStatisticsData: client.isStatisticsData,
+      referrerName: client.referrerName,
+      joinDate: client.joinDate,
+      isAccounter: client.isAccounter,
+      isOpenAccountWithUs: client.isOpenAccountWithUs,
+      isPreferWhatsapp: client.isPreferWhatsapp
+    });
+  }
 
-      this.ClientServic.createClient(this.newClient).subscribe((response) => {
-        console.log('Client created successfully:', response);
-      });
+  sent() {
+    
+      if (this.editingClient) {
+        // עדכון לקוח קיים
+        const updatedClient = { ...this.editingClient, ...this.contactForm.value };
+        updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+        updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
+        this.clientService.updateClient(updatedClient).subscribe(response => {
+          console.log('Client updated successfully:', response);
+          alert('לקוח עודכן בהצלחה');
+          this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
 
-      this.close.emit();
+          this.close.emit();
+        });
+      } 
+      else {
+
+        // יצירת לקוח חדש
+        this.savedData = this.contactForm.value;
+        console.log("saveData",this.savedData)
+
+        this.newClient =  {...this.newClient,...this.savedData}  ;
+        console.log("in submit",this.newClient)
+
+        this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+        // this.newClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
+        console.log("newClient",this.newClient);
+
+        this.clientService.createClient(this.newClient.client).subscribe(response => {
+          if(response){
+            console.log('Client created successfully:', response);
+            alert('לקוח נוצר בהצלחה');
+          }
+          this.close.emit();
+        });
+      
     }
   }
+
   onClose() {
     this.close.emit();
   }
+
+  
 }

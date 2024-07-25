@@ -388,9 +388,11 @@ export class TaskComponent implements OnInit {
 
 
   showDialog() {
+    debugger
     if (this.id == 'create') {
       this.visible = true;
-    } else {
+    } 
+    else {
       this.save();
     }
   }
@@ -531,6 +533,7 @@ export class TaskComponent implements OnInit {
 
   //functions
   save() {
+    debugger
     // בדוק אם המשימה אינה משויכת לאף משתמש
     // if (!this.selectedUsers || this.selectedUsers.length === 0) {
     //   this.visiblePopup = true;
@@ -596,6 +599,7 @@ export class TaskComponent implements OnInit {
         },
       });
     }
+    window.history.back();
   }
 
   updateTask() {
