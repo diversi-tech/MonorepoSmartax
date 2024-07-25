@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Client } from '../_models/client.module';
 import { Meet } from '../_models/meet.module';
@@ -22,6 +22,7 @@ import { SplitterModule } from 'primeng/splitter';
 import { Task } from '../_models/task.module';
 import { TimerService } from '../_services/timer.service';
 import { Timer } from '../_models/timer.model';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-dashboard-user',
@@ -35,6 +36,7 @@ import { Timer } from '../_models/timer.model';
     ChartModule,
     MeterGroupModule,
     RouterLink,
+    DialogModule,
   ],
   templateUrl: './dashboard-user.component.html',
   styleUrl: './dashboard-user.component.css',
@@ -685,4 +687,22 @@ export class DashboardUserComponent implements OnInit {
       },
     ];
   }
+  //emoji
+  showEmojis: boolean = false;
+  display: boolean = false;
+  emojis: string[] = ['😊', '😂', '😍', '😢', '😠'];
+  selectedE:string;
+  show: boolean = false;
+  toggleEmojis() {
+    this.showEmojis = !this.showEmojis;
+    this.show = true;
+  }
+
+  selectEmoji(emoji: string) {
+    this.selectedE = emoji; 
+    this.display = true;
+    this.showEmojis = false;
+    this.show = false; // Hide emojis after selection
+  }
+  
 }
