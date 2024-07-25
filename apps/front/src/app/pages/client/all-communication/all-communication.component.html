@@ -1,34 +1,34 @@
 <h1 (click)="onSelectionChange(1)">רשימת שיחות</h1>
 <p-button (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
-<button *ngIf="this.currentCommunication" pButton class="pi pi-pencil p-button"
-  (click)="selectCommunication(this.currentCommunication); showConfirmationEdit()"></button>
-<button *ngIf="this.currentCommunication" pButton class="pi pi-trash p-button"
-  (click)="showConfirmationDelete()"></button>
-<p-table  [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications">
+
+
+<p-table [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications">
   <ng-template pTemplate="header" let-columns>
     <tr (click)="selectCurrentCommunication(communication)"
-    [ngClass]="{ 'highlight': currentCommunication === communication }">
-    <th>
-      <span (click)="onSelectionChange(2)">שם לקוח</span>
-    <div>
-      <input *ngIf="isSelected == 2" type="text" class="filter-input" [(ngModel)]="filtername" (input)="filterClientsByname()">
-    </div>
-    </th>
-    <th>
-      <span (click)="onSelectionChange(3)">תאריך</span>
-     <div>
-      <input *ngIf="isSelected == 2" type="date" class="filter-input" [(ngModel)]="filterdate" (input)="filterByDate()">
-     </div> 
-    </th>
-    <th>
+      [ngClass]="{ 'highlight': currentCommunication === communication }">
+      <th>
+        <span (click)="onSelectionChange(2)">שם לקוח</span>
+        <div>
+          <input *ngIf="isSelected == 2" type="text" class="filter-input" [(ngModel)]="filtername"
+            (input)="filterClientsByname()">
+        </div>
+      </th>
+      <th>
+        <span (click)="onSelectionChange(3)">תאריך</span>
+        <div>
+          <input *ngIf="isSelected == 2" type="date" class="filter-input" [(ngModel)]="filterdate"
+            (input)="filterByDate()">
+        </div>
+      </th>
+      <th>
         <span (click)="onSelectionChange(4)">סוג השיחה</span>
-       <div>
-        <select *ngIf="isSelected == 2"  [(ngModel)]="selectedCallStatus" (change)="filterByStatus($event)">
-          <option >מעקב</option>
-          <option >ליד</option>
-        </select>
-      </div>
-       </th> 
+        <div>
+          <select *ngIf="isSelected == 2" [(ngModel)]="selectedCallStatus" (change)="filterByStatus($event)">
+            <option>מעקב</option>
+            <option>ליד</option>
+          </select>
+        </div>
+      </th>
       <th>
         <span (click)="onSelectionChange(5)">נושא שיחה</span>
         <div *ngIf="isSelected == 2 ">
@@ -38,17 +38,27 @@
         </div>
       </th>
       <th>סיכום</th>
+      <th></th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="body" let-communication>
-    <tr (click)="selectCurrentCommunication(communication)" [ngClass]="{ 'highlight': currentCommunication === communication }">
+    <tr (click)="selectCurrentCommunication(communication)"
+      [ngClass]="{ 'highlight': currentCommunication === communication }">
+
       <td>{{communication.client}}</td>
       <td>{{communication.date | date: 'dd-MM-yyy' }}</td>
       <td *ngIf="communication.Status === 'true'">ליד</td>
       <td *ngIf="communication.Status === 'false'">מעקב</td>
       <td>{{communication.Subject}}</td>
       <td>{{communication.summary}}</td>
+      <td><button *ngIf="currentCommunication === communication" pButton
+          class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+          (click)="selectCommunication(this.currentCommunication); showConfirmationEdit()"></button>
+        <button *ngIf="currentCommunication === communication" pButton
+          class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
+          (click)="showConfirmationDelete()"></button>
+      </td>
     </tr>
   </ng-template>
 </p-table>

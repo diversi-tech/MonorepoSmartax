@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" key="delete">
     <p-footer>
       <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
         (click)="cancelDelete()"></button>
@@ -34,10 +34,9 @@
   <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים"
     (click)="$event.stopPropagation(); addFavoritesClient()"></button>
   <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה"
-    class="p-button-danger" (click)=" $event.stopPropagation(); showConfirmation()"></button>
+    class="p-button-danger" (click)=" $event.stopPropagation(); showConfirmationDelete()"></button>
 
-  <p-table dir="rtl" [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients"
-    >
+  <p-table dir="rtl" [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th><button *ngIf="!isChoosedAllClient" pButton (click)="$event.stopPropagation(); chooseAllClients()"
@@ -90,8 +89,8 @@
         <td>{{client.tz}}</td>
         <td>{{client.phone}}</td>
         <td><button *ngIf="currentClient === client" pButton
-          class="pi pi-pencil p-button-outlined p-button-lg p-button-rounded p-button-warning"
-          (click)="showConfirmationEdit()"></button>
+          class="pi pi-pencil p-button-outlined p-button-lg p-button-rounded p-button-info"
+          (click)="editClient()"></button>
         <button *ngIf="currentClient === client" pButton
           class="pi pi-trash p-button-outlined p-button-lg p-button-rounded p-button-danger"
           (click)="showConfirmationDelete()"></button>
