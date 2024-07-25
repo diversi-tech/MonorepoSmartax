@@ -11,7 +11,7 @@ export class ToolBarService {
     routes.forEach(item => {
       if (item.data && item.data!['forToolbar'] && item.data!['forToolbar']! == true)
         if (item.data!['authType'] && item.data!['authType'] >= role) {
-          const newItem = { label: item.data!['label'], icon: item.data!['icon'], route: item.path, list: item.data!.list!, items: [] };
+          const newItem = { label: item.data!['label'], icon: item.data!['icon'], route: item.path, list: item.data!.list!, items: [], isActive: false };
           if (item.children) {
             
             item.children!.forEach(child => {
