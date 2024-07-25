@@ -104,3 +104,39 @@
   /* .card .pi {
     font-size: 1rem; 
   } */
+
+  /* new-style */
+  .new-style-card{
+    max-width: 50%;
+    margin-left: 25%;
+    direction: rtl;
+  }
+  .input-task-name{
+    width: 100%;
+    max-width: 100%;
+  }
+  .one-one{
+    margin-bottom: 2%;
+  }
+
+  /* Dates */
+  .calendar-container {
+    display: flex;
+    gap: 20px; /* רווח בין שני ה-items */
+  }
+  
+  .calendar-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    align-items: flex-start; /* מיקום של כל תוכן מימין */
+
+  }
+  
+  .p-date {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+  }
+  

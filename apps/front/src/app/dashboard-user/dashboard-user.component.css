@@ -185,6 +185,7 @@
     width: 100%;
     padding: 1rem; /* הוסיף ריפוד כדי לשפר את המראה */
     box-sizing: border-box; /* כולל את הריפוד במידות הדיב */
+    margin-bottom:3%;
   }
   
   .image-container {
