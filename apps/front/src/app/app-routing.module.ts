@@ -77,9 +77,12 @@ import { FieldManagementComponent } from './pages/fieldManagement/fieldManagemen
 import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yearly-report/edit-client-yearly-report.component';
 import { ManagerNavbarComponent } from './pages/Manager/edit-client-yearly-report/manager-navbar/manager-navbar.component';
 import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearly-report/edit-client-tax-refuned/edit-client-tax-refuned.component';
+import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
+import { DashboardUserComponent } from './dashboard-user/dashboard-user.component';
 import { TableComponent } from './table/table.component';
 import { ReportClientYearlyReportComponent } from './reports/report-client-yearly-report/report-client-yearly-report.component';
 import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.component';
+import { PopAppComponent } from './pop_up/task-pop-app/pop-app.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -109,28 +112,8 @@ import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.c
       icon: icons.calendar,
     },
   },
-  {
-    path: 'table',
-    component: TableComponent,
-    canActivate: [AuthGuard],
-    data: {
-      authType: 3,
-      forToolbar: true,
-      label: 'יצוא לאקסל',
-      icon: icons.export,
-    },
-  },
-  {
-    path: 'reports',
-    component: ReportsComponent,
-    canActivate: [AuthGuard],
-    data: {
-      authType: 3,
-      forToolbar: true,
-      label: 'דוחות',
-      icon: icons.reports,
-      list: true,
-    },
+  { path: 'table', component: TableComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'יצוא לאקסל', icon: icons.export,},},
+  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'דוחות', icon: icons.reports, list: true, },
     children: [
       // { path: '', redirectTo: 'task-report', pathMatch: 'full' },
       {
@@ -237,9 +220,12 @@ import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.c
   { path: 'workLogComponent', component: WorkLogComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:true, label: 'דוח שעות', icon: icons.clock  }},
   { path:'checklist', component:TaskCheckListComponent},
   { path:'re', component:TaskRepeatableListComponent},
+  { path:'da', component:DashboardAdminComponent},
+  { path:'du', component:DashboardUserComponent},
+
 
   { path:'checklist', component:TaskCheckListComponent},
-  {path:'add-new-client',component:AddClientComponent,data: { authType: 6}},
+  {path:'addClient',component:AddClientComponent,data: { authType: 6}},
 
   { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   {path:'fieldMamagement',component:FieldManagementComponent,data:{authType:3,forToolbar:true,label:'ניהול שדות',icon:''}},
@@ -253,7 +239,9 @@ import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.c
 {path: 'steps', component:YearlyReportStepsComponent,
 
 },
-{path: 'steps/createYearlyReport',component:CreateYearlyReportComponent}
+{path: 'steps/createYearlyReport',component:CreateYearlyReportComponent},
+{path: 'popup/create',component:PopAppComponent}
+
 
 
 
