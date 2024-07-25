@@ -42,8 +42,7 @@ import { Frequency } from '../_models/frequency.module';
 import { FrequencyService } from '../_services/frequency.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
-
-
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({
   selector: 'app-task-repeatable-list',
@@ -71,7 +70,8 @@ import { AvatarModule } from 'primeng/avatar';
     ToastModule,
     DatePipe,
     TooltipModule,
-    AvatarModule
+    AvatarModule,
+    ProgressBarModule,
   ],
   templateUrl: './task-repeatable-list.component.html',
   styleUrl: './task-repeatable-list.component.css',
@@ -83,8 +83,9 @@ export class TaskRepeatableListComponent {
   toDoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
   doneTasks: Task[] = [];
-  filteredTasks: Task[] = [];
+  filteredTasks: RepeatableTask[] = [];
   selectedTask!: RepeatableTask;
+  progressValue: number = 0;
 
   searchTerm: string = '';
 
@@ -138,6 +139,8 @@ export class TaskRepeatableListComponent {
       .subscribe((allTasks: RepeatableTask[]) => {
         this.tasks = allTasks;
         console.log(this.tasks);
+        this.progressValue = this.progressDueDate()/this.tasks.length*100;
+        console.log(this.progressValue);
       });
   }
 
@@ -298,12 +301,16 @@ export class TaskRepeatableListComponent {
   sortTasks(field: string, list: Task[], reverse: boolean) {
     list.sort((a, b) => {
       if (field === 'taskName') {
-        return reverse ? b.taskName.localeCompare(a.taskName) : a.taskName.localeCompare(b.taskName);
+        return reverse
+          ? b.taskName.localeCompare(a.taskName)
+          : a.taskName.localeCompare(b.taskName);
       }
       if (field === 'assignedTo') {
-        const nameA = a.assignedTo.map(user => user.userName).join(', ');
-        const nameB = b.assignedTo.map(user => user.userName).join(', ');
-        return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
+        const nameA = a.assignedTo.map((user) => user.userName).join(', ');
+        const nameB = b.assignedTo.map((user) => user.userName).join(', ');
+        return reverse
+          ? nameB.localeCompare(nameA)
+          : nameA.localeCompare(nameB);
       }
       if (field === 'dueDate') {
         const dateA = new Date(a.dueDate).getTime();
@@ -311,11 +318,25 @@ export class TaskRepeatableListComponent {
         return reverse ? dateB - dateA : dateA - dateB;
       }
       if (field === 'tags') {
-        const tagsA = a.tags.map(tag => tag.text).join(', ');
-        const tagsB = b.tags.map(tag => tag.text).join(', ');
-        return reverse ? tagsB.localeCompare(tagsA) : tagsA.localeCompare(tagsB);
+        const tagsA = a.tags.map((tag) => tag.text).join(', ');
+        const tagsB = b.tags.map((tag) => tag.text).join(', ');
+        return reverse
+          ? tagsB.localeCompare(tagsA)
+          : tagsA.localeCompare(tagsB);
       }
       return 0;
     });
-}
+  }
+
+  progressDueDate() {
+    // const today = new Date();
+    // const tasksDueToday = this.tasks.filter(task => new Date(task.dueDate) >= today);
+    // return tasksDueToday.length;
+    const today = new Date();
+    const t = this.tasks.filter((obj) => {
+      const objDate = new Date(obj.dueDate);
+      return objDate < today;
+    });
+    return t.length;
+  }
 }

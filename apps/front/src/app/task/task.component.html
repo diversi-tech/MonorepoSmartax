@@ -1,7 +1,7 @@
 <!-- ===================== -->
-<app-timer *ngIf="id!='create'" [taskId]="id"></app-timer>
 <div style="margin-top: 10%" id="container">
-  <p-card header="משימה" subheader="צור וערוך את המשימה שלך" [style]="{ width: '800px' }">
+  <p-card header="משימה" subheader="ליצור ולערוך משימות" [style]="{ width: '800px' }">
+    <app-timer *ngIf="id != 'create'" [taskId]="id"></app-timer>
     <ng-template pTemplate="header">
       <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
     </ng-template>
@@ -301,7 +301,7 @@
               (click)="showClients = !showClients" class="pi pi-user"></span></p-inputGroupAddon>
           <div (click)="showClients = !showClients">
             <app-icon-profile *ngIf="selectedClient"
-              [userName]="selectedClient.firstName && selectedclient.firstName"></app-icon-profile>
+              [userName]="selectedClient.firstName && selectedClient.firstName"></app-icon-profile>
           </div>
         </p-inputGroup>
         <!-- <p-multiSelect
@@ -411,17 +411,18 @@
       <app-task-check-list></app-task-check-list>
     </div> -->
 
-    <!-- checklists -->
-    <div class="card">
+    <!-- checklists and SubTasks-->
+    <div *ngIf="parent==null" class="card">
       <p-tabView>
         <p-tabPanel header="רשימות">
           <div *ngFor="let list of checkList" style="padding: 5px;">
-            <app-task-check-list [checkList]=" list" (save)="saveList($event)" (delete)="deleteList($event)"> </app-task-check-list>          
+            <app-task-check-list [checkList]=" list" (save)="updateList($event)" (delete)="deleteList($event)">
+            </app-task-check-list>
           </div>
           <p *ngIf="checkList.length==0">אין רשימות</p>
 
           <!-- create new list -->
-          <p-dropdown (onChange)="addList($event)" [options]="groupedLists" [(ngModel)]="selectedList"
+          <p-dropdown (onChange)="createList($event)" [options]="groupedLists" [(ngModel)]="selectedList"
             placeholder="{{selectPlaceholder}}" [group]="true" ngModel #dropdownModel="ngModel" name="selectedList">
             <ng-template let-group pTemplate="group">
               <div class="flex align-items-center">
@@ -433,34 +434,34 @@
           </p-dropdown>
 
           <!-- pop for new list-->
-            <p-dialog header="רשימה חדשה" [modal]="true" [(visible)]="newList" [style]="{ width: '25rem' }">
-                <span class="p-text-secondary block mb-5">צור את הרשימה שלך</span>
-                <div class="flex align-items-center gap-3 mb-3">
-                    <label for="name" class="font-semibold w-6rem">שם הרשימה</label>
-                    <input pInputText id="name" [(ngModel)]="newListName" class="flex-auto" autocomplete="off" />
-                </div>
-                <div class="flex justify-content-end gap-2">
-                    <p-button label="ביטול" severity="secondary" (onClick)="visible = false" />
-                    <p-button label="אישור" (onClick)="addNewList()" />
-                </div>
-            </p-dialog>
+          <p-dialog header="רשימה חדשה" [modal]="true" [(visible)]="newList" [style]="{ width: '25rem' }">
+            <span class="p-text-secondary block mb-5">צור את הרשימה שלך</span>
+            <div class="flex align-items-center gap-3 mb-3">
+              <label for="name" class="font-semibold w-6rem">שם הרשימה</label>
+              <input pInputText id="name" [(ngModel)]="newListName" class="flex-auto" autocomplete="off" />
+            </div>
+            <div class="flex justify-content-end gap-2">
+              <p-button label="ביטול" severity="secondary" (onClick)="visible = false" />
+              <p-button label="אישור" (onClick)="addNewList()" />
+            </div>
+          </p-dialog>
         </p-tabPanel>
 
         <p-tabPanel header="משימות משניות">
           <div>
-            <app-sub-task></app-sub-task>
+            <app-sub-task [subTasks]="subTasks" [parentId]="id"></app-sub-task>
           </div>
         </p-tabPanel>
+
       </p-tabView>
     </div>
+    
     <!--  -->
     <!-- footer -->
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1" style="margin-left: 70%">
-        <p-button label="Cancel" icon="pi pi-undo" [text]="true" [raised]="true" severity="secondary"
-          style="color: red;" [style]="{color:'red'}" (click)="cancel()" />
-        <p-button label="Save" icon="pi pi-check" [text]="true" [raised]="true" severity="secondary"
-          (click)="showDialog()" />
+        <p-button label="Cancel" icon="pi pi-undo" [text]="true" [raised]="true" severity="danger" (click)="cancel()" />
+        <p-button label="Save" icon="pi pi-check" [text]="true" [raised]="true" (click)="showDialog()" />
       </div>
     </ng-template>
 
