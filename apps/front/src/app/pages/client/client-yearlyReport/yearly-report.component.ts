@@ -19,7 +19,7 @@ import { NgZone } from '@angular/core';
 @Component({
   selector: 'app-yearly-report',
   standalone: true,
-  imports: [CommonModule,StepperModule,CheckboxModule,Button,RouterOutlet,TableModule,ButtonModule],
+  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule],
   templateUrl: './yearly-report.component.html',
   styleUrl: './yearly-report.component.css',
 })
@@ -29,41 +29,42 @@ import { NgZone } from '@angular/core';
 })
 export class YearlyReportComponent implements OnInit {
   steps: any[];
-  allYearlyReport: YearlyReport[]| null;
+  allYearlyReport: YearlyReport[] | null;
   client: Client;
-  employeName: any| undefined;
-  allEmploye:User[]
+  employeName: any | undefined;
+  allEmploye: User[]
+
 
   constructor(private stepFieldsService: stepFieldService,
-              private yearlyReportService: YearlyReportService,
-              private router: Router,
-              private tokenService: TokenService,
-              private userService:UserService,
-              
-              ) { }
+    private yearlyReportService: YearlyReportService,
+    private router: Router,
+    private tokenService: TokenService,
+    private userService: UserService,
+
+  ) { }
 
   ngOnInit(): void {
-   this.client=history.state.client;
-   this.getYearlyReportsForClient();
-   console.log("report after",this.allYearlyReport)
+    this.client = history.state.client;
+    this.getYearlyReportsForClient();
+    console.log("report after", this.allYearlyReport)
 
-   this.userService.getAllUsers().subscribe(
-    (Employes) => {
-      this.allEmploye = Employes;
-    },
-    (error) => {
-      console.error('Error ', error);
-    }
-  )
+    this.userService.getAllUsers().subscribe(
+      (Employes) => {
+        this.allEmploye = Employes;
+      },
+      (error) => {
+        console.error('Error ', error);
+      }
+    )
   }
 
   getYearlyReportsForClient(): void {
     debugger
-    const clientId =this.client._id // Assuming the client ID is passed via the state
+    const clientId = this.client._id // Assuming the client ID is passed via the state
     this.yearlyReportService.getYearlyReportsForClient(clientId).subscribe(
       (reports) => {
         this.allYearlyReport = reports;
-        console.log("report",this.allYearlyReport)
+        console.log("report", this.allYearlyReport)
       },
       (error) => {
         console.error('Error fetching yearly reports for client', error);
@@ -71,23 +72,22 @@ export class YearlyReportComponent implements OnInit {
     );
   }
 
-  createReprtTag():void{
-    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/createYearlyReport'],{state:{client: this.client}});
-    
+  createReprtTag(): void {
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createYearlyReport'], { state: { client: this.client } });
   }
- 
-  goToSteps(task: any){
-    console.log(task)
-debugger
-    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps',this.router], { state: { data: task } });
 
+  goToSteps(task: any) {
+    this.router.navigate(['/steps', this.router], { state: { data: task, client: this.client } });
   }
+
   getEmployeName(idEmploye: string): any {
-
-    return this.allEmploye.find(x=>x._id==idEmploye)
-    
+    return this.allEmploye.find(x => x._id == idEmploye)
   }
-  
-  
+
+  goToUpdate(report: YearlyReport) {
+    if (report) {
+      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/createYearlyReport'], { state: { client: this.client, report: report } });
+    }
+  }
 
 }

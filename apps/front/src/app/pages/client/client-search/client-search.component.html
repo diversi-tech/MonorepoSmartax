@@ -14,9 +14,7 @@
       </div>
 
       <p-button label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
-
-      
-
+      <p-button (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
         
     </div>
   </div>
@@ -37,6 +35,7 @@
     (click)="$event.stopPropagation(); addFavoritesClient()"></button>
   <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה"
     class="p-button-danger" (click)=" $event.stopPropagation(); showConfirmation()"></button>
+
   <p-table dir="rtl" [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients"
     >
     <ng-template pTemplate="header" let-columns>
@@ -44,33 +43,33 @@
         <th><button *ngIf="!isChoosedAllClient" pButton (click)="$event.stopPropagation(); chooseAllClients()"
             label="בחר הכל"></button></th>
         <th></th>
-        <th></th>
-        <th>   <span (click)="onSelectionChange(4)">שם חברה</span>
+        <th> <span (click)="onSelectionChange(4)">שם חברה</span>
           <div>
-            <input *ngIf="isSelected == 4" type="text" placeholder="שם חברה"   [(ngModel)]="filternamecom"
+            <input *ngIf="isSelected == 2" type="text" placeholder="שם חברה"   [(ngModel)]="filternamecom"
             (input)="filterClientsBynamecom()"/>
           </div> </th>
         <th>שם פרטי ומשפחה</th>
-        <th> 
+        <th>
           <span (click)="onSelectionChange(3)">תעודות זהות</span>
           <div>
-            <input *ngIf="isSelected == 3" type="text" placeholder="תעודות זהות"   [(ngModel)]="filterTZ"
+            <input *ngIf="isSelected == 2" type="text" placeholder="תעודות זהות"   [(ngModel)]="filterTZ"
             (input)="filterClientsByTZ()"/>
           </div> </th>
         <th> <span (click)="onSelectionChange(2)">טלפון</span>
           <div>
-            <input
-            *ngIf="isSelected == 2"
-            type="text"
-            placeholder="טלפון"
-            [(ngModel)]="filterNumber"
-            (input)="filterClientsByNumber()"
-          />
-          </div> </th>
+            <input *ngIf="isSelected == 2" type="text" placeholder="טלפון" [(ngModel)]="filterNumber"
+              (input)="filterClientsByNumber()" />
+          </div>
+        </th>
+        <th></th>
+        <th></th>
       </tr>
     </ng-template>
+
     <ng-template pTemplate="body" let-client let-columns="columns">
-      <tr>
+      <tr (click)="selectCurrentClient(client)"
+      [ngClass]="{ 'highlight' : currentClient === client }">
+      
         <td>
           <input type="checkbox" [checked]="isClientChoosed(client)"
             (click)=" $event.stopPropagation(); updateChoosedClients(client, $event.target.checked)" />
@@ -85,10 +84,18 @@
           <span class="clickable-text" (click)="selectClientFromList(client)">{{client.companyName}}</span>
         </td>
         <td>
-          <span class="clickable-text" (click)="selectClientFromList(client)">{{client.firstName + " " + client.lastName}}</span>
+          <span class="clickable-text" (click)="selectClientFromList(client)">{{client.firstName + " " +
+            client.lastName}}</span>
         </td>
         <td>{{client.tz}}</td>
         <td>{{client.phone}}</td>
+        <td><button *ngIf="currentClient === client" pButton
+          class="pi pi-pencil p-button-outlined p-button-lg p-button-rounded p-button-warning"
+          (click)="showConfirmationEdit()"></button>
+        <button *ngIf="currentClient === client" pButton
+          class="pi pi-trash p-button-outlined p-button-lg p-button-rounded p-button-danger"
+          (click)="showConfirmationDelete()"></button>
+      </td>
       </tr>
     </ng-template>
   </p-table>

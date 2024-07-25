@@ -82,6 +82,13 @@ export class TaskService {
     return task;
   }
 
+  async getTasksByClientId(clientId: string): Promise<Task[]> {
+    console.log('Searching for tasks with client ID:', clientId);
+    const tasks = await this.taskModel.find({ client: clientId }).exec();
+    console.log('tasks found:', tasks);
+    return tasks;
+  }
+
   async updateTask(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
     try {
       const {
