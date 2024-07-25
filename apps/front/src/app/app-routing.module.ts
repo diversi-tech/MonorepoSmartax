@@ -27,7 +27,6 @@ import { TaskComponent } from './task/task.component';
 import { MeetComponent } from './meet/meet.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { ClientAddCommunicationComponent } from './pages/client/client-add-communication/client-add-communication.component';
-import { ClientTaskManagementComponent } from './pages/client/client-task-management/client-task-management.component';
 import { ClientBillingsComponent } from './pages/client/client-billings/client-billings.component';
 import { TaskInListComponent } from './task-in-list/task-in-list.component';
 import { icons } from './icons';
@@ -79,6 +78,8 @@ import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yea
 import { ManagerNavbarComponent } from './pages/Manager/edit-client-yearly-report/manager-navbar/manager-navbar.component';
 import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearly-report/edit-client-tax-refuned/edit-client-tax-refuned.component';
 import { TableComponent } from './table/table.component';
+import { ReportClientYearlyReportComponent } from './reports/report-client-yearly-report/report-client-yearly-report.component';
+import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -152,6 +153,16 @@ import { TableComponent } from './table/table.component';
           icon: icons.reports,
         },
       },
+      {
+        path: 'allClientYearrlyReport',
+        component: ReportClientYearlyReportComponent,
+        data: {
+          authType: 10,
+          forToolbar: false,
+          label: 'דוחות שנתיים',
+          icon: icons.reports,
+        },
+      },
     ],
   },
   {
@@ -195,27 +206,18 @@ import { TableComponent } from './table/table.component';
     component: ClientNavbarComponent,
     data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' },
     children: [
-      {
-        path: 'clientCommunicationLogs',
-        component: ClientCommunicationLogsComponent,
-      },
+      { path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent, },
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
-      {
-        path: 'clientTaskManagement',
-        component: ClientTaskManagementComponent,
-      },
+      { path: 'clientTasks', component: ClientTasksComponent, },
       { path: 'payments', component: PaymentComponent},
       { path: 'clientBillings', component: ClientBillingsComponent },
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
       { path: 'clientTypeTag' , component:ClientTypeTagComponent},
       { path: 'clientField' , component:ClientFieldComponent},
-      { path: 'yearlyReport', component: YearlyReportComponent ,
-       children: [
-        {path:  'createYearlyReport', component:CreateYearlyReportComponent},
-        {path: 'steps', component:YearlyReportStepsComponent}
-       ]
-      },
+      { path: 'yearlyReport', component: YearlyReportComponent ,},
+      {path: 'createYearlyReport', component:CreateYearlyReportComponent},
+        
       { path: 'taxRefunds', component: TaxRefundsComponent ,
         children: [
          {path: 'steps', component:TaxRefundsStepsComponent}
@@ -247,7 +249,13 @@ import { TableComponent } from './table/table.component';
     {path: 'editTaxRefuned',component:EditClientTaxRefunedComponent}
 
   ]
-}
+},
+{path: 'steps', component:YearlyReportStepsComponent,
+
+},
+{path: 'steps/createYearlyReport',component:CreateYearlyReportComponent}
+
+
 
 
 ]
