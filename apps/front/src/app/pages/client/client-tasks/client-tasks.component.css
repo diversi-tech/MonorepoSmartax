@@ -54,6 +54,14 @@
     display: block;
     margin-bottom: 5px;
   }
+
+  .highlight {
+    background-color: #edecec;
+  }
+
+  .p-button-rounded {
+    border-radius: 20%;
+  }
   /* .filter-panel {
     background-color: #f9f9f9;
     padding: 10px;

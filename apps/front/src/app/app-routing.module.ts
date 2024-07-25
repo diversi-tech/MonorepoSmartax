@@ -109,28 +109,8 @@ import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.c
       icon: icons.calendar,
     },
   },
-  {
-    path: 'table',
-    component: TableComponent,
-    canActivate: [AuthGuard],
-    data: {
-      authType: 3,
-      forToolbar: true,
-      label: 'יצוא לאקסל',
-      icon: icons.export,
-    },
-  },
-  {
-    path: 'reports',
-    component: ReportsComponent,
-    canActivate: [AuthGuard],
-    data: {
-      authType: 3,
-      forToolbar: true,
-      label: 'דוחות',
-      icon: icons.reports,
-      list: true,
-    },
+  { path: 'table', component: TableComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'יצוא לאקסל', icon: icons.export,},},
+  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'דוחות', icon: icons.reports, list: true, },
     children: [
       // { path: '', redirectTo: 'task-report', pathMatch: 'full' },
       {
@@ -239,7 +219,7 @@ import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.c
   { path:'re', component:TaskRepeatableListComponent},
 
   { path:'checklist', component:TaskCheckListComponent},
-  {path:'add-new-client',component:AddClientComponent,data: { authType: 6}},
+  {path:'addClient',component:AddClientComponent,data: { authType: 6}},
 
   { path: 'clientTypes', component: ClientTypeComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:false, icon: '' }},
   {path:'fieldMamagement',component:FieldManagementComponent,data:{authType:3,forToolbar:true,label:'ניהול שדות',icon:''}},
