@@ -10,7 +10,9 @@
 #menu {
     direction: rtl;
 }
-
-/* li.ui-tabmenuitem.ui-state-default.ui-state-active {
-    background: #0a3a75;
- } */
+/* Define the active link class */
+.active-link {
+    background-color: rgb(38, 38, 38) !important;
+    color: white !important;
+    border-radius: 10px !important; /* Adjust the value as needed */
+}
