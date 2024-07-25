@@ -52,7 +52,6 @@
           class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
           (click)="showConfirmationDelete()"></button>
       </td>
-    <tr (click)="selectCurrentCommunication(communication)" [ngClass]="{ 'highlight': currentCommunication === communication }">
       <td>{{communication.client}}</td>
       <td>{{communication.date | date: 'dd-MM-yyy' }}</td>
       <td *ngIf="communication.Status === 'true'">ליד</td>
