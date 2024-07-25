@@ -80,6 +80,7 @@ import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearl
 import { TableComponent } from './table/table.component';
 import { ReportClientYearlyReportComponent } from './reports/report-client-yearly-report/report-client-yearly-report.component';
 import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.component';
+import { PopAppComponent } from './pop_up/task-pop-app/pop-app.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -253,7 +254,9 @@ import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.c
 {path: 'steps', component:YearlyReportStepsComponent,
 
 },
-{path: 'steps/createYearlyReport',component:CreateYearlyReportComponent}
+{path: 'steps/createYearlyReport',component:CreateYearlyReportComponent},
+{path: 'popup/create',component:PopAppComponent}
+
 
 
 
