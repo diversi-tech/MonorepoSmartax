@@ -79,6 +79,7 @@ import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yea
 import { ManagerNavbarComponent } from './pages/Manager/edit-client-yearly-report/manager-navbar/manager-navbar.component';
 import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearly-report/edit-client-tax-refuned/edit-client-tax-refuned.component';
 import { TableComponent } from './table/table.component';
+import { PopAppComponent } from './pop_up/task-pop-app/pop-app.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -247,7 +248,9 @@ import { TableComponent } from './table/table.component';
     {path: 'editTaxRefuned',component:EditClientTaxRefunedComponent}
 
   ]
-}
+},
+{ path:'popup/create', component:PopAppComponent},
+
 
 
 ]

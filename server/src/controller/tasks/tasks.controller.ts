@@ -48,8 +48,7 @@ export class TasksController {
     } catch (error) {
       console.log(error);
       throw new HttpException(
-        'Failed to create task',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        error.message!, error.status!
       );
     }
   }

@@ -32,6 +32,8 @@ export class TaskService {
       images,
       googleId,
       startDate,
+      parent,
+      subTasks
     } = createTaskDto;
     // const task = new this.taskModel(createTaskDto);
     // return task.save()
@@ -60,7 +62,11 @@ export class TaskService {
       googleId,
       deadline,
       startDate,
+      parent,
+      subTasks
     });
+    console.log(createTask);
+    
     return await createTask.save();
   }
 
@@ -92,6 +98,8 @@ export class TaskService {
         googleId,
         deadline,
         startDate,
+        parent,
+        subTasks
       } = updateTaskDto;
 
       const updatedTask = await this.taskModel
@@ -111,6 +119,8 @@ export class TaskService {
             googleId,
             deadline,
             startDate,
+            parent,
+            subTasks
           },
           { new: true }
         )

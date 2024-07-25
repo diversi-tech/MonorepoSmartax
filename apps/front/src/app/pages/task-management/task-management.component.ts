@@ -137,7 +137,9 @@ export class TaskManagementComponent implements OnInit {
       this.filteredTasks = [];
     } else {
       this.filteredTasks = this.tasks.filter((task) =>
+        {task!.taskName!=undefined?
         task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
+       : false}
       );
       console.log('filter: ', this.filteredTasks);
     }
