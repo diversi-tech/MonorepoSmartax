@@ -9,8 +9,8 @@ import { CheckList } from './checkList.model';
 
 @Schema()
 export class Task extends Document {
-    // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }) // מפתח זר למשימה-אב
-    // parentTask: Task;
+    @Prop() // מפתח זר למשימה-אב
+    parent: string;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Client' })
     client: Client;
@@ -44,8 +44,8 @@ export class Task extends Document {
     @Prop()
     images: string[];
 
-    // @Prop({ type: [{ type: 'ObjectId', ref: 'Task' }] }) // רשימת תתי משימות
-    // subTasks: Task[];
+    @Prop() // רשימת תתי משימות
+    subTasks: string[];
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CheckList' }] })
     checkList: CheckList[];
