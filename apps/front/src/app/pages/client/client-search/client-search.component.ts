@@ -4,8 +4,8 @@ import { ClientService } from '../../../_services/client.service';
 import { FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { ConfirmationService, PrimeNGConfig, PrimeTemplate } from 'primeng/api';
-import { AutoCompleteModule, AutoCompleteSelectEvent,} from 'primeng/autocomplete';
-import { NgIf } from '@angular/common';
+import { AutoCompleteModule, AutoCompleteSelectEvent, } from 'primeng/autocomplete';
+import { NgClass, NgIf } from '@angular/common';
 import { Router, RouterOutlet, RouterLink, } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
@@ -19,7 +19,7 @@ import { ImportClientComponent } from '../import-clients/import-client.component
 @Component({
   selector: 'app-client-search',
   templateUrl: './client-search.component.html',
-  styleUrls: ['./client-search.component.scss'],
+  styleUrls: ['./client-search.component.css'],
   standalone: true,
   imports: [
     ConfirmDialogModule,
@@ -32,13 +32,15 @@ import { ImportClientComponent } from '../import-clients/import-client.component
     RouterOutlet,
     Button,
     RouterLink,
-    ImportClientComponent
+    ImportClientComponent,
+    NgClass,
   ],
 })
 export class ClientSearchComponent implements OnInit {
   filterNumber: string = '';
   filterTZ: string = '';
   isSelected: number = 0;
+  currentClient: Client | null = null;
   clients: Client[] = [];
   filteredClients: Client[] = [];
   searchName = new FormControl('');
@@ -48,7 +50,7 @@ export class ClientSearchComponent implements OnInit {
   user: User;
   isChoosedAllClient: boolean = false;
   displayDialog: boolean;
-  filternamecom: string='';
+  filternamecom: string = '';
 
   constructor(
     private clientService: ClientService,
@@ -56,7 +58,7 @@ export class ClientSearchComponent implements OnInit {
     private tokenService: TokenService,
     private router: Router,
     private primengConfig: PrimeNGConfig,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
@@ -89,7 +91,7 @@ export class ClientSearchComponent implements OnInit {
   selectClient(event: AutoCompleteSelectEvent): void {
     const client = event.value as Client;
     this.router.navigate(['/clientSearch/clientManagement'], { state: { client } });
-    
+
   }
 
   selectClientFromList(client: Client): void {
@@ -98,9 +100,10 @@ export class ClientSearchComponent implements OnInit {
     });
   }
 
-  onSelectionChange(a:any) {
+  onSelectionChange(a: any) {
     // const selectedValue = (event.target as HTMLSelectElement).value;
     this.isSelected = Number(a);
+    this.filteredClients = this.clients;
   }
 
   filterClientsByNameAndBusinessName(value: string): void {
@@ -108,27 +111,29 @@ export class ClientSearchComponent implements OnInit {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
         (client.firstName && client.firstName.toLowerCase().includes(query)) ||
-        (client.lastName && client.lastName.toLowerCase().includes(query))||
+        (client.lastName && client.lastName.toLowerCase().includes(query)) ||
         (client.companyName && client.companyName.toLowerCase().includes(query))
       );
     }
     // this.selectedClient = null;
   }
   filterClientsBynamecom(): void {
-   
-    if (this.filternamecom != "")
-      { alert(this.filternamecom)
+    this.filteredClients = this.clients;
+    if (this.filternamecom != ""){
       this.filteredClients = this.clients.filter(client => client.companyName.includes(this.filternamecom));
-    }else
+    }
+    else
       this.filteredClients = this.clients;
   }
   filterClientsByNumber(): void {
+    this.filteredClients = this.clients;
     if (this.filterNumber != "")
       this.filteredClients = this.clients.filter(client => client.phone.includes(this.filterNumber));
     else
       this.filteredClients = this.clients;
   }
   filterClientsByTZ(): void {
+    this.filteredClients = this.clients;
     if (this.filterTZ != "")
       this.filteredClients = this.clients.filter(client => client.tz.includes(this.filterTZ));
     else
@@ -136,11 +141,11 @@ export class ClientSearchComponent implements OnInit {
   }
   openContactFormDialog() {
     this.displayDialog = true;
-}
+  }
   addNewClient() {
     console.log("in")
     // this.displayDialog = true;
-    this.router.navigate(['add-new-client'])
+    this.router.navigate(['addClient'])
   }
 
   // closeDialog() {
@@ -176,13 +181,14 @@ export class ClientSearchComponent implements OnInit {
   isClientChoosed(client: Client): boolean {
     return this.choosedClients.includes(client);
   }
-  
-isFavoriteClient(client:Client){
-  return this.user.favoritesClient.find(c=>c._id===client._id)!=undefined;
-}
+
+  isFavoriteClient(client: Client) {
+    return this.user.favoritesClient.find(c => c._id === client._id) != undefined;
+  }
   addFavoritesClient() {
-    this.user.favoritesClient.push(...this.choosedClients.filter(c=>!this.isFavoriteClient(c)))
+    this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)))
     this.updateFavorite();
+    console.log(this.user.favoritesClient);
   }
   updateFavorite() {
     this.userService
@@ -203,43 +209,68 @@ isFavoriteClient(client:Client){
         },
       });
   }
-removeFromFavorite(client:Client){
-  this.user.favoritesClient=this.user.favoritesClient.filter(c=>c._id!=client._id);
-  this.updateFavorite();
-}
-addToFavorite(client:Client){
-  this.user.favoritesClient.push(client);
-  this.updateFavorite();
-}
-  showConfirmation(): void {
+  removeFromFavorite(client: Client) {
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
+    this.updateFavorite();
+  }
+
+  addToFavorite(client: Client) {
+    this.user.favoritesClient.push(client);
+    this.updateFavorite();
+  }
+
+  showConfirmationDelete(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this clients?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
+      key: "delete"
     });
   }
 
   confirmDelete(): void {
-    this.deleteTask();
+    this.deleteClient();
   }
 
-  deleteTask(): void {
-    this.choosedClients.forEach((c) => {
-      this.clientService.deleteClient(c._id).subscribe({
+  deleteClient(): void {
+    if (this.choosedClients.length > 0) {
+      this.choosedClients.forEach((c) => {
+        this.clientService.deleteClient(c._id).subscribe({
+          next: () => {
+            window.location.reload();
+          },
+          error: (err) => console.error('Error deleting client: ', err),
+        });
+      });
+    }
+    else {
+      this.clientService.deleteClient(this.currentClient._id).subscribe({
         next: () => {
           window.location.reload();
         },
         error: (err) => console.error('Error deleting client: ', err),
       });
-    });
+    }
+
   }
 
   cancelDelete(): void {
     this.confirmationService.close();
   }
 
+  editClient(){
+      this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
+  }
+
   @HostListener('document:click')
   onDocumentClick() {
     this.choosedClients = [];
+    this.isChoosedAllClient = false;
   }
+
+  selectCurrentClient(client: Client) {
+    debugger
+    this.currentClient = client;
+  }
+
 }

@@ -1,1 +1,89 @@
-<p>sub-task works!</p>
+<a 
+[routerLink]="['/popup', 'create']"
+[queryParams]="{ parent: parentId }">+</a>
+
+
+<div style="text-align: right; align-items: right" *ngIf="tasks.length!=0">
+    <div class="content-container">
+
+        <div *ngFor="let status of statuses">
+            <p-panel header="{{ status.name }}">
+                <p-table [value]="categorizeTasks(status)">
+                    <ng-template pTemplate="header">
+                        <tr style="height: 50px">
+                            <th style="width: auto; height: 50px">
+                                שם
+                                <i class="pi pi-caret-up" (click)="sortTasks('taskName', tasks, false)"
+                                    style="cursor: pointer; margin-left: 5px"></i>
+                                <i class="pi pi-caret-down" (click)="sortTasks('taskName', tasks,true)"
+                                    style="cursor: pointer; margin-left: 5px"></i>
+                            </th>
+                            <th style="width: auto; height: 50px">
+                                משוייך ל
+                                <i class="pi pi-caret-up" (click)="sortTasks('assignedTo', tasks, false)"
+                                    style="cursor: pointer; margin-left: 5px"></i>
+                                <i class="pi pi-caret-down" (click)="sortTasks('assignedTo', tasks,true)"
+                                    style="cursor: pointer; margin-left: 5px"></i>
+                            </th>
+                            <th style="width: auto">
+                                טווח זמנים
+                                <i class="pi pi-caret-up" (click)="sortTasks('dueDate', tasks, false)"
+                                    style="cursor: pointer; margin-left: 5px"></i>
+                                <i class="pi pi-caret-down" (click)="sortTasks('dueDate', tasks,true)"
+                                    style="cursor: pointer; margin-left: 5px"></i>
+                            </th>
+                            <th style="width: auto">
+                                תגיות
+                                <i class="pi pi-caret-up" (click)="sortTasks('tags', tasks, false)"
+                                    style="cursor: pointer; margin-left: 5px"></i>
+                                <i class="pi pi-caret-down" (click)="sortTasks('tags', tasks,true)"
+                                    style="cursor: pointer; margin-left: 5px"></i>
+                            </th>
+                            <th style="width: auto">עריכה</th>
+                            <th style="width: auto">מחיקה</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-task>
+                        <tr>
+                            <td>{{ task.taskName }}</td>
+
+                            <td>
+                                <div style="display: flex; align-items: center">
+                                    <ng-container *ngFor="let u of task.assignedTo">
+                                        <div style="margin-left: 10px">
+                                            <app-icon-profile [userName]="u.userName"
+                                                [email]="u.email"></app-icon-profile>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </td>
+
+                            <td>{{ task.deadline | date : 'shortDate' }}</td>
+
+                            <td>
+                                <button *ngFor="let tag of task.tags; let i = index" [ngStyle]="{
+                          backgroundColor: tag.color,
+                          color: 'white'
+                        }" class="custom-button">
+                                    {{ tag.text }}
+                                </button>
+                            </td>
+                            <td>
+                                <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil"
+                                    style="color: blue;cursor: pointer;"></i>
+                            </td>
+                            <td>
+                                <i (click)="showConfirmation(task)" class="pi pi-trash"
+                                    style="color: red;cursor: pointer;"></i>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-panel>
+        </div>
+
+    </div>
+</div>
+
+<p *ngIf="tasks.length==0">אין משימות משניות</p>

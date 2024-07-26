@@ -1,24 +1,4 @@
-<p-table [value]="allTaxRefunds" [tableStyle]="{ 'max-width': '50rem' }">
-  <ng-template pTemplate="header">
-    <tr>
-      <th></th>
-      <th>עובד מטפל</th>
-      <th>תאריך יצירה</th>
-      <th>שנה</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-task>
-    <tr>
-      <td><p-button (click)="flag = true" label="עדכן"></p-button></td>
-      <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
-      <td>{{ task.date | date : 'dd/MM/yyyy' }}</td>
-      <td>{{ task.year }}</td>
-    </tr>
-  </ng-template>
-</p-table>
-
-<div *ngIf="flag">
-  <p-stepper dir="rtl" [(activeStep)]="active">
+  <p-stepper dir="rtl">
     <p-stepperPanel>
       <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
         <button class="p-stepper-action bg-transparent gap-2"
@@ -115,5 +95,3 @@
       </ng-template>
     </p-stepperPanel>
   </p-stepper>
-  <p-button (click)="submitChanges()" label="שלח שינויים" />
-</div>

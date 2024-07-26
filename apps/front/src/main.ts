@@ -49,7 +49,7 @@ import { TagService } from './app/_services/tag.service';
 import { ClientService } from './app/_services/client.service';
 import { CommunicationService } from './app/_services/communicaton.service';
 import { httpInterceptorProviders } from './app/_helpers/http.interceptor';
-import { GoogleLoginProvider, SocialAuthServiceConfig } from 'angularx-social-login';
+// import { GoogleLoginProvider, SocialAuthServiceConfig } from 'angularx-social-login';
 
 
 bootstrapApplication(AppComponent, {
@@ -59,23 +59,23 @@ bootstrapApplication(AppComponent, {
         ,CheckboxModule, 
         // OrderListModule,
         RadioButtonModule, DividerModule, EditorModule, SelectButtonModule, FileUploadModule, ButtonModule, BadgeModule, ProgressBarModule, ToastModule, CommonModule, ColorPickerModule, DropdownModule, TabMenuModule),
-        provideClientHydration(),
-        {
-            provide: 'SocialAuthServiceConfig',
-            useValue: {
-                autoLogin: false,
-                providers: [
-                    {
-                        id: GoogleLoginProvider.PROVIDER_ID,
-                        provider: new GoogleLoginProvider("450626878965-7r8nl14gj5eh5h4lfb1qs2d4kfkvq15l.apps.googleusercontent.com")
-                    },
-                ],
-                callback: 'initGoogleOneTap',
-                onError: (err: any) => {
-                    console.error(err);
-                }
-            } as SocialAuthServiceConfig,
-        },
+        // provideClientHydration(),
+        // {
+        //     provide: 'SocialAuthServiceConfig',
+        //     useValue: {
+        //         autoLogin: false,
+        //         providers: [
+        //             {
+        //                 id: GoogleLoginProvider.PROVIDER_ID,
+        //                 provider: new GoogleLoginProvider("450626878965-7r8nl14gj5eh5h4lfb1qs2d4kfkvq15l.apps.googleusercontent.com")
+        //             },
+        //         ],
+        //         callback: 'initGoogleOneTap',
+        //         onError: (err: any) => {
+        //             console.error(err);
+        //         }
+        //     } as SocialAuthServiceConfig,
+        // },
         httpInterceptorProviders,
         CommunicationService,
         ClientService,

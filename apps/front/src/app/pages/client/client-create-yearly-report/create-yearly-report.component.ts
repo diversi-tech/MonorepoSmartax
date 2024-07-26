@@ -13,15 +13,18 @@ import { ButtonModule } from 'primeng/button';
 import { InputOtpModule } from 'primeng/inputotp';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { DialogModule } from 'primeng/dialog';
-
+import { error } from 'console';
+import { Location } from '@angular/common';
+import { InputNumberModule } from 'primeng/inputnumber';
 @Component({
   selector: 'app-create-yearly-report',
   standalone: true,
-  imports: [FormsModule,
+  imports: [
+    FormsModule,
     DropdownModule,
     CommonModule,
     StepperModule,
@@ -29,16 +32,16 @@ import { DialogModule } from 'primeng/dialog';
     ButtonModule,
     InputOtpModule,
     ReactiveFormsModule,
-    DialogModule],
+    DialogModule,
+    InputNumberModule
+  ],
   templateUrl: './create-yearly-report.component.html',
   styleUrl: './create-yearly-report.component.css',
 })
-
 @Injectable({
-  providedIn: 'root' // Ensure it's provided in root or a specific module
+  providedIn: 'root', // Ensure it's provided in root or a specific module
 })
 export class CreateYearlyReportComponent implements OnInit {
-
   displayModal: boolean = false;
   yearlyReportForm: FormGroup;
   userId: string; // Assuming the client ID is passed via the state
@@ -48,21 +51,26 @@ export class CreateYearlyReportComponent implements OnInit {
   typeOptions: any[] = [
     { label: 'פיצול לעצמאי', value: 'עצמאי' },
     { label: 'עמותה', value: 'עמותה' },
-    { label: 'חברה', value: 'חברה' }
+    { label: 'חברה', value: 'חברה' },
   ];
   employeName: string;
+  reportToUpdate: YearlyReport | null = null;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private stepFieldsService: stepFieldService,
     private yearlyReportService: YearlyReportService,
     private yearService: YearService,
     private tokenService: TokenService,
-    private router: Router) {
+    private router: Router,
+    private route: ActivatedRoute ,// Inject ActivatedRoute
+    private location: Location
+
+  ) {
     this.loadData();
   }
 
   loadData() {
-
     this.yearService.getAllYear().subscribe({
       next: (data) => {
         console.log(data);
@@ -73,23 +81,25 @@ export class CreateYearlyReportComponent implements OnInit {
       },
     });
 
-    this.userId = this.tokenService.getCurrentDetail('_id')
-    this.client = history.state.client
-    console.log("client", this.client)
-    console.log("user", this.userId)
-
+    this.userId = this.tokenService.getCurrentDetail('_id');
+    this.client = history.state.client;
+    this.reportToUpdate = history.state.report || null;
+    console.log('client', this.client);
+    console.log('user', this.userId);
+    console.log('reportToUpdate', this.reportToUpdate);
   }
 
   showModalDialog() {
     this.displayModal = true;
+
   }
 
   hideModalDialog() {
     this.displayModal = false;
+
   }
 
   ngOnInit(): void {
-    console.log("gbhnj")
     this.yearlyReportForm = this.fb.group({
       type: ['', Validators.required],
       year: ['', Validators.required],
@@ -97,7 +107,16 @@ export class CreateYearlyReportComponent implements OnInit {
       paymentAmountPaid: ['', Validators.required],
       balanceDue: ['', Validators.required],
     });
-
+    if (this.reportToUpdate) {
+      this.yearlyReportForm.patchValue({
+        type: this.reportToUpdate.entityType,
+        year: this.reportToUpdate.yearReport,
+        price: this.reportToUpdate.price,
+        paymentAmountPaid: this.reportToUpdate.paymentAmountPaid,
+        balanceDue: this.reportToUpdate.balanceDue,
+      });
+    }
+    this.showModalDialog(); // Open the modal dialog when component initializes
   }
 
   onSubmit() {
@@ -105,12 +124,18 @@ export class CreateYearlyReportComponent implements OnInit {
 
     if (this.yearlyReportForm.valid) {
       const yearlyReport = this.yearlyReportForm.value;
-      this.createYearlyReport(yearlyReport);
-    } this.hideModalDialog(); // 
+      if (this.reportToUpdate) {
+        this.updateYearlyReport(yearlyReport);
+      } else {
+        this.createYearlyReport(yearlyReport);
+      }
+    }
+    this.hideModalDialog(); //
+    // this.location.back();
+
   }
 
   createYearlyReport(yearlyReport: any) {
-
     const yearly: YearlyReport = {
       idUser: this.client._id,
       assignee: [this.userId],
@@ -124,15 +149,48 @@ export class CreateYearlyReportComponent implements OnInit {
       entityType: yearlyReport.type,
     };
 
-    this.yearlyReportService.createYearlyReport(yearly).subscribe(response => {
-      console.log(response)
-      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/yearlyReport/steps'], { state: { data: response } });
+    this.yearlyReportService.createYearlyReport(yearly).subscribe(
+      (response) => {
+        console.log(response);
+        this.router.navigate(
+          ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
+          {
+            state: { data: response, client: this.client },
 
-    }, error => {
-      console.log(error)
-    });
+          });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
-  ;
 
+  updateYearlyReport(yearlyReport: any) {
+    const updatedReport: YearlyReport = {
+      ...this.reportToUpdate,
+      yearReport: yearlyReport.year.yearNUm,
+      price: yearlyReport.price,
+      paymentAmountPaid: yearlyReport.paymentAmountPaid,
+      balanceDue: yearlyReport.balanceDue,
+      entityType: yearlyReport.type,
+    };
+
+    this.yearlyReportService
+      .updateYearlyReport(this.reportToUpdate._id, updatedReport)
+      .then(
+        (response) => {
+          console.log(response);
+          if (response)
+            this.location.back();
+
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+  goBack():void{
+    this.location.back();
+  }
 
 }

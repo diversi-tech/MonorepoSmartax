@@ -7,13 +7,7 @@ import { TagService } from '../../_services/tag.service';
 import { User } from '../../_models/user.module';
 import { Client } from '../../_models/client.module';
 import { Tag } from '../../_models/tag.module';
-import {
-  Confirmation,
-  ConfirmationService,
-  MessageService,
-  Footer,
-  PrimeTemplate,
-} from 'primeng/api';
+import { ConfirmationService, MessageService, Footer, PrimeTemplate,} from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
 import { ToastModule } from 'primeng/toast';
@@ -123,9 +117,10 @@ export class TaskManagementComponent implements OnInit {
   }
 
   categorizeTasks(status: Status): Task[] {
-    // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
+    console.log(status.name);
+    console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
-      // console.log('Task status:', task.status); // הדפסת המצב של המשימה
+      console.log('Task status:', task.status); // הדפסת המצב של המשימה
       { return task.status && task.status.name === status.name; }
     });
   }
@@ -137,7 +132,9 @@ export class TaskManagementComponent implements OnInit {
       this.filteredTasks = [];
     } else {
       this.filteredTasks = this.tasks.filter((task) =>
+        {task!.taskName!=undefined?
         task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
+       : false}
       );
       console.log('filter: ', this.filteredTasks);
     }
@@ -298,8 +295,8 @@ export class TaskManagementComponent implements OnInit {
         return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
       }
       if (field === 'dueDate') {
-        const dateA = new Date(a.dueDate).getTime();
-        const dateB = new Date(b.dueDate).getTime();
+        const dateA = new Date(a.deadline).getTime();
+        const dateB = new Date(b.deadline).getTime();
         return reverse ? dateB - dateA : dateA - dateB;
       }
       if (field === 'tags') {

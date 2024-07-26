@@ -32,6 +32,8 @@ export class TaskService {
       images,
       googleId,
       startDate,
+      parent,
+      subTasks
     } = createTaskDto;
     // const task = new this.taskModel(createTaskDto);
     // return task.save()
@@ -60,7 +62,11 @@ export class TaskService {
       googleId,
       deadline,
       startDate,
+      parent,
+      subTasks
     });
+    console.log(createTask);
+    
     return await createTask.save();
   }
 
@@ -74,6 +80,13 @@ export class TaskService {
       throw new ValidationException('Task not found');
     }
     return task;
+  }
+
+  async getTasksByClientId(clientId: string): Promise<Task[]> {
+    console.log('Searching for tasks with client ID:', clientId);
+    const tasks = await this.taskModel.find({ client: clientId }).exec();
+    console.log('tasks found:', tasks);
+    return tasks;
   }
 
   async updateTask(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
@@ -92,6 +105,8 @@ export class TaskService {
         googleId,
         deadline,
         startDate,
+        parent,
+        subTasks
       } = updateTaskDto;
 
       const updatedTask = await this.taskModel
@@ -111,6 +126,8 @@ export class TaskService {
             googleId,
             deadline,
             startDate,
+            parent,
+            subTasks
           },
           { new: true }
         )
