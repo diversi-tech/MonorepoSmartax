@@ -6,7 +6,7 @@
     <p-button label="כניסה" icon="pi pi-sign-in" (click)="checkIn()"></p-button>
     <p-button label="יציאה" icon="pi pi-sign-out" (click)="checkOut()"></p-button>
   </div>
-  
+
   <!-- Table to display work logs -->
   <div *ngIf="groupedWorkLogs">
     <h3>רשימת יומני עבודה</h3>
@@ -16,12 +16,12 @@
           <th>תאריך</th>
           <th>מספר עובד</th>
           <th>שעות עבודה כולל</th>
-          <th>פעולות</th>
+          <th></th>
         </tr>
       </ng-template>
-  
+
       <ng-template pTemplate="body" let-logGroup>
-        <tr>
+        <tr (click)="selectCurrentLogGroup(logGroup)" [ngClass]="{ 'highlight': currentLogGroup === logGroup }">
           <td>{{ logGroup.date }}</td>
           <td>{{ logGroup.employeeId }}</td>
           <td>{{ logGroup.totalHoursWorked ? logGroup.totalHoursWorked.toFixed(2) : '---' }}</td>
@@ -33,32 +33,33 @@
           <td colspan="4">
             <p-table [value]="logGroup.logs" class="rtl-table">
               <ng-template pTemplate="header">
-                <tr>
-                  <th>שעת כניסה</th>
-                  <th>שעת יציאה</th>
-                  <th>סה"כ שעות</th>
-                  <th>פעולות</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-logEntry>
-                <tr *ngFor="let log of logEntry.timeEntries">
-                  <td>{{ log.checkIn | date: 'HH:mm' }}</td>
-                  <td>{{ log.checkOut ? (log.checkOut | date: 'HH:mm') : '---' }}</td>
-                  <td>{{ log.hoursWorked ? log.hoursWorked.toFixed(2) : '---' }}</td>
-                  <td>
-                    <p-button label="עריכה" icon="pi pi-pencil" (click)="editTimeEntry(logGroup, log)"></p-button>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
+        <tr>
+          <th>שעת כניסה</th>
+          <th>שעת יציאה</th>
+          <th>סה"כ שעות</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-logEntry>
+        <tr *ngFor="let log of logEntry.timeEntries" (click)="selectCurrentLog(log)" [ngClass]="{ 'highlight': currentLog === log }">
+          <td>{{ log.checkIn | date: 'HH:mm' }}</td>
+          <td>{{ log.checkOut ? (log.checkOut | date: 'HH:mm') : '---' }}</td>
+          <td>{{ log.hoursWorked ? log.hoursWorked.toFixed(2) : '---' }}</td>
+          <td><button *ngIf="currentLog === log" pButton
+              class="pi pi-pencil p-button-outlined p-button-rounded p-button-info" (click)="editTimeEntry()"></button>
           </td>
         </tr>
       </ng-template>
     </p-table>
+    </td>
+    </tr>
+    </ng-template>
+    </p-table>
   </div>
-  
+
   <!-- Dialog for editing work log -->
-  <p-dialog header="עריכת יומן עבודה" [(visible)]="displayDialog" [modal]="true" [closable]="false" [style]="{width: '50vw', height: '100vh'}">
+  <p-dialog header="עריכת יומן עבודה" [(visible)]="displayDialog" [modal]="true" [closable]="false"
+    [style]="{width: '50vw', height: '100vh'}">
     <div class="p-fluid">
       <div class="p-field">
         <label for="checkIn">שעת כניסה</label>
@@ -74,7 +75,7 @@
       <p-button label="ביטול" icon="pi pi-times" (click)="cancelEdit()"></p-button>
     </p-footer>
   </p-dialog>
-  
+
   <!-- Export to Excel button -->
   <p-button label="ייצוא לאקסל" icon="pi pi-file-excel" (click)="exportToExcel()"></p-button>
 </div>

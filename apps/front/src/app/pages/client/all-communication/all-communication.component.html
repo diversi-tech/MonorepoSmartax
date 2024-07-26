@@ -4,8 +4,8 @@
 
 <p-table [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications">
   <ng-template pTemplate="header" let-columns>
-    <tr (click)="selectCurrentCommunication(communication)"
-      [ngClass]="{ 'highlight': currentCommunication === communication }">
+    <tr>
+      <th></th>
       <th>
         <span (click)="onSelectionChange(2)">שם לקוח</span>
         <div>
@@ -38,20 +38,12 @@
         </div>
       </th>
       <th>סיכום</th>
-      <th></th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="body" let-communication>
     <tr (click)="selectCurrentCommunication(communication)"
       [ngClass]="{ 'highlight': currentCommunication === communication }">
-
-      <td>{{communication.client}}</td>
-      <td>{{communication.date | date: 'dd-MM-yyy' }}</td>
-      <td *ngIf="communication.Status === 'true'">ליד</td>
-      <td *ngIf="communication.Status === 'false'">מעקב</td>
-      <td>{{communication.Subject}}</td>
-      <td>{{communication.summary}}</td>
       <td><button *ngIf="currentCommunication === communication" pButton
           class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
           (click)="selectCommunication(this.currentCommunication); showConfirmationEdit()"></button>
@@ -59,6 +51,12 @@
           class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
           (click)="showConfirmationDelete()"></button>
       </td>
+      <td>{{communication.client}}</td>
+      <td>{{communication.date | date: 'dd-MM-yyy' }}</td>
+      <td *ngIf="communication.Status === 'true'">ליד</td>
+      <td *ngIf="communication.Status === 'false'">מעקב</td>
+      <td>{{communication.Subject}}</td>
+      <td>{{communication.summary}}</td>
     </tr>
   </ng-template>
 </p-table>
