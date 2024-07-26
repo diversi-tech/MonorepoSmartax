@@ -75,10 +75,8 @@ export class TaxRefundsComponent {
   //     return this.stepsByNumber[stepNumber] || [];
   //   }
   getStepsByNumber(stepNumber: Number) {
-    debugger
     this.stepFieldsService.getAllStepField().subscribe(data => {
       this.tasksStep = data.filter(task => task.stepNumber === stepNumber && task.type === 'החזרי מס');
-      console.log("kl", this.tasksStep)
     })
   }
 
