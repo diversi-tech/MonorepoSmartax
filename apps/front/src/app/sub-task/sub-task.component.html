@@ -2,10 +2,8 @@
 [routerLink]="['/popup', 'create']"
 [queryParams]="{ parent: parentId }">+</a>
 
-
 <div style="text-align: right; align-items: right" *ngIf="tasks.length!=0">
     <div class="content-container">
-
         <div *ngFor="let status of statuses">
             <p-panel header="{{ status.name }}">
                 <p-table [value]="categorizeTasks(status)">
@@ -43,8 +41,7 @@
                             <th style="width: auto">מחיקה</th>
                         </tr>
                     </ng-template>
-
-                    <ng-template pTemplate="body" let-task>
+                    <ng-template pTemplate="body" let-task >
                         <tr>
                             <td>{{ task.taskName }}</td>
 
@@ -70,7 +67,8 @@
                                 </button>
                             </td>
                             <td>
-                                <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil"
+                                <i [routerLink]="['/popup', task._id]"
+                                [queryParams]="{ parent: parentId }" class="pi pi-pencil"
                                     style="color: blue;cursor: pointer;"></i>
                             </td>
                             <td>
@@ -82,8 +80,9 @@
                 </p-table>
             </p-panel>
         </div>
-
     </div>
 </div>
 
 <p *ngIf="tasks.length==0">אין משימות משניות</p>
+
+<div *ngFor="tasks"><p>{{task.name}}</p></div>

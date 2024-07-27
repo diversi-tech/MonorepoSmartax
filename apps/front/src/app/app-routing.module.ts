@@ -255,7 +255,7 @@ import { PopAppComponent } from './pop_up/task-pop-app/pop-app.component';
 
 },
 {path: 'steps/createYearlyReport',component:CreateYearlyReportComponent},
-{path: 'popup/create',component:PopAppComponent}
+{path: 'popup/:id',component:PopAppComponent}
 
 
 

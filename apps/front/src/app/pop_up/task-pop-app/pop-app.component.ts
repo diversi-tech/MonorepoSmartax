@@ -20,7 +20,7 @@ import { IconProfileComponent } from '../../share/icon-profile/icon-profile.comp
 @Component({
   selector: 'app-pop-app',
   standalone: true,
-  imports: [ConfirmDialogModule,RouterLink,RouterOutlet,
+  imports: [ConfirmDialogModule, RouterLink, RouterOutlet,
     // TaskComponent,
     DialogModule,
     Footer,
@@ -46,16 +46,34 @@ import { IconProfileComponent } from '../../share/icon-profile/icon-profile.comp
   templateUrl: './pop-app.component.html',
   styleUrl: './pop-app.component.css',
 })
-export class PopAppComponent implements OnInit{
+export class PopAppComponent implements OnInit {
 
-parent: string|null=null;
-constructor(private route: ActivatedRoute){}
-ngOnInit(): void {
-  this.route.queryParams.subscribe(params => {
-    this.parent = params['parent'];
-  });
-}
-@Input()
+  id: string | null
+   @Input() parent: string | null = null;
+ 
+  visible: boolean = true;
 
-show = true
+  create = false
+  constructor(private route: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id')!;
+
+    if (this.id == 'create') {
+      this.id == null
+      this.create=true
+    }
+    else{
+      this.create = false
+    }
+
+    this.route.queryParams.subscribe(params => {
+      this.parent = params['parent'];
+    });
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+  show = true
 }

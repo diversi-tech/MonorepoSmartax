@@ -22,11 +22,13 @@ import { ToastModule } from 'primeng/toast';
 import { IconProfileComponent } from '../share/icon-profile/icon-profile.component';
 import { TaskComponent } from '../task/task.component';
 import { DialogModule } from 'primeng/dialog';
+import { setTimeout } from 'timers/promises';
+import { error } from 'console';
 
 @Component({
   selector: 'app-sub-task',
   standalone: true,
-  imports: [ConfirmDialogModule,RouterLink,RouterOutlet,
+  imports: [ConfirmDialogModule, RouterLink, RouterOutlet,
     // TaskComponent,
     DialogModule,
     Footer,
@@ -48,74 +50,117 @@ import { DialogModule } from 'primeng/dialog';
     NgStyle,
     NgClass,
     ToastModule,
-    DatePipe,],
+  DatePipe],
   templateUrl: './sub-task.component.html',
   styleUrl: './sub-task.component.css',
 })
 export class SubTaskComponent implements OnInit {
-  newList:boolean = false;
+  newList: boolean = false;
   tagSuggestions: Tag[] = [];
   tasks: Task[] = [];
   statuses: Status[] = []
+
   @Input()
   subTasks: string[] = [];
+
   @Input()
-  parentId: string|null = null;
+  parentId: string | null = null;
 
   constructor(private tagService: TagService, private taskService: TaskService, private statusService: StatusService) { }
 
   ngOnInit() {
-    this.getTasks();
-    console.log("sub tasks");
+    if (this.parentId)
+      //get subTasks id
+      this.taskService.searchTask(this.parentId).subscribe({
+        next: (task) => {
+          this.subTasks = task.subTasks
+          //get subTasks items
+          this.getTasks().then((data) => {
+            //get tags
+            this.tagService.getAllTags().subscribe({
+              next: (tags) => {
+                this.tagSuggestions = tags;
+              },
+              error: (err) => {
+                console.log(err);
+              }
+            })
+            //get statuses
+            this.statusService.getAllStatuses().subscribe({
+              next: (data) => {
+                this.statuses = data;
 
-    console.log(this.tasks);
+              },
+              error: (err) => {
+                console.log(err);
+              }
+            })
+            // }
+          })
 
-    this.tagService.getAllTags().subscribe((tags: Tag[]) => {
-      this.tagSuggestions = tags;
-    });
-    this.statusService.getAllStatuses().subscribe((data) => {
-      this.statuses = data;
-      console.log(this.statuses);
-    });
+        },
+        error: (err) => {
+          console.log(err);
+          alert(err)
+        }
+      })
+
+
   }
 
-  cancelDelete() { }
   confirmDelete(selectedTask: any) { return null }
-  getTasks(): void {
-    this.subTasks?.forEach(st => {
-      this.taskService.searchTask(st).subscribe((task: Task) => {
-        this.tasks.push(task);
+
+    getTasks(): any {
+      return new Promise((resolve, reject) => {
+        this.subTasks.forEach(st => {
+          this.taskService.searchTask(st).subscribe({
+            next: (task) => {
+              this.tasks.push(task);
+              resolve(true);
+            },
+            error: (err) => {
+              console.log(err);
+              resolve(false)
+            }
+          }); 
+        })
+      })
+    }
+
+    categorizeTasks(status: Status): Task[] {
+      let currentTasks:Task[]=[]
+      this.tasks.forEach(task => {
+        if(task.status&& task.status.name==status.name){
+          currentTasks.push(task)
+        }
+      })
+      return currentTasks
+      // return this.tasks.filter((task) => {
+      //   { return task.status && task.status.name === status.name; }
+      // });
+    }
+
+    sortTasks(field: string, list: Task[], reverse: boolean) {
+      list.sort((a, b) => {
+        if (field === 'taskName') {
+          return reverse ? b.taskName.localeCompare(a.taskName) : a.taskName.localeCompare(b.taskName);
+        }
+        if (field === 'assignedTo') {
+          const nameA = a.assignedTo.map(user => user.userName).join(', ');
+          const nameB = b.assignedTo.map(user => user.userName).join(', ');
+          return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
+        }
+        if (field === 'dueDate') {
+          const dateA = new Date(a.dueDate).getTime();
+          const dateB = new Date(b.dueDate).getTime();
+          return reverse ? dateB - dateA : dateA - dateB;
+        }
+        if (field === 'tags') {
+          const tagsA = a.tags.map(tag => tag.text).join(', ');
+          const tagsB = b.tags.map(tag => tag.text).join(', ');
+          return reverse ? tagsB.localeCompare(tagsA) : tagsA.localeCompare(tagsB);
+        }
+        return 0;
       });
-    })
+    }
   }
-
-  categorizeTasks(status: Status): Task[] {
-    return this.tasks.filter((task) => {
-      { return task.status && task.status.name === status.name; }
-    });
-  }
-
-  sortTasks(field: string, list: Task[], reverse: boolean) {
-    list.sort((a, b) => {
-      if (field === 'taskName') {
-        return reverse ? b.taskName.localeCompare(a.taskName) : a.taskName.localeCompare(b.taskName);
-      }
-      if (field === 'assignedTo') {
-        const nameA = a.assignedTo.map(user => user.userName).join(', ');
-        const nameB = b.assignedTo.map(user => user.userName).join(', ');
-        return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
-      }
-      if (field === 'dueDate') {
-        const dateA = new Date(a.dueDate).getTime();
-        const dateB = new Date(b.dueDate).getTime();
-        return reverse ? dateB - dateA : dateA - dateB;
-      }
-      if (field === 'tags') {
-        const tagsA = a.tags.map(tag => tag.text).join(', ');
-        const tagsB = b.tags.map(tag => tag.text).join(', ');
-        return reverse ? tagsB.localeCompare(tagsA) : tagsA.localeCompare(tagsB);
-      }
-      return 0;
-    });
-  }
-}
