@@ -139,4 +139,25 @@
     padding: 0;
     text-align: right;
   }
+  /* client */
+  .custom-selected-item,
+  .custom-item {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Adjust the gap as needed */
+  }
+  
+  .custom-selected-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .custom-dropdown-clear-icon {
+    display: flex;
+    align-items: center;
+    margin-left: 8px; /* Adjust the margin as needed */
+  }
+  
+  
   

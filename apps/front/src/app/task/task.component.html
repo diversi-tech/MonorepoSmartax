@@ -722,51 +722,167 @@
       <p >
         <b> <span class="pi pi-users"></span> לקוחות  </b>
       </p>
-      <!-- <p-listbox
-      [options]="clients"
-      [filter]="true"
-      formControlName="selectedClient"
-      [(ngModel)]="selectedClient"
-      optionLabel="name"
-      [style]="{ width: '15rem' }"
-      [listStyle]="{ 'max-height': '400px' }"
-      (onChange)="showClients = !showClients"
-    >
-      <ng-template let-client pTemplate="item">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center">
-            <app-icon-profile
-              [userName]="client.firstName"
-              [email]="client.email"
-            ></app-icon-profile>
-            <span style="margin-left: 5%">{{
-              client.firstName && client.firstName
-            }}</span>
-          </div>
-        </div>
-      </ng-template>
-    </p-listbox> -->
     <div class="card flex justify-content-center">
-      <p-dropdown 
-          [options]="clients" 
-          [(ngModel)]="selectedClient" 
-          optionLabel="firstName" 
-          placeholder="Select a Client" >
-          <ng-template let-client pTemplate="item">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <app-icon-profile
-                  [userName]="client.firstName"
-                  [email]="client.email"
-                ></app-icon-profile>
-                <span style="margin-left: 5%">{{
-                  client.firstName && client.firstName
-                }}</span>
-              </div>
-            </div>
-          </ng-template>
-        </p-dropdown>
+    <p-dropdown 
+    [style]="{width:'100%',direction:'ltr'}"
+    [options]="clients" 
+    [(ngModel)]="selectedClient"
+    optionLabel="firstName"
+    [showClear]="true"
+    placeholder="בחר לקוח">
+  <ng-template pTemplate="selectedItem">
+    <div class="custom-selected-item" *ngIf="selectedClient">
+      <app-icon-profile
+        [userName]="selectedClient.firstName"
+        [email]="selectedClient.email"
+      ></app-icon-profile>
+      <div>{{ selectedClient.firstName }}</div>
+    </div>
+  </ng-template>
+  <ng-template let-country pTemplate="item">
+    <div class="custom-item">
+      <app-icon-profile
+        [userName]="country.firstName"
+        [email]="country.email"
+      ></app-icon-profile>
+      <div>{{ country.firstName }}</div>
+    </div>
+  </ng-template>
+</p-dropdown>
   </div>
+    </div>
+    <div class="one-one">
+      <div class="calendar-container">
+        <div class="calendar-item">
+          <p class="p-date">
+            <b> <span class="pi pi-calendar"></span>  סטטוס </b>
+          </p>
+          <p-dropdown 
+    [style]="{width:'100%',direction:'ltr'}"
+    [options]="listStatus" 
+    [(ngModel)]="selectStatus"
+    optionLabel="name"
+    [showClear]="true"
+    placeholder="בחר סטטוס">
+  <ng-template pTemplate="selectedItem">
+    <div class="custom-selected-item" *ngIf="selectStatus">
+      <span
+            [style]="{ color: selectStatus.color }"
+            class="pi pi-stop-circle"
+          ></span>
+      <div>{{ selectStatus.name }}</div>
+    </div>
+  </ng-template>
+  <ng-template let-s pTemplate="item">
+    <div class="custom-item">
+      <span
+            [style]="{ color: s.color }"
+            class="pi pi-stop-circle"
+          ></span>
+      <div>{{ s.name }}</div>
+    </div>
+  </ng-template>
+</p-dropdown>
+        </div>
+        <div class="calendar-item">
+          <p class="p-date">
+            <b> <span class="pi pi-calendar"></span>  עדיפות </b>
+          </p>
+          <p-dropdown 
+    [style]="{width:'100%',direction:'ltr'}"
+    [options]="listPriority" 
+    [(ngModel)]="selectedPriority"
+    optionLabel="name"
+    [showClear]="true"
+    placeholder="בחר עדיפות">
+  <ng-template pTemplate="selectedItem">
+    <div class="custom-selected-item" *ngIf="selectedClient">
+      <app-icon-profile
+        [userName]="selectedClient.firstName"
+        [email]="selectedClient.email"
+      ></app-icon-profile>
+      <div>{{ selectedClient.firstName }}</div>
+    </div>
+  </ng-template>
+  <ng-template let-country pTemplate="item">
+    <div class="custom-item">
+      <app-icon-profile
+        [userName]="country.firstName"
+        [email]="country.email"
+      ></app-icon-profile>
+      <div>{{ country.firstName }}</div>
+    </div>
+  </ng-template>
+</p-dropdown>
+        </div>
+      </div>
     </div>
   </p-card>
 </div>
+
+
+<form [formGroup]="formGroupStatus" *ngIf="showStatus">
+  <br /><br />
+  <div style="width: 170px" class="card flex justify-content-center">
+    <p-menu [model]="listStatus" styleClass="w-full md:w-5rem">
+      <ng-template pTemplate="item" let-item let-i>
+        <div
+          pRipple
+          class="flex align-items-center p-menuitem-link"
+          (click)="showStatus = !showStatus"
+        >
+          <span
+            [style]="{ color: item.color }"
+            class="pi pi-stop-circle"
+          ></span>
+          <span
+            (click)="status(item)"
+            class="ml-2"
+            [style]="{
+              color: 'gray',
+              'font-size': '12px',
+              'margin-left': '5%'
+            }"
+            >{{ item.name }}</span
+          >
+          <!-- <span
+            [class]="i%2 != 0 ? 'pi pi-check-circle' : 'pi pi-check'"
+            [style]="{ 'margin-left': '40%' }"
+          ></span> -->
+        </div>
+      </ng-template>
+    </p-menu>
+  </div>
+</form>
+
+<!--  -->
+
+<form [formGroup]="formGroupStatus" *ngIf="showPriority">
+  <br /><br />
+  <div style="width: 170px" class="card flex justify-content-center">
+    <p-menu [model]="listPriority" styleClass="w-full md:w-5rem">
+      <ng-template pTemplate="item" let-item let-i>
+        <div
+          pRipple
+          class="flex align-items-center p-menuitem-link"
+          (click)="showPriority = !showPriority"
+        >
+          <span
+            [style]="{ color: item.color }"
+            class="pi pi-stop-circle"
+          ></span>
+          <span
+            (click)="priority(item)"
+            class="ml-2"
+            [style]="{
+              color: 'gray',
+              'font-size': '12px',
+              'margin-left': '5%'
+            }"
+            >{{ item.name }}</span
+          >
+        </div>
+      </ng-template>
+    </p-menu>
+  </div>
+</form>
