@@ -1,6 +1,6 @@
 <a 
 [routerLink]="['/popup', 'create']"
-[queryParams]="{ parent: parentId }">+</a>
+[queryParams]="{ parent: parentId }" >+</a>
 
 <div style="text-align: right; align-items: right" *ngIf="tasks.length!=0">
     <div class="content-container">
@@ -72,7 +72,7 @@
                                     style="color: blue;cursor: pointer;"></i>
                             </td>
                             <td>
-                                <i (click)="showConfirmation(task)" class="pi pi-trash"
+                                <i (click)="confirmDelete(task)" class="pi pi-trash"
                                     style="color: red;cursor: pointer;"></i>
                             </td>
                         </tr>
@@ -84,5 +84,3 @@
 </div>
 
 <p *ngIf="tasks.length==0">אין משימות משניות</p>
-
-<div *ngFor="tasks"><p>{{task.name}}</p></div>

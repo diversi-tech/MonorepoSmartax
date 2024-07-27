@@ -50,7 +50,7 @@ import { error } from 'console';
     NgStyle,
     NgClass,
     ToastModule,
-  DatePipe],
+    DatePipe],
   templateUrl: './sub-task.component.html',
   styleUrl: './sub-task.component.css',
 })
@@ -66,6 +66,9 @@ export class SubTaskComponent implements OnInit {
   @Input()
   parentId: string | null = null;
 
+  @Input()
+  task: Task | null
+
   constructor(private tagService: TagService, private taskService: TaskService, private statusService: StatusService) { }
 
   ngOnInit() {
@@ -73,6 +76,7 @@ export class SubTaskComponent implements OnInit {
       //get subTasks id
       this.taskService.searchTask(this.parentId).subscribe({
         next: (task) => {
+          this.task = task;
           this.subTasks = task.subTasks
           //get subTasks items
           this.getTasks().then((data) => {
@@ -80,9 +84,6 @@ export class SubTaskComponent implements OnInit {
             this.tagService.getAllTags().subscribe({
               next: (tags) => {
                 this.tagSuggestions = tags;
-              },
-              error: (err) => {
-                console.log(err);
               }
             })
             //get statuses
@@ -90,12 +91,8 @@ export class SubTaskComponent implements OnInit {
               next: (data) => {
                 this.statuses = data;
 
-              },
-              error: (err) => {
-                console.log(err);
               }
             })
-            // }
           })
 
         },
@@ -108,59 +105,77 @@ export class SubTaskComponent implements OnInit {
 
   }
 
-  confirmDelete(selectedTask: any) { return null }
+  confirmDelete(task: Task) {
+    //delete from parent
+    const i = this.task.subTasks.findIndex(sub => sub == task._id)
+    this.task.subTasks.slice(i, i + 1)
+    this.taskService.updateTask(this.task._id, this.task).subscribe({
+      next: (data) => {
+        //delete task
+        this.taskService.deleteTask(task._id).subscribe({
+          next: (d) => {
+            window.location.reload();
+          }
+        });
+      },
+      error: (err) => {
+        alert("המחיקה נכשלה")
+      },
+    })
 
-    getTasks(): any {
-      return new Promise((resolve, reject) => {
-        this.subTasks.forEach(st => {
-          this.taskService.searchTask(st).subscribe({
-            next: (task) => {
-              this.tasks.push(task);
-              resolve(true);
-            },
-            error: (err) => {
-              console.log(err);
-              resolve(false)
-            }
-          }); 
-        })
-      })
-    }
-
-    categorizeTasks(status: Status): Task[] {
-      let currentTasks:Task[]=[]
-      this.tasks.forEach(task => {
-        if(task.status&& task.status.name==status.name){
-          currentTasks.push(task)
-        }
-      })
-      return currentTasks
-      // return this.tasks.filter((task) => {
-      //   { return task.status && task.status.name === status.name; }
-      // });
-    }
-
-    sortTasks(field: string, list: Task[], reverse: boolean) {
-      list.sort((a, b) => {
-        if (field === 'taskName') {
-          return reverse ? b.taskName.localeCompare(a.taskName) : a.taskName.localeCompare(b.taskName);
-        }
-        if (field === 'assignedTo') {
-          const nameA = a.assignedTo.map(user => user.userName).join(', ');
-          const nameB = b.assignedTo.map(user => user.userName).join(', ');
-          return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
-        }
-        if (field === 'dueDate') {
-          const dateA = new Date(a.dueDate).getTime();
-          const dateB = new Date(b.dueDate).getTime();
-          return reverse ? dateB - dateA : dateA - dateB;
-        }
-        if (field === 'tags') {
-          const tagsA = a.tags.map(tag => tag.text).join(', ');
-          const tagsB = b.tags.map(tag => tag.text).join(', ');
-          return reverse ? tagsB.localeCompare(tagsA) : tagsA.localeCompare(tagsB);
-        }
-        return 0;
-      });
-    }
   }
+
+  getTasks(): any {
+    return new Promise((resolve, reject) => {
+      this.subTasks.forEach(st => {
+        this.taskService.searchTask(st).subscribe({
+          next: (task) => {
+            this.tasks.push(task);
+            resolve(true);
+          },
+          error: (err) => {
+            console.log(err);
+            resolve(false)
+          }
+        });
+      })
+    })
+  }
+
+  categorizeTasks(status: Status): Task[] {
+    let currentTasks: Task[] = []
+    this.tasks.forEach(task => {
+      if (task.status && task.status.name == status.name) {
+        currentTasks.push(task)
+      }
+    })
+    return currentTasks
+    // return this.tasks.filter((task) => {
+    //   { return task.status && task.status.name === status.name; }
+    // });
+  }
+
+  sortTasks(field: string, list: Task[], reverse: boolean) {
+    list.sort((a, b) => {
+      if (field === 'taskName') {
+        return reverse ? b.taskName.localeCompare(a.taskName) : a.taskName.localeCompare(b.taskName);
+      }
+      if (field === 'assignedTo') {
+        const nameA = a.assignedTo.map(user => user.userName).join(', ');
+        const nameB = b.assignedTo.map(user => user.userName).join(', ');
+        return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
+      }
+      if (field === 'dueDate') {
+        const dateA = new Date(a.dueDate).getTime();
+        const dateB = new Date(b.dueDate).getTime();
+        return reverse ? dateB - dateA : dateA - dateB;
+      }
+      if (field === 'tags') {
+        const tagsA = a.tags.map(tag => tag.text).join(', ');
+        const tagsB = b.tags.map(tag => tag.text).join(', ');
+        return reverse ? tagsB.localeCompare(tagsA) : tagsA.localeCompare(tagsB);
+      }
+      return 0;
+    });
+  }
+}
