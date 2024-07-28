@@ -16,7 +16,7 @@ export class TokenService {
     private readonly jwtService: JwtService,
   ) { }
 
-  async createToken(payload:{email: string, role: Role, _id:unknown}): Promise<any> {    
+  async createToken(payload: { email: string, role: Role, _id: unknown }): Promise<any> {
     return {
       access_token: this.jwtService.sign(payload, { expiresIn: '12h', privateKey: process.env.PRIVATEKEY })
     };
@@ -39,7 +39,7 @@ export class TokenService {
   async getRoleFromToken(token: string) {
     try {
       const decode = this.decodeToken(token);
-      
+
       return decode.role;
     } catch (error) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
@@ -49,7 +49,7 @@ export class TokenService {
   async validateToken(token: string) {
     try {
       const decode = this.decodeToken(token);
-      
+
       return true;
     } catch (error) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
@@ -62,7 +62,7 @@ export class TokenService {
 
       const email = decode.email
       return email
-    } 
+    }
     catch (error) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }

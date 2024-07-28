@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { Frequency } from '../../../_models/frequency.module';
-import { Router } from '@angular/router';
 import { FrequencyService } from '../../../_services/frequency.service';
 import { PaymentService } from '../../../_services/payment.service';
 import { Payment } from '../../../_models/payment.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-main-payment',
