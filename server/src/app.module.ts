@@ -84,9 +84,7 @@ import { Field, FieldModell } from './Models/field.model';
 import { Timer, TimerModel } from './Models/timer.model';
 import { TimerController } from './controller/timer/timer.controller';
 import { TimerService } from './services/timer.service';
-import { WorkLogController } from './controller/workLog/workLog.controller';
-import { WorkLogService } from './services/workLog.service';
-import { WorkLogModel, WorkLog } from './Models/workLog.model';
+
 
 import { FrequencyController } from './controller/frequency/frequency.controller';
 import { Frequency, frequencyModel } from './Models/frequency.model';
@@ -186,7 +184,6 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-    MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel }]),
     MongooseModule.forFeature([
       { name: callTopicSchema.name, schema: callTopicSchemaModel },
     ]),
@@ -242,7 +239,6 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     JwtModule,
   ],
   controllers: [
-    WorkLogController,
     AppController,
     CheckListItemController,
     CheckListController,
@@ -284,7 +280,6 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
   ],
 
   providers: [
-    WorkLogService,
     AppService,
     UserService,
     MailService,
