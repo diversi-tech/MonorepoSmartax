@@ -35,6 +35,8 @@ export class YearlyReportStepsComponent implements OnInit {
   changes: { [key: string]: boolean } = {};
   client: Client;
   activeIndex: number = 0;
+  stepNumbers: number[] = [1, 2, 3, 4, 5]; // Step numbers
+
 
   constructor(private yearlyReportService: YearlyReportService,
                private router: Router,
@@ -101,7 +103,7 @@ export class YearlyReportStepsComponent implements OnInit {
 
 
   goToUpdate() {
-    this.router.navigate(['steps/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
+    this.router.navigate(['/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
   }
   goBack() {
     this.location.back();

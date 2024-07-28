@@ -74,10 +74,10 @@ export class YearlyReportComponent implements OnInit {
 
   createReprtTag(): void {
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createYearlyReport'], { state: { client: this.client } });
-  }
+}
 
   goToSteps(task: any) {
-    this.router.navigate(['/steps', this.router], { state: { data: task, client: this.client } });
+    this.router.navigate(['clientSearch/clientManagement/clientNavbar/steps', this.router], { state: { data: task, client: this.client } });
   }
 
   getEmployeName(idEmploye: string): any {
