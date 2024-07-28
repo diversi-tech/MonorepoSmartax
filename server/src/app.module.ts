@@ -81,12 +81,10 @@ import {
 import { FieldService } from './services/field.service';
 import { FieldController } from './controller/field/field.controller';
 import { Field, FieldModell } from './Models/field.model';
-import { Timer, TimerModel } from './Models/timer';
+import { Timer, TimerModel } from './Models/timer.model';
 import { TimerController } from './controller/timer/timer.controller';
-import { TimerService } from './services/timer';
-import { WorkLogController } from './controller/workLog/workLog.controller';
-import { WorkLogService } from './services/workLog.service';
-import { WorkLogModel, WorkLog } from './Models/workLog.model';
+import { TimerService } from './services/timer.service';
+
 
 import { FrequencyController } from './controller/frequency/frequency.controller';
 import { Frequency, frequencyModel } from './Models/frequency.model';
@@ -143,6 +141,9 @@ import { TableService } from './services/table.service';
 import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.model';
 import { RepeatableTaskController } from './controller/repeatableTask/repeatableTask.controller';
 import { repeatableTaskService } from './services/repeatableTask.service';
+import { TasksGateway } from './services/socket/socket.gateway';
+// import { PopupGateway } from './services/socket/socket.gateway';
+// import { PopupController } from './controller/socket/popUp.controller';
 // import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -183,7 +184,6 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-    MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel }]),
     MongooseModule.forFeature([
       { name: callTopicSchema.name, schema: callTopicSchemaModel },
     ]),
@@ -239,7 +239,6 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     JwtModule,
   ],
   controllers: [
-    WorkLogController,
     AppController,
     CheckListItemController,
     CheckListController,
@@ -281,7 +280,6 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
   ],
 
   providers: [
-    WorkLogService,
     AppService,
     UserService,
     MailService,
@@ -325,6 +323,8 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     YearlyReportService,
     YearService,
     TableService,
+    TasksGateway,
+    // PopupGateway,
   ],
 })
 export class AppModule {}

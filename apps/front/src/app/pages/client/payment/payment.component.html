@@ -1,0 +1,79 @@
+<div class="master-container">
+  <div class="card cart">
+    <p-tabView [scrollable]="true">
+      <p-tabPanel header="נתוני מנוי עיקרי">
+        <div class="products">
+          <div class="product">
+            <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div>
+              <span *ngIf="thisPayment.mainPaymentDetails.sumForMonth">:סכום</span>
+              <p>{{thisPayment.mainPaymentDetails.sumForMonth}}</p>
+              <span *ngIf="thisPayment.mainPaymentDetails.frequency">:תדירות גביה</span>
+              <p>{{thisPayment.mainPaymentDetails.frequency.name}}</p>
+              <span *ngIf="thisPayment.mainPaymentDetails.dateStart">:תאריך התחלה</span>
+              <p>{{thisPayment.mainPaymentDetails.dateStart}}</p>
+              <span *ngIf="thisPayment.mainPaymentDetails.dateFinish">:תאריך סיום</span>
+              <p>{{thisPayment.mainPaymentDetails.dateFinish}}</p>
+              <span *ngIf="thisPayment.mainPaymentDetails.maxHours">:מקסימום שעות עבודה</span>
+              <p>{{thisPayment.mainPaymentDetails.maxHours}}</p>
+            </div>
+            <div class="quantity">
+            </div>
+            <label class="price small">השירות: {{thisPayment.mainPaymentDetails.description}}</label>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel *ngFor="let details of thisPayment.morePaymentDetails" [header]="details.description">
+        <div class="products">
+          <div class="product">
+            <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div>
+              <span *ngIf="details.sumForMonth">:סכום</span>
+              <p>{{details.sumForMonth}}</p>
+              <span *ngIf="details.frequency">:תדירות גביה</span>
+              <p>{{details.frequency.name}}</p>
+              <span *ngIf="thisPayment.mainPaymentDetails.dateStart">:תאריך התחלה</span>
+              <p>{{details.dateStart}}</p>
+              <span *ngIf="details.dateFinish">:תאריך סיום</span>
+              <p>{{details.dateFinish}}</p>
+              <span *ngIf="thisPayment.mainPaymentDetails.maxHours">:מקסימום שעות עבודה</span>
+              <p>{{thisPayment.mainPaymentDetails.maxHours}}</p>
+            </div>
+            <div class="quantity">
+            </div>
+            <label class="price small">השירות: {{details.description}}</label>
+          </div>
+        </div>
+    </p-tabPanel>
+    </p-tabView>
+  </div>
+
+
+
+
+
+    <div class="card coupons">
+      <label class="title">מידע נוסף</label>
+      <form class="form">
+        <span *ngIf="thisPayment.totalPayment">:סכום לגביה</span>
+        <p>{{thisPayment.totalPayment}}</p>
+        <span *ngIf="thisPayment.paymentMethod">:צורת תשלום</span>
+        <p>{{thisPayment.paymentMethod.name}}</p>
+      </form>
+    </div>
+
+    <div class="card checkout">
+      <label class="title">Checkout</label>
+      <div class="details">
+        <span>Your cart subtotal:</span>
+        <span>Rs 47.99</span>
+        <span>Discount through applied coupons:</span>
+        <span>Rs 3.99</span>
+        <span>Shipping fees:</span>
+        <span>Rs 4.99</span>
+      </div>
+      <div class="checkout--footer">
+        <label class="price"><sup>Rs</sup>57.99</label>
+        <button class="checkout-btn">Checkout</button>
+      </div>
+    </div>

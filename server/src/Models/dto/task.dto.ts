@@ -10,6 +10,14 @@ import { CheckList } from '../checkList.model';
 export class CreateTaskDto {
     @IsNotEmpty()
     client: Client;
+    
+    @ApiProperty({ description: 'The task parent ID' })
+    @IsString()
+    parent: string;
+
+    @ApiProperty({ description: 'The subTasks ID array' })
+    @IsString()
+    subTasks: string[];
 
     @IsNotEmpty()
     @IsString()
@@ -61,6 +69,13 @@ export class UpdateTaskDto {
     @IsString()
     id: string;
 
+    @ApiProperty({ description: 'The task parent ID' })
+    @IsString()
+    parent: string;
+
+    @ApiProperty({ description: 'The subTasks ID array' })
+    subTasks: string[];
+
     @IsOptional()
     client?: Client;
 
@@ -101,10 +116,6 @@ export class UpdateTaskDto {
 
     @IsOptional()
     images?: string[];
-
-
-
-    
 
     @IsOptional()
     checkList?: CheckList[];

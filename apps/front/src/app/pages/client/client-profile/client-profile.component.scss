@@ -1,34 +1,4 @@
-.client-profile {
-  border: 1px solid #eb0f0f;
-  padding: 10px;
-}
-
-.client-name {
-  cursor: pointer;
-  
-}
-
-.client-details {
-  margin-top: 10px;
-}
-
-.client-details p {
-  margin: 5px 0;
-}
-.card {
-  margin-top: 20px;
-  width: 400px; /* או אורך שנראה לך */
-}
-
-.card-header {
-  cursor: pointer;
-}
-
-.card-body {
-  display: flex;
-  flex-direction: column;
-}
-
-.card-text {
-  margin-bottom: 5px;
+::ng-deep p-button.custom-button {
+  background-color:rgb(255, 255, 255)!important;
+  color: black!important;
 }

@@ -28,7 +28,7 @@
     </ng-template>
 </p-menubar> -->
 
-<p-menubar id="menu" [model]="items">
+<!-- <p-menubar id="menu" [model]="items">
     <ng-template pTemplate="item" let-item>
         <div *ngIf="!item.list" class="p-menuitem-link" [routerLink]="item.route" >
             <span [class]="item.icon"></span>
@@ -42,6 +42,35 @@
         <ul *ngIf="item.items">
             <li *ngFor="let subItem of item.items">
                 <a *ngIf="subItem.route; else subUrlRef" [routerLink]="subItem.route">
+                    <span>{{ subItem.label }}</span>
+                </a>
+                <ng-template #subUrlRef>
+                    <a *ngIf="subItem.url; else subNoLink" [href]="subItem.url">
+                        <span>{{ subItem.label }}</span>
+                    </a>
+                    <ng-template #subNoLink>
+                        <span>{{ subItem.label }}</span>
+                    </ng-template>
+                </ng-template>
+            </li>
+        </ul>
+    </ng-template>
+</p-menubar> -->
+
+<p-menubar id="menu" [model]="items">
+    <ng-template pTemplate="item" let-item>
+        <div *ngIf="!item.list" class="p-menuitem-link" [routerLink]="item.route" routerLinkActive="active-link">
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+        </div>
+        <div *ngIf="item.list" class="p-menuitem-link">
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+            <span class="pi pi-fw pi-angle-down ml-2" *ngIf="item.items"></span>
+        </div>
+        <ul *ngIf="item.items">
+            <li *ngFor="let subItem of item.items">
+                <a *ngIf="subItem.route; else subUrlRef" [routerLink]="subItem.route" routerLinkActive="active-link">
                     <span>{{ subItem.label }}</span>
                 </a>
                 <ng-template #subUrlRef>

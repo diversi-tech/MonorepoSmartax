@@ -9,7 +9,7 @@ export class Payment extends Document {
     @Prop({ type: PaymentDetails })
     mainPaymentDetails: PaymentDetails;
 
-    @Prop({ type: PaymentDetails })
+    @Prop()
     morePaymentDetails: PaymentDetails[];
 
     @Prop()

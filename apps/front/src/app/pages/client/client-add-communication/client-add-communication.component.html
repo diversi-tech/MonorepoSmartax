@@ -3,10 +3,10 @@
   <div class="col-md-12">
     <div class="card card-container">
       <div class="p-grid">
-        <h2 class="p-my-4">Create New Communication</h2>
+        <h2 class="p-my-4">צור תקשורת חדשה</h2>
         <form (ngSubmit)="createCommunication()" #createForm="ngForm" class="form-background">
           <div class="p-field">
-            <label for="date">Date</label>
+            <label for="date">תאריך</label>
             <input type="date" class="p-inputtext" id="date" [(ngModel)]="formattedDate" name="date" required
               (dblclick)="setTodayDate()">
           </div>
@@ -34,7 +34,7 @@
             <!-- <textarea class="p-textarea" id="Subject" [(ngModel)]="newCommunication.Subject" name="Subject" rows="3" required></textarea> -->
           </div>
           <div class="p-field">
-            <label for="summary">Summary</label>
+            <label for="summary">סיכום</label>
             <textarea class="p-textarea" id="summary" [(ngModel)]="newCommunication.summary" name="summary" rows="3"
               required></textarea>
           </div>
@@ -46,11 +46,12 @@
             </select>
           </div>
           <div class="p-field">
-            <label for="assignedTo">Assigned To</label>
+            <label for="assignedTo">שהוקצה ל</label>
             <p-dropdown [options]="users" [(ngModel)]="newCommunication.assignedTo" name="assignedTo"
-              optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
+              optionLabel="label" placeholder="בחר משתמש"></p-dropdown>
           </div>
-          <button type="submit" class="p-button" [disabled]="!createForm.form.valid">Create Communication</button>
+          <button type="submit" class="p-button" [disabled]="!createForm.form.valid">
+            צור תקשורת</button>
         </form>
       </div>
     </div>
