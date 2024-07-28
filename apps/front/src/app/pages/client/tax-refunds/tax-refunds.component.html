@@ -1,97 +1,18 @@
-  <p-stepper dir="rtl">
-    <p-stepperPanel>
-      <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
-        <button class="p-stepper-action bg-transparent gap-2"
-        (click)="getStepsByNumber(1); onClick.emit()"
-          ><span class="p-stepper-number">1</span
-          ><span class="p-stepper-title">שלב I</span></button
-        >
-      </ng-template>
-      <ng-template pTemplate="content" let-nextCallback="nextCallback">
-        <div class="flex flex-column h-12rem">
-          <div
-            class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
-          >
-            <div *ngFor="let task of tasksStep">
-              <div class="checkbox-wrapper">
-                <label>
-                  <input
-                    type="checkbox"
-                    [(ngModel)]="task.isCompleted"
-                    (change)="update(task)"
-                  />
-                  {{ task.value }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </p-stepperPanel>
-    <p-stepperPanel>
-      <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
-        <button class="p-stepper-action"
-        (click)="getStepsByNumber(2); onClick.emit()"
-          ><span class="p-stepper-number">2</span
-          ><span class="p-stepper-title">שלב II</span></button
-        >
-      </ng-template>
-      <ng-template
-        pTemplate="content"
-        let-prevCallback="prevCallback"
-        let-nextCallback="nextCallback"
-      >
-        <div class="flex flex-column h-12rem">
-          <div
-            class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
-          >
-            <div *ngFor="let task of tasksStep">
-              <div class="checkbox-wrapper">
-                <label>
-                  <input
-                    type="checkbox"
-                    [(ngModel)]="task.isCompleted"
-                    (change)="update(task)"
-                  />
-                  {{ task.value }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </p-stepperPanel>
-    <p-stepperPanel>
-      <ng-template
-        pTemplate="header"
-        let-onClick="onClick"
-        let-index="index"
-      >
-        <button class="p-stepper-action"
-        (click)="getStepsByNumber(3); onClick.emit()"
-          ><span class="p-stepper-number">3</span
-          ><span class="p-stepper-title">שלב III</span></button
-        >
-      </ng-template>
-      <ng-template pTemplate="content" let-prevCallback="prevCallback">
-        <div class="flex flex-column h-12rem">
-          <div
-            class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
-          >
-            <div *ngFor="let task of tasksStep">
-              <div class="checkbox-wrapper">
-                <label>
-                  <input
-                    type="checkbox"
-                    [(ngModel)]="task.isCompleted"
-                    (change)="update(task)"
-                  />
-                  {{ task.value }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </p-stepperPanel>
-  </p-stepper>
+<p-table [value]="allTaxRefunds" [tableStyle]="{ 'max-width': '50rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th></th>
+      <th>עובד מטפל</th>
+      <th>תאריך יצירה</th>
+      <th>שנה</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-task>
+    <tr>
+      <td><p-button (click)="goToSteps(task)" label="עדכן"></p-button></td>
+      <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
+      <td>{{ task.date | date : 'dd/MM/yyyy' }}</td>
+      <td>{{ task.year }}</td>
+    </tr>
+  </ng-template>
+</p-table>

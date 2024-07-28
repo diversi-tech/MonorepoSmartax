@@ -200,12 +200,9 @@ import { PopAppComponent } from './pop_up/task-pop-app/pop-app.component';
       { path: 'clientField' , component:ClientFieldComponent},
       { path: 'yearlyReport', component: YearlyReportComponent ,},
       {path: 'createYearlyReport', component:CreateYearlyReportComponent},
-        
-      { path: 'taxRefunds', component: TaxRefundsComponent ,
-        children: [
-         {path: 'steps', component:TaxRefundsStepsComponent}
-        ]
-       },
+      
+      { path: 'taxRefunds', component: TaxRefundsComponent},
+      {path: 'taxrefundsteps', component:TaxRefundsStepsComponent},
       { path: 'monthlyReport', component: MonthlyReportComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
       {path:'sensitiveDetails', component:SensitiveDetailsComponent}
@@ -213,7 +210,7 @@ import { PopAppComponent } from './pop_up/task-pop-app/pop-app.component';
     ],
   },
   { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
-  { path: 'taxRefunds',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
+  { path: 'taxRefunds',component: TaxRefundsComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
   { path: 'allCommunication', component: AllCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 3, forToolbar:true, label: 'כלל השיחות', icon: icons.communications  } },
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:false, icon: '' }},
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent ,canActivate: [AuthGuard], data:{ authType: 6, forToolbar:false, icon: '' }},
@@ -240,8 +237,7 @@ import { PopAppComponent } from './pop_up/task-pop-app/pop-app.component';
 
 },
 {path: 'steps/createYearlyReport',component:CreateYearlyReportComponent},
-{path: 'popup/create',component:PopAppComponent}
-
+{path: 'popup/create',component:PopAppComponent},
 
 
 

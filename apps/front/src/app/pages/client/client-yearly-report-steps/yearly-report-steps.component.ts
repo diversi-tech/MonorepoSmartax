@@ -73,21 +73,21 @@ export class YearlyReportStepsComponent implements OnInit {
   checkStepCompletion() {
     // אפשרות למעבר לשלב הבא רק אם כל תיבות הסימון בשלב הראשון מסומנות
     if (this.activeStep === 0) {
-      const allChecked = this.getStepsByNumber(1).every(task => task.isComplete);
+      const allChecked = this.getStepsByNumber(1).every(task => task.isCompleted);
       this.isStepOneComplete = () => allChecked;
     }
   }
 
   isStepComplete(stepNumber: number): boolean {
-    return this.getStepsByNumber(stepNumber).every(task => task.isComplete);
+    return this.getStepsByNumber(stepNumber).every(task => task.isCompleted);
   }
 
   async update(task: StepField) {
     const taskId = task._id;
-    this.changes[taskId] = !this.changes[taskId];
+    this.changes[taskId] = task.isCompleted;
     const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
     if (taskIndex !== -1) {
-      this.responseData.stepsList[taskIndex].isComplete = this.changes[taskId];
+      this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
     }
   }
 
@@ -97,7 +97,7 @@ export class YearlyReportStepsComponent implements OnInit {
     for (const taskId in this.changes) {
       const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
       if (taskIndex !== -1) {
-        this.responseData.stepsList[taskIndex].isComplete = this.changes[taskId];
+        this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
       }
     }
 
@@ -122,7 +122,7 @@ export class YearlyReportStepsComponent implements OnInit {
   }
 
   isStepOneComplete(): boolean {
-    return this.getStepsByNumber(1).every(task => task.isComplete);
+    return this.getStepsByNumber(1).every(task => task.isCompleted);
   }
 
   nextStep() {
@@ -138,7 +138,7 @@ export class YearlyReportStepsComponent implements OnInit {
 
   isAllTasksCompleted(stepNumber: number): boolean {
     const tasks = this.getStepsByNumber(stepNumber);
-    return tasks.every(task => task.isComplete);
+    return tasks.every(task => task.isCompleted);
   }
 
   goToUpdate() {
