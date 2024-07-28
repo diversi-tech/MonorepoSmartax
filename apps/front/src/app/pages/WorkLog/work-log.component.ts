@@ -10,7 +10,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../_services/token.service';
-import { UpdateWorkLogDto } from '../../../../../../server/src/Models/dto/workLog.dto';
+import { UpdateWorkLogDto } from '../../../../../../timesheet/src/dto/workLog.dto';
 
 @Component({
   selector: 'app-work-log',
@@ -47,6 +47,8 @@ export class WorkLogComponent implements OnInit {
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('_id');
     this.userRole = this.tokenService.getCurrentDetail('role').level;
+    console.log(this.userRole);
+    
   }
 
   ngOnInit() {

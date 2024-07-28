@@ -32,7 +32,7 @@ declare global {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [FormsModule, NgClass, NgIf, ForgotPasswordComponent, RouterOutlet, NgClass]
+  imports: [FormsModule, NgClass, NgIf, RouterOutlet, NgClass]
 })
 export class LoginComponent implements OnInit {
   form: any = {

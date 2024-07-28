@@ -223,7 +223,7 @@ import { TableComponent } from './table/table.component';
        },
       { path: 'monthlyReport', component: MonthlyReportComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
-      {path:'sensitiveDetails', component:SensitiveDetailsComponent}
+      { path:'sensitiveDetails', component:SensitiveDetailsComponent}
   
     ],
   },

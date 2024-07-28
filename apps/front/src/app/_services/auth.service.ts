@@ -96,7 +96,7 @@ export class AuthService {
     try {
       if (window.google && window.google.accounts) {
         window.google.accounts.id.initialize({
-          client_id: '450626878965-7r8nl14gj5eh5h4lfb1qs2d4kfkvq15l.apps.googleusercontent.com',
+          client_id: '427515481723-ja7nlkmti3amubd5e5qbtdig27fc06ik.apps.googleusercontent.com',
           callback: this.handleCredentialResponse.bind(this),
         });
         window.google.accounts.id.renderButton(
@@ -110,18 +110,18 @@ export class AuthService {
       console.error("Error initializing Google Auth:", error);
     }
   }
-  
-  
+
   handleCredentialResponse(response: any) {
     try {
       const userObject: any = jwt_decode(response.credential);
-      console.log(userObject);
+      console.log("User Object:", userObject);
+      console.log("User Name:", userObject.name); // מציג את השם של המשתמש
+      console.log("User Email:", userObject.email); // מציג את האימייל של המשתמש
       // כאן אפשר לשלוח את ה-token לשרת שלך לאימות נוסף או לבצע פעולות נוספות
     } catch (error) {
       console.error("Error handling credential response:", error);
     }
   }
-  
 
   signIn() {
     window.google.accounts.id.prompt();

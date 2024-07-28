@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as ExcelJS from 'exceljs';
-import { CreateWorkLogDto, UpdateWorkLogDto, UpdateTimeEntryDto } from '../Models/dto/workLog.dto';
-import { WorkLog, WorkLogDocument } from '../Models/workLog.model';
+import { CreateWorkLogDto, UpdateWorkLogDto, UpdateTimeEntryDto } from '../dto/workLog.dto';
+import { WorkLog, WorkLogDocument } from '../model/workLog.model';
 
 @Injectable()
 export class WorkLogService {
@@ -85,7 +85,7 @@ export class WorkLogService {
     const worksheet = workbook.addWorksheet('Work Logs');
 
     worksheet.columns = [
-      { header: '   שם עובד   ', key: 'employeeId', width: 15 },
+      { header: 'שם עובד', key: 'employeeId', width: 15 },
       { header: 'תאריך', key: 'date', width: 20 },
       { header: 'שעת כניסה', key: 'checkIn', width: 15 },
       { header: 'שעת יציאה', key: 'checkOut', width: 15 },
@@ -103,7 +103,7 @@ export class WorkLogService {
         });
       });
     });
-    this.addSummaryToWorksheet(worksheet, workLogs);
+
     const buffer = await workbook.xlsx.writeBuffer();
     return Buffer.from(buffer);
   }
@@ -142,57 +142,8 @@ export class WorkLogService {
         });
       });
     });
-    this.addSummaryToWorksheet(worksheet, workLogs);
+
     const buffer = await workbook.xlsx.writeBuffer();
     return Buffer.from(buffer);
   }
-  private addSummaryToWorksheet(worksheet: ExcelJS.Worksheet, workLogs: any[]) {
-    // חישוב סך השעות ומספר הימים בחודש
-    let totalHoursWorked = 0;
-    const daysWorked = new Set(); // Set כדי למנוע ימים כפולים חישוב מספר הימים שעבד העובד
-  
-    workLogs.forEach((log) => {
-      log.timeEntries.forEach((entry) => {
-        totalHoursWorked += entry.hoursWorked;
-        daysWorked.add(log.date.getDate());
-      });
-    });
-    const summaryRow = worksheet.addRow({ 
-      employeeId: 'כלל השעות שעבד העובד בחודש',
-      date: '',
-      checkIn: '',
-      checkOut: '',
-      hoursWorked: totalHoursWorked.toFixed(2), // מעגל את המשתנה
-    });
-  
-    // סגנון עבור שורת הסיכום
-    summaryRow.eachCell((cell) => {
-      cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FFFF00' }, // צבע צהוב
-      };
-      cell.font = {
-        bold: true, // טקסט מודגש
-      };
-    });
-    
-    const summaryRow2 = worksheet.addRow({ 
-      employeeId: 'מספר הימים שעבד העובד בחודש',
-      date: '',
-      checkIn: '',
-      checkOut: '',
-      hoursWorked: daysWorked.size, // עבודה הוא עבד
-    }); 
-    summaryRow2.eachCell((cell) => {
-      cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FFFF00' }, // צבע צהוב
-      };
-      cell.font = {
-        bold: true, // טקסט מודגש
-      };
-    }); 
-      }
 }
