@@ -55,10 +55,10 @@ export class Client extends Document {
   @Prop()
   comments: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  @Prop({ type: Types.ObjectId, ref: 'User'})
   lastUserUpdate: User;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  @Prop({ type: Types.ObjectId, ref: 'User'})
   assignTo: User[];
 
   @Prop({ unique: true })
@@ -66,8 +66,10 @@ export class Client extends Document {
 
   @Prop()
   dateOfBirth: Date;
+
   @Prop()
-  payment: Types.ObjectId;
+  payment: string;
+
   @Prop()
   isEmploysWorkers: boolean;
 

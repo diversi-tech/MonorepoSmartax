@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimerService } from '../_services/timer.service';
-import { Timer } from '../_models/timer';
+import { Timer } from '../_models/timer.model';
 import { TokenService } from '../_services/token.service';
 import { ButtonDirective, Button } from 'primeng/button';
 import { UserService } from '../_services/user.service';

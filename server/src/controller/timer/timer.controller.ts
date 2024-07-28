@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Post, Put, UseFilters, ValidationPipe } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpExceptionFilter } from "server/src/common/filters/http-exception.filter";
-import { CreateTimerDto, UpdateTimerDto } from "server/src/Models/dto/timer";
-import { Timer } from "server/src/Models/timer";
-import { TimerService } from "server/src/services/timer";
+import { CreateTimerDto, UpdateTimerDto } from "server/src/Models/dto/timer.dto";
+import { Timer } from "server/src/Models/timer.model";
+import { TimerService } from "server/src/services/timer.service";
 
 @ApiTags('Timer')
 @Controller('timer')

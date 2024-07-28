@@ -1,59 +1,117 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { stepFieldService } from '../../../_services/step_field.service';
 import { StepField } from '../../../_models/stepField.module';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown'; // ייבוא של קומפוננטת ה-Dropdown
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 @Component({
   selector: 'app-edit-client-yearly-report',
   standalone: true,
-  imports: [CommonModule,TableModule,ToastModule,ButtonModule],
+  imports: [CommonModule, TableModule, ToastModule, ButtonModule, ReactiveFormsModule, FormsModule,DialogModule,DropdownModule,InputTextModule],
   templateUrl: './edit-client-yearly-report.component.html',
-  styleUrl: './edit-client-yearly-report.component.css',
+  styleUrls: ['./edit-client-yearly-report.component.css'],
 })
-
 @Injectable({
-  providedIn: 'root' // Ensure it's provided in root or a specific module
+  providedIn: 'root'
 })
+export class EditClientYearlyReportComponent implements OnInit {
+  allStepFields: StepField[] = [];
+  filteredStepFields: StepField[] = [];
+  numberOptions = [1, 2, 3, 4, 5];
 
-export class EditClientYearlyReportComponent {
-  constructor(private stepFieldService: stepFieldService){}
+  displayAddDialog: boolean = false;
+  newStepValue: string = '';
+  newStepStepNumber: number = 1;
 
-  allStepFields: StepField[]| null;
+  constructor(private stepFieldService: stepFieldService) {}
 
   ngOnInit(): void {
- 
     this.stepFieldService.getAllStepField().subscribe(
-     (stepFields) => {
-       this.allStepFields = stepFields;
-       console.log(this.allStepFields)
-     },
-     (error) => {
-       console.error('Error ', error);
-     }
-   )
-   }
-   saveStepValue(step: StepField) {
-    console.log(step)
-    const index = this.allStepFields.findIndex(s => s._id === step._id);
-    console.log(index)
-    if (index ) {
-      this.allStepFields[index].value=step.value;
-      this.allStepFields[index].stepNumber=step.stepNumber;
+      (stepFields) => {
+        this.allStepFields = stepFields.filter(x => x.type === "yearly-report");
+        this.filteredStepFields = [...this.allStepFields];
+      },
+      (error) => {
+        console.error('Error', error);
+      }
+    );
+  }
+
+  filterByDescription(description: string): void {
+    this.filteredStepFields = this.allStepFields.filter(step =>
+      step.value.toLowerCase().includes(description.toLowerCase())
+    );
+  }
+
+  filterByStepNumber(stepNumber: number): void {
+    if (stepNumber) {
+      this.filteredStepFields = this.allStepFields.filter(step =>
+        step.stepNumber === stepNumber
+      );
+    } else {
+      this.filteredStepFields = [...this.allStepFields];
     }
   }
 
+  showAddDialog(): void {
+    this.displayAddDialog = true;
+  }
+
+  hideAddDialog(): void {
+    this.displayAddDialog = false;
+    this.newStepValue = '';
+    this.newStepStepNumber = 1;
+  }
+
+  addStep(): void {
+    const newStep ={
+      value: this.newStepValue,
+      stepNumber: this.newStepStepNumber,
+      isComplete: false,
+      type: 'yearly-report'
+    };
+
+    if (this.isValidStep(newStep)) {
+      this.stepFieldService.createStepField(newStep).subscribe(
+        response => {
+          if (response) {
+            this.allStepFields.push(response);
+            this.filteredStepFields = [...this.allStepFields];
+            this.hideAddDialog();
+          }
+        },
+        error => {
+          console.error('Error adding step', error);
+        }
+      );
+    }
+  }
+
+  isValidStep(step): boolean {
+    return step.value.length >= 2 && step.stepNumber >= 1 && step.stepNumber <= 5;
+  }
+
   update(step: StepField) {
-    console.log(step)
+    if (step.value.length < 2) {
+      alert('הפירוט חייב להיות לפחות 2 תווים.');
+      return;
+    }
+
+    if (step.stepNumber < 1 || step.stepNumber > 5) {
+      alert('מספר השלב חייב להיות בטווח 1 עד 5.');
+      return;
+    }
+
     const originalStep = this.allStepFields.find(s => s._id === step._id);
-    console.log("originalStep",originalStep)
     if (originalStep) {
-      // שלח את השינויים לשרת
       this.stepFieldService.updateStepField(step).subscribe(
         response => {
-          if(response){
+          if (response) {
             console.log('Step updated successfully', response);
           }
         },
@@ -64,25 +122,17 @@ export class EditClientYearlyReportComponent {
     }
   }
 
-  delete(step: StepField) {
-    console.log("delete")
-
-    // const originalStep = this.allStepFields.find(s => s.stepNumber === step.stepNumber);
-    // if (originalStep && (
-    //   originalStep.value !== step.value || 
-    //   originalStep.stepNumber !== step.stepNumber)) {
-      // שלח את השינויים לשרת
-      this.stepFieldService.deleteStepField(step._id).subscribe(
-        response => {
-          console.log('delted  successfully', response);
-        },
-        error => {
-          console.error('Error deleted step', error);
+  delete(id: string) {
+    this.stepFieldService.deleteStepField(id).subscribe(
+      response => {
+        if (response) {
+          this.allStepFields = this.allStepFields.filter(step => step._id !== id);
+          this.filteredStepFields = [...this.allStepFields];
         }
-      );
-   
+      },
+      error => {
+        console.error('Error deleting step', error);
+      }
+    );
   }
- 
-
-
 }

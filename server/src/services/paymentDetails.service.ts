@@ -12,6 +12,8 @@ export class PaymentDetailsService {
 
     async createPaymentDetails(createPaymentDetailsDto: CreatePaymentDetailsDto): Promise<PaymentDetails> {
         const { sumForMonth,maxHours,frequency, dateStart, dateFinish, description } = createPaymentDetailsDto;
+        console.log('start create paymentDetails');
+        
 
         if (!sumForMonth || !dateStart) {
           throw new ValidationException('Missing required fields');

@@ -19,12 +19,14 @@ export class YearlyReportService {
         const filteredStepFields = allStepFields.filter(stepField => stepField.type === 'yearly-report');
                   
         const createdYearlyReport = new this.YearlyReportModel({
-          ...createYearlyReportDto,
+             ...createYearlyReportDto,
              stepsList: filteredStepFields,
         });
                   
        return createdYearlyReport.save();
     }
+
+   
                   
 
     async updateYearlyReport(id: string, updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
