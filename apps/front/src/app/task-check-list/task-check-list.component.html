@@ -1,26 +1,41 @@
-//לבדוק בקומפוננטת משימה איך לעשות binding על משימות מהטבלה, שיודעים על איזה משימה מדובר
+<p-card header="{{checkList.name}}">
 
-<!-- <form>
-  <span>{{ checkList.name }}</span>
+  <!-- edit task -->
+  <div style="display: flex; flex-direction: row;">
 
-  <div class="p-field" *ngFor="let item of checkList.items; let i = index" style="display: flex; flex-direction: row;">
-    <div class="p-field-checkbox">
-      <p-checkbox binary="true" [(ngModel)]="item.isDone"></p-checkbox>
+    <!-- edit name -->
+    <i *ngIf="editNameInput" (click)="editName()" class="pi pi-pencil"
+      style="top:0;color: blue;cursor: pointer; padding-left: 5px;"></i>
+    <!-- add item -->
+    <i (click)="addItem()" class="pi pi-plus" style="color:rgb(0, 255, 21); cursor: pointer; padding-left: 5px;"></i>
+    <!-- delete task -->
+    <i class="pi pi-trash" (click)="deleteList()" style="color: red;cursor: pointer; padding-left: 5px;"></i>
+
+  </div>
+
+  <div class="p-field" style="display: flex; flex-direction: row;">
+    <!-- edit task name -->
+    <div *ngIf="!editNameInput" style="display: flex; flex-direction: row;">
+      <input pInputText type="text" id="name" [(ngModel)]="checkList.name" value="{{checkList.name}}">
+        <i (click)="editName()" class="pi pi-times" style="color: red ;cursor: pointer;"></i>
+    
+        <i (click)="saveName()" class="pi pi-check" style="color:blue;cursor: pointer;"></i>
     </div>
 
-    <div class="p-field">
-      <p-input type="text" [(ngModel)]="item.description" name="description"></p-input>
-      <p>{{editingItemIndex}}</p>
-    </div>
-
+      <!--add new item -->
     <div>
-      <i (click)="editItem(i)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
-      <i (click)="deleteItem(i)" class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
+      <app-check-list-item *ngIf="editNewItem" [item]="newItem" [newItem]="true" (delete)="deleteItem($event)"
+        (update)="updateItem($event)"></app-check-list-item>
     </div>
   </div>
 
-  <div>
-    <p-button type="button" icon="pi pi-plus" label="הוספת פריט" (click)="addItem()"></p-button>
+  <p-divider />
+
+
+  <!-- items of checklist -->
+  <div *ngFor="let item of checkList.items; let i = index">
+    <app-check-list-item [item]="item" [newItem]="false" (delete)="deleteItem(item._id)"
+      (update)="updateItem($event)"></app-check-list-item>
   </div>
 
-</form> -->
+</p-card>

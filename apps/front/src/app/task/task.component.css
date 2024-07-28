@@ -13,7 +13,11 @@
   display: flex;
   align-items: center;
 }
-
+#container{
+  direction: rtl;
+  text-align: right;
+  right: 0%;
+}
 .ql-formats button {
   margin-right: 5px;
 }

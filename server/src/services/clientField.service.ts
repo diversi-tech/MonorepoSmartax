@@ -34,4 +34,5 @@ export class ClientFieldService {
     async getALLClientFields(): Promise<ClientField[]> {
       return await this.clientFieldModel.find().exec();
   }
+  
 }

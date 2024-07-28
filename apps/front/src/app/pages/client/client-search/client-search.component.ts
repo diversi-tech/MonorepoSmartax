@@ -14,6 +14,7 @@ import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ImportClientComponent } from '../import-clients/import-client.component';
 
 @Component({
   selector: 'app-client-search',
@@ -30,20 +31,23 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     AddClientComponent,
     RouterOutlet,
     Button,
-    RouterLink
+    RouterLink,
+    ImportClientComponent
   ],
 })
 export class ClientSearchComponent implements OnInit {
   filterNumber: string = '';
+  filterTZ: string = '';
   isSelected: number = 0;
   clients: Client[] = [];
   filteredClients: Client[] = [];
   searchName = new FormControl('');
   selectedClient: Client | null = null;
-  displayDialog: boolean = false;
+  // displayDialog: boolean = false;
   choosedClients: Client[] = [];
   user: User;
   isChoosedAllClient: boolean = false;
+  displayDialog: boolean;
 
   constructor(
     private clientService: ClientService,
@@ -99,10 +103,12 @@ export class ClientSearchComponent implements OnInit {
   }
 
   filterClientsByNameAndBusinessName(value: string): void {
+    
     if (value !== '') {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
         (client.firstName && client.firstName.toLowerCase().includes(query)) ||
+        (client.lastName && client.lastName.toLowerCase().includes(query))||
         (client.companyName && client.companyName.toLowerCase().includes(query))
       );
     }
@@ -115,14 +121,24 @@ export class ClientSearchComponent implements OnInit {
     else
       this.filteredClients = this.clients;
   }
-
+  filterClientsByTZ(): void {
+    if (this.filterTZ != "")
+      this.filteredClients = this.clients.filter(client => client.tz.includes(this.filterTZ));
+    else
+      this.filteredClients = this.clients;
+  }
   openContactFormDialog() {
     this.displayDialog = true;
+}
+  addNewClient() {
+    console.log("in")
+    // this.displayDialog = true;
+    this.router.navigate(['add-new-client'])
   }
 
-  closeDialog() {
-    this.displayDialog = false;
-  }
+  // closeDialog() {
+  //   this.displayDialog = false;
+  // }
 
   updateChoosedClients(client: Client, isChecked: boolean) {
     if (isChecked && !this.choosedClients.includes(client)) {

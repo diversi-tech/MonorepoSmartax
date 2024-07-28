@@ -11,7 +11,11 @@ export class TableController {
 
   @Get()
   @ApiOperation({ summary: 'Get all tables with properties' })
-  async getAllCollections(): Promise<any> {
-    return await this.tableService.getAllCollections();
+  async getAllCollections(){
+    try {
+      return await this.tableService.getNestedTables();
+    } catch (error) {
+      throw new Error('Failed to get collections in controller');
+    }
 }
 }

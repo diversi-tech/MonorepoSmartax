@@ -1,7 +1,7 @@
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateClientTypeDto, UpdateClientTypeDto } from '../Models/dto/clientType.dto';
 import { ValidationException } from '../common/exceptions/validation.exception';
 import { ClientType } from '../Models/clientType.model';
@@ -16,7 +16,13 @@ export class ClientTypeService {
         if (!name || !fields || !tasks ) {
           throw new ValidationException('Missing required fields');
         }
-        const createdClientType = new this.clientTypeModel({ name,fields,tasks });
+        const RtasksObjectIds = tasks.map(id => new Types.ObjectId(id));
+
+        const createdClientType = new this.clientTypeModel({
+             name,
+             fields,
+             tasks : RtasksObjectIds 
+            });
         return await createdClientType.save();
     }
 
@@ -31,10 +37,10 @@ export class ClientTypeService {
           return clientType;
     }
     async updateClientType(updateClientTypeDto: UpdateClientTypeDto): Promise<ClientType> {
-        const {id, ...updateData } = updateClientTypeDto;
-        const updatedClientType = await this.clientTypeModel.findByIdAndUpdate(id, updateData, { new: true });
+        const {_id, ...updateData } = updateClientTypeDto;
+        const updatedClientType = await this.clientTypeModel.findByIdAndUpdate(_id, updateData, { new: true });
         if (!updatedClientType) {
-            throw new NotFoundException(`ClientType with ID ${id} not found`);
+            throw new NotFoundException(`ClientType with ID ${_id} not found`);
         }
         return updatedClientType;
     }

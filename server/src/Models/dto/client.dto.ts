@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, Length, ValidateNested, IsBoolean, IsNumber, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, Length, ValidateNested, IsBoolean, IsNumber, MaxLength, IsArray, ArrayNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateTagDto } from './tag.dto';
 import { UpdateTagDto } from './tag.dto';
@@ -7,6 +7,7 @@ import { ObjectId } from 'mongoose';
 import { SensitiveData } from '../sensitiveData.model';
 import { User } from '../user.model';
 import { ReportType } from '../client.model';
+import { ClientType } from '../clientType.model';
 
 export class CreateClientDto {
     @ApiProperty({ example: 'ACME Corporation' })
@@ -73,7 +74,7 @@ export class CreateClientDto {
     @MaxLength(300)
     comments: string;
 
-    @ApiProperty({ example: '<user_id>' })
+    @ApiProperty({ example: '<user_id>'})
     lastUserUpdate: User;
 
     @ApiProperty({ example: ['<user_id_1>', '<user_id_2>'] })
@@ -136,13 +137,24 @@ export class CreateClientDto {
     @ValidateNested()
     @Type(() => CreateTagDto)
     tag: CreateTagDto;
+
+    @ApiProperty()
+    @IsOptional()
+    clientTypes: ClientType[];
+    
+    @ApiProperty({ description: 'Array of User id' })
+    @IsNotEmpty()
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsString({ each: true })
+    clientFields: string[]
 }
 
 export class UpdateClientDto {
     @ApiProperty({ example: '123456789', required: false })
     @IsOptional()
     @IsString()
-    id?: string;
+    _id?: string;
 
     @ApiProperty({ example: 'ACME Corporation' })
     @IsString()
@@ -294,4 +306,16 @@ export class UpdateClientDto {
     @ValidateNested()
     @Type(() => UpdateTagDto)
     tag: UpdateTagDto;
+
+    @IsOptional()
+    @ApiProperty()
+    clientTypes: ClientType[];
+    
+    @ApiProperty({ description: 'Array of User id' })
+    @IsNotEmpty()
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsString({ each: true })
+    clientFields: string[]
+
 }

@@ -19,22 +19,23 @@ import { ClientFieldService } from '../../../_services/clientField.service';
 })
 export class ClientFieldComponent {
 
-  @Input() field: Field;
+  @Input() Cfield: ClientField;
 
   form: FormGroup;
 
   constructor(private fb: FormBuilder, private clientFieldService: ClientFieldService) {}
 
   ngOnInit(): void {
+    console.log(this.Cfield);
     this.form = this.fb.group({
-      [this.field.key]: ['', Validators.required] // Dynamic form control based on key
+      [this.Cfield.field.key]: ['', Validators.required] // Dynamic form control based on key
     });
   }
 
   onSubmit(): void {
     const clientField: ClientField = {
-      field: this.field,
-      value: this.form.get(this.field.key)?.value || ''
+      field: this.Cfield.field,
+      value: this.form.get(this.Cfield.value)?.value || ''
     };
     console.log(clientField);
     
@@ -46,6 +47,5 @@ export class ClientFieldComponent {
         console.error('Error saving client field:', error);
       }
     );
-    // console.log('Submitted client field:', clientField);
   }
 }

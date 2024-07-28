@@ -7,7 +7,8 @@ import { ValidationException } from '../common/exceptions/validation.exception';
 import { TokenService } from './jwt.service';
 import * as bcrypt from 'bcryptjs';
 import { Task } from '../Models/task.model';
-import { CreateTaskDto ,UpdateTaskDto } from '../Models/dto/task.dto';
+import { CreateTaskDto, UpdateTaskDto } from '../Models/dto/task.dto';
+import { TasksGateway } from './socket/socket.gateway';
 import { ClientService } from './client.service';
 
 
@@ -15,11 +16,10 @@ import { ClientService } from './client.service';
 export class TaskService {
   constructor(
     @InjectModel('Task') private readonly taskModel: Model<Task>,
-    private jwtToken:TokenService,
-    private clientService: ClientService
-    
+    private jwtToken: TokenService,
+    private clientService: ClientService,
+    private readonly tasksGateway: TasksGateway
   ) {}
-  
 
   // async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
   //   const {  client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority,images,googleId,startDate } = createTaskDto;
@@ -70,32 +70,60 @@ export class TaskService {
   }
 
   async findOne(id: string): Promise<Task> {
-    const task = await this.taskModel.findById({"_id":id}).exec();
+    const task = await this.taskModel.findById({ _id: id }).exec();
     if (!task) {
       throw new ValidationException('Task not found');
     }
     return task;
   }
 
-
   async updateTask(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
-try{
-  const {  client, taskName, description,dueDate,status,assignedTo,tags, checkList,priority,images,googleId,deadline ,startDate} = updateTaskDto;
+    try {
+      const {
+        client,
+        taskName,
+        description,
+        dueDate,
+        status,
+        assignedTo,
+        tags,
+        checkList,
+        priority,
+        images,
+        googleId,
+        deadline,
+        startDate,
+      } = updateTaskDto;
 
-  const updatedTask = await this.taskModel.findByIdAndUpdate(
-    id,
-    { client, taskName, description,dueDate,status,assignedTo,tags,checkList,priority,images,googleId,deadline,startDate},
-    { new: true }
-  ).exec();
+      const updatedTask = await this.taskModel
+        .findByIdAndUpdate(
+          id,
+          {
+            client,
+            taskName,
+            description,
+            dueDate,
+            status,
+            assignedTo,
+            tags,
+            checkList,
+            priority,
+            images,
+            googleId,
+            deadline,
+            startDate,
+          },
+          { new: true }
+        )
+        .exec();
 
-  if (!updatedTask) {
-    throw new ValidationException('Task not found');
-  }
-  return updatedTask;
-}catch(err){
-  console.log(err);
-  
-}
+      if (!updatedTask) {
+        throw new ValidationException('Task not found');
+      }
+      return updatedTask;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async deleteTask(id: string): Promise<Task> {
@@ -106,4 +134,3 @@ try{
     return deletedTask;
   }
 }
-

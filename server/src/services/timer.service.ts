@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Timer } from "../Models/timer";
+import { Timer } from "../Models/timer.model";
 import { Model, Types } from "mongoose";
-import { CreateTimerDto, UpdateTimerDto } from "../Models/dto/timer";
+import { CreateTimerDto, UpdateTimerDto } from "../Models/dto/timer.dto";
 import { ValidationException } from "../common/exceptions/validation.exception";
 import { User } from "../Models/user.model";
 import { Task } from "../Models/task.model";

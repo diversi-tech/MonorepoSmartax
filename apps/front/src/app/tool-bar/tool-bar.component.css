@@ -6,3 +6,7 @@
 #container{
     color:cadetblue  !important;
 } */
+
+#menu {
+    direction: rtl;
+}

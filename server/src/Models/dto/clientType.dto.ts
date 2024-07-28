@@ -1,5 +1,5 @@
 
-import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, Length } from 'class-validator';
+import { IsNotEmpty, IsString, IsDateString, IsOptional, IsPhoneNumber, Length, IsArray } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger'
 
 import { Task } from '../task.model';
@@ -17,9 +17,12 @@ export class CreateClientTypeDto {
     @IsString()
     name: string;
 
-    @ApiProperty({ type: Array<String>, required: true })
-    @IsOptional()
-    tasks?:string[];
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsArray()
+    @IsString({ each: true })
+    tasks: string[]
+
 
     @ApiProperty({ type: [CreateFieldDto], required: true })
     @IsOptional()
@@ -32,18 +35,20 @@ export class UpdateClientTypeDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    id: string;
+    _id: string;
 
-    @ApiProperty({ type: String, required: true })
+    @ApiProperty({ type: String})
     @IsOptional()
     @IsString()
     name?: string;
     
-    @ApiProperty({ type: Array<String>, required: true })
-    @IsOptional()
-    @IsString()
-    tasks?:string[];
-    @ApiProperty({ type: Array<Field>, required: true })
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsArray()
+    @IsString({ each: true })
+    tasks: string[]
+
+    @ApiProperty({ type: Array<Field>})
     @IsOptional()
     fields?: Field[];
 

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Client } from '../Models/client.model';
 import { CreateClientDto, UpdateClientDto } from '../Models/dto/client.dto';
 import { ValidationException } from '../common/exceptions/validation.exception';
@@ -11,13 +11,25 @@ export class ClientService {
     @InjectModel('Client') private readonly clientModel: Model<Client>
   ) {}
 
+  // const usersIdObjectIds = usersId.map(id => new Types.ObjectId(id));
+  // const createMeet = new this.MeetModel({
+  //     address,
+  //     date, beginningTime,
+  //     endTime,
+  //     usersId:usersIdObjectIds,
+  //     clientDepartments:clientDepartmentsObjectIds,
+  //     googleId});
   async createClient(createClientDto: CreateClientDto): Promise<Client> {
     try {
       const highestClientID = await this.getHighestClientID();
       const newClientID = (parseInt(highestClientID, 10) + 1).toString();
+
+        const clientFieldIdObjectIds = createClientDto.clientFields.map(id => new Types.ObjectId(id));
+
       const createdClient = new this.clientModel({
         ...createClientDto,
         clientID: newClientID,
+        clientFields: clientFieldIdObjectIds
       });
       return await createdClient.save();
     } catch (err) {
@@ -56,6 +68,8 @@ export class ClientService {
   }
   async searchClient(id: string): Promise<Client> {
     const client = await this.clientModel.findOne({ _id: id }).exec();
+    console.log(client);
+    console.log("etty");
     if (!client) {
       throw new NotFoundException('Client not found');
     }

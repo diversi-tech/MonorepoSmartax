@@ -1,22 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { Client } from '../_models/client.module'; // Update the path according to the location of your model
-import { CLIENT_ENDPOINT } from '../api-urls';
+import { forkJoin, Observable, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { Client } from '../_models/client.module';
+import { CreateSensitiveDataDto } from '../../../../../server/src/Models/dto/sensitiveData.dto'; // Update the path according to your project structure
+
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
 
-  // private apiUrl = CLIENT_ENDPOINT; // Base URL for the Client API
-  private apiUrl = 'http://localhost:8080/clients'; // Base URL for the Client API
-  // private apiUrl = '/api/clients';
+  private apiUrl = 'http://localhost:8080/clients'; 
+  private sensitiveDataUrl = 'http://localhost:8080/SensitiveData'; // Base URL for the Sensitive Data API
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }) // Define headers for HTTP requests
   };
 
   constructor(private http: HttpClient) { }
+
 
   // Create a new Client
   createClient(client: Client): Observable<Client> {
@@ -41,7 +43,6 @@ export class ClientService {
         catchError(this.handleError<Client>('searchClient'))
       );
   }
-
   // Update an existing Client
   updateClient(client: Client): Observable<Client> {
     return this.http.put<Client>(`${this.apiUrl}`, client, this.httpOptions)
@@ -49,8 +50,21 @@ export class ClientService {
         catchError(this.handleError<Client>('updateClient'))
       );
   }
-
-  // Delete a Client by ID
+  fetchSensitiveDataForClient(clientId: string): Observable<CreateSensitiveDataDto[]> {
+    return this.searchClient(clientId).pipe(
+      switchMap(client => {
+        if (client && client.encryptedPasswords && client.encryptedPasswords.length > 0) {
+          const sensitiveDataRequests = client.encryptedPasswords.map(id => 
+            this.http.get<CreateSensitiveDataDto>(`${this.sensitiveDataUrl}/${id}`)
+          );
+          return forkJoin(sensitiveDataRequests);
+        } else {
+          return of([]); // Return an empty array if no encryptedPasswords found
+        }
+      }),
+      catchError(this.handleError<CreateSensitiveDataDto[]>('fetchSensitiveDataForClient', []))
+    );
+  }
   deleteClient(id: string): Observable<boolean> {
     return this.http.delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
       .pipe(
