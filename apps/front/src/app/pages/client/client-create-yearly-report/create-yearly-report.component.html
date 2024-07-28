@@ -1,93 +1,58 @@
-<p-button label="Open Form" icon="pi pi-external-link" (click)="showModalDialog()"></p-button>
+<div class="form-container">
+ 
+  <button class="close-button" (click)="goBack()">X</button>
 
-<p-dialog header="Yearly Report Form" [(visible)]="displayModal" modal="true" [style]="{width: '25vW'}" [draggable]="false" [resizable]="false" class="mydialog">
-  <ng-template pTemplate="header">
-    <div class="flex justify-content-between align-items-center">
-      <span>Yearly Report Form</span>
-      <!-- <button type="button" class="p-dialog-header-icon p-link" (click)="hideModalDialog()"> -->
-        <!-- <span class="pi pi-times"></span> -->
-      <!-- </button> -->
+  <div class="title-container">
+    <div class="icon-circle">
+      <i class="pi pi-user"></i>
     </div>
-  </ng-template>
-  <ng-template pTemplate="content">
-    <form [formGroup]="yearlyReportForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <p-dropdown
-          id="type"
-          formControlName="type"
-          [options]="typeOptions"
-          placeholder="עבור-"
-          [style]="{ width: '200px' }"
-          panelStyleClass="custom-dropdown-panel"
-          styleClass="custom-dropdown"
-        ></p-dropdown>
-        <div *ngIf="yearlyReportForm.get('type').invalid && yearlyReportForm.get('type').touched" class="error">
-          This field is required.
-        </div>
-      </div>
+    <h2> 
+      :דוח שנתי</h2>
 
-      <div class="form-group">
-        <p-dropdown
-          id="year"
-          formControlName="year"
-          [options]="yearList"
-          optionLabel="yearNUm"
-          placeholder="בחירת שנה"
-          [style]="{ width: '200px' }"
-          panelStyleClass="custom-dropdown-panel"
-          styleClass="custom-dropdown"
-        ></p-dropdown>
-        <div *ngIf="yearlyReportForm.get('year').invalid && yearlyReportForm.get('year').touched" class="error">
-          This field is required.
-        </div>
+  </div>
+  <form [formGroup]="yearlyReportForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <p-dropdown id="type" formControlName="type" [options]="typeOptions" placeholder="עבור-"
+        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown"></p-dropdown>
+      <div *ngIf="yearlyReportForm.get('type').invalid && yearlyReportForm.get('type').touched" class="error">
+        This field is required.
       </div>
+    </div>
 
-      <div class="form-group">
-        <label for="price">מחיר:</label>
-        <input
-          type="number"
-          id="price"
-          formControlName="price"
-          class="custom-dropdown-panel"
-          placeholder="מחיר"
-        >
-        <div *ngIf="yearlyReportForm.get('price').invalid && yearlyReportForm.get('price').touched" class="error">
-          This field is required.
-        </div>
+    <div class="form-group">
+      <p-dropdown id="year" formControlName="year" [options]="yearList" optionLabel="yearNUm" placeholder="בחירת שנה"
+        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown"></p-dropdown>
+      <div *ngIf="yearlyReportForm.get('year').invalid && yearlyReportForm.get('year').touched" class="error">
+        This field is required.
       </div>
+    </div>
 
-      <div class="form-group">
-        <label for="paymentAmountPaid">סכום ששולם:</label>
-        <input
-          type="number"
-          id="paymentAmountPaid"
-          formControlName="paymentAmountPaid"
-          class="custom-dropdown-panel"
-          placeholder="סכום ששולם"
-        >
-        <div *ngIf="yearlyReportForm.get('paymentAmountPaid').invalid && yearlyReportForm.get('paymentAmountPaid').touched" class="error">
-          This field is required.
-        </div>
+    <div class="form-group">
+      <label for="price">מחיר:</label>
+      <input type="number" id="price" formControlName="price" class="form-control" placeholder="מחיר">
+      <div *ngIf="yearlyReportForm.get('price').invalid && yearlyReportForm.get('price').touched" class="error">
+        This field is required.
       </div>
+    </div>
 
-      <div class="form-group">
-        <label for="balanceDue">יתרה לתשלום:</label>
-        <input
-          type="number"
-          id="balanceDue"
-          formControlName="balanceDue"
-          class="custom-dropdown-panel"
-          placeholder="יתרה לתשלום"
-        >
-        <div *ngIf="yearlyReportForm.get('balanceDue').invalid && yearlyReportForm.get('balanceDue').touched" class="error">
-          This field is required.
-        </div>
+    <div class="form-group">
+      <label for="paymentAmountPaid">סכום ששולם:</label>
+      <input type="number" id="paymentAmountPaid" formControlName="paymentAmountPaid" class="form-control"
+        placeholder="סכום ששולם">
+      <div *ngIf="yearlyReportForm.get('paymentAmountPaid').invalid && yearlyReportForm.get('paymentAmountPaid').touched"
+        class="error">
+        This field is required.
       </div>
+    </div>
 
-      <p-button type="submit" label="יצירת דוח שנתי חדש"></p-button>
-      <div *ngIf="formSubmitted && yearlyReportForm.invalid" class="error">
-        All fields are required.
+    <div class="form-group">
+      <label for="balanceDue">יתרה לתשלום:</label>
+      <input type="number" id="balanceDue" formControlName="balanceDue" class="form-control" placeholder="יתרה לתשלום">
+      <div *ngIf="yearlyReportForm.get('balanceDue').invalid && yearlyReportForm.get('balanceDue').touched" class="error">
+        This field is required.
       </div>
-    </form>
-  </ng-template>
-</p-dialog>
+    </div>
+
+    <button type="submit" pButton label="Submit" class="custom-button"></button>
+  </form>
+</div>
