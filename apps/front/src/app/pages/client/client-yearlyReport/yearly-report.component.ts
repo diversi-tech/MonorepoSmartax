@@ -15,11 +15,12 @@ import { TokenService } from '../../../_services/token.service';
 import { UserService } from '../../../_services/user.service';
 import { User } from '../../../_models/user.module';
 import { NgZone } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-yearly-report',
   standalone: true,
-  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule],
+  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule,FormsModule],
   templateUrl: './yearly-report.component.html',
   styleUrl: './yearly-report.component.css',
 })
