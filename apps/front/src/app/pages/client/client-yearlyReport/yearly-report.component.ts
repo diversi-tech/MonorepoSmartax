@@ -15,11 +15,12 @@ import { TokenService } from '../../../_services/token.service';
 import { UserService } from '../../../_services/user.service';
 import { User } from '../../../_models/user.module';
 import { NgZone } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-yearly-report',
   standalone: true,
-  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule],
+  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule,FormsModule],
   templateUrl: './yearly-report.component.html',
   styleUrl: './yearly-report.component.css',
 })
@@ -73,10 +74,10 @@ export class YearlyReportComponent implements OnInit {
 
   createReprtTag(): void {
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createYearlyReport'], { state: { client: this.client } });
-  }
+}
 
   goToSteps(task: any) {
-    this.router.navigate(['/steps', this.router], { state: { data: task, client: this.client } });
+    this.router.navigate(['clientSearch/clientManagement/clientNavbar/steps', this.router], { state: { data: task, client: this.client } });
   }
 
   getEmployeName(idEmploye: string): any {

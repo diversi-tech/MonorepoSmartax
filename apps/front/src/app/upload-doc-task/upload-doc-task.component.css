@@ -1,3 +1,4 @@
+@import "primeicons/primeicons.css";
 .input-container {
     display: flex;
     align-items: center;
@@ -6,6 +7,25 @@
   .input-container input {
     flex: 1;
   }
+
+  :host ::ng-deep .p-fileupload .p-fileupload-content{
+    display: none;
+   
+  }
+
+  :host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
+    /* display: none !important; */
+   background-color: none;
+   padding: 0%;
+   border: 0cm;
+   background: none;
+  }
+
+
+  :host ::ng-deep span.p-ripple.p-element.p-button.p-component.p-fileupload-choose.ng-star-inserted{
+    margin-top:1cm;
+  }
+  
   
   /* .add-button {
     margin-left: 8px !important;

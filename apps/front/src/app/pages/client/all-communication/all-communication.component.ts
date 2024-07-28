@@ -87,10 +87,20 @@ export class AllCommunicationComponent {
       .subscribe(communications => {
         this.communications = communications
         this.filteredCommunicatio = communications
+        this.sortCommunicatioByDate();
       });
 
   }
-
+  sortCommunicatioByDate(): void {
+    this.filteredCommunicatio.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+  }
+  sortCommunicatioByDate2(): void {
+    this.filteredCommunicatio.sort((a, b) => {
+      return new Date(a.date).getTime() - new Date(b.date).getTime(); // מהישן לחדש
+    });
+  }
   selectCommunication(communication: Communication): void {
     this.selectedCommunication = { ...communication }; // Clone the communication for editing
   }

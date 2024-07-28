@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { ButtonDirective, Button } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { NgClass, NgIf } from '@angular/common';
 
 interface Product {
   name: string;
@@ -20,11 +21,11 @@ interface Product {
 
 
 @Component({
-    selector: 'app-employees-table',
-    templateUrl: './employees-table.component.html',
-    styleUrl: './employees-table.component.css',
-    standalone: true,
-    imports: [ConfirmDialogModule, Footer, ButtonDirective, TableModule, PrimeTemplate, Button]
+  selector: 'app-employees-table',
+  templateUrl: './employees-table.component.html',
+  styleUrl: './employees-table.component.css',
+  standalone: true,
+  imports: [ConfirmDialogModule, Footer, ButtonDirective, TableModule, PrimeTemplate, Button, NgIf, NgClass]
 })
 export class EmployeesTableComponent implements OnInit {
 
@@ -32,6 +33,7 @@ export class EmployeesTableComponent implements OnInit {
   allRoles: Role[] = [];
   selectedUser!: User;
   confirmationKey: string = 'deleteConfirmation'; // מפתח לאישור המחיקה
+  currentUser: User;
 
 
   constructor(
@@ -69,15 +71,14 @@ export class EmployeesTableComponent implements OnInit {
     );
   }
 
-  showConfirmation(user: User): void {
-    this.selectedUser = user;
+  showConfirmation(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this user?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         console.log('delete start');
-        this.deleteUser(this.selectedUser)
+        this.deleteUser()
       },
       reject: () => {
         console.log('cancel start');
@@ -91,14 +92,14 @@ export class EmployeesTableComponent implements OnInit {
     this.confirmationService.close()
   }
 
-  confirmDelete(user: User): void {
-    this.deleteUser(user);
+  confirmDelete(): void {
+    this.deleteUser();
   }
 
-  deleteUser(user: User): void {
-    console.log(user);
+  deleteUser(): void {
+    console.log(this.currentUser);
 
-    this.userService.deleteUser(user._id).subscribe(
+    this.userService.deleteUser(this.currentUser._id).subscribe(
       () => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User deleted successfully.' });
         this.loadUsers(); // Reload users after deletion
@@ -111,11 +112,16 @@ export class EmployeesTableComponent implements OnInit {
     );
   }
 
-  editDetails(user: User): void {
+  editDetails(): void {
+    const user = this.currentUser;
     this.router.navigate(['/register/edit'], { state: { user } });
   }
 
   addUser(): void {
     this.router.navigate(['/register/register']);
+  }
+
+  selectCurrentUser(user: User) {
+    this.currentUser = user;
   }
 }
