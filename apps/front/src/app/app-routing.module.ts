@@ -208,7 +208,7 @@ import { PopAppComponent } from './pop_up/task-pop-app/pop-app.component';
        },
       { path: 'monthlyReport', component: MonthlyReportComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
-      {path:'sensitiveDetails', component:SensitiveDetailsComponent}
+      { path:'sensitiveDetails', component:SensitiveDetailsComponent}
   
     ],
   },
