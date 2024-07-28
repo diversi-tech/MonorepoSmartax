@@ -224,18 +224,14 @@ export const routes: Routes = [
           },
         ],
       },
-      {path: 'taxRefunds', component: TaxRefundsComponent,
-        children: [
-          { path: 'steps', component: TaxRefundsStepsComponent }
-        ]
-      },
+      {path: 'taxRefunds', component: TaxRefundsComponent,},
+      {path: 'taxrefundsteps', component:TaxRefundsStepsComponent},
       { path: 'monthlyReport', component: MonthlyReportComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
       { path: 'sensitiveDetails', component: SensitiveDetailsComponent }
     ],
   },
   // { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
-  { path: 'taxRefunds', component: YearlyReportComponent, data: { authType: 10, forToolbar: false, label: 'Mod', icon: '' } },
   { path: 'allCommunication', component: AllCommunicationComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'כלל השיחות', icon: icons.communications } },
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, icon: '' } },
   { path: 'sensitiveDetails', component: SensitiveDetailsComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, icon: '' } },

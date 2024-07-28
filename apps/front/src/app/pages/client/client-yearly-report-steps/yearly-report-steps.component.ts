@@ -73,10 +73,10 @@ export class YearlyReportStepsComponent implements OnInit {
 
   async update(task: StepField) {
     const taskId = task._id;
-    this.changes[taskId] = !this.changes[taskId];
+    this.changes[taskId] = task.isCompleted;
     const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
     if (taskIndex !== -1) {
-      this.responseData.stepsList[taskIndex].isComplete = this.changes[taskId];
+      this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
     }
   }
 
@@ -86,7 +86,7 @@ export class YearlyReportStepsComponent implements OnInit {
     for (const taskId in this.changes) {
       const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
       if (taskIndex !== -1) {
-        this.responseData.stepsList[taskIndex].isComplete = this.changes[taskId];
+        this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
       }
     }
 
