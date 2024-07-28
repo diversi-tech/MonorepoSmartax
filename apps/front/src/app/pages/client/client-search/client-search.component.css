@@ -34,7 +34,7 @@
 }
 :host ::ng-deep .p-autocomplete-dd .p-autocomplete-input
 {
-  width:56rem;
+  width:50rem;
 }
 .search-results li {
   cursor: pointer;
@@ -64,8 +64,13 @@ th,td {
 .clickable-text:hover {
   transform: scale(10.10);
   color: rgb(9, 9, 9);
-
-  
 }
 
+.highlight {
+  background-color: #edecec;
+}
 
+.p-button-rounded {
+  border-radius: 20%;
+  margin: 1%;
+}

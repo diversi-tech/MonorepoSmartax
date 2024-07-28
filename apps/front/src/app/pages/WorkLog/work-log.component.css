@@ -7,4 +7,10 @@
     text-align: right;
   }
   
-  
+  .highlight {
+    background-color: #edecec;
+  }
+
+  .p-button-rounded {
+    border-radius: 20%;
+  }
