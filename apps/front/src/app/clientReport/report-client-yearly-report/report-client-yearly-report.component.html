@@ -39,7 +39,8 @@
             <td>{{ task.dateTime | date:'dd/MM/yyyy' }}</td>
             <td>{{ task.yearReport }}</td>
             <td>{{getClientName(task.idUser)?.firstName }} {{getClientName(task.idUser)?.lastName }}</td>
-            <app-icon-profile [userName]="getClientName(task.idUser)?.firstName + ' ' + getClientName(task.idUser)?.lastName" style="width: 50px;"></app-icon-profile>
+            <app-icon-profile [userName]="getClientName(task.idUser)?.firstName  &&  getClientName(task.idUser)?.lastName" style="width: 50px;"></app-icon-profile>
+        
         </tr>
     </ng-template>
 </p-table>

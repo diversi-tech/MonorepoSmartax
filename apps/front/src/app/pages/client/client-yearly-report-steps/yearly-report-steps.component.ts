@@ -12,12 +12,12 @@ import { Router } from '@angular/router';
 import { Client } from '../../../_models/client.module';
 import { YearlyReport } from '../../../_models/yearlyReport.module';
 import { Location } from '@angular/common';
-
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-yearly-report-steps',
   standalone: true,
-  imports: [CommonModule, CheckboxModule, StepperModule, ButtonModule, FormsModule, ScrollerModule, StepsModule],
+  imports: [CommonModule, CheckboxModule, StepperModule, ButtonModule, FormsModule, ScrollerModule, StepsModule,ToastModule],
   templateUrl: './yearly-report-steps.component.html',
   styleUrl: './yearly-report-steps.component.css',
 })
@@ -34,6 +34,9 @@ export class YearlyReportStepsComponent implements OnInit {
   activeStep = 0; // מתחיל בשלב הראשון
   changes: { [key: string]: boolean } = {};
   client: Client;
+  activeIndex: number = 0;
+  stepNumbers: number[] = [1, 2, 3, 4, 5]; // Step numbers
+
 
   constructor(private yearlyReportService: YearlyReportService,
                private router: Router,
@@ -65,22 +68,8 @@ export class YearlyReportStepsComponent implements OnInit {
     return Object.keys(this.stepsByNumber).map(Number);
   }
 
-  getStepsByNumber(stepNumber: number) {
-    console.log("njhg")
-    return this.stepsByNumber[stepNumber] || [];
-  }
+ 
 
-  checkStepCompletion() {
-    // אפשרות למעבר לשלב הבא רק אם כל תיבות הסימון בשלב הראשון מסומנות
-    if (this.activeStep === 0) {
-      const allChecked = this.getStepsByNumber(1).every(task => task.isComplete);
-      this.isStepOneComplete = () => allChecked;
-    }
-  }
-
-  isStepComplete(stepNumber: number): boolean {
-    return this.getStepsByNumber(stepNumber).every(task => task.isComplete);
-  }
 
   async update(task: StepField) {
     const taskId = task._id;
@@ -112,37 +101,9 @@ export class YearlyReportStepsComponent implements OnInit {
     }
   }
 
-  checkAndChangeHeaderColor() {
-    if (this.isAllTasksCompleted(5)) {
-      const step5Header = document.querySelector('p-stepperPanel[header*="שלב V"]') as HTMLElement;
-      if (step5Header) {
-        step5Header.style.color = 'red';
-      }
-    }
-  }
-
-  isStepOneComplete(): boolean {
-    return this.getStepsByNumber(1).every(task => task.isComplete);
-  }
-
-  nextStep() {
-    if (this.activeStep === 0 && !this.isStepOneComplete()) {
-      return;
-    }
-    this.activeStep++;
-  }
-
-  prevStep() {
-    this.activeStep--;
-  }
-
-  isAllTasksCompleted(stepNumber: number): boolean {
-    const tasks = this.getStepsByNumber(stepNumber);
-    return tasks.every(task => task.isComplete);
-  }
 
   goToUpdate() {
-    this.router.navigate(['steps/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
+    this.router.navigate(['/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
   }
   goBack() {
     this.location.back();
