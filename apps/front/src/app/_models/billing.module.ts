@@ -6,7 +6,7 @@ import { User } from './user.module';
 export interface Billing {
   _id: string;
   date: Date;
-  amount: string;
+  amount: number;
   paymentMethod: PaymentMethod;
   ifRreturn: boolean;
   assignedTo: User;

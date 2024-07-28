@@ -41,6 +41,14 @@ export class BillingService {
     deleteBilling(id: string): Observable<boolean> {
         return this.http.delete<boolean>(`${this.apiUrl}/delete`, { ...this.httpOptions, body: { id } });
     }
+    getBilling(id: string): Observable<Billing> {
+        return this.http.get<Billing>(`${this.apiUrl}/${id}`);
+    }
+    updateBillingStatus(id: string, status: boolean): Observable<Billing> {
+        console.log("updateBillingStatus in service front ", id, status);
+        
+        return this.http.put<Billing>(`${this.apiUrl}/update-status`, { id, status }, this.httpOptions);
+    }
 
-    
+
 }

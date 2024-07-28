@@ -14,24 +14,24 @@ import { User } from '../../../../../server/src/Models/user.model';
 export class PaymentService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
-private apiUrl = PAYMENT_ENDPOINT;
+  };
+  private apiUrl = PAYMENT_ENDPOINT;
 
 
   constructor(private http: HttpClient) { }
-  searchPayment(id: string): Observable<Payment[]> {
-    return this.http.post<Payment[]>(`${this.apiUrl}/searchPayment`, { id }, this.httpOptions);
+  searchPayment(id: string): Observable<Payment> {
+    return this.http.post<Payment>(`${this.apiUrl}/searchPayment`, { id }, this.httpOptions);
   }
 
   getPayment(id: string): Observable<Payment> {
-    return this.http.get<Payment>(`${this.apiUrl}/${ id }`);
+    return this.http.get<Payment>(`${this.apiUrl}/${id}`);
   }
 
   getPayments(): Observable<Payment[]> {
     return this.http.get<Payment[]>(`${this.apiUrl}`);
   }
 
-  createPayment(mainPaymentDetails,totalPayment,paymentMethod): Observable<Payment> {
+  createPayment(mainPaymentDetails, totalPayment, paymentMethod): Observable<Payment> {
 
     const newPayment = {
       "mainPaymentDetails": mainPaymentDetails,
@@ -65,15 +65,18 @@ private apiUrl = PAYMENT_ENDPOINT;
     return this.http.post(this.apiUrl + "/update", payment);
   }
 
-  addBilling(_id: string,date:Date,amount:number,paymentMethod:PaymentMethod,assignedTo:User){
+  addBilling(_id: string, date: Date, amount: number, paymentMethod: PaymentMethod, assignedTo: User) {
+    console.log('start addBilling');
 
-    const newBilling={
-      "date":date,
-      "amount":amount,
-      "paymentMethod":paymentMethod,
-      "assignedTo":assignedTo
+    const newBilling = {
+      "date": date,
+      "amount": amount,
+      "paymentMethod": paymentMethod,
+      "assignedTo": assignedTo
     }
+    console.log(newBilling);
 
-    return this.http.post(this.apiUrl+"/"+ _id ,newBilling)
+    return this.http.post(this.apiUrl + "/" + _id+"/billing", newBilling)
   }
+
 }

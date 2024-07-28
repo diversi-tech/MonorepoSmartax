@@ -1,0 +1,32 @@
+<div class="col-md-12">
+    <div class="card card-container">
+
+        <form name="form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+
+            <div class="form-group">
+                <label for="username">סכום לגביה</label>
+                <input type="number" class="form-control" name="amount" [(ngModel)]="billing.amount"
+                    #amount="ngModel" />
+            </div>
+            <div class="form-group">
+                <p-dropdown [options]="allpaymentMethod" [(ngModel)]="billing.paymentMethod" name="paymentMethod"
+                    optionLabel="name" placeholder="צורת תשלום" />
+            </div>
+            <div class="form-group">
+                <label for="email">תאריך ביצוע תשלום</label>
+                <input type="date" class="form-control" name="date" [(ngModel)]="billing.date" #date="ngModel" />
+            </div>
+            <div class="form-group" >
+                <p-dropdown [options]="allUsers" [(ngModel)]="billing.assignedTo"  name="assignedTo" optionLabel="userName" placeholder="עובד מבצע" />
+              </div>
+            
+            
+            <div class="form-group">
+               
+                <button class="btn btn-primary btn-block">אישור</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>

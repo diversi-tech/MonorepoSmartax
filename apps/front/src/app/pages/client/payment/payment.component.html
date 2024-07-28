@@ -11,9 +11,9 @@
               <span *ngIf="thisPayment.mainPaymentDetails.frequency">:תדירות גביה</span>
               <p>{{thisPayment.mainPaymentDetails.frequency.name}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.dateStart">:תאריך התחלה</span>
-              <p>{{thisPayment.mainPaymentDetails.dateStart}}</p>
+              <p>{{thisPayment.mainPaymentDetails.dateStart | date: 'dd/MM/yy'}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.dateFinish">:תאריך סיום</span>
-              <p>{{thisPayment.mainPaymentDetails.dateFinish}}</p>
+              <p>{{thisPayment.mainPaymentDetails.dateFinish | date: 'dd/MM/yy'}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.maxHours">:מקסימום שעות עבודה</span>
               <p>{{thisPayment.mainPaymentDetails.maxHours}}</p>
             </div>
@@ -33,9 +33,9 @@
               <span *ngIf="details.frequency">:תדירות גביה</span>
               <p>{{details.frequency.name}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.dateStart">:תאריך התחלה</span>
-              <p>{{details.dateStart}}</p>
+              <p>{{details.dateStart | date: 'dd/MM/yy'}}</p>
               <span *ngIf="details.dateFinish">:תאריך סיום</span>
-              <p>{{details.dateFinish}}</p>
+              <p>{{details.dateFinish | date: 'dd/MM/yy'}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.maxHours">:מקסימום שעות עבודה</span>
               <p>{{thisPayment.mainPaymentDetails.maxHours}}</p>
             </div>
@@ -63,17 +63,24 @@
     </div>
 
     <div class="card checkout">
-      <label class="title">Checkout</label>
-      <div class="details">
+      <label class="title">אפשרויות נוספות</label>
+      <!-- <div class="details">
         <span>Your cart subtotal:</span>
         <span>Rs 47.99</span>
         <span>Discount through applied coupons:</span>
         <span>Rs 3.99</span>
         <span>Shipping fees:</span>
         <span>Rs 4.99</span>
-      </div>
+      </div> -->
       <div class="checkout--footer">
-        <label class="price"><sup>Rs</sup>57.99</label>
-        <button class="checkout-btn">Checkout</button>
+        <!-- <label class="price"><sup>Rs</sup>57.99</label> -->
+        <button class="checkout-btn" (click)="moveToBillingHistory(thisClient)">הסטורית תשלומים</button>
+        <button class="checkout-btn" (click)="moveToPaymentDetailsHistory(thisClient)">הסטורית מנויים</button>
+        <button class="checkout-btn" (click)="addBilling(thisClient)">הוספת תשלום</button>
+        <button class="checkout-btn" (click)="changeMainPayment(thisClient)">החלפת המנוי העיקרי</button>
+
+
       </div>
+      <router-outlet></router-outlet>
+
     </div>

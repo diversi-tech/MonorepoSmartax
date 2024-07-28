@@ -27,6 +27,8 @@ export class PaymentDetailsService {
             dateFinish, 
             description 
         });
+        console.log("createdPaymentDetails",createdPaymentDetails);
+        
 
         return await createdPaymentDetails.save();
     }

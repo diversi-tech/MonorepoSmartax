@@ -15,8 +15,7 @@ export class UpdateBillingDto {
   
     @ApiProperty()
     @IsOptional()
-    @IsString()
-    amount?: string;
+    amount?: number;
 
     @ApiProperty()
     @IsOptional()
@@ -38,8 +37,7 @@ export class CreateBillingDto {
   
     @ApiProperty()
     @IsOptional()
-    @IsString()
-    amount: string;
+    amount: number;
 
     @ApiProperty()
     @IsOptional()

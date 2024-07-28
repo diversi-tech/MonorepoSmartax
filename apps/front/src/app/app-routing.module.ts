@@ -80,6 +80,10 @@ import { ManagerNavbarComponent } from './pages/Manager/edit-client-yearly-repor
 import { EditClientTaxRefunedComponent } from './pages/Manager/edit-client-yearly-report/edit-client-tax-refuned/edit-client-tax-refuned.component';
 import { TableComponent } from './table/table.component';
 import { CreatePaymentComponent } from './pages/client/create-payment/createPayment.component';
+import { BillingHistoryComponent } from './pages/client/billing-history/billingHistory.component';
+import { PaymentDetailsHistoryComponent } from './pages/client/payment-details-history/paymentDetailsHistory.component';
+import { AddBillingComponent } from './pages/client/addBilling/addBilling.component';
+import { ChangeMainPaymentComponent } from './pages/client/changeMainPayment/changeMainPayment.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -216,7 +220,17 @@ import { CreatePaymentComponent } from './pages/client/create-payment/createPaym
         path: 'clientTaskManagement',
         component: ClientTaskManagementComponent,
       },
-      { path: 'payments', component: PaymentComponent},
+      { path: 'payments', component: PaymentComponent,
+        children:[
+          { path: 'billingHistory', component: BillingHistoryComponent },
+          { path: 'paymentDetailsHistory', component: PaymentDetailsHistoryComponent },
+          { path: 'addBilling', component: AddBillingComponent },
+          { path: 'changeMainPayment', component: ChangeMainPaymentComponent }
+
+
+
+        ]
+      },
       { path: 'clientBillings', component: ClientBillingsComponent },
       { path: 'clientTypeTab' , component:ClientTypeTabComponent},
       { path: 'clientType' , component:ClientTypeComponent},
