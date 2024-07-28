@@ -14,4 +14,7 @@ export const icons = {
     communications: 'pi pi-phone',
     clock: 'pi pi-clock',
     favorite: 'pi pi-star',
+    manager: 'pi pi-graduation-cap',
+    export: 'pi pi-file-export',
+    calendar: 'pi pi-calendar'
   };

@@ -12,9 +12,17 @@ export const TAG_ENDPOINT = `${API_URL}/tags`;
 export const YEARLYREPORT = `${API_URL}/yearly-reports`;
 export const YEAR = `${API_URL}/year`;
 export const TIMER_ENDPOINT = `${API_URL}/timer`;
-export const FREQUENCY_ENDPOINT = `${API_URL}/Frequency`;
+export const TABLE_ENDPOINT = `${API_URL}/tables`;
 export const REPEATABLE_ENDPOINT = `${API_URL}/repeatableTask`;
+export const TAX_REFUNDS = `${API_URL}/tax-refunds`;
+export const BILLING_ENDPOINT=`${API_URL}/billings`;
+export const PAYMENT_ENDPOINT=`${API_URL}/Payment`;
+export const PAYMENT_DETAILS_ENDPOINT=`${API_URL}/PaymentDetails`;
+export const PAYMENT_METHOD_ENDPOINT=`${API_URL}/PaymentMethod`;
+export const FREQUENCY_ENDPOINT=`${API_URL}/Frequency`;
+
 
 export const CHECKLIST_ENDPOINT = `${API_URL}/checkList`;
 export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checkListItem`;
+export const IMPORTCLIENTS_ENDPOIMT = `${API_URL}/importclients`;
 export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;

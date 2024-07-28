@@ -31,13 +31,26 @@ export class PaymentController {
   async getAllPayments(): Promise<Payment[]> {
     return await this.PaymentService.getAllPayments();
   }
+
+  @Get(':id')
+  async getPaymentById(@Param('id') id: string): Promise<Payment> {
+    try{
+      return await this.PaymentService.getPaymentById(id);
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
+
   @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
   @Post('searchPayment')
   async searchPayment(@Body(new ValidationPipe()) body: { "id": string }): Promise<Payment[]> {
     return await this.PaymentService.searchPayment(body.id);
   }
   @Put()
-  async updatePayment(@Body(new ValidationPipe()) updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
+  async updatePayment(@Body() updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
+    console.log('start update in controller');
+    
     return await this.PaymentService.updatePayment(updatePaymentDto);
   }
   @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
