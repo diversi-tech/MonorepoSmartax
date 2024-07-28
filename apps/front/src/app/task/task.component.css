@@ -31,7 +31,7 @@
   margin: 5px;
   padding: 5px 10px; /* Smaller padding */
   border: none;
-  border-radius: 5px;
+  border-radius:12%;
   position: relative;
   display: inline-block;
   color: white;
@@ -107,9 +107,24 @@
 
   /* new-style */
   .new-style-card{
-    max-width: 50%;
-    margin-left: 25%;
+    max-width: 75%;
+    /* margin-left: 35%; */
     direction: rtl;
+  }
+
+  .centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 9%;
+    /* height: 90vh;  */
+    /* ממרכז את התוכן גם לגובה */
+    /* margin: 0;  */
+    /* מוודא שאין מרווחים נוספים */
+    direction: rtl;
+
   }
   .input-task-name{
     width: 100%;
@@ -122,21 +137,24 @@
   /* Dates */
   .calendar-container {
     display: flex;
+    justify-content: space-between;
+
     gap: 20px; /* רווח בין שני ה-items */
   }
   
   .calendar-item {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     /* align-items: center; */
-    align-items: flex-start; /* מיקום של כל תוכן מימין */
+    /* align-items: flex-start;  */
+    /* מיקום של כל תוכן מימין */
 
   }
   
   .p-date {
-    margin: 0;
-    padding: 0;
+    /* margin: 0;
+    padding: 0; */
     text-align: right;
   }
   /* client */
@@ -158,6 +176,47 @@
     align-items: center;
     margin-left: 8px; /* Adjust the margin as needed */
   }
+
+  /*  */
+  .status-priority-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* רווח בין הסטטוס לעדיפות */
+  }
+  
+  .status-item,
+  .priority-item {
+    flex: 1;
+  }
+  
+  .status-label,
+  .priority-label {
+    text-align: right;
+  }
+  /*  */
+  .one-one-container {
+    display: flex;
+    gap: 20px; /* רווח בין האלמנטים */
+    align-items: center; /* יישור למרכז אנכית */
+  }
+  
+  .item {
+    flex: 1; /* כל אלמנט יקבל מקום שווה */
+  }
+  
+  .button-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-top: 16%;
+    cursor: pointer;
+  }
+  /*  */
+  
+  
+  
+  
+  
   
   
   

@@ -69,7 +69,7 @@ export class TasksController {
   }
 
   @ApiBody({
-    schema: { type: 'object', properties: { id: { type: 'string' } } },
+    schema: { type: 'object', properties: { id: { type: 'string' }} },
   })
 
   @Post('findOne')
