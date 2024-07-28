@@ -4,7 +4,7 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { HashPasswordService } from '../_services/hash-password.service';
 import { AUTH_ENDPOINT } from '../api-urls';
 import { Role } from '../_models/role.module';
-const jwt_decode = require('jwt-decode');
+import jwt_decode from 'jwt-decode'; // Correct import statement for version 4.x.x
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,16 +17,16 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private hashSevice: HashPasswordService, private hash: HashPasswordService) {
+  constructor(private http: HttpClient, private hashService: HashPasswordService) {
     this.initGoogleAuth();
-   }
+  }
 
   private apiUrl = AUTH_ENDPOINT;
 
   login(email: string, passwordHash: string): Observable<any> {
-    passwordHash = this.hashSevice.encryptPassword(passwordHash)
+    passwordHash = this.hashService.encryptPassword(passwordHash);
     return this.http.post(
-      this.apiUrl + '/signin',
+      `${this.apiUrl}/signin`,
       {
         email,
         passwordHash
@@ -35,29 +35,23 @@ export class AuthService {
     );
   }
 
-  
   logout(): Observable<number> {
-    try {
-      return this.http.post(this.apiUrl + '/signout', {}, httpOptions).pipe(
-        
-        map((response: HttpResponse<any>) => {
-          console.log(response);        
-          if (response.status >= 200 && response.status < 300) {
-            return response.status;
-          } else {
-            throw new Error('HTTP Error: ' + response.status);
-          }
-        })
-      );
-
-    }catch(error){
-      debugger
-      console.log(error)
-      return throwError(error);
-    }
+    return this.http.post(this.apiUrl + '/signout', {}, httpOptions).pipe(
+      map((response: HttpResponse<any>) => {
+        if (response.status >= 200 && response.status < 300) {
+          return response.status;
+        } else {
+          throw new Error('HTTP Error: ' + response.status);
+        }
+      }),
+      catchError(error => {
+        console.error('An error occurred:', error);
+        return throwError(error);
+      })
+    );
   }
 
-   getCurrentRole(): Observable<Role> {
+  getCurrentRole(): Observable<Role> {
     const token = JSON.parse(sessionStorage.getItem('auth-user') + '')?.access_token;
     const headers = {
       'Authorization': `Bearer ${token}`
@@ -65,32 +59,21 @@ export class AuthService {
 
     return this.http.get<Role>(this.apiUrl + '/current-role', { headers }).pipe(
       map(role => role),
-      
       catchError(error => {
         console.error('An error occurred:', error);
-        const err:Role = {name:'guest', level:10};
+        const err: Role = { name: 'guest', level: 10 };
         return throwError(err);
       })
     );
-
   }
-
 
   checkTokenAndPolicyValidity(policy: number): Observable<boolean> {
-
-
     const body = { policy };
-
     return this.http.post<any>(this.apiUrl + '/validate-token', body).pipe(
-      // map(response => {
-      //   if (response.message !== 'Token is valid and policy is valid') {
-      //     return false;
-      //   }
-
-      //   return true;
-      // })
+      map(response => response.message === 'Token is valid and policy is valid')
     );
   }
+
   initGoogleAuth() {
     console.log("Initializing Google Auth");
     try {
@@ -113,11 +96,11 @@ export class AuthService {
 
   handleCredentialResponse(response: any) {
     try {
-      const userObject: any = jwt_decode(response.credential);
+      const userObject: any = jwt_decode(response.credential); // Use jwt_decode directly
       console.log("User Object:", userObject);
-      console.log("User Name:", userObject.name); // מציג את השם של המשתמש
-      console.log("User Email:", userObject.email); // מציג את האימייל של המשתמש
-      // כאן אפשר לשלוח את ה-token לשרת שלך לאימות נוסף או לבצע פעולות נוספות
+      console.log("User Name:", userObject.name);
+      console.log("User Email:", userObject.email);
+      // Here you can send the token to your server for further verification or perform additional operations
     } catch (error) {
       console.error("Error handling credential response:", error);
     }
