@@ -9,6 +9,9 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { ClientService } from '../../../_services/client.service';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-client-profile',
@@ -26,7 +29,8 @@ import { InputTextModule } from 'primeng/inputtext';
     SidebarModule,
     ButtonModule,
     IconProfileComponent,
-    InputTextModule
+    InputTextModule,
+    ConfirmDialogModule,
   ],
 })
 export class ClientProfileComponent implements OnInit {
@@ -38,7 +42,11 @@ export class ClientProfileComponent implements OnInit {
   showSensitiveDetails: boolean = false;
 
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private router: Router,
+    private clientService: ClientService,
+    private confirmationService : ConfirmationService,
+  ) { }
 
   ngOnInit(): void {
     this.client = history.state.client as Client;
@@ -60,7 +68,7 @@ export class ClientProfileComponent implements OnInit {
 
   isPinned: boolean = false;
 
-  
+
 
   pinSidebar() {
     this.isPinned = !this.isPinned;
@@ -76,5 +84,37 @@ export class ClientProfileComponent implements OnInit {
   toggleSensitiveDetails() {
     this.showSensitiveDetails = !this.showSensitiveDetails;
   }
-  
+
+  editClient() {
+    if (this.client) {
+      this.router.navigate(['/addClient'], { state: { client: this.client } });
+    }
+  }
+
+  deleteClient() {
+    this.clientService.deleteClient(this.client._id).subscribe({
+      next: () => {
+        window.location.reload();
+      },
+      error: (err) => console.error('Error deleting client: ', err),
+    });
+  }
+
+  showConfirmationDelete(): void {
+    debugger
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this clients?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      key: "delete"
+    });
+  }
+
+  cancelDelete(): void {
+    this.confirmationService.close();
+  }
+
+  confirmDelete(): void {
+    this.deleteClient();
+  }
 }

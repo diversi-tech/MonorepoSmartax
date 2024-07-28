@@ -71,7 +71,22 @@
                 <ng-container *ngIf="showSensitiveDetails">
                     <app-sensitive-details [client]="client"></app-sensitive-details>
                 </ng-container>
+                <p-button type="button" class="custom-button" (onClick)="editClient()" >
+                    עריכה  <i class="pi pi-pencil"></i>
+                </p-button>
+                <p-button type="button" class="custom-button" (onClick)="showConfirmationDelete()" >
+                    מחיקה  <i class="pi pi-trash"></i>
+                </p-button>
             </div>
         </div>
     </div>
 </p-sidebar>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" key="delete">
+    <p-footer>
+      <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+        (click)="cancelDelete()"></button>
+      <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+        (click)="confirmDelete()"></button>
+    </p-footer>
+  </p-confirmDialog>

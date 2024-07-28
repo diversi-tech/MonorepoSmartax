@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { TabMenu, TabMenuModule } from 'primeng/tabmenu';
 import { ToolBarService } from '../_services/tool-bar.service';
 import { NgFor, NgIf } from '@angular/common';
-import { PrimeTemplate } from 'primeng/api';
+import { MenuItem, PrimeTemplate } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { MenubarModule } from 'primeng/menubar';
 @Component({
@@ -38,6 +38,10 @@ export class ToolBarComponent implements OnInit {
 
   toggleList(item: any) {
     item.expanded = !item.expanded;
+  }
+  activate(item: MenuItem): void {
+    this.items.forEach(i => (i.isActive = false));
+    item.isActive = true;
   }
 }
 
