@@ -1,4 +1,4 @@
-import { Component, NgModule, NgModuleRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { Client } from '../../../_models/client.module';
 import { TaskService } from '../../../_services/task.service';
@@ -80,7 +80,6 @@ export class ClientTasksComponent implements OnInit {
     private clientService: ClientService,
     private tagService: TagService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
     private statusService: StatusService
   ) { }
 
