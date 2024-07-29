@@ -16,8 +16,16 @@
       </th>
       <th>
         <span (click)="onSelectionChange(3)">תאריך</span>
-        <i _ngcontent-ng-c649353484="" class="pi pi-caret-up" style="cursor: pointer; margin-left: 5px;" (click)="sortCommunicatioByDate()"></i>
-        <i _ngcontent-ng-c649353484="" class="pi pi-caret-down" style="cursor: pointer; margin-left: 5px;" (click)="sortCommunicatioByDate2()"></i>
+        <i class="pi pi-caret-up" 
+        style="cursor: pointer; margin-left: 5px;"
+        pTooltip="מיון לפי תאריך בסדר עולה" 
+        tooltipPosition="bottom"
+        (click)="sortCommunicatioByDateAsc()"></i>
+     <i class="pi pi-caret-down" 
+        style="cursor: pointer; margin-left: 5px;"
+        pTooltip="מיון לפי תאריך בסדר יורד"
+        tooltipPosition="bottom"
+        (click)="sortCommunicatioByDateDesc()"></i>
         <div>
           <input *ngIf="isSelected == 2" type="date" class="filter-input" [(ngModel)]="filterdate"
             (input)="filterByDate()"> 
@@ -34,6 +42,16 @@
       </th>
       <th>
         <span (click)="onSelectionChange(5)">נושא שיחה</span>
+        <i class="pi pi-caret-up" 
+        style="cursor: pointer; margin-left: 5px;"
+        pTooltip="מיון לפי א' עד ת'"
+        tooltipPosition="bottom"
+        (click)="sortCommunicatioBySubjectAsc()"></i>
+     <i class="pi pi-caret-down" 
+        style="cursor: pointer; margin-left: 5px;"
+        pTooltip="מיון לפי ת' עד א'"
+        tooltipPosition="bottom"
+        (click)="sortCommunicatioBySubjectDesc()"></i>
         <div *ngIf="isSelected == 2 ">
           <select [(ngModel)]="selectedCallTopic" (change)="filterByCallTopic($event)">
             <option *ngFor="let topic of callTopics" [value]="topic.name">{{ topic.name }}</option>
