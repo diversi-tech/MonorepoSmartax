@@ -602,6 +602,7 @@ export class TaskComponent implements OnInit {
 
     this.googleTask.updateGoogleTask(taskDetails);
   }
+  
   //
   cancel() {
     //return to last page

@@ -3,7 +3,7 @@
     <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
       (click)="cancelDelete()"></button>
     <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
-      (click)="confirmDelete(selectedTask)"></button>
+      (click)="confirmDelete()"></button>
   </p-footer>
 </p-confirmDialog>
 
@@ -90,20 +90,6 @@
           <div *ngFor="let status of statuses">
             <p-panel header="{{ status.name }}">
               <p-table [value]="categorizeTasks(status)">
-                <!-- <ng-template pTemplate="header">
-                  <tr>
-                    <th style="display: flex; align-items: center;">Name
-                      <button pButton type="button" icon="pi pi-sort" (click)="sortTasks('taskName')" style="font-size: smaller;width: 30%;height: 30px;margin-left: 2%;"></button>
-                    </th>
-                    
-                    <th>assignedTo</th>
-                    <th>Deadline</th>
-                    <th>Tags</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                  </tr>
-                </ng-template> -->
-                <!-- ===================== -->
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">
                     <th style="width: auto; height: 50px">
@@ -134,13 +120,12 @@
                       <i class="pi pi-caret-down" (click)="sortTasks('tags', tasks,true)"
                         style="cursor: pointer; margin-left: 5px"></i>
                     </th>
-                    <th style="width: auto">עריכה</th>
-                    <th style="width: auto">מחיקה</th>
+                    <th></th>
                   </tr>
                 </ng-template>
 
                 <ng-template pTemplate="body" let-task>
-                  <tr>
+                  <tr (click)="selectCurrentTask(task)" [ngClass]="{ 'highlight': currentTask === task }">
                     <td>{{ task.taskName }}</td>
 
                     <td>
@@ -163,26 +148,33 @@
                         {{ tag.text }}
                       </button>
                     </td>
-                    <td>
-                      <!-- <button
+                    <!-- <td>
+                      <button
                         [routerLink]="['/taskSpe', task._id]"
                         pButton
                         icon="pi pi-pencil"
                         label="Edit"
-                      ></button> -->
+                      ></button>
                       <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil"
                         style="color: blue;cursor: pointer;"></i>
-                    </td>
-                    <td>
-                      <!-- <button
+                    </td> -->
+                    <!-- <td>
+                      <button
                         pButton
                         type="button"
                         icon="pi pi-trash"
                         label="Delete"
                         class="p-button-danger"
                         (click)="showConfirmation(task)"
-                      ></button> -->
+                      ></button>
                       <i (click)="showConfirmation(task)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
+                    </td> -->
+                    <td><button *ngIf="currentTask === task" pButton
+                        class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+                        (click)="editTask()"></button>
+                      <button *ngIf="currentTask === task" pButton
+                        class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
+                        (click)="showConfirmation()"></button>
                     </td>
                   </tr>
                 </ng-template>

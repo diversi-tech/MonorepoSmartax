@@ -1,6 +1,4 @@
-<a 
-[routerLink]="['/popup', 'create']"
-[queryParams]="{ parent: parentId }" >+</a>
+<a [routerLink]="['/popup', 'create']" [queryParams]="{ parent: parentId }">+</a>
 
 <div style="text-align: right; align-items: right" *ngIf="tasks.length!=0">
     <div class="content-container">
@@ -41,7 +39,7 @@
                             <th style="width: auto">מחיקה</th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-task >
+                    <ng-template pTemplate="body" let-task>
                         <tr>
                             <td>{{ task.taskName }}</td>
 
@@ -67,9 +65,8 @@
                                 </button>
                             </td>
                             <td>
-                                <i [routerLink]="['/popup', task._id]"
-                                [queryParams]="{ parent: parentId }" class="pi pi-pencil"
-                                    style="color: blue;cursor: pointer;"></i>
+                                <i [routerLink]="['/popup', task._id]" [queryParams]="{ parent: parentId }"
+                                    class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
                             </td>
                             <td>
                                 <i (click)="confirmDelete(task)" class="pi pi-trash"

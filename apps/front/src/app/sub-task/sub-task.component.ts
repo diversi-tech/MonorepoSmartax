@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Footer, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { ButtonDirective, Button } from 'primeng/button';
+import { ButtonDirective, Button, ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,13 +35,7 @@ import { error } from 'console';
     ButtonDirective,
     SidebarModule,
     NgIf,
-    CalendarModule,
-    FormsModule,
-    AutoCompleteModule,
-    PrimeTemplate,
-    IconProfileComponent,
-    MultiSelectModule,
-    Button,
+    ButtonModule,
     RouterLink,
     InputTextModule,
     NgFor,
@@ -50,11 +44,20 @@ import { error } from 'console';
     NgStyle,
     NgClass,
     ToastModule,
-    DatePipe],
+    DatePipe,
+    CommonModule,
+    CalendarModule,
+    FormsModule,
+    AutoCompleteModule,
+    PrimeTemplate,
+    IconProfileComponent,
+    MultiSelectModule
+  ],
   templateUrl: './sub-task.component.html',
   styleUrl: './sub-task.component.css',
 })
 export class SubTaskComponent implements OnInit {
+  marginStyles = { 'margin-right': '10%' };
   newList: boolean = false;
   tagSuggestions: Tag[] = [];
   tasks: Task[] = [];
@@ -127,28 +130,36 @@ export class SubTaskComponent implements OnInit {
 
   getTasks(): any {
     return new Promise((resolve, reject) => {
-      this.subTasks.forEach(st => {
-        this.taskService.searchTask(st).subscribe({
-          next: (task) => {
-            this.tasks.push(task);
-            resolve(true);
-          },
-          error: (err) => {
-            console.log(err);
-            resolve(false)
-          }
-        });
-      })
+      if (this.subTasks.length > 0)
+        this.subTasks.forEach(st => {
+          this.taskService.searchTask(st).subscribe({
+            next: (task) => {
+              this.tasks.push(task);
+              resolve(true);
+            },
+            error: (err) => {
+              console.log(err);
+              resolve(false)
+            }
+          });
+        })
     })
   }
 
   categorizeTasks(status: Status): Task[] {
     let currentTasks: Task[] = []
-    this.tasks.forEach(task => {
-      if (task.status && task.status.name == status.name) {
-        currentTasks.push(task)
+    if (this.tasks.length > 0) {
+      try {
+        this.tasks.forEach(task => {
+          if (task.status && task.status.name == status.name) {
+            currentTasks.push(task)
+          }
+        })
+      } catch (err) {
+        // console.log(err);
+
       }
-    })
+    }
     return currentTasks
     // return this.tasks.filter((task) => {
     //   { return task.status && task.status.name === status.name; }

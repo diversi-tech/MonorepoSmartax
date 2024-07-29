@@ -1,18 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-} from '@angular/animations';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { trigger, state, style, transition, animate} from '@angular/animations';
 import { ClientService } from '../../../_services/client.service';
 import { Client, ReportType } from '../../../_models/client.module';
 import { User } from '../../../_models/user.module';
@@ -253,6 +241,10 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   onClose() {
     this.close.emit();
   }
-
+  
+  cancel() {
+    //return to last page
+    window.history.back();
+  }
   
 }

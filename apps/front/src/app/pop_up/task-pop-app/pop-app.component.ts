@@ -60,10 +60,12 @@ export class PopAppComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id')!;
 
     if (this.id == 'create') {
+      alert("יצירה בפופאפ")
       this.id == null
       this.create=true
     }
     else{
+      alert("עריכה בפופאפ")
       this.create = false
     }
 

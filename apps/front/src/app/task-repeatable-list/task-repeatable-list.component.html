@@ -26,7 +26,7 @@
   position="left"
   [style]="{ minWidth: '22rem', marginTop: '3.7%' }"
 >
-  <div *ngIf="showFilter" style="margin-top: 10px;align-items: right;">
+  <div *ngIf="showFilter" style="margin-top: 10px; align-items: right">
     <div class="filter-panel">
       <div class="filter-container">
         <div>
@@ -228,6 +228,14 @@
 
   <div class="p-col-8" style="text-align: right; align-items: right">
     <div class="content-container" style="margin-left: -18%">
+      <br>
+      <div class="card">
+        <p-progressBar [value]="progressValue" [showValue]="false">
+          <ng-template pTemplate="content" let-value>
+            <span> משימות הושלמו {{ value.toFixed(0) }}%</span>
+          </ng-template>
+        </p-progressBar>
+      </div>
       <div>
         <div *ngIf="filteredTasks.length == 0">
           <div *ngFor="let frequency of frequencies">
@@ -250,7 +258,7 @@
                 <!-- ===================== -->
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">
-                    <th style="width: auto; height: 50px;">
+                    <th style="width: auto; height: 50px">
                       Name
                       <i
                         class="pi pi-caret-up"

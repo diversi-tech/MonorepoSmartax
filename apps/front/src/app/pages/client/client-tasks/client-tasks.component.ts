@@ -54,6 +54,8 @@ export class ClientTasksComponent implements OnInit {
   tagSuggestions: Tag[] = [];
   display: any;
   filterFirstStatus = true;
+  currentTask: Task;
+
 
   filter: {
     deadline: Date | null;
@@ -95,9 +97,9 @@ export class ClientTasksComponent implements OnInit {
   }
 
 
-editTask(task : Task){
+editTask(){
   debugger
-  this.router.navigate(['/taskSpe', task._id]);
+  this.router.navigate(['/taskSpe', this.currentTask._id]);
 }
 
 createTask(){
@@ -122,7 +124,6 @@ createTask(){
 
 
   categorizeTasks(status: Status): Task[] {
-    debugger
     console.log(status.name)
     console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
@@ -144,15 +145,14 @@ createTask(){
     }
   }
 
-  showConfirmation(task: Task): void {
-    this.selectedTask = task;
+  showConfirmation(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this task?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         console.log('delete start');
-        this.deleteTask(this.selectedTask);
+        this.deleteTask();
       },
       reject: () => {
         console.log('cancel start');
@@ -160,12 +160,12 @@ createTask(){
       },
     });
   }
-  confirmDelete(task: Task): void {
-    this.deleteTask(task);
+  confirmDelete(): void {
+    this.deleteTask();
   }
 
-  deleteTask(task: Task): void {
-    this.taskService.deleteTask(task._id!).subscribe({
+  deleteTask(): void {
+    this.taskService.deleteTask(this.currentTask._id!).subscribe({
       next: () => {
         this.reloadPage();
       },
@@ -307,4 +307,8 @@ createTask(){
     });
   }
 
+  selectCurrentTask(task: Task) {
+    debugger
+    this.currentTask = task;
+  }
 }

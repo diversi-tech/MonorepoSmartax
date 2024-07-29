@@ -1,5 +1,5 @@
-<form [formGroup]="contactForm" >
-  
+<form [formGroup]="contactForm">
+
   <div class="form-container">
     <div class="title-container">
       <div class="icon-circle">
@@ -48,7 +48,8 @@
         <label for="whatsapp">:ואטסאפ</label>
         <input type="text" id="whatsapp" formControlName="whatsapp" class="form-control" placeholder="הכנס ואטסאפ">
         <div *ngIf="contactForm.get('whatsapp')?.errors?.['required']" class="red"> ערך חובה</div>
-        <div *ngIf="contactForm.get('whatsapp')?.errors?.['pattern']" class="red">וואטסאפ לא תקין הכנס וואטסאפ תקין</div>
+        <div *ngIf="contactForm.get('whatsapp')?.errors?.['pattern']" class="red">וואטסאפ לא תקין הכנס וואטסאפ תקין
+        </div>
 
       </div>
     </div>
@@ -115,31 +116,32 @@
       </div>
     </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="businessActivity">:פעילות עסקית</label>
-          <input type="text" id="businessActivity" formControlName="businessActivity" class="form-control"
-            placeholder="הכנס פעילות עסקית">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="businessActivity">:פעילות עסקית</label>
+        <input type="text" id="businessActivity" formControlName="businessActivity" class="form-control"
+          placeholder="הכנס פעילות עסקית">
         <div *ngIf="contactForm.get('businessActivity')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
 
-        </div>
-        <div class="form-group">
-          <label for="spouseTZ">:ת"ז בן זוג</label>
-          <input type="text" id="spouseTZ" formControlName="spouseTZ" class="form-control" placeholder="הכנס תז בן זוג">
-          <div *ngIf="contactForm.get('spouseTZ')?.errors?.['pattern']" class="red">תז חייב להכיל 9 תוים</div>
-        </div>
-        <div class="form-group">
-          <label for="referrerName">:שם המפנה</label>
-          <input type="text" id="referrerName"  class="form-control" formControlName="referrerName" placeholder="הכנס שם המפנה">
-        <div *ngIf="contactForm.get('referrerName')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
-          
-        </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="employsWorkers">:מעסיק עובדים</label>
-          <input type="checkbox" id="employsWorkers" formControlName="isEmploysWorkers" class="form-control">
-        </div>
+      <div class="form-group">
+        <label for="spouseTZ">:ת"ז בן זוג</label>
+        <input type="text" id="spouseTZ" formControlName="spouseTZ" class="form-control" placeholder="הכנס תז בן זוג">
+        <div *ngIf="contactForm.get('spouseTZ')?.errors?.['pattern']" class="red">תז חייב להכיל 9 תוים</div>
+      </div>
+      <div class="form-group">
+        <label for="referrerName">:שם המפנה</label>
+        <input type="text" id="referrerName" class="form-control" formControlName="referrerName"
+          placeholder="הכנס שם המפנה">
+        <div *ngIf="contactForm.get('referrerName')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
+
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="employsWorkers">:מעסיק עובדים</label>
+        <input type="checkbox" id="employsWorkers" formControlName="isEmploysWorkers" class="form-control">
+      </div>
       <div class="form-group">
         <label for="isStatisticsData">:נתונים סטטיסטיים</label>
         <input type="checkbox" id="isStatisticsData" formControlName="isStatisticsData" class="form-control">
@@ -149,73 +151,79 @@
         <input type="checkbox" id="isAccounter" formControlName="isAccounter" class="form-control">
       </div>
     </div>
-       <div class="form-row">
+    <div class="form-row">
 
-    <div class="form-group">
-      <label for="isWorkData">:מעונין להכניס נתוני עבודה</label>
-      <input type="checkbox" id="isWorkData" formControlName="isWorkData" class="form-control" class="form-control" (change)="onCHangeIsWorkData()">
-    </div>
       <div class="form-group">
-        <label for="isOpenAccountWithUs">  :פתח אצלנו בעבר</label>
+        <label for="isWorkData">:מעונין להכניס נתוני עבודה</label>
+        <input type="checkbox" id="isWorkData" formControlName="isWorkData" class="form-control" class="form-control"
+          (change)="onCHangeIsWorkData()">
+      </div>
+      <div class="form-group">
+        <label for="isOpenAccountWithUs"> :פתח אצלנו בעבר</label>
         <input type="checkbox" id="isOpenAccountWithUs" formControlName="isOpenAccountWithUs" class="form-control">
       </div>
     </div>
-      
-     </div>
-      
-  
 
-      <div class="form-container" *ngIf="isWorkData" >
-        <div class="title-container">
-          <div class="icon-circle">
-            <i class="pi pi-chart-line"></i>
-          </div>
-          <h2>:נתוני עבודה</h2>
-        </div>
+  </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="incomeTaxFileNumber">:מספר תיק מס הכנסה</label>
-            <input type="text" id="incomeTaxFileNumber" formControlName="incomeTaxFileNumber" class="form-control"
-              placeholder="הכנס מספר תיק">
-          <div *ngIf="contactForm.get('incomeTaxFileNumber')?.errors?.['pattern']" class="red">אי אפשר להכניס אותיות רק מספרים</div>
-          <div *ngIf="contactForm.get('incomeTaxFileNumber')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
-          </div>
-          <div class="form-group">
-            <label for="incomeTaxDeductions_registerID">:מס הכנסה</label>
-            <input type="text" id="incomeTaxDeductions_registerID" formControlName="incomeTaxDeductions_registerID"
-              class="form-control" placeholder="הכנס מספר תיק">
-          <div *ngIf="contactForm.get('incomeTaxDeductions_registerID')?.errors?.['pattern']" class="red">אי אפשר להכניס אותיות רק מספרים</div>
-          <div *ngIf="contactForm.get('incomeTaxDeductions_registerID')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
 
-          </div>
-          <div class="form-group">
-            <label for="VATFileNumber">:מספר תיק מע"מ</label>
-            <input type="text" id="VATFileNumber" formControlName="VATFileNumber" class="form-control"
-              placeholder="הכנס מספר תיק">
-          <div *ngIf="contactForm.get('VATFileNumber')?.errors?.['pattern']" class="red">אי אפשר להכניס אותיות רק מספרים</div>
-          <div *ngIf="contactForm.get('VATFileNumber')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
 
-        </div>
+  <div class="form-container" *ngIf="isWorkData">
+    <div class="title-container">
+      <div class="icon-circle">
+        <i class="pi pi-chart-line"></i>
+      </div>
+      <h2>:נתוני עבודה</h2>
+    </div>
 
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="reports">:מדווח</label>
-            <select id="reports" formControlName="reports" class="form-control">
-              <option value="מדווח חודשי">מדווח חודשי</option>
-              <option value="דו חודשי">דו חודשי</option>
-              <option value="חצי שנתי">חצי שנתי</option>
-              <option value="לא מדווח">לא מדווח</option>
-            </select>
-          </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="incomeTaxFileNumber">:מספר תיק מס הכנסה</label>
+        <input type="text" id="incomeTaxFileNumber" formControlName="incomeTaxFileNumber" class="form-control"
+          placeholder="הכנס מספר תיק">
+        <div *ngIf="contactForm.get('incomeTaxFileNumber')?.errors?.['pattern']" class="red">אי אפשר להכניס אותיות רק
+          מספרים</div>
+        <div *ngIf="contactForm.get('incomeTaxFileNumber')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
+      </div>
+      <div class="form-group">
+        <label for="incomeTaxDeductions_registerID">:מס הכנסה</label>
+        <input type="text" id="incomeTaxDeductions_registerID" formControlName="incomeTaxDeductions_registerID"
+          class="form-control" placeholder="הכנס מספר תיק">
+        <div *ngIf="contactForm.get('incomeTaxDeductions_registerID')?.errors?.['pattern']" class="red">אי אפשר להכניס
+          אותיות רק מספרים</div>
+        <div *ngIf="contactForm.get('incomeTaxDeductions_registerID')?.errors?.maxlength" class="red">מידי הרבה תווים
         </div>
 
       </div>
-      <button type="submit"  (click)="sent()">שלח</button>
-      
-      <br>
-      <br>
+      <div class="form-group">
+        <label for="VATFileNumber">:מספר תיק מע"מ</label>
+        <input type="text" id="VATFileNumber" formControlName="VATFileNumber" class="form-control"
+          placeholder="הכנס מספר תיק">
+        <div *ngIf="contactForm.get('VATFileNumber')?.errors?.['pattern']" class="red">אי אפשר להכניס אותיות רק מספרים
+        </div>
+        <div *ngIf="contactForm.get('VATFileNumber')?.errors?.maxlength" class="red">מידי הרבה תווים</div>
+
+      </div>
+
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="reports">:מדווח</label>
+        <select id="reports" formControlName="reports" class="form-control">
+          <option value="מדווח חודשי">מדווח חודשי</option>
+          <option value="דו חודשי">דו חודשי</option>
+          <option value="חצי שנתי">חצי שנתי</option>
+          <option value="לא מדווח">לא מדווח</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+  <!-- <button type="submit" (click)="sent()">שלח</button> -->
+  <p-button label="ביטול" icon="pi pi-undo" [text]="true" [raised]="true" severity="danger" (click)="cancel()" />
+  <p-button label="אישור" icon="pi pi-check" [text]="true" [raised]="true" (click)="sent()" />
+  <br>
+  <br>
 
 
 </form>
