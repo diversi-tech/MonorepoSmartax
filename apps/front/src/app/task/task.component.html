@@ -682,6 +682,75 @@
         </ng-template>
       </p-multiSelect>
     </div>
+
+    <div class="one-one">
+      <div class="status-priority-container">
+        <div class="status-item">
+          <p class="status-label">
+            <b> <span class="pi pi-spinner-dotted"></span> סטטוס </b>
+          </p>
+          <p-dropdown
+            [style]="{ width: '100%', direction: 'ltr' }"
+            [options]="listStatus"
+            [(ngModel)]="selectStatus"
+            optionLabel="name"
+            [showClear]="true"
+            placeholder="בחר סטטוס"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="custom-selected-item" *ngIf="selectStatus">
+                <span
+                  [style]="{ color: selectStatus.color }"
+                  class="pi pi-spinner-dotted"
+                ></span>
+                <div>{{ selectStatus.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-s pTemplate="item">
+              <div class="custom-item">
+                <span
+                  [style]="{ color: s.color }"
+                  class="pi pi-spinner-dotted"
+                ></span>
+                <div>{{ s.name }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+        <div class="priority-item">
+          <p class="priority-label">
+            <b> <span class="pi pi-flag"></span> עדיפות </b>
+          </p>
+          <p-dropdown
+            [style]="{ width: '100%', direction: 'ltr' }"
+            [options]="listPriority"
+            [(ngModel)]="selectedPriority"
+            optionLabel="name"
+            [showClear]="true"
+            placeholder="בחר עדיפות"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="custom-selected-item" *ngIf="selectedPriority">
+                <span
+                  [style]="{ color: selectedPriority.color }"
+                  class="pi pi-flag"
+                ></span>
+                <div>{{ selectedPriority.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-s pTemplate="item">
+              <div class="custom-item">
+                <span
+                  [style]="{ color: s.color }"
+                  class="pi pi-flag"
+                ></span>
+                <div>{{ s.name }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
     <div class="one-one">
       <div class="one-one-container">
         <div class="item">
@@ -727,7 +796,7 @@
             [(ngModel)]="tags2"
             required
             placeholder="בחר תגיות"
-            [style]="{ height: '50px', width: '100%' }"
+            [style]="{ height: '51px', width: '100%' }"
           >
             <ng-template let-t pTemplate="item">
               <div class="avatar-item">
@@ -761,7 +830,7 @@
         </div>
         <div class="item">
           <div class="button-container">
-            <p-tag (click)="showTag2 = !showTag2" value="חדש"></p-tag>
+            <p-tag (click)="showTag2 = !showTag2" value="תגית חדשה"></p-tag>
           </div>
           <div *ngIf="showTag2">
             <br />
@@ -778,71 +847,7 @@
         </div>
       </div>
     </div>
-
-    <div class="one-one">
-      <div class="status-priority-container">
-        <div class="status-item">
-          <p class="status-label">
-            <b> <span class="pi pi-spinner-dotted"></span> סטטוס </b>
-          </p>
-          <p-dropdown
-            [style]="{ width: '100%', direction: 'ltr' }"
-            [options]="listStatus"
-            [(ngModel)]="selectStatus"
-            optionLabel="name"
-            [showClear]="true"
-            placeholder="בחר סטטוס"
-          >
-            <ng-template pTemplate="selectedItem">
-              <div class="custom-selected-item" *ngIf="selectStatus">
-                <span
-                  [style]="{ color: selectStatus.color }"
-                  class="pi pi-stop-circle"
-                ></span>
-                <div>{{ selectStatus.name }}</div>
-              </div>
-            </ng-template>
-            <ng-template let-s pTemplate="item">
-              <div class="custom-item">
-                <span
-                  [style]="{ color: s.color }"
-                  class="pi pi-stop-circle"
-                ></span>
-                <div>{{ s.name }}</div>
-              </div>
-            </ng-template>
-          </p-dropdown>
-        </div>
-        <div class="priority-item">
-          <p class="priority-label">
-            <b> <span class="pi pi-flag"></span> עדיפות </b>
-          </p>
-          <p-dropdown
-  [style]="{ width: '100%', direction: 'ltr' }"
-  [options]="listPriority"
-  [(ngModel)]="selectedPriority"
-  optionLabel="name"
-  [showClear]="true"
-  placeholder="בחר עדיפות"
->
-  <ng-template pTemplate="selectedItem">
-    <div class="custom-selected-item" *ngIf="selectedPriority">
-      <span [style]="{ color: selectedPriority.color }" class="pi pi-stop-circle"></span>
-      <div>{{ selectedPriority.name }}</div>
-    </div>
-  </ng-template>
-  <ng-template let-s pTemplate="item">
-    <div class="custom-item">
-      <span [style]="{ color: s.color }" class="pi pi-stop-circle"></span>
-      <div>{{ s.name }}</div>
-    </div>
-  </ng-template>
-</p-dropdown>
-
-        </div>
-      </div>
-    </div>
-    <div class="one-one">
+    <div style="background-color: rgb(246, 247, 247);padding: 3%;" class="one-one">
       <app-upload-doc-task
         *ngIf="selectedClient"
         [idClient]="selectedClient && selectedClients._id"
@@ -954,12 +959,28 @@
 </div>
 <!--  -->
 
-<p-dialog header="Google Calendar" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-  <span class="p-text-secondary block mb-5">להוסיף את המשימה הזו ליומן גוגך שלך?</span>
+<p-dialog
+  header="Google Calendar"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <span class="p-text-secondary block mb-5"
+    >להוסיף את המשימה הזו ליומן גוגך שלך?</span
+  >
   <br />
   <div class="flex justify-content-end gap-2">
-    <p-button icon="pi pi-times" label="לא" severity="secondary" (click)="cancelDialog()" />
-    <p-button icon="pi pi-check" label="כן" (click)="createGoogleTask()" />
+    <p-button
+      icon="pi pi-times"
+      label="לא"
+      severity="secondary"
+      (click)="cancelDialog()"
+    ></p-button>
+    <p-button
+      icon="pi pi-check"
+      label="כן"
+      (click)="createGoogleTask()"
+    ></p-button>
   </div>
 </p-dialog>
 
