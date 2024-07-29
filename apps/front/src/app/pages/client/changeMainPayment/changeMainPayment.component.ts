@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { Frequency } from '../../../_models/frequency.module';
 import { FrequencyService } from '../../../_services/frequency.service';
 import { PaymentService } from '../../../_services/payment.service';
 import { Payment } from '../../../_models/payment.module';
-import { Router } from '@angular/router';
 import { EventEmitter,Output} from '@angular/core';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
