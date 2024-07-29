@@ -29,13 +29,11 @@ export class ReportClientYearlyReportComponent implements OnInit {
   allEmployes: User[] = [];
   allClient: Client[] = [];
   sortedReports: YearlyReport[] = [];
-  currentvYearlyReport: YearlyReport;
+  currentYearlyReport: YearlyReport;
 
   constructor(
-    private stepFieldsService: stepFieldService,
     private yearlyReportService: YearlyReportService,
     private router: Router,
-    private tokenService: TokenService,
     private employeService: UserService,
     private clientService: ClientService,
     private location: Location
@@ -110,6 +108,6 @@ export class ReportClientYearlyReportComponent implements OnInit {
   }
 
   selectYearlyReport(yearlyReport: YearlyReport) {
-    this.currentvYearlyReport = yearlyReport;
+    this.currentYearlyReport = yearlyReport;
   }
 }
