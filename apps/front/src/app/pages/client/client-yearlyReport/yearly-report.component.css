@@ -34,3 +34,19 @@ button:active {
 input.ng-touched.ng-invalid, .custom-dropdown.ng-touched.ng-invalid {
   border-color: red;
 }
+
+.green{
+  /* background-color:#28a745; */
+  color:#28a745;
+}
+.blue{
+  color:#ff7f50;
+  /* color:white; */
+}
+.gray{
+ color: #7d7979;
+  /* color:white; */
+}
+.sort{
+  margin: 0;
+}

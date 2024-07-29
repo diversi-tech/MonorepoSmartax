@@ -62,21 +62,8 @@ export class PaymentService {
         console.log('start update');
 
         const { _id, ...updateData } = updatePaymentDto;
-        console.log(_id + ' ');
-        updateData.morePaymentDetails.forEach(element => {
-            console.log(element);
-
-        });
-        console.log("***********************************");
-
 
         const updatedPayment = await this.PaymentModel.findByIdAndUpdate(_id, updateData, { new: true });
-        console.log('update');
-        console.log(updatedPayment);
-        // updatedPayment.morePaymentDetails.forEach(element => {
-        //     console.log(element);
-
-        // });
 
         if (!updatedPayment) {
             throw new NotFoundException(`Payment with ID ${_id} not found`);
@@ -102,7 +89,12 @@ export class PaymentService {
         const newBilling = await this.billingService.createBilling(billing);
 
         try {
-            payment.billingHistory.push(newBilling);
+            payment.billingHistory = payment.billingHistory.concat(newBilling);
+            payment.totalPayment -= newBilling.amount;
+            console.log(newBilling);
+            console.log(payment.billingHistory.length);
+
+
             return payment.save();
         } catch (err) {
             console.log(err);
@@ -117,12 +109,21 @@ export class PaymentService {
         }
         // Add the current paymentDetails to paymentHistory
         const currentPaymentDetails = payment.mainPaymentDetails;
+        console.log("currentPaymentDetails: " + currentPaymentDetails);
+        try {
+            payment.mainPaymentDetails = await this.PaymentDetailsService.createPaymentDetails(newPaymentDetails);
+            console.log("payment.mainPaymentDetails: " + payment.mainPaymentDetails);
+        } catch (err) {
+            console.log(err);
+        }
         if (currentPaymentDetails && currentPaymentDetails._id) {
             currentPaymentDetails.dateFinish = new Date();
-            payment.paymentHistory.push(currentPaymentDetails);
+            console.log("currentPaymentDetails.dateFinish: " + currentPaymentDetails.dateFinish);
+            payment.paymentHistory = payment.paymentHistory.concat(currentPaymentDetails);
+            console.log("payment.paymentHistory: " + payment.paymentHistory);
+
         }
         // Update the paymentDetails with the new data
-        payment.mainPaymentDetails = await this.PaymentDetailsService.createPaymentDetails(newPaymentDetails);
         return payment.save();
     }
 
@@ -173,4 +174,25 @@ export class PaymentService {
         }
 
     }
+    async updateBillingStatus(paymentId: string, billingId: string, status: boolean): Promise<Payment> {
+        const payment = await this.PaymentModel.findById(paymentId);
+        if (!payment) {
+            throw new NotFoundException('Payment not found');
+        }
+
+        const billing = payment.billingHistory.find(b => b._id === billingId);
+
+        if (!billing) {
+            throw new NotFoundException('Billing not found');
+        }
+
+        await this.billingService.updateBillingStatus(billingId, status)
+        if (status == false)
+            payment.totalPayment -= billing.amount;
+        else
+            payment.totalPayment += billing.amount;
+
+        return payment.save();
+    }
+
 }

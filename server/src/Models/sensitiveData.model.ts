@@ -19,10 +19,10 @@ export class SensitiveData extends Document {
     toJSON: { getters: true },
 
   })
-  bankDetail: string;
+  a: string;
 
   @Prop({ required: false })
-  userName: string;
+  b: string;
 
   @Prop({
     required: false,
@@ -30,7 +30,7 @@ export class SensitiveData extends Document {
     get: (value: string) => decrypt(value),
     toJSON: { getters: true },
   })
-  password: string;
+  c: string;
 
   @Prop({
     set: (value: string) => encrypt(value),
@@ -38,7 +38,7 @@ export class SensitiveData extends Document {
     toJSON: { getters: true },
 
   })
-  creditCardCNumber: string;
+  d: string;
 
   @Prop({
     set: (value: string) => encrypt(value),
@@ -46,7 +46,7 @@ export class SensitiveData extends Document {
     toJSON: { getters: true },
 
   })
-  creditCardCValidity: string;
+  e: string;
 
   @Prop({
     set: (value: string) => encrypt(value),
@@ -54,10 +54,10 @@ export class SensitiveData extends Document {
     toJSON: { getters: true },
 
   })
-  digitsOnTheBack: string;
+  f: string;
 
   @Prop({ required: true })
-  isCreditCard: boolean;
+  isExist: boolean;
 }
 
 export const SensitiveDataModel = SchemaFactory.createForClass(SensitiveData);
