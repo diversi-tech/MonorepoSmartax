@@ -839,7 +839,10 @@
             <p-tag (click)="showTag2 = !showTag2" value="תגית חדשה"></p-tag>
           </div>
           <div *ngIf="showTag2" class="color-picker-container">
-            <p-colorPicker [style]="{'width':'30px','height':'30px'}" [(ngModel)]="color"></p-colorPicker>
+            <p-colorPicker
+              [style]="{ width: '30px', height: '30px' }"
+              [(ngModel)]="color"
+            ></p-colorPicker>
             <input
               (keyup.enter)="createTag()"
               type="text"

@@ -13,6 +13,7 @@ import { MenuModule } from 'primeng/menu';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CardModule } from 'primeng/card';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SafePipe } from '../../_pipes/SafePipe';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +29,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     MenuModule,
     InputTextareaModule,
     CardModule,
+    SafePipe,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -83,11 +85,7 @@ export class HomeComponent implements OnInit {
   // =============================================
   items: MenuItem[];
 
-  cards = [
-    { title: 'נקודות עניין', description: 'תיאור של נקודות עניין' },
-    { title: 'אטרקציות', description: 'תיאור של אטרקציות' },
-    { title: 'צימרים', description: 'תיאור של צימרים' },
-  ];
+
 
   // constructor() {
   //   this.items = [

@@ -1,79 +1,52 @@
-<!-- <div class="container">
-  <header class="jumbotron">
-
-    <h1> ברוכים הבאים  </h1>
-
-  </header>
-</div> -->
-
-<!-- <div class="grid grid-nogutter surface-section text-800">
-  <div class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center content-center">
-      <section>
-          <span class="block text-6xl font-bold mb-1">Create the screens your</span>
-          <div class="text-6xl text-primary font-bold mb-3">visitors deserve to see</div>
-          <p class="mt-0 mb-4 text-700 line-height-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-
-          <button pButton pRipple label="Learn More" type="button" class="mr-3 p-button-raised"></button>
-          <button pButton pRipple label="Live Demo" type="button" class="p-button-outlined"></button>
-      </section>
-  </div>
-  <div class="col-12 md:col-6 overflow-hidden">
-      <img src="../../../assets/image/office-desktop-with-laptop-calculator.jpg" alt="Image" class="responsive-img" style="clip-path: polygon(8% 0, 100% 0%, 100% 100%, 0 100%)">
-  </div>
-</div>
-
- -->
-
 <!-- Background Section -->
-<div style="margin-top: -15%;" class="background-section">
+<div style="margin-top: -15%" class="background-section">
   <div style="margin-bottom: 10%" class="text-container">
     <h3>
       יועץ מס מנוסה המציע שירותי תכנון מס מקצועיים ומותאמים אישית לעסקים
       וליחידים. עם התמחות בחיסכון מיסויי ועמידה בדרישות החוק, אנחנו כאן כדי
       .לדאוג לעסק שלך בצורה הטובה ביותר
     </h3>
-    <p>
-      <!-- <a pButton href="/AllApartments" label="עיצוב , נוחות , ואיכות - בלחיצת כפתור" class="p-button-text"></a> -->
-    </p>
+    <p></p>
   </div>
 </div>
-
-<!-- About Section -->
-<!-- <div class="about-section">
-  <h1>אודות <span class="underline"></span>האתר</h1>
-  <div class="about-text">
-    <p>
-      ברוכים הבאים לאתר 'דירות ארוח'... (המשך התוכן שלך כאן)
-    </p>
-  </div>
-  <div class="about-image">
-    <img src="assets/images/honeSmall.jpg" width="40%" alt="Loading...">
-  </div>
-</div> -->
-
-<!-- Information Cards Section -->
-<!-- <div class="cards-section">
-  <h1>מה <span class="underline"></span>מסביב</h1>
-  <p-card *ngFor="let card of cards" [header]="card.title" [style]="{'width':'23%'}">
-    <img src="assets/images/honeSmall.jpg" alt="Your Image" class="card-image">
-    <p>{{ card.description }}</p>
-  </p-card>
-</div> -->
 <br /><br />
 <!-- Contact Section -->
 <div style="width: 100%" class="contact-section">
   <div class="contact-details">
     <p>
-      <p-chip class="chip-spacing" icon="pi pi-phone" label="0722-200-200"></p-chip>
-      <p-chip class="chip-spacing" icon="pi pi-envelope" label="smarttax@gmail.com"></p-chip>
-      <p-chip class="chip-spacing"
-        icon="pi pi-address-book
-      "
-        label="ירושלים, הר חוצבים 1"
-      ></p-chip>
+      <a [href]="'tel:+972722200200'">
+        <p-chip
+          class="chip-spacing"
+          icon="pi pi-phone"
+          label="0722-200-200"
+        ></p-chip>
+      </a>
+
+      <a [href]="'mailto:smarttax@gmail.com'">
+        <p-chip
+          class="chip-spacing"
+          icon="pi pi-envelope"
+          label="smarttax@gmail.com"
+        ></p-chip>
+      </a>
+
+      <a
+        [href]="
+          'https://www.google.com/maps/search/?api=1&query=שלמה+בן+יוסף+12,+בני+ברק'
+        "
+        class="map-link"
+      >
+        <p-chip
+          class="chip-spacing"
+          icon="pi pi-address-book"
+          label="שלמה בן יוסף 12 בני ברק"
+        ></p-chip>
+      </a>
     </p>
   </div>
   <h1>ליצירת<span class="underline"></span> קשר</h1>
 </div>
 
-<br>
+<br />
+
+<!--  -->
