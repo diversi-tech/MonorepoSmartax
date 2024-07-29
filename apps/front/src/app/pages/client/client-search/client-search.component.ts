@@ -15,6 +15,7 @@ import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ImportClientComponent } from '../import-clients/import-client.component';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-client-search',
@@ -23,6 +24,7 @@ import { ImportClientComponent } from '../import-clients/import-client.component
   standalone: true,
   imports: [
     ConfirmDialogModule,
+    InputTextModule,
     AutoCompleteModule,
     FormsModule,
     PrimeTemplate,
