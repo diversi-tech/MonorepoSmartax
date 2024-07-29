@@ -119,6 +119,7 @@ export class ClientSearchComponent implements OnInit {
     }
     // this.selectedClient = null;
   }
+
   filterClientsBynamecom(): void {
     this.filteredClients = this.clients;
     if (this.filternamecom != ""){
@@ -127,6 +128,7 @@ export class ClientSearchComponent implements OnInit {
     else
       this.filteredClients = this.clients;
   }
+
   filterClientsByNumber(): void {
     this.filteredClients = this.clients;
     if (this.filterNumber != "")
@@ -134,6 +136,7 @@ export class ClientSearchComponent implements OnInit {
     else
       this.filteredClients = this.clients;
   }
+
   filterClientsByTZ(): void {
     this.filteredClients = this.clients;
     if (this.filterTZ != "")
@@ -141,9 +144,11 @@ export class ClientSearchComponent implements OnInit {
     else
       this.filteredClients = this.clients;
   }
+
   openContactFormDialog() {
     this.displayDialog = true;
   }
+
   addNewClient() {
     console.log("in")
     // this.displayDialog = true;
@@ -163,7 +168,7 @@ export class ClientSearchComponent implements OnInit {
         this.choosedClients.splice(index, 1);
       }
     }
-    console.log(this.choosedClients);
+    console.log(this.choosedClients, 'after update'); 
   }
 
   chooseAllClients(): void {
@@ -187,11 +192,13 @@ export class ClientSearchComponent implements OnInit {
   isFavoriteClient(client: Client) {
     return this.user.favoritesClient.find(c => c._id === client._id) != undefined;
   }
+
   addFavoritesClient() {
     this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)))
     this.updateFavorite();
-    console.log(this.user.favoritesClient);
+    console.log(this.user.favoritesClient, 'after add favorite');
   }
+
   updateFavorite() {
     this.userService
       .update(
@@ -211,6 +218,7 @@ export class ClientSearchComponent implements OnInit {
         },
       });
   }
+
   removeFromFavorite(client: Client) {
     this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
     this.updateFavorite();

@@ -9,10 +9,14 @@
 
 #menu {
     direction: rtl;
+    color: brown;
+    /* margin-top: 500px !important; */
 }
+
 /* Define the active link class */
 .active-link {
     background-color: rgb(38, 38, 38) !important;
     color: white !important;
-    border-radius: 10px !important; /* Adjust the value as needed */
+    border-radius: 10px !important;
+    /* Adjust the value as needed */
 }

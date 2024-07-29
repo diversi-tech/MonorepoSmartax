@@ -17,7 +17,6 @@ export class FrequencyService {
 
   constructor(private http: HttpClient) {}
 
-  // Create a new Client
   createFrequency(Frequency: Frequency): Observable<Frequency> {
     return this.http
       .post<Frequency>(this.apiUrl, Frequency, this.httpOptions)
