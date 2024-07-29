@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 // import { User, UserModel } from '../models/user.model';
@@ -9,11 +9,13 @@ import * as bcrypt from 'bcryptjs';
 import { Task } from '../Models/task.model';
 import { CreateTaskDto, UpdateTaskDto } from '../Models/dto/task.dto';
 import { TasksGateway } from './socket/socket.gateway';
+import { TaskArchiveService } from './taskArchive.service';
 
 @Injectable()
 export class TaskService {
   constructor(
     @InjectModel('Task') private readonly taskModel: Model<Task>,
+    private taskArchiveService:TaskArchiveService,
     private jwtToken: TokenService,
     private readonly tasksGateway: TasksGateway
   ) {}
@@ -147,6 +149,35 @@ export class TaskService {
     if (!deletedTask) {
       throw new ValidationException('User not found');
     }
+    await this.taskArchiveService.createTaskArchive(deletedTask,true);
+    await this.taskModel.findByIdAndDelete(id).exec();
     return deletedTask;
   }
+  async deletingOldTasks(): Promise<Task[]> {
+
+    const twoYearsAgo = new Date();
+    twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+
+    const oldTasks = await this.taskModel.find({
+      date: { $lt: twoYearsAgo },
+    }).exec();
+
+     if (oldTasks.length > 0) {
+      for (const task of oldTasks) {
+
+        if (!task) {
+          throw new NotFoundException('Task not found');
+        }
+        await this.taskArchiveService.createTaskArchive(task, false);
+      }
+      await this.taskModel.deleteMany({ _id: { $in: oldTasks.map(t => t._id) } }).exec();
+    }
+
+    return oldTasks;
+  }
+
+
 }
+
+
+

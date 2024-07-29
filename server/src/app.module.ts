@@ -156,6 +156,8 @@ import { TasksGateway } from './services/socket/socket.gateway';
 import { TaxRefundsService } from './services/taxRefunds.service';
 import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
 import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
+import { TaskArchive, taskArchiveModel } from './Models/taskArchive.model';
+import { taskArchiveController } from './controller/taskArchive/taskArchive.controller';
 
 @Module({
   //add
@@ -163,6 +165,7 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     MongooseModule.forFeature([{ name: ClientField.name, schema: ClientFieldModel }]),
     MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
+    MongooseModule.forFeature([{name:TaskArchive.name,schema:taskArchiveModel}]),
     MongooseModule.forFeature([
       { name: ClientType.name, schema: ClientTypeModel },
     ]),
@@ -249,6 +252,7 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     FieldController,
     ClientTypeController,
     CallTopicController,
+    taskArchiveController,
     UserController,
     PriorityController,
     ClientController,
