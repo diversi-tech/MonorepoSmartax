@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "nx run-many --target=clean --all",
-    "start:all": "concurrently \"nx serve front\" \"nx serve server\"",
+    "start:all": "concurrently \"nx serve front\" \"nx serve server\" \"nx serve api-gateway\" \"nx serve timesheet\"",
     "build": "ng build --prod"
   },
   "private": true,

@@ -46,7 +46,6 @@ export class ClientCommunicationLogsComponent {
   }
 
   getCommunications(): void {
-    debugger
     const i = this.tokenService.getCurrentDetail('_id');
     const j = this.client._id;
     this.communicationService.getCommunicationsByClientId(j)

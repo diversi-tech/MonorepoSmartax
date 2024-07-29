@@ -4,7 +4,6 @@
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th>סוג השיחה </th>
-      <th>שם לקוח</th>
       <th>תאריך</th>
       <th>נושא שיחה</th>
       <th>סיכום</th>
@@ -15,7 +14,6 @@
 
       <td *ngIf="communication.Status === 'true'">ליד</td>
       <td *ngIf="communication.Status === 'false'">מעקב</td>
-      <td>{{communication.client}}</td>
       <td>{{communication.date | date: 'yyyy-MM-dd' }}</td>
       <td>{{communication.Subject}}</td>
       <td>{{communication.summary}}</td>
@@ -24,8 +22,8 @@
 </p-table>
 
 
-<button class="p-button p-button-warning p-button-sm p-float-right p-ml-2">Edit</button>
-<button class="p-button p-button-danger p-button-sm p-float-right">Delete</button>
+<button class="p-button p-button-warning p-button-sm p-float-right p-ml-2">לַעֲרוֹך</button>
+<button class="p-button p-button-danger p-button-sm p-float-right">למחוק</button>
 
 <p-button label="להוספת שיחה" (click)="displayDialog = true"></p-button>
 <app-client-add-communication *ngIf="displayDialog" (close)="displayDialog = false"></app-client-add-communication>
