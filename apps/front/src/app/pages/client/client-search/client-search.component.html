@@ -53,6 +53,7 @@
           pTooltip="מיון לפי ת' עד א'"
           tooltipPosition="bottom"
           (click)="sortClientsByNameDesc()"></i>
+          
            <div>
           <p-autoComplete  *ngIf="isSelected == 2" [(ngModel)]="selectedClient" [suggestions]="filteredClients"
             (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
