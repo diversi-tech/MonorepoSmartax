@@ -224,8 +224,8 @@ export const routes: Routes = [
           },
         ],
       },
-      {path: 'taxRefunds', component: TaxRefundsComponent,},
-      {path: 'taxrefundsteps', component:TaxRefundsStepsComponent},
+      { path: 'taxRefunds', component: TaxRefundsComponent, },
+      { path: 'taxrefundsteps', component: TaxRefundsStepsComponent },
       { path: 'monthlyReport', component: MonthlyReportComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
       { path: 'sensitiveDetails', component: SensitiveDetailsComponent }
@@ -251,9 +251,26 @@ export const routes: Routes = [
     children: [
       { path: 'editClientYearlyReport', component: EditClientYearlyReportComponent },
       { path: 'editTaxRefuned', component: EditClientTaxRefunedComponent }
+
     ]
   },
-  {path: 'createYearlyReport', component:CreateYearlyReportComponent,},
+  {
+    path: 'steps', component: YearlyReportStepsComponent,
+
+  },
+  { path: 'steps/createYearlyReport', component: CreateYearlyReportComponent },
+  { path: 'popup/:id', component: PopAppComponent }
+
+  , { path: 'clientTypes', component: ClientTypeComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: false, icon: '' } },
+  { path: 'fieldMamagement', component: FieldManagementComponent, data: { authType: 3, forToolbar: true, label: 'ניהול שדות', icon: '' } },
+  {
+    path: 'manager', component: ManagerNavbarComponent, data: { authType: 3, forToolbar: true, icon: icons.manager, label: "מנהל" },
+    children: [
+      { path: 'editClientYearlyReport', component: EditClientYearlyReportComponent },
+      { path: 'editTaxRefuned', component: EditClientTaxRefunedComponent }
+    ]
+  },
+  { path: 'createYearlyReport', component: CreateYearlyReportComponent, },
   { path: 'popup/create', component: PopAppComponent },
   {
     path: 'steps', component: YearlyReportStepsComponent,
