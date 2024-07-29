@@ -156,6 +156,9 @@ import { TasksGateway } from './services/socket/socket.gateway';
 import { TaxRefundsService } from './services/taxRefunds.service';
 import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
 import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
+import { FinancialStatement, FinancialStatementModel } from './Models/financialStatement.model';
+import { FinancialStatementController } from './controller/financialStatement/financialStatement.controller';
+import { FinancialStatementService } from './services/financialStatement.service';
 
 @Module({
   //add
@@ -239,6 +242,9 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     MongooseModule.forFeature([
       { name: TaxRefunds.name, schema: taxRefundsModel },
     ]),
+    MongooseModule.forFeature([
+      { name: FinancialStatement.name, schema: FinancialStatementModel },
+    ]),
     JwtModule,
   ],
   controllers: [
@@ -281,6 +287,7 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     RepeatableTaskController,
     FrequencyController,
     TaxRefundsController,
+    FinancialStatementController,
   ],
 
   providers: [
@@ -318,6 +325,7 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     ClientFieldService,
     repeatableTaskService,
     TaxRefundsService,
+    FinancialStatementService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
