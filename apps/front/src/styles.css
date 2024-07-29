@@ -8,4 +8,17 @@
 /* Import Quill styles */
 @import "~quill/dist/quill.core.css";
 @import "~quill/dist/quill.snow.css";
-@import "node_modules/primeng/resources/themes/nova-light/theme.css"
+@import "node_modules/primeng/resources/themes/nova-light/theme.css";
+
+:host ::ng-deep .highlight {
+  background-color: #edecec;
+}
+
+th, td {
+  text-align: center;
+}
+
+.p-button-rounded {
+  border-radius: 20%;
+  margin: 1%;
+}

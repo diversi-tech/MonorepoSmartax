@@ -29,6 +29,7 @@ export class ReportClientYearlyReportComponent implements OnInit {
   allEmployes: User[] = [];
   allClient: Client[] = [];
   sortedReports: YearlyReport[] = [];
+  currentvYearlyReport: YearlyReport;
 
   constructor(
     private stepFieldsService: stepFieldService,
@@ -106,5 +107,9 @@ export class ReportClientYearlyReportComponent implements OnInit {
       const clientNameB = this.getClientName(b.idUser)?.firstName || '';
       return clientNameA.localeCompare(clientNameB);
     });
+  }
+
+  selectYearlyReport(yearlyReport: YearlyReport) {
+    this.currentvYearlyReport = yearlyReport;
   }
 }

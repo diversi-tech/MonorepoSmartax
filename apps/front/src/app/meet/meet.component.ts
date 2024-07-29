@@ -450,7 +450,6 @@ export class MeetComponent implements OnInit {
   }
 
   getMeetById(meetId: string) {
-    debugger;
     if (meetId === 'null') return;
     this.meetService.getMeetById(meetId).subscribe(
       (meet) => {
@@ -535,7 +534,6 @@ export class MeetComponent implements OnInit {
   async scheduleMeeting() {
     // if (this.meetId == 'null') {
     this.visible = false;
-    debugger;
     // ======time=======
     const beginningTime = this.form.beginningTime;
     const endTime = this.form.endTime;
@@ -586,7 +584,6 @@ export class MeetComponent implements OnInit {
     // After creating event, save the meeting
     createEventPromise
       .then(() => {
-        debugger;
         // alert('הפגישה נוספה בהצלחה');
         this.subscribeToEventData();
         setTimeout(() => {
@@ -664,7 +661,6 @@ export class MeetComponent implements OnInit {
     console.log(this.currentMeet);
 
     if (this.meetId == 'null') {
-      debugger;
       this.meetService.createMeet(this.currentMeet).subscribe(
         (meet) => {
           this.closeModal.emit();
@@ -725,7 +721,6 @@ export class MeetComponent implements OnInit {
       endTime: endTime,
       emails: emailArray,
     };
-    debugger;
     this.googleCalendarService.updateGoogleEvent(eventDetails);
   }
 }
