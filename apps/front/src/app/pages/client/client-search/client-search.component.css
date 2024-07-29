@@ -16,9 +16,15 @@
   list-style-type: none;
   padding: 0;
 }
-
-:host ::ng-deep .p-autocomplete-dd .p-autocomplete-input {
-  width: 50rem;
+:host ::ng-deep .p-autocomplete-dd .p-autocomplete-input
+{
+  width:8rem;
+}
+.p-inputmask {
+  width: 100%;
+  padding: .75rem;
+  border-radius: .25rem;
+  border: 1px solid #ced4da;
 }
 
 .search-results li {

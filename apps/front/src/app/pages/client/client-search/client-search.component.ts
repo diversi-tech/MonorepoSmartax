@@ -15,6 +15,8 @@ import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ImportClientComponent } from '../import-clients/import-client.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-client-search',
@@ -23,6 +25,8 @@ import { ImportClientComponent } from '../import-clients/import-client.component
   standalone: true,
   imports: [
     ConfirmDialogModule,
+    InputTextModule,
+    TooltipModule,
     AutoCompleteModule,
     FormsModule,
     PrimeTemplate,
@@ -80,7 +84,21 @@ export class ClientSearchComponent implements OnInit {
       }
     });
   }
+  sortClientsByNameAsc(): void {
+    this.filteredClients.sort((a, b) => {
+      const nameA = `${a.firstName} ${a.lastName}`;
+      const nameB = `${b.firstName} ${b.lastName}`;
+      return nameA.localeCompare(nameB, 'he'); // מיון לפי א' עד ת'
+    });
+  }
 
+  sortClientsByNameDesc(): void {
+    this.filteredClients.sort((a, b) => {
+      const nameA = `${a.firstName} ${a.lastName}`;
+      const nameB = `${b.firstName} ${b.lastName}`;
+      return nameB.localeCompare(nameA, 'he'); // מיון לפי ת' עד א'
+    });
+  }
   loadAllClients(): void {
     this.clientService.getAllClients().subscribe((clients) => {
       this.clients = clients;

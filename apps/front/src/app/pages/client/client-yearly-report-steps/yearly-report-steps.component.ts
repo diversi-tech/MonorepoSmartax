@@ -13,6 +13,8 @@ import { Client } from '../../../_models/client.module';
 import { YearlyReport } from '../../../_models/yearlyReport.module';
 import { Location } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
+import { Status } from '../../../_models/status.module';
+import { StatusService } from '../../../_services/status.service'; // Import StatusService
 
 @Component({
   selector: 'app-yearly-report-steps',
@@ -36,11 +38,14 @@ export class YearlyReportStepsComponent implements OnInit {
   client: Client;
   activeIndex: number = 0;
   stepNumbers: number[] = [1, 2, 3, 4, 5]; // Step numbers
+  active: number | undefined = 0;
+  statusList: Status[] = []; // List to hold statuses
 
 
   constructor(private yearlyReportService: YearlyReportService,
                private router: Router,
-               private location: Location
+               private location: Location,
+               private statusService: StatusService 
               ) {
 
   };
@@ -51,6 +56,14 @@ export class YearlyReportStepsComponent implements OnInit {
     this.client = history.state.client
     this.allStep = this.responseData.stepsList
     this.groupSteps();
+    this.statusService.getAllStatuses().subscribe({
+      next: (data) => {
+        this.statusList = data;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   groupSteps() {
@@ -79,6 +92,25 @@ export class YearlyReportStepsComponent implements OnInit {
       this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
     }
   }
+  getStatusObject(statusName: string): Status | null {
+    return this.statusList.find(s => s.name === statusName) || null;
+  }
+
+  determineStatus(): Status {
+    const stepsList = this.responseData.stepsList;
+
+    const allCompleted = stepsList.every(step => step.isCompleted);
+    const someCompleted = stepsList.some(step => step.isCompleted);
+
+    if (allCompleted) {
+      return  this.statusList.find(s => s.name == 'COMPLETE') || null;
+      ;
+    } else if (someCompleted) {
+      return  this.statusList.find(s => s.name == 'IN PROGRESS') || null;
+    } else {
+      return  this.statusList.find(s => s.name == 'TO DO') || null;
+    }
+  }
 
   async submitChanges() {
     console.log("Submitting changes:", this.changes);
@@ -89,9 +121,20 @@ export class YearlyReportStepsComponent implements OnInit {
         this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
       }
     }
+    const status = this.determineStatus();
+    
+    if (status) {
+      this.responseData.status = status;
+    } else {
+      console.error('Status not found');
+      return;
+    }
+
+    
 
     try {
       const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
+
       console.log("response from server", response);
       alert("Successful update response");
       this.responseData = response;
@@ -108,5 +151,23 @@ export class YearlyReportStepsComponent implements OnInit {
   goBack() {
     this.location.back();
   }
+
+  isStepComplete(stepNumber: number): boolean {    
+    return this.getStepByNumber(stepNumber).every((task) => task.isCompleted==true);
+  }
+  isStepBeginned(stepNumber: number): boolean {
+    return (
+      this.getStepByNumber(stepNumber).some((task) => task.isCompleted) &&
+      !this.isStepComplete(stepNumber)
+    );
+  }
+
+  getStepByNumber(stepNumber: number) {
+    console.log("getStepByNumber")
+    return this.stepsByNumber[stepNumber] || [];
+  }
+
+ 
+  
 
 }
