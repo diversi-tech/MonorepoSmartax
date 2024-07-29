@@ -1,0 +1,41 @@
+<div class="col-md-12">
+  <div class="card card-container">
+    
+    <form name="form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+      
+      <div class="form-group">
+        <label for="username">סכום לגביה</label>
+        <input type="number" class="form-control" name="sumForMonth" [(ngModel)]="payment.paymentDetails.sumForMonth"
+           #sumForMonth="ngModel" />
+      </div>
+      <div class="form-group" >
+        <p-dropdown [options]="allFrequencies" [(ngModel)]="payment.paymentDetails.frequancy"  name="frequancy" optionLabel="name" placeholder="תדירות גביה" />
+      </div>
+      <div class="form-group">
+        <label for="email">מקסימום שעות עבודה למנוי</label>
+        <input type="number" class="form-control" name="maxHours" [(ngModel)]="payment.paymentDetails.maxHours" #maxHours="ngModel"/>
+      </div>
+      <div class="form-group">
+        <label for="email">תאריך התחלת המנוי</label>
+        <input type="date" class="form-control" name="dateStart" [(ngModel)]="payment.paymentDetails.dateStart" #dateStart="ngModel"/>
+      </div>
+      <div class="form-group">
+        <label for="email">תאריך סיום המנוי</label>
+        <input type="date" class="form-control" name="dateFinish" [(ngModel)]="payment.paymentDetails.dateFinish" #dateFinish="ngModel"/>
+      </div>
+      <div class="form-group">
+        <label for="email">תיאור השירות</label>
+        <input type="text" class="form-control" name="description" [(ngModel)]="payment.paymentDetails.description" #description="ngModel"/>
+      </div>
+      <div class="form-group">
+        <div class="form-group" >
+            <p-dropdown [options]="allpaymentMethod" [(ngModel)]="payment.paymentMethod"  name="paymentMethod" optionLabel="name" placeholder="צורת גביה" />
+          </div>
+        <button class="btn btn-primary btn-block">אישור</button>
+      </div>
+     
+    </form>
+    
+  </div>
+</div>
+
