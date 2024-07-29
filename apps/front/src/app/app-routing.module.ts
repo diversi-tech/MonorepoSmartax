@@ -19,7 +19,7 @@ import { AuthGuard } from './auth.guard';
 import { ClientSearchComponent } from './pages/client/client-search/client-search.component';
 import { ClientProfileComponent } from './pages/client/client-profile/client-profile.component';
 import { ReportsComponent } from './reports/reports/reports.component';
-import { TaskReportComponent } from './task-report/task-report.component';
+import { TaskReportComponent } from './reports/task-report/task-report.component';
 import { EmployeesTableComponent } from './pages/employees-table/employees-table.component';
 // import { CommunicationClientComponent } from './pages/client/communication-client/communication-client.component';
 import { EditorComponent } from './editor/editor.component';
