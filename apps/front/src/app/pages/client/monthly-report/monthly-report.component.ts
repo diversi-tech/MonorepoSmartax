@@ -9,11 +9,11 @@ import { MonthlyReportService } from '../../../_services/monthlyReport.service';
 import { MonthlyReport } from '../../../_models/monthlyReport.module';
 import { Client } from '../../../../../../../server/src/Models/client.model';
 import { DatePipe } from '@angular/common';
-
+import { TreeTableModule } from 'primeng/treetable';
 @Component({
   selector: 'app-monthly-report',
   standalone: true,
-  imports: [CommonModule, DropdownModule, FormsModule, TableModule, ButtonModule],
+  imports: [CommonModule, DropdownModule, FormsModule, TableModule, ButtonModule, TreeTableModule],
   templateUrl: './monthly-report.component.html',
   styleUrl: './monthly-report.component.css',
 })
@@ -45,7 +45,7 @@ select: any;
   allMonthlyReports: MonthlyReport[] | undefined;
   myReport: MonthlyReport[] | undefined;
   y:boolean = false;
-
+ steps :any[]
   getMonthlyReportsForClientF(): void {
     debugger
     console.log(this.client, "client");
@@ -84,5 +84,10 @@ select: any;
     console.log(this.monthlyReportService);
     
     
+  }
+  getStepByType(type: string): void {
+    this.steps = this.allMonthlyReports.map(r => r.monthlyReportFields.filter(r => r.type === type))
+  console.log(this.steps, "steps");
+  
   }
 }

@@ -2,244 +2,33 @@
     <p-dropdown [options]="dates" [(ngModel)]="selectedDate" placeholder="בחירת שנה וחודש" [editable]="true"
         optionLabel="name" (onChange)="myReportf()" />
 </div>
-
-<!-- <p-table [value]="myReport" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>עובד מטפל</th>
-            <th>תאריך</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-myReport>
-        <tr>
-            <td></td>
-            <td>{{  myReport.reportDate | date:'dd/MM/yyyy'}}</td>
-        </tr>
-    </ng-template>
-</p-table>
-<p-table></p-table> -->
-
-<!-- <p-toast />
-    <p-table [value]="products" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" [expandedRowKeys]="expandedRows" (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)">
-        <ng-template pTemplate="caption">
-            <div class="flex flex-wrap justify-content-end gap-2">
-                <p-button label="Expand All" icon="pi pi-plus" text (onClick)="expandAll()" />
-                <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()" />
-            </div>
-        </ng-template>
+<div class="card">
+    <p-table [value]="myReport" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 5rem"></th>
-                <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
-                <th>Image</th>
-                <th pSortableColumn="price">Price <p-sortIcon field="price" /></th>
-                <th pSortableColumn="category">Category <p-sortIcon field="category" /></th>
-                <th pSortableColumn="rating">Reviews <p-sortIcon field="rating" /></th>
-                <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus" /></th>
+                <th>מעמ</th>
+                <th>מס הכנסה ניכויים</th>
+                <th>מקדמות</th>
+                <th>ביטוח לאומי ניכויים</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product let-expanded="expanded">
+        <ng-template pTemplate="body" let-product>
             <tr>
-                <td>
-                    <p-button type="button" pRipple [pRowToggler]="product" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+                <td>               
+                     {{getStepByType('מעמ')}}
+                     <!-- <p-button icon="pi pi-plus" (click)="getStepByType('מעמ')"></p-button> -->
                 </td>
-                <td>{{ product.name }}</td>
-                <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" width="50" class="shadow-4" /></td>
-                <td>{{ product.price | currency : 'USD' }}</td>
-                <td>{{ product.category }}</td>
-                <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false" /></td>
-                <td>
-                    <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
-                </td>
+                <td *ngFor="let i of steps">{{i.value}}</td>
+                <td>               
+                    <p-button icon="pi pi-plus" (click)="getStepByType('מס הכנסה ניכויים')"></p-button>
+               </td>
+               <td>               
+                <p-button icon="pi pi-plus" (click)="getStepByType('מקדמות')"></p-button>
+           </td>
+           <td>               
+            <p-button icon="pi pi-plus" (click)="getStepByType('ביטוח לאומי ניכויים')"></p-button>
+       </td>
             </tr>
         </ng-template>
-        <ng-template pTemplate="rowexpansion" let-product>
-            <tr>
-                <td colspan="7">
-                    <div class="p-3">
-                        <p-table [value]="product.orders" dataKey="id">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th pSortableColumn="id">Id <p-sortIcon field="price" /></th>
-                                    <th pSortableColumn="customer">Customer <p-sortIcon field="customer" /></th>
-                                    <th pSortableColumn="date">Date <p-sortIcon field="date" /></th>
-                                    <th pSortableColumn="amount">Amount <p-sortIcon field="amount" /></th>
-                                    <th pSortableColumn="status">Status <p-sortIcon field="status" /></th>
-                                    <th style="width: 4rem"></th>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-order>
-                                <tr>
-                                    <td>{{ order.id }}</td>
-                                    <td>{{ order.customer }}</td>
-                                    <td>{{ order.date }}</td>
-                                    <td>{{ order.amount | currency : 'USD' }}</td>
-                                    <td>
-                                        <p-tag [value]="order.status" [severity]="getStatusSeverity(order.status)" />
-                                    </td>
-                                    <td><p-button type="button" icon="pi pi-search" /></td>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="emptymessage">
-                                <tr>
-                                    <td colspan="6">There are no order for this product yet.</td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-</p-table> -->
-<!-- <p-table 
-    [value]="myReport"
-    sortField="myReport.reportDate" 
-    sortMode="single" 
-    dataKey="myReport.reportDate" 
-    rowGroupMode="subheader" 
-    groupRowsBy="myReport.reportDate" 
-    [tableStyle]="{'min-width': '70rem'}">
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width:20%">Name</th>
-                <th style="width:20%">Country</th>
-                <th style="width:20%">Company</th>
-                <th style="width:20%">Status</th>
-                <th style="width:20%">Date</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="groupheader" let-customer let-rowIndex="rowIndex" let-expanded="expanded">
-            <tr>
-                <td colspan="5">
-                     <button 
-                        type="button" 
-                        pButton 
-                        pRipple 
-                        [pRowToggler]="customer" 
-                        class="p-button-text p-button-rounded p-button-plain mr-2" 
-                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
-                    </button> 
-                    <img 
-                        [alt]="customer.representative.name" 
-                        src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{myReport.representative.image}}" 
-                        width="32" 
-                        style="vertical-align: middle" />
-                    <span class="font-bold ml-2">{{myReport.monthlyReportFields.type}}</span>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="groupfooter" let-customer>
-            <tr class="p-rowgroup-footer">
-                <td colspan="4" style="text-align: right">Total Customers</td>
-                <td>{{calculateCustomerTotal(customer.representative.name)}}</td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="rowexpansion" let-customer>
-            <tr>
-                <td>
-                    {{myReport.monthlyReportFields.value}}
-                </td>
-                <td>
-                    <img 
-                        src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" 
-                        [class]="'flag flag-' + customer.country.code" 
-                        style="width: 20px">
-                    <span class="ml-1 vertical-align-middle">{{customer.country.name}}</span>
-                </td>
-                <td>
-                    {{myReport.monthlyReportFields.value}}
-                </td>
-                <td>
-                    <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)" />
-                </td>
-                <td>
-                    {{customer.date}}
-                </td>
-            </tr>
-        </ng-template>
-</p-table> -->
-<!-- <p-table [value]="myReport" class="rtl-table">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>תאריך</th>
-          <th>מספר עובד</th>
-          <th>שעות עבודה כולל</th>
-          <th>פעולות</th>
-        </tr>
-      </ng-template>
-  
-      <ng-template pTemplate="body" let-report>
-        <tr >
-          <td><h1>{{report.monthlyReportFields[0].type}}</h1></td>
-          <td>{{report.monthlyReportFields[0].value}}</td>
-          <td>
-            <p-button icon="pi pi-plus" (click)="report.monthlyReportFields = !report.monthlyReportFields"></p-button>
-          </td>
-        </tr>
-        <tr *ngIf="report.monthlyReportFields">
-          <td colspan="4">
-            <p-table [value]="report.monthlyReportFields" class="rtl-table">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th> </th>
-                  <th> </th>
-                  <th>סה"כ שעות</th>
-                  <th>פעולות</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-p>
-                <tr *ngFor="let l of monthlyReportFields">
-                  <td>{{ l.type | date: 'HH:mm' }}</td>
-                  <td>{{ log.checkOut ? (log.checkOut | date: 'HH:mm') : '---' }}</td>
-                  <td>{{ log.hoursWorked ? log.hoursWorked.toFixed(2) : '---' }}</td>
-                  <td>
-                    <p-button label="עריכה" icon="pi pi-pencil" (click)="editTimeEntry(logGroup, log)"></p-button>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table> -->
-<!-- </td>
-        </tr>
-      </ng-template>
-    </p-table> -->
-<p-table [value]="myReport">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>תאריך</th>
-            <th> עובד מטפל</th>
-            <th>להצגת הדוח</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-report>
-        <tr>
-            <td>{{report.reportDate}}</td>
-            <td>
-                <p-button icon="pi pi-plus" (click)="report.expanded = !report.expanded"></p-button>
-            </td>
-
-        </tr>
-        <tr *ngIf="report.expanded">
-            <td colspan="4">
-                <p-table>
-                    <ng-template pTemplate="header">
-        <tr>
-            <th>{{report.monthlyReportFields[0].type}}</th>
-        </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-r>
-        <tr *ngFor="let l of r.monthlyReportFields[0]">
-            <td>{{ l.type  }}</td>
-            <td>{{ l.value }}</td>
-            <!-- <td>{{ log.hoursWorked ? log.hoursWorked.toFixed(2) : '---' }}</td> -->
-            <!-- <td>
-                <p-button label="עריכה" icon="pi pi-pencil" (click)="editTimeEntry(logGroup, log)"></p-button>
-            </td> -->
-        </tr>
-    </ng-template>
-</p-table>
-</td>
-</tr>
-</ng-template>
-
-</p-table>
+    </p-table>
+</div>
