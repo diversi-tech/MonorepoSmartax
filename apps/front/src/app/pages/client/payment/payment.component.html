@@ -11,9 +11,9 @@
               <span *ngIf="thisPayment.mainPaymentDetails.frequency">:תדירות גביה</span>
               <p>{{thisPayment.mainPaymentDetails.frequency.name}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.dateStart">:תאריך התחלה</span>
-              <p>{{thisPayment.mainPaymentDetails.dateStart}}</p>
+              <p>{{thisPayment.mainPaymentDetails.dateStart | date: 'dd/MM/yy'}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.dateFinish">:תאריך סיום</span>
-              <p>{{thisPayment.mainPaymentDetails.dateFinish}}</p>
+              <p>{{thisPayment.mainPaymentDetails.dateFinish | date: 'dd/MM/yy'}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.maxHours">:מקסימום שעות עבודה</span>
               <p>{{thisPayment.mainPaymentDetails.maxHours}}</p>
             </div>
@@ -33,9 +33,9 @@
               <span *ngIf="details.frequency">:תדירות גביה</span>
               <p>{{details.frequency.name}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.dateStart">:תאריך התחלה</span>
-              <p>{{details.dateStart}}</p>
+              <p>{{details.dateStart | date: 'dd/MM/yy'}}</p>
               <span *ngIf="details.dateFinish">:תאריך סיום</span>
-              <p>{{details.dateFinish}}</p>
+              <p>{{details.dateFinish | date: 'dd/MM/yy'}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.maxHours">:מקסימום שעות עבודה</span>
               <p>{{thisPayment.mainPaymentDetails.maxHours}}</p>
             </div>
@@ -44,36 +44,77 @@
             <label class="price small">השירות: {{details.description}}</label>
           </div>
         </div>
-    </p-tabPanel>
+      </p-tabPanel>
     </p-tabView>
   </div>
 
+  <div class="card coupons">
+    <label class="title">מידע נוסף</label>
+    <form class="form">
+      <span *ngIf="thisPayment.totalPayment">:סכום לגביה</span>
+      <p>{{thisPayment.totalPayment}}</p>
+      <span *ngIf="thisPayment.paymentMethod">:צורת תשלום</span>
+      <p>{{thisPayment.paymentMethod.name}}</p>
+    </form>
+  </div>
 
-
-
-
-    <div class="card coupons">
-      <label class="title">מידע נוסף</label>
-      <form class="form">
-        <span *ngIf="thisPayment.totalPayment">:סכום לגביה</span>
-        <p>{{thisPayment.totalPayment}}</p>
-        <span *ngIf="thisPayment.paymentMethod">:צורת תשלום</span>
-        <p>{{thisPayment.paymentMethod.name}}</p>
-      </form>
+  <div class="card checkout" id="showContainer">
+    <button class="checkout-btn" id="showBtn" (click)="setShow()">הצגת אפשרויות נוספות</button>
+    <div class="checkout--footer">
+      <p-tabView [scrollable]="true" *ngIf="show">
+        <p-tabPanel header="הסטורית תשלומים">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-billing-history  (submitEvent)="handle()"></app-billing-history>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="הסטורית מנויים">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-payment-details-history (submitEvent)="handle()"></app-payment-details-history>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="הוספת תשלום">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-add-billing (submitEvent)="handle()"></app-add-billing>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="הוספת מנוי משני">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-add-more-payment-details (submitEvent)="handle()"></app-add-more-payment-details>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="החלפת המנוי העיקרי">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-change-main-payment (submitEvent)="handle()"></app-change-main-payment>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
     </div>
 
-    <div class="card checkout">
-      <label class="title">Checkout</label>
-      <div class="details">
-        <span>Your cart subtotal:</span>
-        <span>Rs 47.99</span>
-        <span>Discount through applied coupons:</span>
-        <span>Rs 3.99</span>
-        <span>Shipping fees:</span>
-        <span>Rs 4.99</span>
-      </div>
-      <div class="checkout--footer">
-        <label class="price"><sup>Rs</sup>57.99</label>
-        <button class="checkout-btn">Checkout</button>
-      </div>
-    </div>
+    <router-outlet></router-outlet>
+
+  </div>

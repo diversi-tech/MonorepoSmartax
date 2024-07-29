@@ -1,6 +1,7 @@
+<router-outlet></router-outlet>
+
 <br><br>
 <p-button (click)="createReprtTag()" label="יצירת דוח שנתי חדש" />
-<router-outlet></router-outlet>
 
 <p-table [value]="allYearlyReport" [tableStyle]="{ 'max-width': '50rem' }">
     <ng-template pTemplate="header">
@@ -14,7 +15,7 @@
             <th>מחיר</th>
             
             <th>תאריך יצירה</th>
-            <th pSortableColumn="yearReport">
+            <th pSortableColumn="yearReport" class="sort">
                 :שנה <p-sortIcon field="yearReport" />
             </th>
         </tr>
@@ -22,7 +23,7 @@
     <ng-template pTemplate="body" let-task>
         <tr>
             <td><p-button (click)="goToSteps(task)" label="עדכן" /></td>
-            <td>בטיפול</td>
+            <td class="{{task.status.color}}">{{task.status.name}}</td>
             <td>{{task.entityType}}</td>
             <td>{{getEmployeName(task.idEmploye)?.userName }}</td>
             <td>{{ task.balanceDue }}</td>

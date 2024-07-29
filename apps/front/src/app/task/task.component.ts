@@ -47,7 +47,7 @@ import { ToastModule } from 'primeng/toast';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
 // import { UploadDocComponent } from '../pages/client/upload-doc/upload-doc.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { EditorComponent } from '../editor/editor.component';
 import { UploadDocTaskComponent } from '../upload-doc-task/upload-doc-task.component';
 import { DocumentService } from '../_services/document.service';
@@ -79,6 +79,7 @@ import { EmptyDatePipe } from '../_pipes/EmptyDatePipe';
   styleUrl: './task.component.css',
   imports: [
     CommonModule,
+    NgFor,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -186,6 +187,7 @@ export class TaskComponent implements OnInit {
   formGroupStatus!: FormGroup;
   formGroupTags!: FormGroup;
   //
+  @Input() create:boolean|null = null;
   @Input() parent: string | null = null;
   @Input() taskId: string | null = null;
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
@@ -206,15 +208,17 @@ export class TaskComponent implements OnInit {
   ) {}
 
   newTaskCreated: boolean = false;
+  newTaskCreated: boolean = false;
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
-    if (this.taskId) this.id = this.taskId;
-    if (this.id != 'create') {
+    if (this.taskId)
+      this.id = this.taskId;
+    if (this.id != 'create'||(this.create==null||(this.create&&!this.create))) {
+
       this.tasksService.searchTask(this.id!).subscribe({
         next: (data) => {
           this.currentTask = data;
-          this.subTasks = this.currentTask.subTasks;
-
+          this.subTasks = this.currentTask.subTasks
           this.selectStatus = this.currentTask.status;
           console.log(this.currentTask.priority);
 
@@ -261,8 +265,10 @@ export class TaskComponent implements OnInit {
           console.log(err);
         },
       });
-    } else {
-      this.newTaskCreated = true;
+
+    }
+    else {
+      this.newTaskCreated = true
     }
     //users
     this.userSErvice.getAllUsers().subscribe({
@@ -387,6 +393,8 @@ export class TaskComponent implements OnInit {
     //   // Handle UI updates or notifications for tasks assigned to others
     //   console.log(`Task ${taskId} assigned to ${assignedTo}`);
     // });
+
+    // alert(this.id)
   }
 
   notInThisTask(id: string) {
@@ -397,10 +405,11 @@ export class TaskComponent implements OnInit {
   }
 
   showDialog() {
-    debugger;
-    if (this.id == 'create') {
+    debugger
+    if (this.id == 'create'||this.parent) {
       this.visible = true;
-    } else {
+    }
+    else {
       this.save();
     }
   }
@@ -510,7 +519,6 @@ export class TaskComponent implements OnInit {
     // After creating event, save the meeting
     createEventPromise
       .then(() => {
-        debugger;
         // alert('הפגישה נוספה בהצלחה');
         this.subscribeToEventData();
         setTimeout(() => {
@@ -526,7 +534,7 @@ export class TaskComponent implements OnInit {
 
   //functions
   save() {
-    debugger;
+    // debugger
     // בדוק אם המשימה אינה משויכת לאף משתמש
     // if (!this.selectedUsers || this.selectedUsers.length === 0) {
     //   this.visiblePopup = true;
@@ -554,30 +562,30 @@ export class TaskComponent implements OnInit {
     // newTask.checkList = this.currentTask.checkList;
     console.log(this.eventId);
 
-    if (this.id == 'create') {
+    if (this.id == 'create'||(this.create==null||this.create==true)) {
       this.tasksService.createTask(newTask).subscribe({
         next: (task) => {
           console.log(task);
+          if (this.parent) {
+            this.tasksService.searchTask(this.parent).subscribe({
+              next: (parentTask) => {
+                parentTask.subTasks.push(task._id);
+                this.tasksService.updateTask(this.parent, parentTask).subscribe({
+                  next: (data) => {
+                  },
+                  error: (err) => {
+                    console.log(err);
+                    alert("ההוספה נכשלה, נא נסה שנית")
+                  }
+                })
+
+              },
+              error: (err) => {
+                console.log(err);
+              }
+            })
+          }
           if (!this.selectedUsers || this.selectedUsers.length === 0) {
-            if (this.parent) {
-              this.tasksService.searchTask(this.parent).subscribe({
-                next: (parentTask) => {
-                  parentTask.subTasks.push(task._id);
-                  this.tasksService
-                    .updateTask(this.parent, parentTask)
-                    .subscribe({
-                      next: (data) => {},
-                      error: (err) => {
-                        console.log(err);
-                        alert('ההוספה נכשלה, נא נסה שנית');
-                      },
-                    });
-                },
-                error: (err) => {
-                  console.log(err);
-                },
-              });
-            }
             this.socketService.addTask(task);
           }
         },
@@ -585,20 +593,21 @@ export class TaskComponent implements OnInit {
           console.log(errClients);
         },
       });
-    } else if (this.id != 'create') {
-      this.tasksService.updateTask(this.id!, newTask).subscribe({
-        next: (dataClients) => {
-          console.log(dataClients);
-          // Task updated
-          if (this.eventId) this.updateTask();
-          if (this.taskId) this.closeModal.emit();
-        },
-        error: (errClients) => {
-          console.log(errClients);
-        },
-      });
-    }
-    // window.history.back();
+    } else
+      if (this.id != 'create') {
+        this.tasksService.updateTask(this.id!, newTask).subscribe({
+          next: (dataClients) => {
+            console.log(dataClients);
+            // Task updated
+            if (this.eventId) this.updateTask();
+            if (this.taskId) this.closeModal.emit();
+          },
+          error: (errClients) => {
+            console.log(errClients);
+          },
+        });
+      }
+    window.history.back();
   }
 
   updateTask() {

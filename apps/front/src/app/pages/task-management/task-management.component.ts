@@ -14,7 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { IconProfileComponent } from '../../share/icon-profile/icon-profile.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -87,6 +87,7 @@ export class TaskManagementComponent implements OnInit {
   tagSuggestions: Tag[] = [];
   display: any;
   filterFirstStatus = true;
+  currentTask: Task;
 
   constructor(
     private taskService: TaskService,
@@ -94,8 +95,8 @@ export class TaskManagementComponent implements OnInit {
     private clientService: ClientService,
     private tagService: TagService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
-    private statusService: StatusService
+    private statusService: StatusService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -140,15 +141,14 @@ export class TaskManagementComponent implements OnInit {
     }
   }
 
-  showConfirmation(task: Task): void {
-    this.selectedTask = task;
+  showConfirmation(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this task?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         console.log('delete start');
-        this.deleteTask(this.selectedTask);
+        this.deleteTask();
       },
       reject: () => {
         console.log('cancel start');
@@ -156,17 +156,22 @@ export class TaskManagementComponent implements OnInit {
       },
     });
   }
-  confirmDelete(task: Task): void {
-    this.deleteTask(task);
+  confirmDelete(): void {
+    this.deleteTask();
   }
 
-  deleteTask(task: Task): void {
-    this.taskService.deleteTask(task._id!).subscribe({
+  deleteTask(): void {
+    this.taskService.deleteTask(this.currentTask._id!).subscribe({
       next: () => {
         this.reloadPage();
       },
       error: (err) => console.error('Error deleting task: ', err),
     });
+  }
+
+  editTask(){
+    debugger
+    this.router.navigate(['/taskSpe', this.currentTask._id]);
   }
 
   reloadPage(): void {
@@ -308,4 +313,8 @@ export class TaskManagementComponent implements OnInit {
     });
 }
 
+selectCurrentTask(task: Task) {
+  debugger
+  this.currentTask = task;
+}
 }

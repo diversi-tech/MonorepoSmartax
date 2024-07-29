@@ -1,28 +1,29 @@
 <div id="app">
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a href="#" class="navbar-brand smarttax-logo">SmartTax</a>
-    @if (!isLoggedIn) {
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a href="/login" class="nav-link" routerLink="login">התחברות</a>
-      </li>
-    </ul>
-    } @else {
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a href="/profile" class="nav-link" routerLink="profile">{{
-          username
-        }}</a>
-      </li>
-      <li class="nav-item">
-        <a href class="nav-link" (click)="logout()">יציאה</a>
-      </li>
-    </ul>
-    }
-  </nav>
+  <div class="smartaxToolbar">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a href="#" class="navbar-brand smarttax-logo">SmartTax</a>
+      @if (!isLoggedIn) {
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a href="/login" class="nav-link" routerLink="login">התחברות</a>
+        </li>
+      </ul>
+      } @else {
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a href="/profile" class="nav-link" routerLink="profile">{{
+            username
+            }}</a>
+        </li>
+        <li class="nav-item">
+          <a href class="nav-link" (click)="logout()">יציאה</a>
+        </li>
+      </ul>
+      }
+    </nav>
 
-  <app-tool-bar [items]="toolbarItems"></app-tool-bar>
-
+    <app-tool-bar [items]="toolbarItems"></app-tool-bar>
+  </div>
   <div class="container">
     <router-outlet></router-outlet>
   </div>

@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "nx run-many --target=clean --all",
-    "start:all": "concurrently \"nx serve front\" \"nx serve server\"",
+    "start:all": "concurrently \"nx serve front\" \"nx serve server\" \"nx serve api-gateway\" \"nx serve timesheet\"",
     "build": "ng build --prod"
   },
   "private": true,
@@ -57,11 +57,11 @@
     "googleapis": "140.0.1",
     "jquery": "3.7.1",
     "jsonwebtoken": "9.0.2",
-    "jwt-decode": "4.0.0",
+    "jwt-decode": "^3.1.2",
     "mongodb": "5.9.2",
     "mongoose": "8.4.4",
     "multer": "1.4.5-lts.1",
-    "nest-logger": "7.0.0",
+    "nest-logger": "^7.0.0",
     "nodemailer": "6.9.14",
     "pino": "9.2.0",
     "popper.js": "1.16.1",
@@ -132,7 +132,6 @@
     "eslint-config-prettier": "9.0.0",
     "jasmine-core": "5.1.0",
     "jest": "29.7.0",
-  
     "jest-environment-jsdom": "29.7.0",
     "jest-environment-node": "29.7.0",
     "jest-preset-angular": "14.2.0",
