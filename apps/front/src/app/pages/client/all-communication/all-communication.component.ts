@@ -14,6 +14,7 @@ import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplet
 import { AddClientComponent } from '../add-client/add-client.component';
 import { RouterOutlet } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   // standalone:true,
@@ -25,6 +26,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     Button,
     NgFor,
     NgIf,
+    TooltipModule,
     FormsModule,
     DropdownModule,
     DatePipe,
@@ -87,12 +89,21 @@ export class AllCommunicationComponent {
       .subscribe(communications => {
         this.communications = communications
         this.filteredCommunicatio = communications
+        this.sortCommunicatioByDate();
       });
 
   }
-
+  sortCommunicatioByDate(): void {
+    this.filteredCommunicatio.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+  }
+  sortCommunicatioByDate2(): void {
+    this.filteredCommunicatio.sort((a, b) => {
+      return new Date(a.date).getTime() - new Date(b.date).getTime(); // מהישן לחדש
+    });
+  }
   selectCommunication(communication: Communication): void {
-    debugger
     this.selectedCommunication = { ...communication }; // Clone the communication for editing
   }
 
@@ -113,7 +124,6 @@ export class AllCommunicationComponent {
   }
 
   deleteCommunication(): void {
-    debugger
     this.communicationService.deleteCommunication(this.currentCommunication._id)
       .subscribe(() => {
         this.communications = this.communications.filter(c => c._id !== this.currentCommunication._id);
@@ -131,7 +141,13 @@ export class AllCommunicationComponent {
         }));
       });
   }
+  sortCommunicatioBySubjectAsc(): void {
+    this.filteredCommunicatio.sort((a, b) => a.Subject.localeCompare(b.Subject));
+  }
 
+  sortCommunicatioBySubjectDesc(): void {
+    this.filteredCommunicatio.sort((a, b) => b.Subject.localeCompare(a.Subject));
+  }
   onSelectionChange(a : any) {
     this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;
@@ -227,12 +243,10 @@ export class AllCommunicationComponent {
   }
 
   selectCurrentCommunication(communication: Communication) {
-    debugger
     this.currentCommunication = communication;
   }
 
   showConfirmationEdit(): void {
-    debugger
     this.confirmationService.confirm({
       header: 'עריכת שיחה',
       icon: 'pi pi-pencil',
@@ -241,7 +255,6 @@ export class AllCommunicationComponent {
   }
 
   showConfirmationDelete(): void {
-    debugger
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this communication?',
       header: 'Confirmation',

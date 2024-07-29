@@ -1,7 +1,7 @@
 import { Frequency } from "./frequency.module";
 
 export interface PaymentDetails {
-   id:string
+    _id: string
     sumForMonth: number;
     maxHours: number;
     frequency: Frequency;

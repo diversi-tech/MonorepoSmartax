@@ -72,7 +72,7 @@ export class EditClientYearlyReportComponent implements OnInit {
     const newStep ={
       value: this.newStepValue,
       stepNumber: this.newStepStepNumber,
-      isComplete: false,
+      isCompleted: false,
       type: 'yearly-report'
     };
 

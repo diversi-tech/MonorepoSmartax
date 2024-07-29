@@ -1,9 +1,6 @@
 {
-    "recommendations": [
-        "codeium.codeium"
-    ]
-}{
   "recommendations": [
+    "codeium.codeium",
     "nrwl.angular-console",
     "esbenp.prettier-vscode",
     "firsttris.vscode-jest-runner"
