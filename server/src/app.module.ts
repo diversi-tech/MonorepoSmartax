@@ -84,9 +84,7 @@ import { Field, FieldModell } from './Models/field.model';
 import { Timer, TimerModel } from './Models/timer.model';
 import { TimerController } from './controller/timer/timer.controller';
 import { TimerService } from './services/timer.service';
-import { WorkLogController } from './controller/workLog/workLog.controller';
-import { WorkLogService } from './services/workLog.service';
-import { WorkLogModel, WorkLog } from './Models/workLog.model';
+
 
 import { FrequencyController } from './controller/frequency/frequency.controller';
 import { Frequency, frequencyModel } from './Models/frequency.model';
@@ -156,6 +154,9 @@ import { TasksGateway } from './services/socket/socket.gateway';
 import { TaxRefundsService } from './services/taxRefunds.service';
 import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
 import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
+import { MonthlyReportService } from './services/monthlyReport.service';
+import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
+import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
 
 @Module({
   //add
@@ -186,7 +187,6 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-    MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel }]),
     MongooseModule.forFeature([
       { name: callTopicSchema.name, schema: callTopicSchemaModel },
     ]),
@@ -239,10 +239,12 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     MongooseModule.forFeature([
       { name: TaxRefunds.name, schema: taxRefundsModel },
     ]),
+    MongooseModule.forFeature([
+      { name: MonthlyReport.name, schema: MonthlyReportModel },
+    ]),
     JwtModule,
   ],
   controllers: [
-    WorkLogController,
     AppController,
     CheckListItemController,
     CheckListController,
@@ -281,10 +283,10 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     RepeatableTaskController,
     FrequencyController,
     TaxRefundsController,
+    MonthlyReportController
   ],
 
   providers: [
-    WorkLogService,
     AppService,
     UserService,
     MailService,
@@ -323,7 +325,7 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
       useClass: HttpErrorFilter,
     },
     CommunicationArchiveService,
-
+    MonthlyReportService,
     StepFieldService,
     YearlyReportService,
     YearService,

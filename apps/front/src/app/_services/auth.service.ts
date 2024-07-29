@@ -4,6 +4,8 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { HashPasswordService } from '../_services/hash-password.service';
 import { AUTH_ENDPOINT } from '../api-urls';
 import { Role } from '../_models/role.module';
+const jwt_decode = require('jwt-decode');
+
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
@@ -15,7 +17,9 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private hashSevice: HashPasswordService, private hash: HashPasswordService) { }
+  constructor(private http: HttpClient, private hashSevice: HashPasswordService, private hash: HashPasswordService) {
+    this.initGoogleAuth();
+   }
 
   private apiUrl = AUTH_ENDPOINT;
 
@@ -86,5 +90,40 @@ export class AuthService {
       //   return true;
       // })
     );
+  }
+  initGoogleAuth() {
+    console.log("Initializing Google Auth");
+    try {
+      if (window.google && window.google.accounts) {
+        window.google.accounts.id.initialize({
+          client_id: '427515481723-ja7nlkmti3amubd5e5qbtdig27fc06ik.apps.googleusercontent.com',
+          callback: this.handleCredentialResponse.bind(this),
+        });
+        window.google.accounts.id.renderButton(
+          document.getElementById('googleSignInButton'),
+          { theme: 'outline', size: 'large' }
+        );
+      } else {
+        console.error("Google accounts library is not loaded.");
+      }
+    } catch (error) {
+      console.error("Error initializing Google Auth:", error);
+    }
+  }
+
+  handleCredentialResponse(response: any) {
+    try {
+      const userObject: any = jwt_decode(response.credential);
+      console.log("User Object:", userObject);
+      console.log("User Name:", userObject.name); // מציג את השם של המשתמש
+      console.log("User Email:", userObject.email); // מציג את האימייל של המשתמש
+      // כאן אפשר לשלוח את ה-token לשרת שלך לאימות נוסף או לבצע פעולות נוספות
+    } catch (error) {
+      console.error("Error handling credential response:", error);
+    }
+  }
+
+  signIn() {
+    window.google.accounts.id.prompt();
   }
 }

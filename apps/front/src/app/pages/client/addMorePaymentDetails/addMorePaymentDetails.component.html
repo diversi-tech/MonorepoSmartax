@@ -1,0 +1,38 @@
+<div class="col-md-12">
+    <div class="card card-container">
+
+        <form name="form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+
+            <div class="form-group">
+                <label for="username">סכום תקופתי</label>
+                <input type="number" class="form-control" name="sumForMonth" [(ngModel)]="paymentDetails.sumForMonth"
+                    #sumForMonth="ngModel" />
+            </div>
+            <div class="form-group">
+                <label for="username">מקסימום שעות עבודה</label>
+                <input type="number" class="form-control" name="maxHours" [(ngModel)]="paymentDetails.maxHours"
+                    #maxHours="ngModel" />
+            </div>
+            <div class="form-group">
+                <p-dropdown [options]="allFrequaccies" [(ngModel)]="paymentDetails.frequancy" name="frequancy"
+                    optionLabel="name" placeholder="תדירות גביה" />
+            </div>
+            <div class="form-group">
+                <label for="username">תיאור השירות</label>
+                <input type="text" class="form-control" name="description" [(ngModel)]="paymentDetails.description"
+                    #description="ngModel" />
+            </div>
+            <div class="form-group">
+                <label for="username">תאריך סיום</label>
+                <input type="date" class="form-control" name="dateFinish" [(ngModel)]="paymentDetails.dateFinish"
+                    #dateFinish="ngModel" />
+            </div>
+            <div class="form-group">
+
+                <button class="btn btn-primary btn-block">אישור</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>

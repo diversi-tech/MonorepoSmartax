@@ -1,69 +1,35 @@
-<p-stepper dir="rtl">
-    <p-stepperPanel header="שלב I">
-      <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index" let-onClick="onClick">
+<div class="form-container">
+  <div class="icon-container">
+    <div class="year-icon">{{responseData.year}}</div>
+  </div>  
+  <p-stepper dir="rtl" [(activeStep)]="active">
+    <ng-container *ngFor="let stepNumber of stepNumbers">
+    <p-stepperPanel >
+      <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+        <button
+          class="p-stepper-action bg-transparent gap-2"
+          (click)="onClick.emit()"
+        >
+          <span class="p-stepper-number" [ngClass]="{'beginned': isStepBeginned(stepNumber), 'completed': isStepComplete(stepNumber),'notstarted':! isStepBeginned(stepNumber)&&!isStepComplete(stepNumber),'current-step': active+1 === stepNumber}">{{stepNumber}}</span>
+        </button>
+      </ng-template>
+      <ng-template pTemplate="content" let-nextCallback="nextCallback" >
         <div class="flex flex-column h-12rem">
           <div
-            class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-            <div>{{getStepsByNumber(1)}}</div>
-  
-            <div *ngFor="let task of tasksStep">
+            class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
+          >
+            <div *ngFor="let task of stepsByNumber[stepNumber]">
               <div class="checkbox-wrapper">
                 <label>
-                  <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateStepField(task)" />
+                  <input type="checkbox" [(ngModel)]="task.isCompleted" (change)="update(task)" />
                   {{ task.value }}
                 </label>
               </div>
             </div>
           </div>
         </div>
-        <div class="flex pt-4 justify-content-end">
-          <p-button icon="pi pi-arrow-left" iconPos="left" (onClick)="nextCallback.emit()" />
-        </div>
       </ng-template>
     </p-stepperPanel>
-    <p-stepperPanel header="שלב II">
-      <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-        <div class="flex flex-column h-12rem">
-          <div
-            class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-            <div>{{getStepsByNumber(2)}}</div>
-            <div *ngFor="let task of tasksStep">
-              <div class="checkbox-wrapper">
-  
-                <label>
-                  <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateStepField(task)" />
-                  {{ task.value }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="flex pt-4 justify-content-between">
-          <p-button icon="pi pi-arrow-right" (onClick)="prevCallback.emit()" />
-          <p-button icon="pi pi-arrow-left" iconPos="left" (onClick)="nextCallback.emit()" />
-        </div>
-      </ng-template>
-    </p-stepperPanel>
-    <p-stepperPanel header="שלב III">
-      <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
-        <div class="flex flex-column h-12rem">
-          <div
-            class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-            <div>{{getStepsByNumber(3)}}</div>
-  
-            <div *ngFor="let task of tasksStep">
-              <div class="checkbox-wrapper">
-                <label>
-                  <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateStepField(task)" />
-                  {{ task.value }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="flex pt-4 justify-content-start">
-          <p-button icon="pi pi-arrow-right" (onClick)="prevCallback.emit()" />
-        </div>
-      </ng-template>
-    </p-stepperPanel>
+  </ng-container>
   </p-stepper>
+  <p-button (click)="submitChanges()" label="שלח שינויים" />

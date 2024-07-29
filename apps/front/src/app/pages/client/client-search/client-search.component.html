@@ -14,8 +14,8 @@
       </div>
 
       <p-button label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
-      <p-button (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
-        
+      <p-button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
+      <p-button *ngIf="isSelected == 2" (click)="onSelectionChange(1)" label="ללא מיון"></p-button>
     </div>
   </div>
 
