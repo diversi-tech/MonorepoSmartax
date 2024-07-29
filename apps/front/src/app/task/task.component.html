@@ -585,7 +585,8 @@
     <!-- Task Name -->
     <div class="one-one">
       <p>
-        <b><span class="pi pi-clipboard"></span>שם המשימה </b>
+        <b>שם המשימה </b>
+        <!-- <span class="pi pi-clipboard"></span -->
       </p>
       <input
         style="width: 100%"
@@ -599,7 +600,8 @@
     <!-- Description -->
     <div class="one-one">
       <p>
-        <b> <span class="pi pi-equals"></span>תאור </b>
+        <b> תאור </b>
+        <!-- <span class="pi pi-equals"></span -->
       </p>
       <app-editor
         *ngIf="!currentTask"
@@ -617,7 +619,8 @@
       <div class="calendar-container">
         <div class="calendar-item">
           <p class="p-date">
-            <b> <span class="pi pi-calendar"></span> טווח תאריכים </b>
+            <b>  טווח תאריכים </b>
+            <!-- <span class="pi pi-calendar"></span> -->
           </p>
           <p-calendar
             [style]="{ width: '100%' }"
@@ -632,7 +635,8 @@
         </div>
         <div class="calendar-item">
           <p class="p-date">
-            <b> <span class="pi pi-calendar"></span> תאריך ביצוע </b>
+            <b>  תאריך ביצוע </b>
+            <!-- <span class="pi pi-calendar"></span> -->
           </p>
           <p-calendar
             [style]="{ width: '100%' }"
@@ -647,7 +651,8 @@
     </div>
     <div class="one-one">
       <p>
-        <b> <span class="pi pi-user"></span> עובדים </b>
+        <b>  עובדים </b>
+        <!-- <span class="pi pi-user"></span> -->
       </p>
       <p-multiSelect
         [options]="users"
@@ -687,7 +692,8 @@
       <div class="status-priority-container">
         <div class="status-item">
           <p class="status-label">
-            <b> <span class="pi pi-spinner-dotted"></span> סטטוס </b>
+            <b>  סטטוס </b>
+            <!-- <span class="pi pi-spinner-dotted"></span> -->
           </p>
           <p-dropdown
             [style]="{ width: '100%', direction: 'ltr' }"
@@ -719,7 +725,8 @@
         </div>
         <div class="priority-item">
           <p class="priority-label">
-            <b> <span class="pi pi-flag"></span> עדיפות </b>
+            <b>  עדיפות </b>
+            <!-- <span class="pi pi-flag"></span> -->
           </p>
           <p-dropdown
             [style]="{ width: '100%', direction: 'ltr' }"
@@ -755,7 +762,8 @@
       <div class="one-one-container">
         <div class="item">
           <p>
-            <b> <span class="pi pi-users"></span> לקוחות </b>
+            <b>  לקוחות </b>
+            <!-- <span class="pi pi-users"></span> -->
           </p>
           <div class="card flex justify-content-center">
             <p-dropdown
@@ -789,7 +797,8 @@
         </div>
         <div class="item">
           <p>
-            <b> <span class="pi pi-tag"></span> תגיות </b>
+            <b>  תגיות </b>
+            <!-- <span class="pi pi-tag"></span> -->
           </p>
           <p-multiSelect
             [options]="tags"
@@ -847,7 +856,7 @@
         </div>
       </div>
     </div>
-    <div style="background-color: rgb(246, 247, 247);padding: 3%;" class="one-one">
+    <div style="background-color: rgb(246, 247, 247);padding: 3%;border-radius: 10px;" class="one-one">
       <app-upload-doc-task
         *ngIf="selectedClient"
         [idClient]="selectedClient && selectedClients._id"
