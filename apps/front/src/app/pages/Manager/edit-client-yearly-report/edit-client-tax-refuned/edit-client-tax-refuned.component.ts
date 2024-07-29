@@ -75,7 +75,7 @@ export class EditClientTaxRefunedComponent {
     const newStep ={
       value: this.newStepValue,
       stepNumber: this.newStepStepNumber,
-      isComplete: false,
+      isCompleted: false,
       type: 'החזרי מס'
     };
 

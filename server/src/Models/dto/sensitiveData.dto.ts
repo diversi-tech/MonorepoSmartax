@@ -13,25 +13,25 @@ export class CreateSensitiveDataDto {
   clientId: string;
   @ApiProperty()
   @IsString()
-  bankDetail: string;
+  a: string;
   @ApiProperty()
   @IsString()
-  userName: string;
+  b: string;
   @ApiProperty()
   @IsString()
-  password: string;
+  c: string;
   @ApiProperty()
   @IsString()
-  creditCardCNumber: string;
+  d: string;
   @ApiProperty()
   @IsString()
-  creditCardCValidity: string;
+  e: string;
   @ApiProperty()
   @IsString()
-  digitsOnTheBack: string;
+  f: string;
   @ApiProperty()
   @IsBoolean()
-  isCreditCard: boolean;
+  isExist: boolean;
 }
 
 export class UpdateSensitiveDataDto {

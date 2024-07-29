@@ -101,7 +101,6 @@ export class ReportClientYearlyReportComponent implements OnInit {
   }
 
   sortReportsByClientName(): void {
-    console.log("innnnnnnnn")
     this.sortedReports = [...this.allYearlyReport].sort((a, b) => {
       const clientNameA = this.getClientName(a.idUser)?.firstName || '';
       const clientNameB = this.getClientName(b.idUser)?.firstName || '';
