@@ -101,7 +101,6 @@ export class AuthService {
       const password = 'Aa123456'; // Use a fixed password or generate dynamically as needed
       console.log();
 
-      // קריאה לפונקציה הנכונה מתוך ה-Callback
       this.credentialResponseHandler(email, password);
 
     } catch (error) {

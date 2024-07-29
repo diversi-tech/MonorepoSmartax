@@ -48,7 +48,6 @@ export class LoginComponent implements OnInit {
       console.log(this.role);
     }
     
-    // העברת פונקציית ההתחברות לשירות
     this.authService.setCredentialResponseHandler(this.handleCredentialResponse.bind(this));
     
     this.authService.initGoogleAuth();
@@ -77,7 +76,6 @@ export class LoginComponent implements OnInit {
   }
 
   handleCredentialResponse(email: string, password: string): void {
-    // קריאה לפונקציית ההתחברות עם פרטי המשתמש שהתקבלו מ-Google
     this.form.email = email;
     this.form.password = password;
     this.onSubmit();
