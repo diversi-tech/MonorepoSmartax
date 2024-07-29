@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Payment } from '../../../_models/payment.module';
 import { Billing } from '../../../_models/billing.module';
@@ -10,6 +10,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { Router } from '@angular/router';
+import { state } from '@angular/animations';
+import { EventEmitter,Output} from '@angular/core';
+
 
 @Component({
   selector: 'app-add-billing',
@@ -28,11 +31,12 @@ export class AddBillingComponent implements OnInit {
     assignedTo: ''
   }
   allpaymentMethod: PaymentMethod[] = []
-
+  @Output() submitEvent = new EventEmitter<void>();
 
 
   constructor(private router: Router, private paymentService: PaymentService, private paymentMethodService: PaymentMethodService, private userService: UserService) { }
   ngOnInit(): void {
+
     this.paymentService.getPayment(history.state.client.payment).subscribe(
       s => {
         this.thisPayment = s,
@@ -65,12 +69,11 @@ export class AddBillingComponent implements OnInit {
       this.billing.amount,
       this.billing.paymentMethod,
       this.billing.assignedTo).subscribe(
-       s  =>{ 
-        history.state.client.payment=this.thisPayment._id
-        this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments'], { state: { client: history.state.client } });
-
-      },
-      err=> console.log(err)
+        s => {
+          history.state.client.payment = this.thisPayment._id
+          this.submitEvent.emit();
+        },
+        err => console.log(err)
       )
   }
 }

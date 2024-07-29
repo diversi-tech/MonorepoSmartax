@@ -44,43 +44,77 @@
             <label class="price small">השירות: {{details.description}}</label>
           </div>
         </div>
-    </p-tabPanel>
+      </p-tabPanel>
     </p-tabView>
   </div>
 
+  <div class="card coupons">
+    <label class="title">מידע נוסף</label>
+    <form class="form">
+      <span *ngIf="thisPayment.totalPayment">:סכום לגביה</span>
+      <p>{{thisPayment.totalPayment}}</p>
+      <span *ngIf="thisPayment.paymentMethod">:צורת תשלום</span>
+      <p>{{thisPayment.paymentMethod.name}}</p>
+    </form>
+  </div>
 
-
-
-
-    <div class="card coupons">
-      <label class="title">מידע נוסף</label>
-      <form class="form">
-        <span *ngIf="thisPayment.totalPayment">:סכום לגביה</span>
-        <p>{{thisPayment.totalPayment}}</p>
-        <span *ngIf="thisPayment.paymentMethod">:צורת תשלום</span>
-        <p>{{thisPayment.paymentMethod.name}}</p>
-      </form>
+  <div class="card checkout" id="showContainer">
+    <button class="checkout-btn" id="showBtn" (click)="setShow()">הצגת אפשרויות נוספות</button>
+    <div class="checkout--footer">
+      <p-tabView [scrollable]="true" *ngIf="show">
+        <p-tabPanel header="הסטורית תשלומים">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-billing-history  (submitEvent)="handle()"></app-billing-history>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="הסטורית מנויים">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-payment-details-history (submitEvent)="handle()"></app-payment-details-history>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="הוספת תשלום">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-add-billing (submitEvent)="handle()"></app-add-billing>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="הוספת מנוי משני">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-add-more-payment-details (submitEvent)="handle()"></app-add-more-payment-details>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="החלפת המנוי העיקרי">
+          <div class="products">
+            <div class="product">
+              <svg fill="none" viewBox="0 0 60 60" height="60" width="60" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div>
+                <app-change-main-payment (submitEvent)="handle()"></app-change-main-payment>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
     </div>
 
-    <div class="card checkout">
-      <label class="title">אפשרויות נוספות</label>
-      <!-- <div class="details">
-        <span>Your cart subtotal:</span>
-        <span>Rs 47.99</span>
-        <span>Discount through applied coupons:</span>
-        <span>Rs 3.99</span>
-        <span>Shipping fees:</span>
-        <span>Rs 4.99</span>
-      </div> -->
-      <div class="checkout--footer">
-        <!-- <label class="price"><sup>Rs</sup>57.99</label> -->
-        <button class="checkout-btn" (click)="moveToBillingHistory(thisClient)">הסטורית תשלומים</button>
-        <button class="checkout-btn" (click)="moveToPaymentDetailsHistory(thisClient)">הסטורית מנויים</button>
-        <button class="checkout-btn" (click)="addBilling(thisClient)">הוספת תשלום</button>
-        <button class="checkout-btn" (click)="changeMainPayment(thisClient)">החלפת המנוי העיקרי</button>
+    <router-outlet></router-outlet>
 
-
-      </div>
-      <router-outlet></router-outlet>
-
-    </div>
+  </div>

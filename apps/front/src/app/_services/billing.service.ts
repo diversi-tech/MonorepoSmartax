@@ -44,11 +44,7 @@ export class BillingService {
     getBilling(id: string): Observable<Billing> {
         return this.http.get<Billing>(`${this.apiUrl}/${id}`);
     }
-    updateBillingStatus(id: string, status: boolean): Observable<Billing> {
-        console.log("updateBillingStatus in service front ", id, status);
-        
-        return this.http.put<Billing>(`${this.apiUrl}/update-status`, { id, status }, this.httpOptions);
-    }
+   
 
 
 }

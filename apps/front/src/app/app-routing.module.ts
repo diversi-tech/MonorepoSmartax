@@ -88,6 +88,7 @@ import { PaymentDetailsHistoryComponent } from './pages/client/payment-details-h
 import { AddBillingComponent } from './pages/client/addBilling/addBilling.component';
 import { ChangeMainPaymentComponent } from './pages/client/changeMainPayment/changeMainPayment.component';
 import { RouterModule, Routes } from '@angular/router';
+import { AddMorePaymentDetailsComponent } from './pages/client/addMorePaymentDetails/addMorePaymentDetails.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -213,7 +214,9 @@ import { RouterModule, Routes } from '@angular/router';
           { path: 'billingHistory', component: BillingHistoryComponent },
           { path: 'paymentDetailsHistory', component: PaymentDetailsHistoryComponent },
           { path: 'addBilling', component: AddBillingComponent },
-          { path: 'changeMainPayment', component: ChangeMainPaymentComponent }
+          { path: 'changeMainPayment', component: ChangeMainPaymentComponent },
+          { path: 'addMorePaymentDetails', component: AddMorePaymentDetailsComponent }
+
 
 
 

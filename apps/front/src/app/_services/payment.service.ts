@@ -1,12 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Payment } from '../_models/payment.module';
 import { PAYMENT_ENDPOINT } from '../api-urls';
 import { PaymentDetails } from '../_models/paymentDetails.module';
 import { PaymentMethod } from '../_models/paymentMethod.module';
 import { Billing } from '../_models/billing.module';
 import { User } from '../../../../../server/src/Models/user.model';
+import { Frequency } from '../_models/frequency.module';
+import { Client } from '../_models/client.module';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,7 @@ export class PaymentService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   private apiUrl = PAYMENT_ENDPOINT;
+  private clientSource = new BehaviorSubject<Client>(null); currentClient = this.clientSource.asObservable(); changeClient(client: Client) { this.clientSource.next(client); }
 
 
   constructor(private http: HttpClient) { }
@@ -60,6 +63,7 @@ export class PaymentService {
       "paymentHistory": paymentHistory,
       "billingHistory": billingHistory
     }
+
     console.log(payment);
 
     return this.http.post(this.apiUrl + "/update", payment);
@@ -76,7 +80,44 @@ export class PaymentService {
     }
     console.log(newBilling);
 
-    return this.http.post(this.apiUrl + "/" + _id+"/billing", newBilling)
+    return this.http.post(this.apiUrl + "/" + _id + "/billing", newBilling)
+  }
+  changeMainPayment(_id: string, sumForMonth: number, maxHours: number, frequency: Frequency, description: string) {
+    console.log("start change");
+
+    const newPaymentDetails = {
+      "sumForMonth": sumForMonth,
+      "maxHours": maxHours,
+      "frequency": frequency,
+      "dateStart": new Date,
+      "description": description
+    }
+    console.log("newPaymentDetails: ", newPaymentDetails);
+    return this.http.put(this.apiUrl + '/' + _id + '/paymentDetails', newPaymentDetails)
+
+
+  }
+  updateBillingStatus(paymentId: string, billingId: string, status: boolean): Observable<Billing> {
+    console.log("updateBillingStatus in service front ", paymentId, billingId, status);
+    const body = { paymentId, billingId, status };
+    return this.http.put<Billing>(`${this.apiUrl}/updateBillingStatus`, body);
+  }
+  addMorePaymentDetails(paymentId: string,
+    sumForMonth: number,
+    maxHours: number,
+    frequancy: Frequency,
+    dateFinish: Date,
+    description: string): Observable<Payment> {
+      const newMorePaymentDetails = {
+        "sumForMonth": sumForMonth,
+        "maxHours": maxHours,
+        "frequency": frequancy,
+        "dateStart": new Date,
+        "dateFinish": dateFinish,
+        "description": description
+      }
+      return this.http.post<Payment>(`${this.apiUrl}/${paymentId}/morePaymentDetails`, newMorePaymentDetails);
+
   }
 
 }

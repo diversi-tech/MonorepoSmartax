@@ -96,17 +96,17 @@ export class PaymentController {
   async deleteOldPaymentDetails(): Promise<void> {
     return await this.PaymentService.deleteOldPaymendDetails();
   }
-
+  @ApiBody({
+    schema: { type: 'object', properties: { paymentId: { type: 'string' }, billingId: { type: 'string' }, status: { type: 'boolean' } } },
+  })
   @Post('updateBillingStatus')
   async updateBillingStatus(
-    @Body('paymentId') paymentId: string,
-    @Body('billingId') billingId: string,
-    @Body('status') status: boolean
+    @Body(new ValidationPipe()) body: { paymentId: string,billingId: string,status: boolean }
      
   ): Promise<Payment> {
-    console.log(paymentId, billingId, status);
+    console.log(body.paymentId,body.billingId,body.status);
 
-    return await this.PaymentService.updateBillingStatus(paymentId, billingId, status);
+    return await this.PaymentService.updateBillingStatus(body.paymentId,body.billingId,body.status);
 
   }
 }

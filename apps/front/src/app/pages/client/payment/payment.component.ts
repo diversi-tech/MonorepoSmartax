@@ -7,13 +7,19 @@ import { ClientService } from '../../../_services/client.service';
 import { PaymentService } from '../../../_services/payment.service';
 import { Payment } from '../../../_models/payment.module';
 import { TabViewModule } from 'primeng/tabview';
+import { Param } from '@nestjs/common';
+import { BillingHistoryComponent } from "../billing-history/billingHistory.component";
+import { PaymentDetailsHistoryComponent } from "../payment-details-history/paymentDetailsHistory.component";
+import { AddBillingComponent } from "../addBilling/addBilling.component";
+import { AddMorePaymentDetailsComponent } from "../addMorePaymentDetails/addMorePaymentDetails.component";
+import { ChangeMainPaymentComponent } from "../changeMainPayment/changeMainPayment.component";
 
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [CommonModule, DataViewModule, TabViewModule, RouterLinkActive, RouterOutlet,RouterModule],
-  providers: [PaymentService, ClientService,RouterLink],
+  imports: [CommonModule, DataViewModule, TabViewModule, RouterLinkActive, RouterOutlet, RouterModule, BillingHistoryComponent, PaymentDetailsHistoryComponent, AddBillingComponent, AddMorePaymentDetailsComponent, ChangeMainPaymentComponent],
+  providers: [PaymentService, ClientService, RouterLink],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css',
 })
@@ -21,6 +27,7 @@ export class PaymentComponent implements OnInit {
 
   thisClient: Client
   thisPayment: Payment
+  show: boolean = false;
 
 
   constructor(
@@ -36,30 +43,49 @@ export class PaymentComponent implements OnInit {
     this.paymentService.searchPayment(this.thisClient.payment).subscribe(
       s => {
         this.thisPayment = s[0],
-        console.log(this.thisPayment);
+          console.log(this.thisPayment);
         console.log('arr: ');
         console.log(this.thisPayment.morePaymentDetails);
       },
       f => {
         console.log(f),
-        console.log('נפל בחיפוש החשבונית');
+          console.log('נפל בחיפוש החשבונית');
       }
     )
   }
-  moveToBillingHistory(client:Client){
+  moveToBillingHistory(client: Client) {
     console.log("click");
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/billingHistory'], { state: { client } });
   }
-  moveToPaymentDetailsHistory(client:Client){
+  moveToPaymentDetailsHistory(client: Client) {
     console.log("click");
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/paymentDetailsHistory'], { state: { client } });
   }
-  addBilling(client:Client){
+  addBilling(client: Client) {
     console.log("click");
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/addBilling'], { state: { client: this.thisClient } });
   }
-  changeMainPayment(client:Client){ 
+  changeMainPayment(client: Client) {
     console.log("click");
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/changeMainPayment'], { state: { client: this.thisClient } });
+  }
+  addMorePaymentDetails(client: Client) {
+    console.log("click");
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/addMorePaymentDetails'], { state: { client: this.thisClient } });
+  }
+  setShow() {
+    this.show = !this.show
+  }
+  handle() {
+
+    this.show = false;
+    this.paymentService.getPayment(history.state.client.payment).subscribe(
+      (s) => {
+        this.thisPayment = s;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }

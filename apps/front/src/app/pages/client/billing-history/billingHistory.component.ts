@@ -44,9 +44,11 @@ export class BillingHistoryComponent implements OnInit {
 
   }
   changeIsReturned(billing: Billing) {
+    console.log("click on changeIsReturned ");
+    
     console.log("start changeIsReturned "+ billing._id);
     
-    this.billingService.updateBillingStatus(billing._id, !billing.ifRreturn).subscribe(
+    this.paymentService.updateBillingStatus(this.payment._id, billing._id, !billing.ifRreturn).subscribe(
       s =>{ console.log(s);
         this.ngOnInit() 
 
