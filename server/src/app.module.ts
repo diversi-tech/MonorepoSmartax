@@ -344,6 +344,7 @@ import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.mod
     YearService,
     TableService,
     TasksGateway,
+    StepFieldMonthService
     // PopupGateway,
   ],
 })

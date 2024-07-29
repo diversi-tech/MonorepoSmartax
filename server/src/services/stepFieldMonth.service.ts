@@ -9,11 +9,12 @@ import {  StepFieldMonth ,stepFieldMonthModel} from "server/src/Models/stepField
 export class StepFieldMonthService{
     constructor(@InjectModel('StepFieldMonth') private readonly  StepFieldMonthModel:Model<StepFieldMonth> ){}
 
+   
     async createStep(CreateStepFieldMonthDto: CreateStepFieldMonthDto): Promise<StepFieldMonth> {
-        const step = new this.StepFieldMonthModel(
+       
+      const step = new this.StepFieldMonthModel(
           CreateStepFieldMonthDto
         );
-    
         return step.save();
       }
 

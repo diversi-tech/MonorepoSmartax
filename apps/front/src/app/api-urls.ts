@@ -26,4 +26,4 @@ export const CHECKLIST_ENDPOINT = `${API_URL}/checkList`;
 export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checkListItem`;
 export const IMPORTCLIENTS_ENDPOIMT = `${API_URL}/importclients`;
 export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;
-export const MONTHLY_REPORT = `${API_URL}/monthly report`;
+export const MONTHLY_REPORT = `${API_URL}/monthly-report`;
