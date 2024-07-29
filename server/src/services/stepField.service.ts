@@ -7,7 +7,7 @@ import {  StepField ,stepFieldModel} from "server/src/Models/stepField.model";
 
 @Injectable()
 export class StepFieldService{
-    constructor(@InjectModel('StepField' ) private readonly  StepFieldModel:Model<StepField> ){}
+    constructor(@InjectModel('StepField') private readonly  StepFieldModel:Model<StepField> ){}
 
     async createStep(CreateStepFieldDto: CreateStepFieldDto): Promise<StepField> {
         const step = new this.StepFieldModel(

@@ -44,11 +44,13 @@
     </h4>
     <div *ngFor="let data of sensitiveDataList">
     <ng-container  >
-      <p class="card-text">{{ data.creditCardCNumber }} :מספר אשראי <i class="pi pi-credit-card"></i></p>
-      <p class="card-text">{{ data.creditCardCValidity }} :תוקף אשראי <i class="pi pi-calendar"></i></p>
-      <p class="card-text">{{ data.digitsOnTheBack }} :ספרות בגב הכרטיס <i class="pi pi-shield"></i></p>
-      <p class="card-text">{{ data.bankDetail }}: פרטי בנק <i class="pi pi-money-bill"></i></p>
-      
+      <p *ngIf="data.isExist" class="card-text">{{ data.d }} : d <i class="pi pi-credit-card"></i></p>
+      <p *ngIf="data.isExist" class="card-text">{{ data.e }} : e  <i class="pi pi-calendar"></i></p>
+      <p *ngIf="data.isExist" class="card-text">{{ data.f }} : f  <i class="pi pi-shield"></i></p>
+      <p *ngIf="!data.isExist" class="card-text">{{ data.a }}: a <i class="pi pi-money-bill"></i></p>
+      <p *ngIf="!data.isExist" class="card-text">{{ data.b }}: b <i class="pi pi-money-bill"></i></p>
+      <p *ngIf="!data.isExist" class="card-text">{{ data.c }}: c <i class="pi pi-money-bill"></i></p>
+
    
     </ng-container></div>
   </div>

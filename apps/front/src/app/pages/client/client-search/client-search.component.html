@@ -1,23 +1,14 @@
 <div class="container">
-  <div class="my">
-    <div class="row">
-      <div class="p-col-12">
-        <div class="p-grid p-fluid">
-          <p-autoComplete [(ngModel)]="selectedClient" [suggestions]="filteredClients"
-            (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
-            [minLength]="1" placeholder="חיפוש שם או שם חברה" field="name" [dropdown]="true" [forceSelection]="false">
-            <ng-template let-client pTemplate="item">
-              שם - {{ client.firstName+" "+client.lastName }} | שם חברה - {{ client.companyName }}
-            </ng-template>
-          </p-autoComplete>
-        </div>
-      </div>
+  
+    
+  <h3 (click)="onSelectionChange(1)" >רשימת לקוחות</h3>
+      
 
       <p-button label="סוגי לקוח" routerLink="/clientTypes" routerLinkActive="active"></p-button>
-      <p-button (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
-        
-    </div>
-  </div>
+      <p-button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
+      <p-button *ngIf="isSelected == 2" (click)="onSelectionChange(1)" label="ללא מיון"></p-button>
+    
+
 
   <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" key="delete">
     <p-footer>
@@ -28,7 +19,6 @@
     </p-footer>
   </p-confirmDialog>
 
-  <h3 (click)="onSelectionChange(1)" >רשימת לקוחות</h3>
 
   <button *ngIf="isChoosedAllClient" pButton (click)="removeAllClients()" label="הסר הכל"></button>
   <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים"
@@ -39,15 +29,40 @@
   <p-table dir="rtl" [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients">
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th><button *ngIf="!isChoosedAllClient" pButton (click)="$event.stopPropagation(); chooseAllClients()"
-            label="בחר הכל"></button></th>
+        <th>
+          <button *ngIf="!isChoosedAllClient" pButton (click)="$event.stopPropagation(); chooseAllClients()"
+            label="בחר הכל"></button>
+        </th>
         <th></th>
-        <th> <span (click)="onSelectionChange(4)">שם חברה</span>
+        <th></th>
+        <th> 
+          <span (click)="onSelectionChange(4)">שם חברה</span>
           <div>
             <input *ngIf="isSelected == 2" type="text" placeholder="שם חברה"   [(ngModel)]="filternamecom"
             (input)="filterClientsBynamecom()"/>
-          </div> </th>
-        <th>שם פרטי ומשפחה</th>
+          </div>
+         </th>
+        <th>שם פרטי ומשפחה
+          <i class="pi pi-caret-up" 
+          style="cursor: pointer; margin-left: 5px;"
+          pTooltip="מיון לפי א' עד ת'"
+          tooltipPosition="bottom"
+          (click)="sortClientsByNameAsc()"></i>
+       <i class="pi pi-caret-down" 
+          style="cursor: pointer; margin-left: 5px;"
+          pTooltip="מיון לפי ת' עד א'"
+          tooltipPosition="bottom"
+          (click)="sortClientsByNameDesc()"></i>
+           <div>
+          <p-autoComplete  *ngIf="isSelected == 2" [(ngModel)]="selectedClient" [suggestions]="filteredClients"
+            (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
+            [minLength]="1" placeholder="חיפוש שם או שם חברה" field="name" [dropdown]="true" [forceSelection]="false">
+            <ng-template let-client pTemplate="item">
+              שם - {{ client.firstName+" "+client.lastName }} | שם חברה - {{ client.companyName }}
+            </ng-template>
+          </p-autoComplete>
+        </div>
+        </th>
         <th>
           <span (click)="onSelectionChange(3)">תעודות זהות</span>
           <div>
@@ -60,7 +75,6 @@
               (input)="filterClientsByNumber()" />
           </div>
         </th>
-        <th></th>
         <th></th>
       </tr>
     </ng-template>

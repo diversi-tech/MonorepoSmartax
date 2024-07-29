@@ -10,7 +10,7 @@ export class Billing extends Document {
     date: Date;
 
     @Prop()
-    amount: string;
+    amount: number;
 
     @Prop()
     paymentMethod: PaymentMethod;

@@ -39,7 +39,7 @@ export class UpdatePaymentDetailsDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    id: string;
+    _id: string;
 
     @ApiProperty({ type: Number, required: false })
     @IsOptional()
