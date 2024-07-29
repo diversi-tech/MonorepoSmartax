@@ -9,7 +9,7 @@ export class CreateStepFieldMonthDto {
 
     @ApiProperty({type: Boolean,description:'Is it complete?'})
     @IsBoolean()
-    isCompleted: Boolean 
+    content: string 
 
     @ApiProperty({ description: 'The type ' })
     @IsNotEmpty()
@@ -27,7 +27,7 @@ export class UpdateStepFieldMonthDto {
 
     @ApiProperty({type: Boolean,description:'Is it complete?'})
     @IsBoolean()
-    isCompleted: Boolean 
+    content: string; 
 
     @ApiProperty({ description: 'The type ' })
     @IsNotEmpty()

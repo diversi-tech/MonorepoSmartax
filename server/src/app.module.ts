@@ -159,6 +159,9 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
 import { MonthlyReportService } from './services/monthlyReport.service';
 import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
 import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
+import { StepFieldMonthController } from './controller/stepFieldMonth/stepFieldMonth.controller';
+import { StepFieldMonthService } from './services/stepFieldMonth.service';
+import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.model';
 
 @Module({
   //add
@@ -245,6 +248,9 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     MongooseModule.forFeature([
       { name: MonthlyReport.name, schema: MonthlyReportModel },
     ]),
+    MongooseModule.forFeature([
+      { name: StepFieldMonth.name, schema: stepFieldMonthModel },
+    ]),
     JwtModule,
   ],
   controllers: [
@@ -287,7 +293,8 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     RepeatableTaskController,
     FrequencyController,
     TaxRefundsController,
-    MonthlyReportController
+    MonthlyReportController,
+    StepFieldMonthController
   ],
 
   providers: [
@@ -325,6 +332,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     ClientFieldService,
     repeatableTaskService,
     TaxRefundsService,
+    StepFieldMonthService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,

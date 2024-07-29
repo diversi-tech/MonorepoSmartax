@@ -2,7 +2,7 @@
 export interface stepFieldMonth {
     _id?: string;
    value: string;
-   isComplete: boolean;
+   content: boolean;
    type: string;
   
   }

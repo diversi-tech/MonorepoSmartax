@@ -8,7 +8,7 @@ export class StepFieldMonth extends Document {
     value: string;
 
     @Prop({ default: false })
-    isCompleted: boolean;
+    content: string;
 
     @Prop()
     type: string;
