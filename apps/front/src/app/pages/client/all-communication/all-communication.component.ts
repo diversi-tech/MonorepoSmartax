@@ -14,6 +14,7 @@ import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplet
 import { AddClientComponent } from '../add-client/add-client.component';
 import { RouterOutlet } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   // standalone:true,
@@ -25,6 +26,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     Button,
     NgFor,
     NgIf,
+    TooltipModule,
     FormsModule,
     DropdownModule,
     DatePipe,
@@ -141,7 +143,13 @@ export class AllCommunicationComponent {
         }));
       });
   }
+  sortCommunicatioBySubjectAsc(): void {
+    this.filteredCommunicatio.sort((a, b) => a.Subject.localeCompare(b.Subject));
+  }
 
+  sortCommunicatioBySubjectDesc(): void {
+    this.filteredCommunicatio.sort((a, b) => b.Subject.localeCompare(a.Subject));
+  }
   onSelectionChange(a : any) {
     this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;
