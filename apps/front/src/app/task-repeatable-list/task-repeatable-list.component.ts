@@ -145,11 +145,26 @@ export class TaskRepeatableListComponent {
   }
 
   categorizeTasks(f: Frequency): RepeatableTask[] {
-    return this.tasks.filter((task) => {
-      {
-        return task.frequency && task.frequency.name === f.name;
-      }
-    });
+    console.log(this.tasks);
+    console.log(this.filteredTasks);
+    
+    
+    if(this.filteredTasks.length > 0)  {
+      return this.filteredTasks.filter((task) => {
+        {
+          return task.frequency && task.frequency.name === f.name;
+        }
+      });
+    }
+     
+    else{
+      return this.tasks.filter((task) => {
+        {
+          return task.frequency && task.frequency.name === f.name;
+        }
+      });
+    }
+    
   }
 
   searchTask(): void {
@@ -296,9 +311,13 @@ export class TaskRepeatableListComponent {
         deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
       );
     });
+    console.log(this.filteredTasks);
+    
   }
   // sort
   sortTasks(field: string, list: Task[], reverse: boolean) {
+    if(this.filteredTasks.length > 0)list=this.filteredTasks
+    else list=this.tasks
     list.sort((a, b) => {
       if (field === 'taskName') {
         return reverse
