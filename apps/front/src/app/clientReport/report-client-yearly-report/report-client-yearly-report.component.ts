@@ -89,22 +89,22 @@ export class ReportClientYearlyReportComponent implements OnInit {
 
   filterByClient(name: string): void {
     this.sortedReports = this.allYearlyReport.filter((task) =>
-      (this.getClientName(task.idUser)?.firstName + ' ' + this.getClientName(task.idUser)?.lastName).toLowerCase().includes(name.toLowerCase())
+      (this.getClientName(task.idClient)?.firstName + ' ' + this.getClientName(task.idClient)?.lastName).toLowerCase().includes(name.toLowerCase())
     );
   }
 
   sortReports(): void {
     this.sortedReports = [...this.allYearlyReport].sort((a, b) => {
-      const nameA = this.getClientName(a.idUser)?.firstName || '';
-      const nameB = this.getClientName(b.idUser)?.firstName || '';
+      const nameA = this.getClientName(a.idClient)?.firstName || '';
+      const nameB = this.getClientName(b.idClient)?.firstName || '';
       return nameA.localeCompare(nameB);
     });
   }
 
   sortReportsByClientName(): void {
     this.sortedReports = [...this.allYearlyReport].sort((a, b) => {
-      const clientNameA = this.getClientName(a.idUser)?.firstName || '';
-      const clientNameB = this.getClientName(b.idUser)?.firstName || '';
+      const clientNameA = this.getClientName(a.idClient)?.firstName || '';
+      const clientNameB = this.getClientName(b.idClient)?.firstName || '';
       return clientNameA.localeCompare(clientNameB);
     });
   }

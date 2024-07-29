@@ -29,8 +29,8 @@
     </ng-template>
     <ng-template pTemplate="body" let-task>
         <tr>
-            <td><p-button (click)="goToSteps(getClientName(task.idUser), task)" label="עדכן" /></td>
-            <td>{{task.status}}</td>
+            <td><p-button (click)="goToSteps(getClientName(task.idClient), task)" label="עדכן" /></td>
+            <td class="{{task.status?.color}}">{{task.status?.name}}</td>
             <td>{{task.entityType}}</td>
             <td>{{getEmployeName(task.idEmploye)?.userName }}</td>
             <td>{{ task.balanceDue }}</td>
@@ -38,7 +38,7 @@
             <td>{{ task.price }}</td>
             <td>{{ task.dateTime | date:'dd/MM/yyyy' }}</td>
             <td>{{ task.yearReport }}</td>
-            <td>{{getClientName(task.idUser)?.firstName }} {{getClientName(task.idUser)?.lastName }}</td>
+            <td>{{getClientName(task.idClient)?.firstName }} {{getClientName(task.idClient)?.lastName }}</td>
             <app-icon-profile [userName]="getClientName(task.idUser)?.firstName  &&  getClientName(task.idUser)?.lastName" style="width: 50px;"></app-icon-profile>
         
         </tr>
