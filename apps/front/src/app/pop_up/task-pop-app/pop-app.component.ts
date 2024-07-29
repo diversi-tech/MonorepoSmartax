@@ -1,5 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule, DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import {
+  CommonModule,
+  DatePipe,
+  Location,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+} from '@angular/common';
 import { TaskComponent } from '../../task/task.component';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
@@ -20,7 +28,10 @@ import { IconProfileComponent } from '../../share/icon-profile/icon-profile.comp
 @Component({
   selector: 'app-pop-app',
   standalone: true,
-  imports: [ConfirmDialogModule, RouterLink, RouterOutlet,
+  imports: [
+    ConfirmDialogModule,
+    RouterLink,
+    RouterOutlet,
     // TaskComponent,
     DialogModule,
     Footer,
@@ -42,34 +53,34 @@ import { IconProfileComponent } from '../../share/icon-profile/icon-profile.comp
     NgStyle,
     NgClass,
     ToastModule,
-    DatePipe, TaskComponent],
+    DatePipe,
+    TaskComponent,
+  ],
   templateUrl: './pop-app.component.html',
   styleUrl: './pop-app.component.css',
 })
 export class PopAppComponent implements OnInit {
+  id: string | null;
+  @Input() parent: string | null = null;
 
-  id: string | null
-   @Input() parent: string | null = null;
- 
   visible: boolean = true;
 
-  create = false
-  constructor(private route: ActivatedRoute) { }
+  create = false;
+  constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
 
     if (this.id == 'create') {
-      alert("יצירה בפופאפ")
-      this.id == null
-      this.create=true
-    }
-    else{
-      alert("עריכה בפופאפ")
-      this.create = false
+      // alert("יצירה בפופאפ")
+      this.id == null;
+      this.create = true;
+    } else {
+      alert('עריכה בפופאפ');
+      this.create = false;
     }
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.parent = params['parent'];
     });
   }
@@ -77,5 +88,10 @@ export class PopAppComponent implements OnInit {
   showDialog() {
     this.visible = true;
   }
-  show = true
+  show = true;
+
+  onHide() {
+    console.log('The dialog has been closed.');
+    this.location.back();
+  }
 }
