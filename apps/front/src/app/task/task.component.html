@@ -619,7 +619,7 @@
       <div class="calendar-container">
         <div class="calendar-item">
           <p class="p-date">
-            <b>  טווח תאריכים </b>
+            <b> טווח תאריכים </b>
             <!-- <span class="pi pi-calendar"></span> -->
           </p>
           <p-calendar
@@ -635,7 +635,7 @@
         </div>
         <div class="calendar-item">
           <p class="p-date">
-            <b>  תאריך ביצוע </b>
+            <b> תאריך ביצוע </b>
             <!-- <span class="pi pi-calendar"></span> -->
           </p>
           <p-calendar
@@ -651,7 +651,7 @@
     </div>
     <div class="one-one">
       <p>
-        <b>  עובדים </b>
+        <b> עובדים </b>
         <!-- <span class="pi pi-user"></span> -->
       </p>
       <p-multiSelect
@@ -692,7 +692,7 @@
       <div class="status-priority-container">
         <div class="status-item">
           <p class="status-label">
-            <b>  סטטוס </b>
+            <b> סטטוס </b>
             <!-- <span class="pi pi-spinner-dotted"></span> -->
           </p>
           <p-dropdown
@@ -725,7 +725,7 @@
         </div>
         <div class="priority-item">
           <p class="priority-label">
-            <b>  עדיפות </b>
+            <b> עדיפות </b>
             <!-- <span class="pi pi-flag"></span> -->
           </p>
           <p-dropdown
@@ -747,10 +747,7 @@
             </ng-template>
             <ng-template let-s pTemplate="item">
               <div class="custom-item">
-                <span
-                  [style]="{ color: s.color }"
-                  class="pi pi-flag"
-                ></span>
+                <span [style]="{ color: s.color }" class="pi pi-flag"></span>
                 <div>{{ s.name }}</div>
               </div>
             </ng-template>
@@ -762,7 +759,7 @@
       <div class="one-one-container">
         <div class="item">
           <p>
-            <b>  לקוחות </b>
+            <b> לקוחות </b>
             <!-- <span class="pi pi-users"></span> -->
           </p>
           <div class="card flex justify-content-center">
@@ -797,7 +794,7 @@
         </div>
         <div class="item">
           <p>
-            <b>  תגיות </b>
+            <b> תגיות </b>
             <!-- <span class="pi pi-tag"></span> -->
           </p>
           <p-multiSelect
@@ -841,22 +838,28 @@
           <div class="button-container">
             <p-tag (click)="showTag2 = !showTag2" value="תגית חדשה"></p-tag>
           </div>
-          <div *ngIf="showTag2">
-            <br />
-            <p-colorPicker [(ngModel)]="color"></p-colorPicker>
+          <div *ngIf="showTag2" class="color-picker-container">
+            <p-colorPicker [style]="{'width':'30px','height':'30px'}" [(ngModel)]="color"></p-colorPicker>
             <input
               (keyup.enter)="createTag()"
               type="text"
               pInputText
               [(ngModel)]="value"
               placeholder="הקלד תגיות חדשות"
-              style="width: 70%; height: 30px"
+              class="input-tag"
             />
           </div>
         </div>
       </div>
     </div>
-    <div style="background-color: rgb(246, 247, 247);padding: 3%;border-radius: 10px;" class="one-one">
+    <div
+      style="
+        background-color: rgb(246, 247, 247);
+        padding: 3%;
+        border-radius: 10px;
+      "
+      class="one-one"
+    >
       <app-upload-doc-task
         *ngIf="selectedClient"
         [idClient]="selectedClient && selectedClients._id"

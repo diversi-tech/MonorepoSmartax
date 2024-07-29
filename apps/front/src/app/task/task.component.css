@@ -212,6 +212,21 @@
     cursor: pointer;
   }
   /*  */
+  .color-picker-container {
+    display: flex;
+    align-items: center; /* מיישר את שני המרכיבים לאותו גובה */
+    gap: 10px; /* רווח בין ה-colorPicker ל-input */
+  }
+  
+  .p-colorpicker {
+    height: 30px; /* התאם את הגובה של ה-colorPicker */
+    width: 30px; /* התאם את הרוחב של ה-colorPicker */
+  }
+  
+  .input-tag {
+    width: 70%;
+    height: 30px; /* אותו גובה כמו ה-colorPicker */
+  }
   
   
   

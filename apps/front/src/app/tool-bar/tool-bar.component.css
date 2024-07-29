@@ -15,7 +15,9 @@
 
 /* Define the active link class */
 .active-link {
-    background-color: rgb(118, 118, 118) !important;
+    /* background-color: rgb(48, 46, 46) !important; */
+    background-color: rgba(100, 100, 100, 0.5) !important; /* צבע אפור יותר בהיר עם שקיפות */
+
     color: white !important;
     border-radius: 10px !important;
     /* Adjust the value as needed */

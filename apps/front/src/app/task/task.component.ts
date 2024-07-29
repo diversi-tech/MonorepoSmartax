@@ -143,7 +143,7 @@ export class TaskComponent implements OnInit {
   checkListId: string[] | undefined;
   subTasks: string[] = [];
   tags2: Tag[] = [];
-  color: string | undefined;
+  color: string ='#1976d2';
   value: string;
 
   //
