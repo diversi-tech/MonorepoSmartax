@@ -154,6 +154,9 @@ import { TasksGateway } from './services/socket/socket.gateway';
 import { TaxRefundsService } from './services/taxRefunds.service';
 import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
 import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
+import { MonthlyReportService } from './services/monthlyReport.service';
+import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
+import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
 
 @Module({
   //add
@@ -236,6 +239,9 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     MongooseModule.forFeature([
       { name: TaxRefunds.name, schema: taxRefundsModel },
     ]),
+    MongooseModule.forFeature([
+      { name: MonthlyReport.name, schema: MonthlyReportModel },
+    ]),
     JwtModule,
   ],
   controllers: [
@@ -277,6 +283,7 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
     RepeatableTaskController,
     FrequencyController,
     TaxRefundsController,
+    MonthlyReportController
   ],
 
   providers: [
@@ -318,7 +325,7 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
       useClass: HttpErrorFilter,
     },
     CommunicationArchiveService,
-
+    MonthlyReportService,
     StepFieldService,
     YearlyReportService,
     YearService,

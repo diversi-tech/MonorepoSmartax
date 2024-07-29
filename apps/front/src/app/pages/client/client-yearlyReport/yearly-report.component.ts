@@ -60,8 +60,7 @@ export class YearlyReportComponent implements OnInit {
   }
 
   getYearlyReportsForClient(): void {
-    debugger
-    const clientId = this.client._id // Assuming the client ID is passed via the state
+    const clientId =this.client._id // Assuming the client ID is passed via the state
     this.yearlyReportService.getYearlyReportsForClient(clientId).subscribe(
       (reports) => {
         this.allYearlyReport = reports;
