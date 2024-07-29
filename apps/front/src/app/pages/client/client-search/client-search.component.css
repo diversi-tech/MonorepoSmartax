@@ -1,6 +1,6 @@
 .search-container {
   margin-bottom: 100%;
- 
+
 }
 
 
@@ -9,41 +9,28 @@
   padding: 10px;
   max-height: 250px;
   overflow-y: auto;
-  
-}
-.my{
-  display: flex;
-  flex-direction: row;
- 
-}
-.my3{
-  direction: rtl;
-  display:flex;
-  flex-direction: row;
- 
-}
-.my{
- width: 10rem;
- height: 50px;
- margin-left: 4%;
+
 }
 
 .search-results ul {
   list-style-type: none;
   padding: 0;
 }
-:host ::ng-deep .p-autocomplete-dd .p-autocomplete-input
-{
-  width:50rem;
+
+:host ::ng-deep .p-autocomplete-dd .p-autocomplete-input {
+  width: 50rem;
 }
+
 .search-results li {
   cursor: pointer;
   padding: 5px;
 }
+
 :host ::ng-deep .container {
- width: 100%;
- 
+  width: 100%;
+
 }
+
 .search-results li:hover {
   background-color: #f0f0f0;
 }
@@ -53,9 +40,11 @@
   margin: 2%;
   margin-left: 45%;
 }
+
 th,td {
   text-align: center;
 }
+
 .clickable-text {
   cursor: pointer;
   transition: transform 10s;
@@ -73,4 +62,21 @@ th,td {
 .p-button-rounded {
   border-radius: 20%;
   margin: 1%;
+}
+
+:host ::ng-deep .addClientAndExel {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.custom-table {
+  background-color: cornflowerblue;
+  color: brown;
+    max-width: 100%; 
+    overflow-x: hidden; 
 }
