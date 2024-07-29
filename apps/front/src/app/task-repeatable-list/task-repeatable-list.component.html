@@ -178,7 +178,7 @@
         }"
         shape="circle"
         class="avatar"
-        pTooltip="Add Task"
+        pTooltip="הוספת משימה"
         showDelay="1000"
         hideDelay="300"
         icon="pi pi-plus"
@@ -197,7 +197,7 @@
         }"
         shape="circle"
         class="avatar"
-        pTooltip="Filter"
+        pTooltip="סינונים"
         showDelay="1000"
         hideDelay="300"
         icon="pi pi-filter"
@@ -209,7 +209,7 @@
 
   <div class="p-col-8" style="text-align: right; align-items: right">
     <div class="content-container" style="margin-left: -18%">
-      <br>
+      <br />
       <div class="card">
         <p-progressBar [value]="progressValue" [showValue]="false">
           <ng-template pTemplate="content" let-value>
@@ -218,12 +218,21 @@
         </p-progressBar>
       </div>
       <div>
-        <div >
+        <div>
           <!-- *ngIf="filteredTasks.length == 0" -->
           <div *ngFor="let frequency of frequencies">
             <br />
-            <p-panel *ngIf="categorizeTasks(frequency).length > 0" header="{{ frequency.name }}">
-              <p-table  [value]="categorizeTasks(frequency)">
+            <p-panel
+              *ngIf="categorizeTasks(frequency).length > 0"
+              header="{{ frequency.name }}"
+            >
+              <p-table
+                [value]="categorizeTasks(frequency)"
+                [paginator]="true"
+                [rows]="5"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [rowsPerPageOptions]="[5, 10, 20]"
+              >
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">
                     <th style="width: auto; height: 50px">
@@ -299,7 +308,7 @@
                       </div>
                     </td>
 
-                    <td>{{ task.dueDate | date : 'shortDate' }}</td>
+                    <td>{{ task.dueDate | date: 'shortDate' }}</td>
                     <td>
                       <button
                         *ngFor="let tag of task.tags; let i = index"
@@ -453,3 +462,50 @@
   </div>
 </div>
 <br />
+<!-- ------------------------------------------ -->
+<!-- <div class="card">
+  <p-table [value]="tasks" [tableStyle]="{'min-width': '60rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="taskName" style="width:20%">
+          Name <p-sortIcon field="taskName" />
+        </th>
+        <th pSortableColumn="assignedTo" style="width:20%">
+          AssignedTo <p-sortIcon field="assignedTo" />
+        </th>
+        <th pSortableColumn="tags" style="width:20%">
+          Tags <p-sortIcon field="tags" />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-task>
+      <tr>
+        <td>{{ task.taskName }}</td>
+        <td>
+          <div style="display: flex; align-items: center">
+            <ng-container *ngFor="let u of task.assignedTo">
+              <div style="margin-left: 10px">
+                <app-icon-profile
+                  [userName]="u.userName"
+                  [email]="u.email"
+                ></app-icon-profile>
+              </div>
+            </ng-container>
+          </div>
+        </td>
+        <td>
+          <button
+            *ngFor="let tag of task.tags; let i = index"
+            [ngStyle]="{
+              backgroundColor: tag.color,
+              color: 'white'
+            }"
+            class="custom-button"
+          >
+            {{ tag.text }}
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div> -->

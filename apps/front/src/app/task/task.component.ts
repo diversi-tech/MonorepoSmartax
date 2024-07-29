@@ -208,7 +208,6 @@ export class TaskComponent implements OnInit {
   ) {}
 
   newTaskCreated: boolean = false;
-  newTaskCreated: boolean = false;
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId)

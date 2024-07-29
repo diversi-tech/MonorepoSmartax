@@ -15,7 +15,7 @@
 
 /* Define the active link class */
 .active-link {
-    background-color: rgb(38, 38, 38) !important;
+    background-color: rgb(118, 118, 118) !important;
     color: white !important;
     border-radius: 10px !important;
     /* Adjust the value as needed */
