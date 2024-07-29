@@ -4,7 +4,7 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { HashPasswordService } from '../_services/hash-password.service';
 import { AUTH_ENDPOINT } from '../api-urls';
 import { Role } from '../_models/role.module';
-import jwt_decode from 'jwt-decode'; // Correct import statement for version 4.x.x
+import jwt_decode from 'jwt-decode'; // Correct import statement
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,20 +17,20 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
+  private apiUrl = AUTH_ENDPOINT;
+
+  // פונקציה שתשמש כ-Callback
+  private credentialResponseHandler: (email: string, password: string) => void = () => {};
+
   constructor(private http: HttpClient, private hashService: HashPasswordService) {
     this.initGoogleAuth();
   }
-
-  private apiUrl = AUTH_ENDPOINT;
 
   login(email: string, passwordHash: string): Observable<any> {
     passwordHash = this.hashService.encryptPassword(passwordHash);
     return this.http.post(
       `${this.apiUrl}/signin`,
-      {
-        email,
-        passwordHash
-      },
+      { email, passwordHash },
       httpOptions
     );
   }
@@ -80,7 +80,7 @@ export class AuthService {
       if (window.google && window.google.accounts) {
         window.google.accounts.id.initialize({
           client_id: '427515481723-ja7nlkmti3amubd5e5qbtdig27fc06ik.apps.googleusercontent.com',
-          callback: this.handleCredentialResponse.bind(this),
+          callback: this.handleCredentialResponseWrapper.bind(this),
         });
         window.google.accounts.id.renderButton(
           document.getElementById('googleSignInButton'),
@@ -94,13 +94,16 @@ export class AuthService {
     }
   }
 
-  handleCredentialResponse(response: any) {
+  handleCredentialResponseWrapper(response: any) {
     try {
-      const userObject: any = jwt_decode(response.credential); // Use jwt_decode directly
-      console.log("User Object:", userObject);
-      console.log("User Name:", userObject.name);
-      console.log("User Email:", userObject.email);
-      // Here you can send the token to your server for further verification or perform additional operations
+      const userObject: any = jwt_decode(response.credential);
+      const email = userObject.email;
+      const password = 'Aa123456'; // Use a fixed password or generate dynamically as needed
+      console.log();
+
+      // קריאה לפונקציה הנכונה מתוך ה-Callback
+      this.credentialResponseHandler(email, password);
+
     } catch (error) {
       console.error("Error handling credential response:", error);
     }
@@ -108,5 +111,9 @@ export class AuthService {
 
   signIn() {
     window.google.accounts.id.prompt();
+  }
+
+  setCredentialResponseHandler(handler: (email: string, password: string) => void) {
+    this.credentialResponseHandler = handler;
   }
 }
