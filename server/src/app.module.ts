@@ -154,6 +154,9 @@ import { TasksGateway } from './services/socket/socket.gateway';
 import { TaxRefundsService } from './services/taxRefunds.service';
 import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
 import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
+import { FinancialStatement, FinancialStatementModel } from './Models/financialStatement.model';
+import { FinancialStatementController } from './controller/financialStatement/financialStatement.controller';
+import { FinancialStatementService } from './services/financialStatement.service';
 import { MonthlyReportService } from './services/monthlyReport.service';
 import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
 import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
@@ -240,6 +243,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
       { name: TaxRefunds.name, schema: taxRefundsModel },
     ]),
     MongooseModule.forFeature([
+      { name: FinancialStatement.name, schema: FinancialStatementModel },
       { name: MonthlyReport.name, schema: MonthlyReportModel },
     ]),
     JwtModule,
@@ -283,6 +287,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     RepeatableTaskController,
     FrequencyController,
     TaxRefundsController,
+    FinancialStatementController,
     MonthlyReportController
   ],
 
@@ -320,6 +325,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     ClientFieldService,
     repeatableTaskService,
     TaxRefundsService,
+    FinancialStatementService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
