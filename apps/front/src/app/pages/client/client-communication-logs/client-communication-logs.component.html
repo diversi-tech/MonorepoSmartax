@@ -1,8 +1,8 @@
 <h3>שיחות</h3>
-<p-table [value]="communications"
-  [tableStyle]="{'min-width': '80rem'}">
+<p-table [value]="communications" [tableStyle]="{'min-width': '80rem'}">
   <ng-template pTemplate="header" let-columns>
     <tr>
+      <th></th>
       <th>סוג השיחה </th>
       <th>תאריך</th>
       <th>נושא שיחה</th>
@@ -10,8 +10,16 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-communication let-columns="columns">
-    <tr>
+    <tr (click)="selectCurrentCommunication(communication)"
+      [ngClass]="{ 'highlight': currentCommunication === communication }">
 
+      <td><button *ngIf="currentCommunication === communication" pButton
+          class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+          (click)="selectCommunication(this.currentCommunication); showConfirmationEdit()"></button>
+        <button *ngIf="currentCommunication === communication" pButton [class]="myClass"
+          class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
+          (click)="showConfirmationDelete()"></button>
+      </td>
       <td *ngIf="communication.Status === 'true'">ליד</td>
       <td *ngIf="communication.Status === 'false'">מעקב</td>
       <td>{{communication.date | date: 'yyyy-MM-dd' }}</td>
@@ -21,9 +29,50 @@
   </ng-template>
 </p-table>
 
-
-<button class="p-button p-button-warning p-button-sm p-float-right p-ml-2">לַעֲרוֹך</button>
-<button class="p-button p-button-danger p-button-sm p-float-right">למחוק</button>
-
 <p-button label="להוספת שיחה" (click)="displayDialog = true"></p-button>
+
+<p-confirmDialog header='עריכת שיחה' key="edit">
+  <p-footer>
+    <div *ngIf="selectedCommunication" class="p-grid">
+      <form (ngSubmit)="updateCommunication()" class="form-background">
+        <div class="p-field">
+          <label for="editClientName">Client Name</label>
+          <input type="text" class="p-inputtext" id="editClientName" [(ngModel)]="selectedCommunication.client"
+            name="editClientName" required>
+        </div>
+        <div class="p-field">
+          <label for="editDate">Date</label>
+          <input type="date" class="p-inputtext" id="editDate" [(ngModel)]="selectedCommunication.date" name="editDate"
+            required>
+        </div>
+        <div class="p-field">
+          <label for="editSubject">Subject</label>
+          <input type="text" class="p-inputtext" id="editSubject" [(ngModel)]="selectedCommunication.Subject"
+            name="editSubject" required>
+        </div>
+        <div class="p-field">
+          <label for="editSummary">Summary</label>
+          <textarea class="p-textarea" id="editSummary" [(ngModel)]="selectedCommunication.summary" name="editSummary"
+            rows="3" required></textarea>
+        </div>
+        <div class="p-field">
+          <label for="editAssignedTo">Assigned To</label>
+          <p-dropdown [options]="users" [(ngModel)]="selectedCommunication.assignedTo" name="editAssignedTo"
+            optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
+        </div>
+        <button type="submit" class="p-button">Update Communication</button>
+      </form>
+    </div>
+  </p-footer>
+</p-confirmDialog>
+
+<p-confirmDialog header="Confirmation" key="delete">
+  <p-footer>
+    <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+      (click)="cancelDelete()"></button>
+    <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+      (click)="confirmDelete()"></button>
+  </p-footer>
+</p-confirmDialog>
+
 <app-client-add-communication *ngIf="displayDialog" (close)="displayDialog = false"></app-client-add-communication>
