@@ -2,9 +2,10 @@
 <p-button (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
 
 
-<p-table [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications">
+  <p-table [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications">
   <ng-template pTemplate="header" let-columns>
-    <tr>
+    <tr (click)="selectCurrentCommunication(communication)"
+      [ngClass]="{ 'highlight': currentCommunication === communication }">
       <th></th>
       <th>
         <span (click)="onSelectionChange(2)">שם לקוח</span>
@@ -44,6 +45,7 @@
   <ng-template pTemplate="body" let-communication>
     <tr (click)="selectCurrentCommunication(communication)"
       [ngClass]="{ 'highlight': currentCommunication === communication }">
+
       <td><button *ngIf="currentCommunication === communication" pButton
           class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
           (click)="selectCommunication(this.currentCommunication); showConfirmationEdit()"></button>

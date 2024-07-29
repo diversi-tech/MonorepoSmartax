@@ -42,6 +42,7 @@
         <th><button *ngIf="!isChoosedAllClient" pButton (click)="$event.stopPropagation(); chooseAllClients()"
             label="בחר הכל"></button></th>
         <th></th>
+        <th></th>
         <th> <span (click)="onSelectionChange(4)">שם חברה</span>
           <div>
             <input *ngIf="isSelected == 2" type="text" placeholder="שם חברה"   [(ngModel)]="filternamecom"
@@ -60,7 +61,6 @@
               (input)="filterClientsByNumber()" />
           </div>
         </th>
-        <th></th>
         <th></th>
       </tr>
     </ng-template>
