@@ -66,37 +66,51 @@ export class ClientService {
       console.error('Error finding highest clientID:', err);
     }
   }
+  // async searchClient(id: string): Promise<Client> {
+  //   // console.log(id);
+  //   // const validObjectId = new mongoose.Types.ObjectId(id);
+  //   // const client = await this.clientModel.findById({ _id: validObjectId }).exec();
+  //   // console.log(client);
+  //   // console.log("etty");
+  //   // if (!client) {
+  //   //   throw new NotFoundException('Client not found');
+  //   // }
+  //   // return client;
+  //   try {
+  //     // בדוק שה-ID הוא ObjectId חוקי
+  //     if (!Types.ObjectId.isValid(id)) {
+  //       console.error('Invalid ID format:', id);
+  //       throw new NotFoundException('Invalid ID format');
+  //     }
+
+  //     console.log("Searching for client with ID:", id);
+  //     const client = await this.clientModel.findById(id).exec();
+  //     console.log("Client found:", client);
+
+  //     if (!client) {
+  //       console.error('Client not found with ID:', id);
+  //       throw new NotFoundException('Client not found');
+  //     }
+  //     return client;
+  //   } catch (error) {
+  //     console.error("Error while searching for client:", error.message);
+  //     throw new NotFoundException('Client not found');
+  //   }
+  
+  // }
+
   async searchClient(id: string): Promise<Client> {
-    // console.log(id);
-    // const validObjectId = new mongoose.Types.ObjectId(id);
-    // const client = await this.clientModel.findById({ _id: validObjectId }).exec();
-    // console.log(client);
-    // console.log("etty");
-    // if (!client) {
-    //   throw new NotFoundException('Client not found');
-    // }
-    // return client;
     try {
-      // בדוק שה-ID הוא ObjectId חוקי
-      if (!Types.ObjectId.isValid(id)) {
-        console.error('Invalid ID format:', id);
-        throw new NotFoundException('Invalid ID format');
-      }
-
-      console.log("Searching for client with ID:", id);
-      const client = await this.clientModel.findById('669635e81b446fab29213c0c').exec();
-      console.log("Client found:", client);
-
+      const client = await this.clientModel.findOne({ _id: id }).exec();
+      console.log(client);
       if (!client) {
-        console.error('Client not found with ID:', id);
         throw new NotFoundException('Client not found');
       }
       return client;
-    } catch (error) {
-      console.error("Error while searching for client:", error.message);
-      throw new NotFoundException('Client not found');
+    }catch(err){
+      console.log(err);
+      
     }
-  
   }
 
   async updateClient(

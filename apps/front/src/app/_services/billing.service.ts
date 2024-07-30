@@ -41,6 +41,10 @@ export class BillingService {
     deleteBilling(id: string): Observable<boolean> {
         return this.http.delete<boolean>(`${this.apiUrl}/delete`, { ...this.httpOptions, body: { id } });
     }
+    getBilling(id: string): Observable<Billing> {
+        return this.http.get<Billing>(`${this.apiUrl}/${id}`);
+    }
+   
 
-    
+
 }

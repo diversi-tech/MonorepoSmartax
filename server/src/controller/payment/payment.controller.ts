@@ -34,11 +34,11 @@ export class PaymentController {
 
   @Get(':id')
   async getPaymentById(@Param('id') id: string): Promise<Payment> {
-    try{
+    try {
       return await this.PaymentService.getPaymentById(id);
-    }catch(err){
+    } catch (err) {
       console.log(err);
-      
+
     }
   }
 
@@ -50,7 +50,7 @@ export class PaymentController {
   @Put()
   async updatePayment(@Body() updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
     console.log('start update in controller');
-    
+
     return await this.PaymentService.updatePayment(updatePaymentDto);
   }
   @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
@@ -95,5 +95,18 @@ export class PaymentController {
   @Post('deleteOldPaymentDetails')
   async deleteOldPaymentDetails(): Promise<void> {
     return await this.PaymentService.deleteOldPaymendDetails();
+  }
+  @ApiBody({
+    schema: { type: 'object', properties: { paymentId: { type: 'string' }, billingId: { type: 'string' }, status: { type: 'boolean' } } },
+  })
+  @Post('updateBillingStatus')
+  async updateBillingStatus(
+    @Body(new ValidationPipe()) body: { paymentId: string,billingId: string,status: boolean }
+     
+  ): Promise<Payment> {
+    console.log(body.paymentId,body.billingId,body.status);
+
+    return await this.PaymentService.updateBillingStatus(body.paymentId,body.billingId,body.status);
+
   }
 }

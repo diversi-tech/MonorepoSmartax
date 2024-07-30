@@ -11,6 +11,14 @@ export class CreateTaskDto {
   @IsOptional()
   client: Client[];
 
+  @ApiProperty({ description: 'The task parent ID' })
+  @IsString()
+  parent: string;
+
+  @ApiProperty({ description: 'The subTasks ID array' })
+  @IsString()
+  subTasks: string[];
+  
     @IsNotEmpty()
     @IsString()
     taskName: string;

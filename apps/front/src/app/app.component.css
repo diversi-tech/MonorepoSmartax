@@ -4,6 +4,10 @@ body {
     background-color: chartreuse;
 }
 
+#app{
+    margin-top: 250px;
+}
+
 :host {
     /* margin-top: 10%;
     font-size: 3.5rem;
@@ -23,5 +27,15 @@ body {
     display: inline-block; 
     text-indent: -9999px; 
   } */
-  
-  
+
+:host ::ng-deep .smartaxToolbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+
+
+

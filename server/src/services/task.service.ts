@@ -19,10 +19,10 @@ export class TaskService {
     private jwtToken: TokenService,
     private clientService: ClientService,
     private readonly tasksGateway: TasksGateway
-  ) {}
+  ) { }
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task[]> {
-    const { client, taskName, description, dueDate, status, assignedTo, tags, deadline, priority, images, googleId, startDate } = createTaskDto;
+    const { client, taskName, description, dueDate, status, assignedTo, tags, deadline, priority, images, googleId, startDate, parent,subTasks } = createTaskDto;
     const tasks: Task[] = [];
     if (client.length){
       for (const singleClient of client) {
@@ -39,13 +39,15 @@ export class TaskService {
           googleId, 
           deadline, 
           startDate,
+          parent,
+          subTasks
         });
         const savedTask = await createTask.save();
         tasks.push(savedTask);
       }
     }else
     {
-      const createTask = new this.taskModel({ client, taskName, description, dueDate, status, assignedTo, tags, deadline, priority, images, googleId, startDate})
+      const createTask = new this.taskModel({ client, taskName, description, dueDate, status, assignedTo, tags, deadline, priority, images, googleId, startDate ,parent,subTasks})
       const savedTask = await createTask.save();
       tasks.push(savedTask);
     }
@@ -58,11 +60,15 @@ export class TaskService {
   }
 
   async findOne(id: string): Promise<Task> {
-    const task = await this.taskModel.findById({ _id: id }).exec();
-    if (!task) {
-      throw new ValidationException('Task not found');
+    try {
+      const task = await this.taskModel.findById({ _id: id }).exec();
+      if (!task) {
+        throw new ValidationException('Task not found');
+      }
+      return task;
+    } catch (err) {
+      console.log(err);
     }
-    return task;
   }
 
   async getTasksByClientId(clientId: string): Promise<Task[]> {

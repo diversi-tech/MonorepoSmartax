@@ -1,0 +1,31 @@
+{
+  "name": "timesheet",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "timesheet/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "timesheet:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "timesheet:build:development"
+        },
+        "production": {
+          "buildTarget": "timesheet:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "timesheet/jest.config.ts"
+      }
+    }
+  }
+}
