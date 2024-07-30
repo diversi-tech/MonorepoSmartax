@@ -18,7 +18,7 @@ export class TaskService {
     private yearArchiveService:YearArchiveService,
     private jwtToken: TokenService,
     private readonly tasksGateway: TasksGateway
-  ) {}
+  ) { }
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const {
@@ -46,7 +46,7 @@ export class TaskService {
     // הודעה ללקוחות על יצירת משימה חדשה
     // if(!assignedTo || assignedTo.length === 0) {
     //   console.log("מממממלא משויכת לאף אחד");
-      
+
     //   this.tasksGateway.handleTaskCreated(createTaskDto);
 
     // }
@@ -68,7 +68,7 @@ export class TaskService {
       subTasks
     });
     console.log(createTask);
-    
+
     return await createTask.save();
   }
 
@@ -77,11 +77,15 @@ export class TaskService {
   }
 
   async findOne(id: string): Promise<Task> {
-    const task = await this.taskModel.findById({ _id: id }).exec();
-    if (!task) {
-      throw new ValidationException('Task not found');
+    try {
+      const task = await this.taskModel.findById({ _id: id }).exec();
+      if (!task) {
+        throw new ValidationException('Task not found');
+      }
+      return task;
+    } catch (err) {
+      console.log(err);
     }
-    return task;
   }
 
   async getTasksByClientId(clientId: string): Promise<Task[]> {

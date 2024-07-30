@@ -85,9 +85,7 @@ import { Field, FieldModell } from './Models/field.model';
 import { Timer, TimerModel } from './Models/timer.model';
 import { TimerController } from './controller/timer/timer.controller';
 import { TimerService } from './services/timer.service';
-import { WorkLogController } from './controller/workLog/workLog.controller';
-import { WorkLogService } from './services/workLog.service';
-import { WorkLogModel, WorkLog } from './Models/workLog.model';
+
 
 import { FrequencyController } from './controller/frequency/frequency.controller';
 import { Frequency, frequencyModel } from './Models/frequency.model';
@@ -160,6 +158,12 @@ import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
 import { YearArchive, YearArchiveModel } from './Models/yearArchive.model';
 import { YearArchiveController } from './controller/yearArchive/yearArchive.controller';
 import { YearArchiveService } from './services/yearArchive.service';
+import { FinancialStatement, FinancialStatementModel } from './Models/financialStatement.model';
+import { FinancialStatementController } from './controller/financialStatement/financialStatement.controller';
+import { FinancialStatementService } from './services/financialStatement.service';
+import { MonthlyReportService } from './services/monthlyReport.service';
+import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
+import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
 
 @Module({
   //add
@@ -182,7 +186,6 @@ import { YearArchiveService } from './services/yearArchive.service';
     MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-    MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel }]),
     MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel },]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
@@ -204,13 +207,16 @@ import { YearArchiveService } from './services/yearArchive.service';
     MongooseModule.forFeature([{ name: CheckList.name, schema: CheckListModel },]),
     MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
     MongooseModule.forFeature([{ name: TaxRefunds.name, schema: taxRefundsModel },]),
+    MongooseModule.forFeature([
+      { name: FinancialStatement.name, schema: FinancialStatementModel },
+      { name: MonthlyReport.name, schema: MonthlyReportModel },
+    ]),
     JwtModule,
     ScheduleModule.forRoot(),
         
   ],
   controllers: [
     YearArchiveController,
-    WorkLogController,
     AppController,
     CheckListItemController,
     CheckListController,
@@ -249,10 +255,11 @@ import { YearArchiveService } from './services/yearArchive.service';
     RepeatableTaskController,
     FrequencyController,
     TaxRefundsController,
+    FinancialStatementController,
+    MonthlyReportController
   ],
 
   providers: [
-    WorkLogService,
     AppService,
     UserService,
     MailService,
@@ -287,12 +294,13 @@ import { YearArchiveService } from './services/yearArchive.service';
     ClientFieldService,
     repeatableTaskService,
     TaxRefundsService,
+    FinancialStatementService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
     },
     CommunicationArchiveService,
-
+    MonthlyReportService,
     StepFieldService,
     YearlyReportService,
     YearService,

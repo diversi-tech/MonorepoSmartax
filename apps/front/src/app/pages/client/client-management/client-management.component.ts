@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
 import { Client } from '../../../_models/client.module';
-import { RouterModule } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 @Component({
     selector: 'app-client-management',
     templateUrl: './client-management.component.html',

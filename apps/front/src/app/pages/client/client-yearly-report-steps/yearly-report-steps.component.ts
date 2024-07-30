@@ -1,23 +1,32 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { YearlyReportService } from '../../../_services/yearlyReport.service';
 import { StepField } from '../../../_models/stepField.module';
-import { StepperModule } from 'primeng/stepper';
+import { Client } from '../../../_models/client.module';
+import { CommonModule, Location } from '@angular/common';
+import { Status } from '../../../_models/status.module';
+import { StatusService } from '../../../_services/status.service';
 import { CheckboxModule } from 'primeng/checkbox';
+import { StepperModule } from 'primeng/stepper';
 import { ButtonModule } from 'primeng/button';
-import { FormsModule } from '@angular/forms';
 import { ScrollerModule } from 'primeng/scroller';
 import { StepsModule } from 'primeng/steps';
+import { ToastModule } from 'primeng/toast';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Client } from '../../../_models/client.module';
-import { YearlyReport } from '../../../_models/yearlyReport.module';
-import { Location } from '@angular/common';
-
 
 @Component({
   selector: 'app-yearly-report-steps',
   standalone: true,
-  imports: [CommonModule, CheckboxModule, StepperModule, ButtonModule, FormsModule, ScrollerModule, StepsModule],
+  imports: [
+    CommonModule,
+    CheckboxModule,
+    StepperModule,
+    ButtonModule,
+    FormsModule,
+    ScrollerModule,
+    StepsModule,
+    ToastModule
+  ],
   templateUrl: './yearly-report-steps.component.html',
   styleUrl: './yearly-report-steps.component.css',
 })
@@ -34,11 +43,17 @@ export class YearlyReportStepsComponent implements OnInit {
   activeStep = 0; // מתחיל בשלב הראשון
   changes: { [key: string]: boolean } = {};
   client: Client;
+  activeIndex: number = 0;
+  stepNumbers: number[] = [1, 2, 3, 4, 5]; // Step numbers
+  active: number | undefined = 0;
+  statusList: Status[] = []; // List to hold statuses
+
 
   constructor(private yearlyReportService: YearlyReportService,
-               private router: Router,
-               private location: Location
-              ) {
+    private router: Router,
+    private location: Location,
+    private statusService: StatusService
+  ) {
 
   };
 
@@ -48,6 +63,14 @@ export class YearlyReportStepsComponent implements OnInit {
     this.client = history.state.client
     this.allStep = this.responseData.stepsList
     this.groupSteps();
+    this.statusService.getAllStatuses().subscribe({
+      next: (data) => {
+        this.statusList = data;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   groupSteps() {
@@ -65,29 +88,34 @@ export class YearlyReportStepsComponent implements OnInit {
     return Object.keys(this.stepsByNumber).map(Number);
   }
 
-  getStepsByNumber(stepNumber: number) {
-    console.log("njhg")
-    return this.stepsByNumber[stepNumber] || [];
-  }
 
-  checkStepCompletion() {
-    // אפשרות למעבר לשלב הבא רק אם כל תיבות הסימון בשלב הראשון מסומנות
-    if (this.activeStep === 0) {
-      const allChecked = this.getStepsByNumber(1).every(task => task.isComplete);
-      this.isStepOneComplete = () => allChecked;
-    }
-  }
 
-  isStepComplete(stepNumber: number): boolean {
-    return this.getStepsByNumber(stepNumber).every(task => task.isComplete);
-  }
 
   async update(task: StepField) {
     const taskId = task._id;
-    this.changes[taskId] = !this.changes[taskId];
+    this.changes[taskId] = task.isCompleted;
     const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
     if (taskIndex !== -1) {
-      this.responseData.stepsList[taskIndex].isComplete = this.changes[taskId];
+      this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
+    }
+  }
+  getStatusObject(statusName: string): Status | null {
+    return this.statusList.find(s => s.name === statusName) || null;
+  }
+
+  determineStatus(): Status {
+    const stepsList = this.responseData.stepsList;
+
+    const allCompleted = stepsList.every(step => step.isCompleted);
+    const someCompleted = stepsList.some(step => step.isCompleted);
+
+    if (allCompleted) {
+      return this.statusList.find(s => s.name == 'COMPLETE') || null;
+      ;
+    } else if (someCompleted) {
+      return this.statusList.find(s => s.name == 'IN PROGRESS') || null;
+    } else {
+      return this.statusList.find(s => s.name == 'TO DO') || null;
     }
   }
 
@@ -97,12 +125,23 @@ export class YearlyReportStepsComponent implements OnInit {
     for (const taskId in this.changes) {
       const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
       if (taskIndex !== -1) {
-        this.responseData.stepsList[taskIndex].isComplete = this.changes[taskId];
+        this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
       }
     }
+    const status = this.determineStatus();
+
+    if (status) {
+      this.responseData.status = status;
+    } else {
+      console.error('Status not found');
+      return;
+    }
+
+
 
     try {
       const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
+
       console.log("response from server", response);
       alert("Successful update response");
       this.responseData = response;
@@ -112,40 +151,30 @@ export class YearlyReportStepsComponent implements OnInit {
     }
   }
 
-  checkAndChangeHeaderColor() {
-    if (this.isAllTasksCompleted(5)) {
-      const step5Header = document.querySelector('p-stepperPanel[header*="שלב V"]') as HTMLElement;
-      if (step5Header) {
-        step5Header.style.color = 'red';
-      }
-    }
-  }
-
-  isStepOneComplete(): boolean {
-    return this.getStepsByNumber(1).every(task => task.isComplete);
-  }
-
-  nextStep() {
-    if (this.activeStep === 0 && !this.isStepOneComplete()) {
-      return;
-    }
-    this.activeStep++;
-  }
-
-  prevStep() {
-    this.activeStep--;
-  }
-
-  isAllTasksCompleted(stepNumber: number): boolean {
-    const tasks = this.getStepsByNumber(stepNumber);
-    return tasks.every(task => task.isComplete);
-  }
 
   goToUpdate() {
-    this.router.navigate(['steps/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
+    this.router.navigate(['/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
   }
   goBack() {
     this.location.back();
   }
+
+  isStepComplete(stepNumber: number): boolean {
+    return this.getStepByNumber(stepNumber).every((task) => task.isCompleted == true);
+  }
+  isStepBeginned(stepNumber: number): boolean {
+    return (
+      this.getStepByNumber(stepNumber).some((task) => task.isCompleted) &&
+      !this.isStepComplete(stepNumber)
+    );
+  }
+
+  getStepByNumber(stepNumber: number) {
+    console.log("getStepByNumber")
+    return this.stepsByNumber[stepNumber] || [];
+  }
+
+
+
 
 }

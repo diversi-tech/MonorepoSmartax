@@ -4,11 +4,11 @@ import { User } from '../../_models/user.module';
 import { Role } from '../../_models/role.module';
 import { RoleServiceService } from '../../_services/role-service.service';
 import { ConfirmationService, MessageService, Footer, PrimeTemplate } from 'primeng/api';
-import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { ButtonDirective, Button } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { NgClass, NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 interface Product {
   name: string;
