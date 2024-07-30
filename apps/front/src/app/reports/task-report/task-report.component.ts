@@ -176,7 +176,6 @@ export class TaskReportComponent implements OnInit {
 
     //sort Bar for users
     sortBarForUsers() {
-        debugger
         //bar sort Task per user
         this.dataOfStatusAndEmp = {
             labels: this.lableUser,
