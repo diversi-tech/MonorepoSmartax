@@ -1,9 +1,18 @@
-<div class="card flex justify-content-center">
-    <p-dropdown [options]="dates"
-     [(ngModel)]="selectedDate"
+<div >
+    <p-dropdown [options]="years"
+     [(ngModel)]="selectedYear"
+     placeholder="בחירת שנה"
+       [editable]="true"
+        optionLabel="yearNum"
+        (onChange)="changeDate()"  />
+</div>
+<div >
+    <p-dropdown [options]="months"
+     [(ngModel)]="selectedMonth"
+     placeholder="בחירת חודש"
        [editable]="true"
         optionLabel="num"
-         (onChange)="myReportf(selectedDate)" />
+        (onChange)="changeDate()" />
 </div>
 
 
