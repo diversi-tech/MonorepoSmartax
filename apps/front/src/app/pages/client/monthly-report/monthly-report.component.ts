@@ -34,7 +34,7 @@ export class MonthlyReportComponent implements OnInit {
   ngOnInit(): void {
     this.client = history.state.client;
     //this.getMonthlyReports()
-    this.getMonthlyReportsForClientF();
+   // this.getMonthlyReportsForClientF();
     this.getMonthlyReports();
     this.getStepByType('מעם');
   }
@@ -55,8 +55,8 @@ export class MonthlyReportComponent implements OnInit {
   steps: any[];
   allFields:stepFieldMonth[];
   fieldByType: { [key: string]: stepFieldMonth[] } = {};
-
-  getMonthlyReportsForClientF(): void {
+  myDate: Date;;
+  getMonthlyReportsForClientF(date:Date): void {
     console.log(this.client, 'client');
     const clientId = String(this.client._id);
     this.monthlyReportService.getMonthlyReportForClient(clientId).subscribe(
