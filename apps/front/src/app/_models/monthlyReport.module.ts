@@ -1,3 +1,4 @@
+import { Status } from "./status.module";
 import { stepFieldMonth } from "./stepFieldMonth.module";
 
 export interface MonthlyReport {
@@ -5,5 +6,6 @@ export interface MonthlyReport {
   idEmploye: string;
   reportDate: Date;
   monthlyReportFields: stepFieldMonth[];
+  status: Status;
 
 }

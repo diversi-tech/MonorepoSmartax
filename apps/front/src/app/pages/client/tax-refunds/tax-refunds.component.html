@@ -2,15 +2,29 @@
   <ng-template pTemplate="header">
     <tr>
       <th></th>
+      <th>סטטוס</th>
+      <th>ישות</th>
+      <th>יתרה לתשלום</th>
+      <th>סכום ששולם</th>
+      <th>תאריך יצירה</th>
       <th>עובד מטפל</th>
       <th>תאריך יצירה</th>
-      <th>שנה</th>
+      <th pSortableColumn="yearReport" class="sort">
+        :שנה <p-sortIcon field="yearReport" />
+      </th>
+      <th>מחיר</th>
+      <th></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task>
     <tr>
       <td><p-button (click)="goToSteps(task)" label="עדכן"></p-button></td>
+      <td class="{{task.status.color}}">{{task.status.name}}</td>
+      <td>{{task.entityType}}</td>
       <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
+      <td>{{ task.balanceDue }}</td>
+      <td>{{ task.paymentAmountPaid }}</td>
+      <td>{{ task.price }}</td>
       <td>{{ task.date | date : 'dd/MM/yyyy' }}</td>
       <td>{{ task.year }}</td>
     </tr>

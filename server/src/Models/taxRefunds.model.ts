@@ -1,12 +1,13 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from 'mongoose';
 import { StepField } from './stepField.model';
+import { Status } from "./status.model";
 
 @Schema()
 export class TaxRefunds extends Document {
     
     @Prop()
-    idUser: string;
+    idClient: string;
 
     @Prop()
     idEmploye: string;
@@ -19,6 +20,26 @@ export class TaxRefunds extends Document {
 
     @Prop([StepField])
     stepsList: StepField[]
+   
+    @Prop()
+    status: Status;
+   
+
+    @Prop()
+    assignee: string[];
+    
+
+    @Prop()
+    price: number;
+
+    @Prop()
+    paymentAmountPaid: number;
+
+    @Prop()
+    balanceDue: number;
+
+    @Prop()
+    entityType: string;
    
 }
 

@@ -206,7 +206,19 @@ export const routes: Routes = [
           label: 'דוחות שנתיים',
           icon: icons.reports,
         },
-      }]
+      },
+      {
+        path: 'allClientMonthlyReport',
+        component: MonthlyReportComponent,
+        data: {
+          authType: 6,
+          forToolbar: false,
+          label: 'דוחות חודשיים',
+          icon: icons.reports,
+        },
+      }
+    ],
+      
   },
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
   { path: 'clientSearch', component: ClientSearchComponent, data: { authType: 6, forToolbar: true, label: 'לקוחות', icon: icons.clients } },
