@@ -34,9 +34,9 @@ export class MonthlyReportComponent implements OnInit {
   ngOnInit(): void {
     this.client = history.state.client;
     //this.getMonthlyReports()
-   // this.getMonthlyReportsForClientF();
+    // this.getMonthlyReportsForClientF();
     this.getMonthlyReports();
-    this.getStepByType('מעם');
+    // this.getStepByType('מעם');
   }
 
   dates: any = [{ "num": "01" }, { "num": "02" }, { "num": "03" }, { "num": "04" }, { "num": "05" }, { "num": "06" }, { "num": "07" }, { "num": "08" }, { "num": "09" }, { "num": "10" }, { "num": "11" }, { "num": "12" }];
@@ -49,37 +49,40 @@ export class MonthlyReportComponent implements OnInit {
   client: Client;
   clientId: string;
   allMonthlyReports: MonthlyReport[] | undefined;
-  myReport: MonthlyReport[] | undefined;
+  myReport: MonthlyReport| undefined;
   y: boolean = false;
   types: string[] = [];
   steps: any[];
   allFields:stepFieldMonth[];
   fieldByType: { [key: string]: stepFieldMonth[] } = {};
-  myDate: Date;;
+  myDate: Date;
+  fieldBymonths: stepFieldMonth[] = [];
   getMonthlyReportsForClientF(date:Date): void {
     console.log(this.client, 'client');
     const clientId = String(this.client._id);
-    this.monthlyReportService.getMonthlyReportForClient(clientId).subscribe(
-      (reports) => {
+    this.monthlyReportService.getMonthlyReportForClient(clientId).subscribe({
+      next: (reports: any) => {
         this.allMonthlyReportsClient = reports;
-        this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === date.getMonth());
-
+        this.myReport = this.allMonthlyReportsClient.filter(m =>
+           (new Date(m.reportDate).getMonth() + 1) === 1)[0];
+           this.fieldBymonths=this.myReport.monthlyReportFields
+        console.log(this.myReport, 'myReport');
       },
-      (error) => {
+      error:(error) => {
         console.error('Error fetching monthly reports for client', error);
       }
-    );
+  });
   }
   getMonthlyReports(): void {
-    this.monthlyReportService.getAllMonthlyReport().subscribe(
-      (reports) => {
+    this.monthlyReportService.getAllMonthlyReport().subscribe({
+      next: (reports: any) => {
         this.allMonthlyReports = reports;
-        console.log(this.allMonthlyReports, 'myReport');
+        console.log(this.allMonthlyReports, 'monthlyReports');
       },
-      (error) => {
+      error:(error) => {
         console.error('Error fetching yearly reports for client', error);
       }
-    );
+  });
   }
   myReportf(month: string): void {
     const currentYear = new Date().getFullYear();
@@ -87,10 +90,10 @@ export class MonthlyReportComponent implements OnInit {
     this.myDate = new Date(currentYear, m, 1)
     this.getMonthlyReportsForClientF(this.myDate)
   }
-  getStepByType(type: string): void {
-    this.steps = this.allMonthlyReports.map((r) =>
-      r.monthlyReportFields.filter((r) => r.type === type)
-    );
-    console.log(this.steps, 'steps');
-  }
+  // getStepByType(type: string): void {
+  //   this.steps = this.allMonthlyReports.map((r) =>
+  //     r.monthlyReportFields.filter((r) => r.type === type)
+  //   );
+  //   console.log(this.steps, 'steps');
+  // }
 }

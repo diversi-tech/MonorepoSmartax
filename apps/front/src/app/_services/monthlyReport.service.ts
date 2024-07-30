@@ -27,7 +27,6 @@ export class MonthlyReportService {
   }
 
   getAllMonthlyReport(): Observable<MonthlyReport[]> {
-    console.log(this.http.get<MonthlyReport[]>(`${this.apiUrl}/all`))
     return this.http.get<MonthlyReport[]>(`${this.apiUrl}/all`)
       .pipe(
         catchError(this.handleError<MonthlyReport[]>('getAllMonthlyReport', []))
