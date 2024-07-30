@@ -131,8 +131,7 @@ export class ClientSearchComponent implements OnInit {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
         (client.firstName && client.firstName.toLowerCase().includes(query)) ||
-        (client.lastName && client.lastName.toLowerCase().includes(query)) ||
-        (client.companyName && client.companyName.toLowerCase().includes(query))
+        (client.lastName && client.lastName.toLowerCase().includes(query)) 
       );
     }
     // this.selectedClient = null;
