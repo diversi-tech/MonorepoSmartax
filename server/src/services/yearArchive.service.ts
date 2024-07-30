@@ -49,7 +49,7 @@ async addTasksToYearArchive(yearNum: string, tasks?: Task[]): Promise<YearArchiv
 
   @Cron('0 0 1 1 *')
   async archiveOldTasks(): Promise<void> {
-    console.log("hi");
+    
     // Get the date one year ago
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() -1);
