@@ -5,23 +5,20 @@
         optionLabel="num"
          (onChange)="myReportf(selectedDate)" />
 </div>
-<div class="card">
+<!-- <div class="card">
     <p-table [value]="myReport" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th>מעמ</th>
-                <th>מס הכנסה ניכויים</th>
-                <th>מקדמות</th>
-                <th>ביטוח לאומי ניכויים</th>
+                <th *ngFor="let type of types">{{type}}</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
             <tr>
                 <td>               
-                     {{getStepByType('מעמ')}}
-                     <!-- <p-button icon="pi pi-plus" (click)="getStepByType('מעמ')"></p-button> -->
+                      <!-- {{getStepByType('מעמ')}}  
+                     <p-button icon="pi pi-plus" (click)="getStepByType('מעמ')"></p-button>
                 </td>
-                <td *ngFor="let i of steps">{{i.value}}</td>
+                <!-- <td *ngFor="let i of steps">{{i.value}}</td> 
                 <td>               
                     <p-button icon="pi pi-plus" (click)="getStepByType('מס הכנסה ניכויים')"></p-button>
                </td>
@@ -34,4 +31,97 @@
             </tr>
         </ng-template>
     </p-table>
-</div>
+</div> -->
+
+
+<!-- <div class="card">
+    <p-table [value]="steps" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-step>
+            <tr>
+                <td>{{step}}</td>
+                <!-- <td> 
+                     <p-button icon="pi pi-plus" (click)="getStepByType('מעמ')"></p-button>
+                </td>
+                <td *ngFor="let i of steps">{{i.value}}</td>
+                <td>               
+                    <p-button icon="pi pi-plus" (click)="getStepByType('מס הכנסה ניכויים')"></p-button>
+               </td>
+               <td>               
+                <p-button icon="pi pi-plus" (click)="getStepByType('מקדמות')"></p-button>
+           </td>
+           <td>               
+            <p-button icon="pi pi-plus" (click)="getStepByType('ביטוח לאומי ניכויים')"></p-button>
+       </td> 
+            </tr>
+        </ng-template>
+    </p-table>
+</div> -->
+
+
+
+<p-table 
+myReport    sortField="type"
+    sortMode="single" 
+    dataKey="monthlyReportFields.type" 
+    rowGroupMode="subheader" 
+    groupRowsBy="monthlyReportFields.type" 
+    [tableStyle]="{'min-width': '70rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:20%">Name</th>
+                <th style="width:20%">Country</th>
+                <th style="width:20%">Company</th>
+                <th style="width:20%">Status</th>
+                <th style="width:20%">Date</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="groupheader" let-type let-rowIndex="rowIndex" let-expanded="expanded">
+            <tr>
+                <td colspan="5">
+                    <button 
+                        type="button" 
+                        pButton 
+                        pRipple 
+                        [pRowToggler]="type" 
+                        class="p-button-text p-button-rounded p-button-plain mr-2" 
+                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
+                    </button>
+                    <span class="font-bold ml-2">{{type}}</span>
+                </td>
+            </tr>
+        </ng-template>
+         <ng-template pTemplate="groupfooter" let-customer>
+            <tr class="p-rowgroup-footer">
+                <td colspan="4" style="text-align: right">Total Customers</td>
+                <td>{{calculateCustomerTotal(customer.representative.name)}}</td>
+            </tr>
+        </ng-template> 
+        <ng-template pTemplate="rowexpansion" let-type>
+            <tr>
+                <td>
+                    {{type}}
+                </td>
+                <td>
+                    <img 
+                        src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" 
+                        style="width: 20px">
+                    <span class="ml-1 vertical-align-middle">{{type}}</span>
+                </td>
+                <td>
+                    {{type}}
+                </td>
+                <td>
+                </td>
+                <td>
+                    {{type}}
+                </td>
+            </tr>
+        </ng-template>
+</p-table>
