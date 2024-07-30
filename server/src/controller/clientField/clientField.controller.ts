@@ -13,9 +13,10 @@ export class ClientFieldController {
   @ApiOperation({ summary: 'Create a new clientField' })
   @ApiBody({ type: CreateClientFieldDto })
 
-  async createClient(@Body() createClientFieldDto: CreateClientFieldDto): Promise<ClientField> {
+  async createClient(@Body() createClientFieldDto: CreateClientFieldDto ,@Body('clientId') clientId: string,
+): Promise<ClientField> {
     try {
-      const newClientField = await this.clientFieldService.createClientField(createClientFieldDto);
+      const newClientField = await this.clientFieldService.createClientField(createClientFieldDto, clientId);
       return newClientField;
     } catch (error) {
         console.log(error);
@@ -25,6 +26,16 @@ export class ClientFieldController {
       );
       
     }
+  }
+
+   @ApiBody({
+    schema: { type: 'object', properties: { clientTypeId: { type: 'string' }, clientId: { type: 'string' }} },
+  })
+  @Post('createByClientType')
+  async createClientFieldsByClientType(
+        @Body(new ValidationPipe()) body: { clientTypeId: string,clientId: string}
+  ): Promise<ClientField[]> {
+    return this.clientFieldService.createClientFieldsByClientType( body.clientTypeId, body.clientId);
   }
 
   @Get()

@@ -138,6 +138,7 @@ export class TaskComponent implements OnInit {
   tags: Tag[] = [];
   checkList: CheckList[] = [];
   checkListId: string[] | undefined;
+  subTasks: string[] = []
   //
   additionTask: MenuItem[] = [
     { id: '1', label: 'Check List' },
@@ -179,6 +180,7 @@ export class TaskComponent implements OnInit {
   formGroupStatus!: FormGroup;
   formGroupTags!: FormGroup;
   //
+  @Input() parent: string | null = null;
   @Input() taskId: string | null = null;
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
   //
@@ -199,6 +201,7 @@ export class TaskComponent implements OnInit {
     private checkListServise: CheckListService
   ) { }
 
+  newTaskCreated:boolean = false;
   ngOnInit(): void {
     
     const clientIdsString = this.route.snapshot.paramMap.get('clientIds');
@@ -224,12 +227,14 @@ export class TaskComponent implements OnInit {
 
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId) this.id = this.taskId;
-    console.log(this.id);
-    if (this.id != 'create' ) {
-      
+    if (this.id != 'create') {
+
       this.tasksService.searchTask(this.id!).subscribe({
         next: (data) => {
+
           this.currentTask = data;
+          this.subTasks = this.currentTask.subTasks
+
           this.selectStatus = this.currentTask.status;
           this.selectedPriority = this.currentTask.priority;
           // this.selectedClient = this.currentTask.client;
@@ -241,8 +246,6 @@ export class TaskComponent implements OnInit {
           this.rangeDates![1] = new Date(this.currentTask.deadline);
           this.htmlContent = this.currentTask.description;
           this.dueDate = new Date(this.currentTask.dueDate);
-          console.log(this.rangeDates);
-
           this.images = this.currentTask.images;
           this.taskName = this.currentTask.taskName;
           this.buttons = this.currentTask.tags?.map((tag: Tag) => ({
@@ -252,9 +255,7 @@ export class TaskComponent implements OnInit {
           }));
           this.selectedTags = this.currentTask.tags;
           this.eventId = this.currentTask.googleId;
-          console.log('checkList', this.currentTask.checkList);
           this.currentTask.checkList?.forEach((listId: string) => {
-            console.log("listId", listId);
 
             this.checkListServise.getCheckLists(listId).subscribe((data: CheckList) => {
               this.checkList.push(data);
@@ -263,7 +264,6 @@ export class TaskComponent implements OnInit {
 
           this.clientService.searchClient(this.selectedClient).subscribe({
             next: (dataClients) => {
-              console.log(dataClients);
               this.selectedClient = dataClients;
             },
             error: (errClients) => {
@@ -276,17 +276,14 @@ export class TaskComponent implements OnInit {
           console.log(err);
         },
       });
-      console.log("checkList in task comp");
 
-      this.checkList.forEach((check) => {
-        console.log('check', check);
-        console.log('*');
-      });
+    }
+    else{
+      this.newTaskCreated = true
     }
     //users
     this.userSErvice.getAllUsers().subscribe({
       next: (data) => {
-        console.log('users: ', data);
         this.users = data;
       },
       error: (err) => {
@@ -296,7 +293,6 @@ export class TaskComponent implements OnInit {
     //clients
     this.clientService.getAllClients().subscribe({
       next: (dataClients) => {
-        console.log(dataClients);
         this.clients = dataClients;
       },
       error: (errClients) => {
@@ -306,7 +302,6 @@ export class TaskComponent implements OnInit {
     // status
     this.statusService.getAllStatuses().subscribe({
       next: (data) => {
-        console.log(data);
         this.listStatus = data;
       },
       error: (err) => {
@@ -316,7 +311,6 @@ export class TaskComponent implements OnInit {
     // priority
     this.priorityService.getAllPrioritys().subscribe({
       next: (data) => {
-        console.log(data);
         this.listPriority = data;
       },
       error: (err) => {
@@ -326,7 +320,6 @@ export class TaskComponent implements OnInit {
     // tags
     this.tagService.getAllTags().subscribe({
       next: (data) => {
-        console.log(data);
         this.tags = data;
       },
       error: (err) => {
@@ -406,8 +399,8 @@ export class TaskComponent implements OnInit {
   }
 
   notInThisTask(id: string) {
-    this.currentTask.checkList.forEach(item=>{
-      if(item===id)
+    this.currentTask.checkList.forEach(item => {
+      if (item === id)
         return false
     })
     return true
@@ -415,9 +408,11 @@ export class TaskComponent implements OnInit {
 
 
   showDialog() {
+    debugger
     if (this.id == 'create') {
       this.visible = true;
-    } else {
+    } 
+    else {
       this.save();
     }
   }
@@ -523,19 +518,6 @@ export class TaskComponent implements OnInit {
       dueTime: this.rangeDates[1], // תאריך ושעה בפורמט ISO 8601
     };
 
-    // this.googleTask.createSimpleTask(taskDetails)
-    //   .then(() => {
-    //     return this.subscribeToEventData();
-    //     alert('1')
-    //   })
-    //   .then(() => {
-    //     console.log(this.eventId);
-    //     alert('2')
-    //     this.save();
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error creating Google event:', error);
-    //   });
 
     const createEventPromise = this.googleTask.createSimpleTask(taskDetails);
 
@@ -558,6 +540,7 @@ export class TaskComponent implements OnInit {
 
   //functions
   save() {
+    debugger
     // בדוק אם המשימה אינה משויכת לאף משתמש
     // if (!this.selectedUsers || this.selectedUsers.length === 0) {
     //   this.visiblePopup = true;
@@ -580,7 +563,7 @@ export class TaskComponent implements OnInit {
       // dueDate: this.currentTask.dueDate!,
     };
 
-    if (this.selectedClients) newTask.client = this.selectedClients;
+    if (this.selectedClients) newTask.client[0] = this.selectedClients;
     if (this.htmlContent) newTask.description = this.htmlContent;
     if (this.selectStatus) newTask.status = this.selectStatus;
     if (this.buttons) newTask.tags = this.buttons;
@@ -592,6 +575,7 @@ export class TaskComponent implements OnInit {
     if (this.selectedPriority) newTask.priority = this.selectedPriority;
     if (this.dueDate) newTask.dueDate = this.dueDate;
     if (this.eventId) newTask.googleId = this.eventId;
+    if (this.parent) newTask.parent = this.parent;
     // newTask.checkList = this.currentTask.checkList;
     console.log(this.eventId);
 
@@ -618,9 +602,25 @@ export class TaskComponent implements OnInit {
         next: (task) => {
           console.log(task);
           if (!this.selectedUsers || this.selectedUsers.length === 0) {
-            console.log('מממממלא משויכת לאף אחד');
-            console.log(this.selectedUsers);
-            
+            if (this.parent) {
+              this.tasksService.searchTask(this.parent).subscribe({
+                next: (parentTask) => {
+                  parentTask.subTasks.push(task._id);
+                  this.tasksService.updateTask(this.parent,parentTask).subscribe({
+                    next: (data) => {
+                    },
+                    error:(err)=>{
+                      console.log(err);
+                      alert("ההוספה נכשלה, נא נסה שנית")
+                    }
+                  })
+
+                },
+                error:(err)=>{
+                  console.log(err);
+                }
+              })
+            }
             this.socketService.addTask(task);
           }
         },
@@ -641,6 +641,7 @@ export class TaskComponent implements OnInit {
         },
       });
     }
+    window.history.back();
   }
 
   updateTask() {
@@ -653,6 +654,7 @@ export class TaskComponent implements OnInit {
 
     this.googleTask.updateGoogleTask(taskDetails);
   }
+  
   //
   cancel() {
     //return to last page
@@ -788,12 +790,10 @@ export class TaskComponent implements OnInit {
           })
         }
       })
-
     }
     else {
       this.newList = true;
     }
-
     this.selectedList = undefined
   }
 
@@ -812,18 +812,6 @@ export class TaskComponent implements OnInit {
         },
       })
     }
-    // else {
-    //   this.checkListServise.createCheckList(list, this.taskId).subscribe({
-    //     next: (newList) => {
-    //       console.log(newList);
-    //       this.checkList.push(newList);
-    //     },
-    //     error: (err) => {
-    //       console.log(err);
-    //       alert("ההוספה נכשלה, אנא נסה שנית")
-    //     },
-    //   })
-    // }
   }
 
   deleteList(_id: string) {

@@ -29,15 +29,16 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="p-fluid">
         <div class="p-field">
-          <label for="{{Cfield.field.key}}">{{Cfield.field.key | titlecase}}:</label>
+          <label for="{{Cfield?.field.key}}">{{Cfield.field.key | titlecase}}:</label>
           <br>
-          <input *ngIf="Cfield.field.type === 'טקסט'" pInputText type="text" formControlName="{{Cfield.field.key}}" />
-          <input *ngIf="Cfield.field.type === 'מספר'" pInputText type="number" formControlName="{{Cfield.field.key}}" />
-          <input *ngIf="Cfield.field.type === 'שעה'" pInputText type="time" formControlName="{{Cfield.field.key}}" />
-          <input *ngIf="Cfield.field.type === 'תאריך'" pInputText type="date" formControlName="{{Cfield.field.key}}" />
-          <input *ngIf="Cfield.field.type === 'bool'" type="checkbox"  formControlName="{{Cfield.field.key}}" style="width: 20px; height: 20px;" />
+          <input *ngIf="Cfield?.field.type === 'text'" pInputText type="text" formControlName="{{Cfield?.field.key}}" />
+          <input *ngIf="Cfield?.field.type === 'number'" pInputText type="number" formControlName="{{Cfield?.field.key}}" />
+          <input *ngIf="Cfield?.field.type === 'time'" pInputText type="time" formControlName="{{Cfield?.field.key}}" />
+          <input *ngIf="Cfield?.field.type === 'date'" pInputText type="date" formControlName="{{Cfield?.field.key}}" />
+          <input *ngIf="Cfield?.field.type === 'bool'" type="checkbox" formControlName="{{Cfield?.field.key}}" style="width: 20px; height: 20px;" />
         </div>
       </div>
       <button type="submit" pButton label="Submit" class="p-mt-2"></button>
     </form>
   </p-card>
+  

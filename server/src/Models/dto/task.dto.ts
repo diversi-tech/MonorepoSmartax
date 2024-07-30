@@ -62,6 +62,13 @@ export class UpdateTaskDto {
     @IsString()
     id: string;
 
+    @ApiProperty({ description: 'The task parent ID' })
+    @IsString()
+    parent: string;
+
+    @ApiProperty({ description: 'The subTasks ID array' })
+    subTasks: string[];
+
     @IsOptional()
     client?: Client;
 
@@ -102,10 +109,6 @@ export class UpdateTaskDto {
 
     @IsOptional()
     images?: string[];
-
-
-
-    
 
     @IsOptional()
     checkList?: CheckList[];

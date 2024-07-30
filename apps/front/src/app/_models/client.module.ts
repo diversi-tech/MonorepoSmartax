@@ -44,5 +44,5 @@ export interface Client {
   isOpenAccountWithUs: boolean;
   tag:Tag;
   clientTypes: ClientType[];
-  clientFields: ClientField[];
+  clientFields: string[];
 }

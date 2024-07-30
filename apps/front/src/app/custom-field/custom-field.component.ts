@@ -32,11 +32,11 @@ export class customfieldComponent {
   messages: Message =  { severity: 'error', detail: 'Error Message' };
 
   v:boolean=false;
-  whatType: typeName[] =[{name:'טקסט'},
-  {name:'מספר'},
-  {name:'V/X'},
-  {name:'שעה'},
-  {name:'תאריך'} ];
+  whatType: typeName[] =[{name:'text'},
+  {name:'number'},
+  {name:'bool'},
+  {name:'time'},
+  {name:'date'} ];
   // whatType:string[]=['טקסט','מספר','שעה','תאריך','V/X']
  
   newField:Field |undefined

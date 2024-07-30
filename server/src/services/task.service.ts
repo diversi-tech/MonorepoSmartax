@@ -21,18 +21,6 @@ export class TaskService {
     private readonly tasksGateway: TasksGateway
   ) {}
 
-  // async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-  //   const {  client, taskName, description,dueDate,status,assignedTo,tags,deadline,priority,images,googleId,startDate } = createTaskDto;
-  //   // const task = new this.taskModel(createTaskDto);
-  //   // return task.save()
-  //   // if (!client || !assignedTo) {
-  //   //   throw new ValidationException('Missing required fields');
-  //   // }
-
-  //   const createTask = new this.taskModel({ client, taskName, description,dueDate,status,assignedTo,tags,priority,images,googleId,deadline,startDate});
-  //   return await createTask.save();
-  // }
-
   async createTask(createTaskDto: CreateTaskDto): Promise<Task[]> {
     const { client, taskName, description, dueDate, status, assignedTo, tags, deadline, priority, images, googleId, startDate } = createTaskDto;
     const tasks: Task[] = [];
@@ -50,7 +38,7 @@ export class TaskService {
           images, 
           googleId, 
           deadline, 
-          startDate 
+          startDate,
         });
         const savedTask = await createTask.save();
         tasks.push(savedTask);
@@ -77,6 +65,13 @@ export class TaskService {
     return task;
   }
 
+  async getTasksByClientId(clientId: string): Promise<Task[]> {
+    console.log('Searching for tasks with client ID:', clientId);
+    const tasks = await this.taskModel.find({ client: clientId }).exec();
+    console.log('tasks found:', tasks);
+    return tasks;
+  }
+
   async updateTask(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
     try {
       const {
@@ -93,6 +88,8 @@ export class TaskService {
         googleId,
         deadline,
         startDate,
+        parent,
+        subTasks
       } = updateTaskDto;
 
       const updatedTask = await this.taskModel
@@ -112,6 +109,8 @@ export class TaskService {
             googleId,
             deadline,
             startDate,
+            parent,
+            subTasks
           },
           { new: true }
         )

@@ -15,6 +15,10 @@ export enum ReportType {
 
 @Schema()
 export class Client extends Document {
+  
+  @Prop()
+  _id?:string
+  
   @Prop()
   companyName: string;
 
@@ -67,8 +71,10 @@ export class Client extends Document {
 
   @Prop()
   dateOfBirth: Date;
+
   @Prop()
-  payment: Types.ObjectId;
+  payment: string;
+
   @Prop()
   isEmploysWorkers: boolean;
 
@@ -107,7 +113,8 @@ export class Client extends Document {
   @Prop()
   clientTypes: ClientType[];
   
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'ClientField' }] })
-  clientFields: Types.ObjectId
+  // @Prop({ type: [{ type: Types.ObjectId, ref: 'ClientField' }] })
+  @Prop()
+  clientFields: string []
 }
 export const ClientModel = SchemaFactory.createForClass(Client);

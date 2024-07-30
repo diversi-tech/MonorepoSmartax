@@ -62,7 +62,6 @@ export class SocketService {
 
   constructor() {
     this.socket = io('http://localhost:3000');
-
     this.socket.on('connect', () => {
       console.log('מחובר לשרת WebSocket');
     });

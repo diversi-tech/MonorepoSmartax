@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 import { Client } from '../Models/client.model';
 import { CreateClientDto, UpdateClientDto } from '../Models/dto/client.dto';
 import { ValidationException } from '../common/exceptions/validation.exception';
@@ -67,13 +67,36 @@ export class ClientService {
     }
   }
   async searchClient(id: string): Promise<Client> {
-    const client = await this.clientModel.findOne({ _id: id }).exec();
-    console.log(client);
-    console.log("etty");
-    if (!client) {
+    // console.log(id);
+    // const validObjectId = new mongoose.Types.ObjectId(id);
+    // const client = await this.clientModel.findById({ _id: validObjectId }).exec();
+    // console.log(client);
+    // console.log("etty");
+    // if (!client) {
+    //   throw new NotFoundException('Client not found');
+    // }
+    // return client;
+    try {
+      // בדוק שה-ID הוא ObjectId חוקי
+      if (!Types.ObjectId.isValid(id)) {
+        console.error('Invalid ID format:', id);
+        throw new NotFoundException('Invalid ID format');
+      }
+
+      console.log("Searching for client with ID:", id);
+      const client = await this.clientModel.findById('669635e81b446fab29213c0c').exec();
+      console.log("Client found:", client);
+
+      if (!client) {
+        console.error('Client not found with ID:', id);
+        throw new NotFoundException('Client not found');
+      }
+      return client;
+    } catch (error) {
+      console.error("Error while searching for client:", error.message);
       throw new NotFoundException('Client not found');
     }
-    return client;
+  
   }
 
   async updateClient(

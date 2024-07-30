@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { TokenService } from '../../_services/token.service';
 import { UserService } from '../../_services/user.service';
-import { User} from '../../_models/user.module'
+import { User } from '../../_models/user.module'
 import { Client } from '../../_models/client.module';
 import { Router } from '@angular/router';
 
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
     CommonModule,
     TableModule,
   ],
- 
+
 })
 export class FavoritesClientsListComponent implements OnInit {
 
@@ -34,6 +34,7 @@ export class FavoritesClientsListComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.user = response;
+          console.log(this.user);
         },
         error: (err) => {
           console.error('Error get current user', err);
@@ -43,6 +44,7 @@ export class FavoritesClientsListComponent implements OnInit {
 
 
   }
+  
   updateFavorite() {
     this.userService
       .update(
@@ -62,14 +64,16 @@ export class FavoritesClientsListComponent implements OnInit {
         },
       });
   }
-removeFromFavorite(client:Client){
-  this.user.favoritesClient=this.user.favoritesClient.filter(c=>c._id!=client._id);
-  this.updateFavorite();
-}
+
+  removeFromFavorite(client: Client) {
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
+    this.updateFavorite();
+  }
+
   selectClientFromList(client: Client): void {
     this.router.navigate(['/clientSearch/clientManagement'], {
       state: { client },
     });
   }
-  
+
 }

@@ -7,20 +7,14 @@ import { TagService } from '../../_services/tag.service';
 import { User } from '../../_models/user.module';
 import { Client } from '../../_models/client.module';
 import { Tag } from '../../_models/tag.module';
-import {
-  Confirmation,
-  ConfirmationService,
-  MessageService,
-  Footer,
-  PrimeTemplate,
-} from 'primeng/api';
+import { ConfirmationService, MessageService, Footer, PrimeTemplate,} from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { IconProfileComponent } from '../../share/icon-profile/icon-profile.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -93,6 +87,7 @@ export class TaskManagementComponent implements OnInit {
   tagSuggestions: Tag[] = [];
   display: any;
   filterFirstStatus = true;
+  currentTask: Task;
 
   constructor(
     private taskService: TaskService,
@@ -100,8 +95,8 @@ export class TaskManagementComponent implements OnInit {
     private clientService: ClientService,
     private tagService: TagService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
-    private statusService: StatusService
+    private statusService: StatusService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -123,9 +118,10 @@ export class TaskManagementComponent implements OnInit {
   }
 
   categorizeTasks(status: Status): Task[] {
-    // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
+    console.log(status.name);
+    console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
-      // console.log('Task status:', task.status); // הדפסת המצב של המשימה
+      console.log('Task status:', task.status); // הדפסת המצב של המשימה
       { return task.status && task.status.name === status.name; }
     });
   }
@@ -137,21 +133,22 @@ export class TaskManagementComponent implements OnInit {
       this.filteredTasks = [];
     } else {
       this.filteredTasks = this.tasks.filter((task) =>
+        {task!.taskName!=undefined?
         task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
+       : false}
       );
       console.log('filter: ', this.filteredTasks);
     }
   }
 
-  showConfirmation(task: Task): void {
-    this.selectedTask = task;
+  showConfirmation(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this task?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         console.log('delete start');
-        this.deleteTask(this.selectedTask);
+        this.deleteTask();
       },
       reject: () => {
         console.log('cancel start');
@@ -159,17 +156,22 @@ export class TaskManagementComponent implements OnInit {
       },
     });
   }
-  confirmDelete(task: Task): void {
-    this.deleteTask(task);
+  confirmDelete(): void {
+    this.deleteTask();
   }
 
-  deleteTask(task: Task): void {
-    this.taskService.deleteTask(task._id!).subscribe({
+  deleteTask(): void {
+    this.taskService.deleteTask(this.currentTask._id!).subscribe({
       next: () => {
         this.reloadPage();
       },
       error: (err) => console.error('Error deleting task: ', err),
     });
+  }
+
+  editTask(){
+    debugger
+    this.router.navigate(['/taskSpe', this.currentTask._id]);
   }
 
   reloadPage(): void {
@@ -298,8 +300,8 @@ export class TaskManagementComponent implements OnInit {
         return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
       }
       if (field === 'dueDate') {
-        const dateA = new Date(a.dueDate).getTime();
-        const dateB = new Date(b.dueDate).getTime();
+        const dateA = new Date(a.deadline).getTime();
+        const dateB = new Date(b.deadline).getTime();
         return reverse ? dateB - dateA : dateA - dateB;
       }
       if (field === 'tags') {
@@ -311,4 +313,8 @@ export class TaskManagementComponent implements OnInit {
     });
 }
 
+selectCurrentTask(task: Task) {
+  debugger
+  this.currentTask = task;
+}
 }

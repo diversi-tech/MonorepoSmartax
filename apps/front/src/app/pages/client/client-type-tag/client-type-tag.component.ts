@@ -18,6 +18,8 @@ import { DialogModule } from 'primeng/dialog';
 import { TaskService } from '../../../_services/task.service';
 import { Task } from '../../../_models/task.module'
 import { RepeatableTaskService } from '../../../_services/repeatable.service';
+import { ClientFieldService } from '../../../_services/clientField.service';
+
 @Component({
   selector: 'app-client-type-tag',
   standalone: true,
@@ -41,29 +43,29 @@ export class ClientTypeTagComponent implements OnInit {
   selectedClientType: ClientType | null = null;
   selectedFields: Field[] = [];
   form: FormGroup;
-  showClientTypesList: boolean = false
+  showClientTypesList: boolean = false;
   showClientTypes: boolean = false;
   ClientTypesselected: ClientType[] = [];
   id: string = "";
   thisClient: Client;
   selectedClients: Client[] = [];
-  clients: Client[] = []
-  clientIdsParam: string[] = []
+  clients: Client[] = [];
+  clientIdsParam: string[] = [];
   selectedDeleteType: ClientType | null = null;
   displayDialog: boolean = false;
   displayDeleteDialog: boolean = false;
   index: number = 0;
   tasks: Task[] = [];
+  @Output() clientSelected: EventEmitter<Client> = new EventEmitter<Client>();
 
   constructor(
     @Inject(ClientTypeService) private clientTypeService: ClientTypeService,
     @Inject(ClientService) private clientService: ClientService,
-    @Inject(TaskService) private taskService: TaskService,
+    @Inject(ClientFieldService) private clientFieldService: ClientFieldService,
     @Inject(RepeatableTaskService) private repeatableTaskService: RepeatableTaskService,
     @Inject(Router) private router: Router,
     private fb: FormBuilder,
     public ar: ActivatedRoute
-
   ) {
     this.form = this.fb.group({});
   }
@@ -80,95 +82,84 @@ export class ClientTypeTagComponent implements OnInit {
       next: (data) => {
         console.log(data);
         this.clientTypes = data;
-        // this.createTag();
         this.showClientTypes = !this.showClientTypes;
       },
       error: (err) => {
         console.log(err);
       },
     });
-
   }
 
   clientT(ct: ClientType) {
-    this.ClientTypesselected.concat(ct);
+    this.ClientTypesselected.push(ct);
     console.log(this.ClientTypesselected);
     this.showClientTypesList = !this.showClientTypesList;
 
     if (!this.thisClient.clientTypes) {
       this.thisClient.clientTypes = [];
     }
-    // const exist = this.thisClient.clientTypes.indexOf(ct);
-    // if (exist != -1) {
-      this.thisClient.clientTypes.concat(ct);
-      console.log(this.thisClient.clientTypes);
-      this.thisClient.clientTypes.forEach(ct => {
-        console.log(ct);
-        ct.tasks.forEach(t => {
-          this.repeatableTaskService.searchRepeatableTask(t._id).subscribe({
-            next: (repeatableTask) => {
-              console.log('repeatableTask: ', repeatableTask);
-              const newRtask = repeatableTask;
-              newRtask.client = this.thisClient;
-              this.repeatableTaskService.createRepeatableTask(newRtask).subscribe({
-                next: (newRepeatableTask) => {
-                  console.log('newRepeatableTask created: ', newRepeatableTask);
-                },
-                error: (err) => {
-                  console.error('Failed:', err);
-                }
-              });
-            },
-            error: (err) => {
-              console.error('Failed:', err);
-            }
+
+    this.thisClient.clientTypes.push(ct);
+    console.log(this.thisClient.clientTypes);
+
+    // קריאה לפונקציה שיוצרת ClientFields לפי ClientType בשרת
+    this.clientFieldService.createClientFieldsByClientType(ct._id, this.thisClient._id).subscribe({
+      next: (response) => {
+        console.log( this.thisClient);
+        console.log( this.thisClient._id);
+        console.log('ClientFields created by ClientType:', response);
+        //this.thisClient.clientFields = response;
+        
+
+        const taskPromises = ct.tasks.map((tId) => {
+          return new Promise<void>((resolve, reject) => {
+            console.log(String(tId));
+            this.repeatableTaskService.searchRepeatableTask(String(tId)).subscribe({
+              next: (repeatableTask) => {
+                console.log('repeatableTask: ', repeatableTask);
+                const newRtask = repeatableTask;
+                newRtask.client = this.thisClient;
+                this.repeatableTaskService.createRepeatableTask(newRtask).subscribe({
+                  next: (newRepeatableTask) => {
+                    console.log('newRepeatableTask created: ', newRepeatableTask);
+                    resolve();
+                  },
+                  error: (err) => {
+                    console.error('Failed:', err);
+                    reject(err);
+                  }
+                });
+              },
+              error: (err) => {
+                console.error('Failed:', err);
+                reject(err);
+              }
+            });
           });
         });
-      });
-      // this.repeatableTaskService.
-      // this.getTasks(ct.tasks);
-      this.clientService.updateClient(this.thisClient).subscribe({
-        next: (updatedClient) => {
-          console.log('Client updated with new clientType:', updatedClient.clientTypes);
-        },
-        error: (err) => {
-          console.error('Failed to update client:', err);
-        }
-      });
-    // }
+
+        Promise.all(taskPromises)
+          .then(() => {
+            this.clientService.updateClient(this.thisClient).subscribe({
+              next: (updatedClient) => {
+                console.log('Client updated:', updatedClient);
+                this.clientSelected.emit(updatedClient);
+              },
+              error: (err) => {
+                console.error('Failed to update client:', err);
+              }
+            });
+          })
+          .catch((err) => {
+            console.error('Failed to process tasks:', err);
+          });
+      },
+      error: (err) => {
+        console.error('Failed to create ClientFields by ClientType:', err);
+      }
+    });
   }
 
-  // async getTasks(taskIds: string[]) : Promise<Task[]>{
-  //   taskIds.forEach(taskId =>{
-  //     this.taskService.searchTask(taskId).subscribe({
-  //       next: (task) => {
-  //         // task.client = this.thisClient;
-  //         this.repeatableTaskService.createRepeatableTask(task).subscribe({
-  //           next: (updatedReptask) => {
-  //             console.log('repetable task updated with :', updatedReptask);
-  //           },
-  //           error: (err) => {
-  //             console.error('Failed to update repetable task:', err);
-  //           }
-  //         });
-
-  //         console.log('Task:', task);
-  //       },
-  //       error: (err) => {
-  //         console.error('Failed', err);
-  //       }
-  //     });
-  //   })
-  //   return this.tasks;
-  // }
-
-  // createTag(): void {
-  //   this.showClientTypes = !this.showClientTypes;
-  //   this.buttons = this.clientTypes.map((type: ClientType) => ({
-  //     text: type.name,
-  //     id: type._id!,
-  //   }));
-  // }
 
   getColor(name: string): string {
     if (!name) {
@@ -192,7 +183,6 @@ export class ClientTypeTagComponent implements OnInit {
   }
 
   deleteType() {
-    debugger
     console.log(this.selectedDeleteType);
     if (this.selectedDeleteType) {
       console.log(this.selectedDeleteType);
@@ -207,7 +197,6 @@ export class ClientTypeTagComponent implements OnInit {
             console.error('Failed to update client:', err);
           }
         });
-
       }
     }
     this.cancelDelete();
@@ -217,10 +206,4 @@ export class ClientTypeTagComponent implements OnInit {
     this.displayDeleteDialog = false;
     this.selectedDeleteType = null;
   }
-
-
-
 }
-
-
-

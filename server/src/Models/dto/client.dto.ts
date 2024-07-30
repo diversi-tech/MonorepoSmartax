@@ -87,7 +87,7 @@ export class CreateClientDto {
 
     @ApiProperty({})
     @IsOptional()
-    payment: ObjectId;
+    payment: string;
 
     @ApiProperty({ example: true })
     @IsBoolean()
@@ -246,7 +246,7 @@ export class UpdateClientDto {
 
     @ApiProperty({})
     @IsOptional()
-    payment: ObjectId;
+    payment: string;
 
     @ApiProperty({ example: true })
     @IsOptional()
@@ -315,7 +315,7 @@ export class UpdateClientDto {
     @IsNotEmpty()
     @IsArray()
     @ArrayNotEmpty()
-    @IsString({ each: true })
+    // @IsString({ each: true })
     clientFields: string[]
 
 }
