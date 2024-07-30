@@ -22,54 +22,46 @@ import { TreeTableModule } from 'primeng/treetable';
   providedIn: 'root'
 })
 export class MonthlyReportComponent implements OnInit {
-select: any;
+  select: any;
   constructor(private monthlyReportService: MonthlyReportService) { }
   ngOnInit(): void {
     this.client = history.state.client;
-    //this.getMonthlyReports()
-    this.getMonthlyReportsForClientF()
-    debugger
-    console.log(this.allMonthlyReports, "monthlyReports");
-    console.log("dates", this.dates)
     this.getMonthlyReports()
   }
 
-  dates: Date[] = [];
-  currentDate = new Date();
-  selectedDate: Date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, this.currentDate.getDate());
-  datePipe: DatePipe = new DatePipe('en-US');
-  formattedDate: string = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
+  dates: any = [{ "num": "01" }, { "num": "02" }, { "num": "03" }, { "num": "04" }, { "num": "05" }, { "num": "06" }, { "num": "07" }, { "num": "08" }, { "num": "09" }, { "num": "10" }, { "num": "11" }, { "num": "12" }];
+  // currentDate = new Date();
+  selectedDate: string;
+  // selectedDate: Date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, this.currentDate.getDate());
+  // datePipe: DatePipe = new DatePipe('en-US');
+  //formattedDate: string = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
   allMonthlyReportsClient: MonthlyReport[] | undefined;
   client: Client;
   clientId: string;
   allMonthlyReports: MonthlyReport[] | undefined;
   myReport: MonthlyReport[] | undefined;
-  y:boolean = false;
- steps :any[]
-  getMonthlyReportsForClientF(): void {
+  // y:boolean = false;
+  steps: any[]
+  myDate: Date;
+  getMonthlyReportsForClientF(date: Date): void {
     debugger
     console.log(this.client, "client");
     const clientId = String(this.client._id)
     this.monthlyReportService.getMonthlyReportForClient(clientId).subscribe(
       (reports) => {
-        debugger
         this.allMonthlyReportsClient = reports;
-        this.dates = this.allMonthlyReportsClient.map(m => m.reportDate);
-        console.log("dates", this.dates)
+        this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === date.getMonth());
+
       },
       (error) => {
         console.error('Error fetching yearly reports for client', error);
       }
     );
-    debugger
   }
   getMonthlyReports(): void {
-    debugger
     this.monthlyReportService.getAllMonthlyReport().subscribe(
       (reports) => {
         this.allMonthlyReports = reports;
-        console.log(this.allMonthlyReports, "myReport");
-
       },
       (error) => {
         console.error('Error fetching yearly reports for client', error);
@@ -77,17 +69,14 @@ select: any;
     );
 
   }
-  myReportf(): void {
-    debugger
-    this.myReport = this.allMonthlyReports.filter(r => r.reportDate === this.selectedDate)
-    console.log(this.myReport,"myReport");
-    console.log(this.monthlyReportService);
-    
-    
+  myReportf(month: string): void {
+    const currentYear = new Date().getFullYear();
+    const m = Number(month);
+    this.myDate = new Date(currentYear, m, 1)
+    this.getMonthlyReportsForClientF(this.myDate)
   }
   getStepByType(type: string): void {
     this.steps = this.allMonthlyReports.map(r => r.monthlyReportFields.filter(r => r.type === type))
-  console.log(this.steps, "steps");
-  
+
   }
 }

@@ -1,10 +1,9 @@
 <div class="card flex justify-content-center">
     <p-dropdown [options]="dates"
      [(ngModel)]="selectedDate"
-      placeholder=""
        [editable]="true"
-        optionLabel="name"
-         (onChange)="myReportf()" />
+        optionLabel="num"
+         (onChange)="myReportf(selectedDate)" />
 </div>
 <div class="card">
     <p-table [value]="myReport" [tableStyle]="{ 'min-width': '50rem' }">
