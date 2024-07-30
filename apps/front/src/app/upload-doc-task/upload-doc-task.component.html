@@ -11,18 +11,14 @@ chooseLabel=" ">
     [options]="DocTypes" 
     [(ngModel)]="selectedType" 
     optionLabel="name" 
-    placeholder="Select a Type">
+    placeholder="פתח בתקיה">
     <ng-template pTemplate="footer">
         <div class="p-fluid">
             <div class="input-container">
-             <input type="text" pInputText [(ngModel)]="newTypeName" placeholder="Add new type" (click)="$event.stopPropagation()" (keydown.enter)="addItem($event)">
+             <input type="text" pInputText [(ngModel)]="newTypeName" placeholder="הוסף תקיה חדשה" (click)="$event.stopPropagation()" (keydown.enter)="addItem($event)">
             <!-- <div class="p-field"> -->
               <button type="button" icon="pi pi-plus" (click)="addItem($event)" [style]="{'margin-left': '8px',
-                'padding': '0 8px',
-                'font-size':'12px',
-                'height': '24px',
-                'width': '24px',
-                'line-height': '24px'}"
+                }"
               ></button>
             <!-- </div> -->
           </div>
