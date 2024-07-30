@@ -20,7 +20,7 @@ export const PAYMENT_ENDPOINT=`${API_URL}/Payment`;
 export const PAYMENT_DETAILS_ENDPOINT=`${API_URL}/PaymentDetails`;
 export const PAYMENT_METHOD_ENDPOINT=`${API_URL}/PaymentMethod`;
 export const FREQUENCY_ENDPOINT=`${API_URL}/Frequency`;
-
+export const FINANCIAL_STATEMENT=`${API_URL}/financialStatemenet`;
 
 export const CHECKLIST_ENDPOINT = `${API_URL}/checkList`;
 export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checkListItem`;
