@@ -10,13 +10,13 @@ import { Tag } from '../../../_models/tag.module';
 import { UserService } from '../../../_services/user.service';
 import { ClientService } from '../../../_services/client.service';
 import { TagService } from '../../../_services/tag.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { StatusService } from '../../../_services/status.service';
 import { Status } from '../../../_models/status.module';
-import { FormsModule, } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({

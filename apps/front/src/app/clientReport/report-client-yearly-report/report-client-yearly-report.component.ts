@@ -4,9 +4,6 @@ import { YearlyReport } from '../../_models/yearlyReport.module';
 import { Client } from '../../_models/client.module';
 import { User } from '../../_models/user.module';
 import { YearlyReportService } from '../../_services/yearlyReport.service';
-import { Router, RouterOutlet } from '@angular/router';
-import { stepFieldService } from '../../_services/step_field.service';
-import { TokenService } from '../../_services/token.service';
 import { UserService } from '../../_services/user.service';
 import { ClientService } from '../../_services/client.service';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +11,7 @@ import { TableModule } from 'primeng/table';
 import { IconProfileComponent } from '../../share/icon-profile/icon-profile.component';
 import { Location } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-report-client-yearly-report',

@@ -6,18 +6,16 @@ import { YearlyReportService } from '../../../_services/yearlyReport.service';
 import { YearlyReport } from '../../../_models/yearlyReport.module';
 import { stepFieldService } from '../../../_services/step_field.service';
 import { Year } from '../../../_models/year.module';
-import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { YearService } from '../../../_services/year.service';
 import { ButtonModule } from 'primeng/button';
 import { InputOtpModule } from 'primeng/inputotp';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { DialogModule } from 'primeng/dialog';
-import { error } from 'console';
 import { Location } from '@angular/common';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Status } from '../../../_models/status.module';
@@ -25,6 +23,7 @@ import { StatusService } from '../../../_services/status.service';
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
+
 
 @Component({
   selector: 'app-create-yearly-report',
