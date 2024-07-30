@@ -9,6 +9,7 @@ import { TokenService } from './_services/token.service';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { LoginComponent } from './pages/login/login.component';
+import { TaskReportComponent } from './task-report/task-report.component';
 import { DialogModule } from 'primeng/dialog';
 import { PopupNotificationComponent } from "./popUp-socket/popUp-socket.component";
 // import { WebSocketService } from './_services/webSocket.service';
