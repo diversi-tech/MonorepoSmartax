@@ -4,7 +4,7 @@ import { Document } from "mongoose";
 @Schema()
 export class Year extends Document{
     @Prop()
-      yearNUm: string;
+    yearNum: string;
 }
 
 export const YearModel= SchemaFactory.createForClass(Year);

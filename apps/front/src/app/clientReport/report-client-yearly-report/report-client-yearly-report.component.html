@@ -34,7 +34,7 @@
                     class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
                     (click)="goToSteps(getClientName(yearlyReport.idUser), yearlyReport)"></button>
             </td>
-            <td>{{yearlyReport.status}}</td>
+            <td class="{{yearlyReport.status?.color}}">{{yearlyReport.status?.name}}</td>
             <td>{{yearlyReport.entityType}}</td>
             <td>{{getEmployeName(yearlyReport.idEmploye)?.userName }}</td>
             <td>{{ yearlyReport.balanceDue }}</td>

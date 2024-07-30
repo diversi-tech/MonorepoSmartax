@@ -2,12 +2,22 @@
 
 <br><br>
 <p-button (click)="createReprtTag()" label="יצירת דוח שנתי חדש" />
-
-<p-table [value]="allYearlyReport" [tableStyle]="{ 'max-width': '50rem' }">
-    <ng-template pTemplate="header">
+<p-button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
+<p-button *ngIf="isSelected == 2" (click)="onSelectionChange(5)" label="ללא מיון"></p-button>
+<p-button *ngIf="is == 2" (click)="filterToDoWithBalanceDue()" label="TO DO סנן לפי סכום ששלום ו" />
+<p-button *ngIf="is != 2" (click)="filterToDoWithBalanceDue2()" label="ללא סינון" />
+<p-table [value]="isSelected != 1 && isSelected != 0 ?filterallYearlyReport :allYearlyReport " [tableStyle]="{ 'max-width': '50rem' }">
+    <ng-template pTemplate="header" let-columns>
         <tr>
             <th></th>
-            <th>סטטוס</th>
+            <th>סטטוס
+                <div>
+                    <select *ngIf="isSelected == 2" [(ngModel)]="selectedStatus" (change)="filterByStatus($event)">
+                      <option>TO DO</option>
+                      <option>IN PROGRESS</option>
+                    </select>
+                  </div>   
+            </th>
             <th>ישות</th>
             <th>עובד מטפל</th>
             <th>יתרה לתשלום</th>
