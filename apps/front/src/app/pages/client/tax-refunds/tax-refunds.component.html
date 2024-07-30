@@ -8,8 +8,11 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task>
-    <tr>
-      <td><p-button (click)="goToSteps(task)" label="עדכן"></p-button></td>
+    <tr (click)="selectTaxRefunds(task)" [ngClass]="{ 'highlight': currentTaxRefunds === task }">
+      <td><button *ngIf="currentTaxRefunds === task" pButton
+          class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+          (click)="goToSteps(getClientName(task.idUser), task)"></button>
+      </td>
       <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
       <td>{{ task.date | date : 'dd/MM/yyyy' }}</td>
       <td>{{ task.year }}</td>

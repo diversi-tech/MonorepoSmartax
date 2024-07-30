@@ -8,13 +8,13 @@ import { Observable } from 'rxjs';
 import { YearlyReport } from '../../../_models/yearlyReport.module';
 import { YearlyReportService } from '../../../_services/yearlyReport.service';
 import { Button, ButtonModule } from 'primeng/button';
-import { Route, Router, RouterOutlet } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { UserService } from '../../../_services/user.service';
 import { User } from '../../../_models/user.module';
 import { NgZone } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -34,6 +34,7 @@ export class YearlyReportComponent implements OnInit {
   client: Client;
   employeName: any | undefined;
   allEmploye: User[]
+  currentYearlyReport: YearlyReport;
 
 
   constructor(private stepFieldsService: stepFieldService,
@@ -90,4 +91,7 @@ export class YearlyReportComponent implements OnInit {
     }
   }
 
+  selectYearlyReport(yearlyReport: YearlyReport) {
+    this.currentYearlyReport = yearlyReport;
+  }
 }
