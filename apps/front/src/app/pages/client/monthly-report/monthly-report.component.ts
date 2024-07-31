@@ -12,6 +12,7 @@ import { TreeTableModule } from 'primeng/treetable';
 import { stepFieldMonth } from '../../../_models/stepFieldMonth.module';
 import { YearService } from '../../../_services/year.service';
 import { Year } from '../../../_models/year.module';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-monthly-report',
   standalone: true,
@@ -31,7 +32,8 @@ import { Year } from '../../../_models/year.module';
 })
 export class MonthlyReportComponent implements OnInit {
   constructor(private monthlyReportService: MonthlyReportService,
-    private yearService: YearService
+    private yearService: YearService, private router: Router,
+
   ) { }
   ngOnInit(): void {
     this.client = history.state.client;
@@ -83,5 +85,8 @@ export class MonthlyReportComponent implements OnInit {
     if(this.myReport)
        this.fieldBymonths=this.myReport.monthlyReportFields;    
   }
+  createReprtTag(): void {
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createMonthlyReport'], { state: { client: this.client } });
+}
 
 }
