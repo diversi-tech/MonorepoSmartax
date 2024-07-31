@@ -51,6 +51,7 @@ export class TaxRefundsComponent {
     );
   }
   getTaxRefundsForClient(): void {
+    debugger
     const clientId = this.client._id;
     this.taxRefundsService.getTaxRefundsForClient(clientId).subscribe(
       (reports) => {
