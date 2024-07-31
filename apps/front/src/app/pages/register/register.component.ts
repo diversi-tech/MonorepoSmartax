@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit {
   };
 
   constructor(
+    private router: Router,
     public ar: ActivatedRoute,
     private userService: UserService,
     private roleService: RoleServiceService
@@ -92,6 +93,8 @@ export class RegisterComponent implements OnInit {
           console.log(data);
           this.isSuccessful = true;
           this.isSignUpFailed = false;
+          this.router.navigate(['/employeesTable']);
+
         },
         error: err => {
           console.log(err);
