@@ -12,7 +12,7 @@ import { TreeTableModule } from 'primeng/treetable';
 import { stepFieldMonth } from '../../../_models/stepFieldMonth.module';
 import { YearService } from '../../../_services/year.service';
 import { Year } from '../../../_models/year.module';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
 
 @Component({
@@ -25,6 +25,7 @@ import { Router } from '@angular/router';
     TableModule,
     ButtonModule,
     TreeTableModule,
+    RouterOutlet
   ],
   templateUrl: './monthly-report.component.html',
   styleUrl: './monthly-report.component.css',
