@@ -13,7 +13,7 @@
   import { YearService } from '../../../_services/year.service';
   import { Year } from '../../../_models/year.module';
   import { ActivatedRoute } from '@angular/router';
-  import { Router } from '@angular/router';
+  import { Router,RouterOutlet } from '@angular/router';
 
   @Component({
     selector: 'app-monthly-report',
@@ -25,6 +25,7 @@
       TableModule,
       ButtonModule,
       TreeTableModule,
+      RouterOutlet
     ],
     templateUrl: './monthly-report.component.html',
     styleUrl: './monthly-report.component.css',
@@ -58,9 +59,7 @@
         this.getMonthlyReports();
       }
       this.getMonthlyReportsForClient();
-  
-      // this.getStepByType('מעם');
-    }
+      }
     years: Year[] = [];
     selectedYear: Year;
     months: string[] = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
@@ -112,7 +111,6 @@
       console.log(this.steps, 'steps');
     }
       changeDate(){
-        console.log(this.selectedMonth,this.selectedYear);
         this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum))[0];
         if (this.myReport) {
           
@@ -121,6 +119,5 @@
       }
       createReprtTag(): void {
         this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createMonthlyReport'], { state: { client: this.client } });
-  
       }
     }
