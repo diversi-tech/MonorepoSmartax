@@ -1,17 +1,22 @@
+<p-button (click)="createReprtTag()" label="יצירת דוח שנתי חדש" />
+
+
+
 <div >
     <p-dropdown [options]="years"
      [(ngModel)]="selectedYear"
      placeholder="בחירת שנה"
        [editable]="true"
-        optionLabel="yearNum" 
-        (onChange)="changeDate()" />
+        optionLabel="yearNum"
+        (onChange)="changeDate()"  />
 </div>
 <div >
     <p-dropdown [options]="months"
      [(ngModel)]="selectedMonth"
      placeholder="בחירת חודש"
        [editable]="true"
-       (onChange)="changeDate()"/>
+        optionLabel="num"
+        (onChange)="changeDate()" />
 </div>
 
 
@@ -39,3 +44,9 @@
             </th>
         </ng-template>
 </p-table>
+
+
+
+
+
+
