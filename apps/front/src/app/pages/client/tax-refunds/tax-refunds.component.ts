@@ -6,10 +6,10 @@ import { TaxRefunds } from '../../../_models/taxRefunds.module';
 import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TableModule } from 'primeng/table';
-import { Router } from '@angular/router';
 import { StepperModule } from 'primeng/stepper';
 import { CommonModule } from '@angular/common';
 import { StepsModule } from 'primeng/steps';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tax-refunds',
@@ -34,6 +34,7 @@ export class TaxRefundsComponent {
   client: Client;
   allTaxRefunds: TaxRefunds[] | null;
   allEmploye: User[];
+  currentTaxRefunds: TaxRefunds;
 
 
   ngOnInit(): void {
@@ -68,5 +69,9 @@ export class TaxRefundsComponent {
  
    goToSteps(task: any) {    
     this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });
+  }
+
+  selectTaxRefunds(taxRefunds: TaxRefunds) {
+    this.currentTaxRefunds = taxRefunds;
   }
 }

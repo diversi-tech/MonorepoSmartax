@@ -3,10 +3,9 @@ import { InputTextModule } from 'primeng/inputtext';
 
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CheckList } from '../_models/checkList.model';
 import { CheckListItem } from '../_models/checkListItem.model';
 import { CheckboxModule } from 'primeng/checkbox';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-check-list-item',
@@ -17,7 +16,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 })
 export class CheckListItemComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.prevItem = this.item

@@ -40,9 +40,6 @@ export class FavoritesClientsListComponent implements OnInit {
           console.error('Error get current user', err);
         },
       });
-
-
-
   }
   
   updateFavorite() {

@@ -4,6 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsDateString, IsString, MaxLength, IsBoolean } from 'class-validator';
 import { Types } from 'mongoose'; // Import Types from mongoose
 import { StepField } from '../stepField.model';
+import { Status } from '../status.model';
 
 @Schema()
 export class CreateYearlyReportDto  {
@@ -11,7 +12,7 @@ export class CreateYearlyReportDto  {
     @Prop()
     @ApiProperty({ example: 'user_id_example' })
     @IsNotEmpty()
-    idUser: string;
+    idClient: string;
 
     @Prop()
     @ApiProperty({ type: [String], example: ['assignee1', 'assignee2'] })
@@ -53,6 +54,18 @@ export class CreateYearlyReportDto  {
     @ApiProperty({ type: [StepField] })
     @IsNotEmpty()
     stepsList: StepField[];
+
+    @Prop()
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    entityType: string;
+
+    @Prop()
+    @ApiProperty()
+    @IsNotEmpty()
+    status: Status;
+
 }
 
 export class UpdateYearlyReportDto  {
@@ -60,7 +73,7 @@ export class UpdateYearlyReportDto  {
     @Prop()
     @ApiProperty({ example: 'user_id_example' })
     @IsNotEmpty()
-    idUser: string;
+    idClient: string;
 
     @Prop()
     @ApiProperty({ type: [String], example: ['assignee1', 'assignee2'] })
@@ -107,4 +120,9 @@ export class UpdateYearlyReportDto  {
     @ApiProperty()
     @IsNotEmpty()
     entityType: string;
+
+    @Prop()
+    @ApiProperty()
+    @IsNotEmpty()
+    status: Status;
 }
