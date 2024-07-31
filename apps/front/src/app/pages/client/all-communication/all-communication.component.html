@@ -20,12 +20,12 @@
         style="cursor: pointer; margin-left: 5px;"
         pTooltip="מיון לפי תאריך בסדר עולה" 
         tooltipPosition="bottom"
-        (click)="sortCommunicatioByDateAsc()"></i>
+        (click)="sortCommunicatioByDate2()"></i>
      <i class="pi pi-caret-down" 
         style="cursor: pointer; margin-left: 5px;"
         pTooltip="מיון לפי תאריך בסדר יורד"
         tooltipPosition="bottom"
-        (click)="sortCommunicatioByDateDesc()"></i>
+        (click)="sortCommunicatioByDate()"></i>
         <div>
           <input *ngIf="isSelected == 2" type="date" class="filter-input" [(ngModel)]="filterdate"
             (input)="filterByDate()"> 

@@ -1,8 +1,6 @@
 
-import { Controller, Post, Body, UseFilters, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
-
-import { Communication } from '../../Models/communication.model';
+import { Controller,UseFilters, Get } from '@nestjs/common';
+import { ApiTags, ApiOperation} from '@nestjs/swagger';
 import { HttpErrorFilter } from '../../common/filters/http-error.filter';
 import { CommunicationArchiveService } from 'server/src/services/communicationArchive.service';
 import { CommunicationArchive } from 'server/src/Models/communicationArchive.model';

@@ -46,7 +46,9 @@
   .p-button-rounded {
     border-radius: 20%;
     margin: 1%;
-  }   .green{
+  } 
+    
+  .green{
     /* background-color:#28a745; */
     color:#28a745;
   }

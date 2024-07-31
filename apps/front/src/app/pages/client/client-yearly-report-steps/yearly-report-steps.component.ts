@@ -1,25 +1,32 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { YearlyReportService } from '../../../_services/yearlyReport.service';
 import { StepField } from '../../../_models/stepField.module';
-import { StepperModule } from 'primeng/stepper';
+import { Client } from '../../../_models/client.module';
+import { CommonModule, Location } from '@angular/common';
+import { Status } from '../../../_models/status.module';
+import { StatusService } from '../../../_services/status.service';
 import { CheckboxModule } from 'primeng/checkbox';
+import { StepperModule } from 'primeng/stepper';
 import { ButtonModule } from 'primeng/button';
-import { FormsModule } from '@angular/forms';
 import { ScrollerModule } from 'primeng/scroller';
 import { StepsModule } from 'primeng/steps';
-import { Router } from '@angular/router';
-import { Client } from '../../../_models/client.module';
-import { YearlyReport } from '../../../_models/yearlyReport.module';
-import { Location } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
-import { Status } from '../../../_models/status.module';
-import { StatusService } from '../../../_services/status.service'; // Import StatusService
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-yearly-report-steps',
   standalone: true,
-  imports: [CommonModule, CheckboxModule, StepperModule, ButtonModule, FormsModule, ScrollerModule, StepsModule,ToastModule],
+  imports: [
+    CommonModule,
+    CheckboxModule,
+    StepperModule,
+    ButtonModule,
+    FormsModule,
+    ScrollerModule,
+    StepsModule,
+    ToastModule
+  ],
   templateUrl: './yearly-report-steps.component.html',
   styleUrl: './yearly-report-steps.component.css',
 })
@@ -43,10 +50,10 @@ export class YearlyReportStepsComponent implements OnInit {
 
 
   constructor(private yearlyReportService: YearlyReportService,
-               private router: Router,
-               private location: Location,
-               private statusService: StatusService 
-              ) {
+    private router: Router,
+    private location: Location,
+    private statusService: StatusService
+  ) {
 
   };
 
@@ -81,7 +88,7 @@ export class YearlyReportStepsComponent implements OnInit {
     return Object.keys(this.stepsByNumber).map(Number);
   }
 
- 
+
 
 
   async update(task: StepField) {
@@ -103,12 +110,12 @@ export class YearlyReportStepsComponent implements OnInit {
     const someCompleted = stepsList.some(step => step.isCompleted);
 
     if (allCompleted) {
-      return  this.statusList.find(s => s.name == 'COMPLETE') || null;
+      return this.statusList.find(s => s.name == 'COMPLETE') || null;
       ;
     } else if (someCompleted) {
-      return  this.statusList.find(s => s.name == 'IN PROGRESS') || null;
+      return this.statusList.find(s => s.name == 'IN PROGRESS') || null;
     } else {
-      return  this.statusList.find(s => s.name == 'TO DO') || null;
+      return this.statusList.find(s => s.name == 'TO DO') || null;
     }
   }
 
@@ -122,7 +129,7 @@ export class YearlyReportStepsComponent implements OnInit {
       }
     }
     const status = this.determineStatus();
-    
+
     if (status) {
       this.responseData.status = status;
     } else {
@@ -130,7 +137,7 @@ export class YearlyReportStepsComponent implements OnInit {
       return;
     }
 
-    
+
 
     try {
       const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
@@ -152,8 +159,8 @@ export class YearlyReportStepsComponent implements OnInit {
     this.location.back();
   }
 
-  isStepComplete(stepNumber: number): boolean {    
-    return this.getStepByNumber(stepNumber).every((task) => task.isCompleted==true);
+  isStepComplete(stepNumber: number): boolean {
+    return this.getStepByNumber(stepNumber).every((task) => task.isCompleted == true);
   }
   isStepBeginned(stepNumber: number): boolean {
     return (
@@ -167,7 +174,7 @@ export class YearlyReportStepsComponent implements OnInit {
     return this.stepsByNumber[stepNumber] || [];
   }
 
- 
-  
+
+
 
 }

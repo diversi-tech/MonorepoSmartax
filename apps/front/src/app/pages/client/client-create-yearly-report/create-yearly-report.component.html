@@ -19,14 +19,21 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <p-dropdown id="year" formControlName="year" [options]="yearList" optionLabel="yearNUm" placeholder="בחירת שנה"
-        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown"></p-dropdown>
-      <div *ngIf="yearlyReportForm.get('year').invalid && yearlyReportForm.get('year').touched" class="error">
-        This field is required.
-      </div>
+    <div class="p-field p-mb-3">
+      <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2"
+        (completeMethod)="filterByyear($event.query)" [minLength]="1"
+        placeholder="בחירת שנה" field="yearNum" [dropdown]="true" (onSelect)="select($event)"
+        [style]="{width: '100%'}" required>
+        <ng-template let-yearname pTemplate="item">
+          <div class="p-d-flex p-ai-center">
+            שנת  {{ yearname.yearNum}}
+            <ng-container *ngIf="is">
+              <button type="button" pButton class="p-ml-2" (click)="add()">רוצה להוסיף שנה </button>
+            </ng-container>
+          </div>
+        </ng-template>
+      </p-autoComplete>
     </div>
-
     
 
     <div class="form-group">
