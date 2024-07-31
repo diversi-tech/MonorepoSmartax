@@ -1,7 +1,7 @@
   import { Component, Inject, numberAttribute } from '@angular/core';
   import { Injectable, OnInit, inject } from '@angular/core';
   import { CommonModule } from '@angular/common';
-  import { FormsModule } from '@angular/forms';
+  import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   import { DropdownModule } from 'primeng/dropdown';
   import { ButtonModule } from 'primeng/button';
   import { TableModule } from 'primeng/table';
@@ -14,6 +14,9 @@
   import { Year } from '../../../_models/year.module';
   import { ActivatedRoute } from '@angular/router';
   import { Router,RouterOutlet } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputOtpModule } from 'primeng/inputotp';
 
   @Component({
     selector: 'app-monthly-report',
@@ -25,7 +28,14 @@
       TableModule,
       ButtonModule,
       TreeTableModule,
-      RouterOutlet
+      RouterOutlet,
+      DropdownModule,
+      CommonModule,
+      ButtonModule,
+      InputOtpModule,
+      ReactiveFormsModule,
+      DialogModule,
+      InputNumberModule
     ],
     templateUrl: './monthly-report.component.html',
     styleUrl: './monthly-report.component.css',
@@ -75,7 +85,7 @@
     allFields: stepFieldMonth[];
     fieldByType: { [key: string]: stepFieldMonth[] } = {};
     currentRoute: string;
-  
+  create:boolean=false;
     fieldBymonths: stepFieldMonth[] = [];
   
   
