@@ -14,14 +14,13 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateTaskDto, UpdateTaskDto } from 'server/src/Models/dto/task.dto';
-import { Task } from 'server/src/Models/task.model';
-import { ValidationException } from 'server/src/common/exceptions/validation.exception';
-import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
-import { hashPasswordService } from 'server/src/services/hash-password';
-import { TokenService } from 'server/src/services/jwt.service';
-import { TaskService } from 'server/src/services/task.service';
-//
+import { CreateTaskDto, UpdateTaskDto } from '../../Models/dto/task.dto';
+import { Task } from '../../Models/task.model';
+import { ValidationException } from '../../common/exceptions/validation.exception';
+import { HttpErrorFilter } from '../../common/filters/http-error.filter';
+import { hashPasswordService } from '../../services/hash-password';
+import { TokenService } from '../../services/jwt.service';
+import { TaskService } from '../../services/task.service';
 import { UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';

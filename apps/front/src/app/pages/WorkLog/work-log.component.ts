@@ -11,6 +11,7 @@ import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../_services/token.service';
 import { UpdateWorkLogDto } from '../../../../../../timesheet/src/dto/workLog.dto';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-work-log',
@@ -43,6 +44,7 @@ export class WorkLogComponent implements OnInit {
   logGroup: any;
   currentLogGroup: any;
   currentLog: TimeEntry;
+  employeeNames: { id: string, name: string }[] = [];
 
   constructor(
     private workLogService: WorkLogService,
@@ -51,13 +53,11 @@ export class WorkLogComponent implements OnInit {
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('_id');
     this.userRole = this.tokenService.getCurrentDetail('role').level;
-    console.log(this.userRole);
-    
   }
 
   ngOnInit() {
     this.getWorkLogs();
-    console.log(this.employeeId);
+    console.log(this.userRole);
   }
 
   getWorkLogs() {
@@ -74,6 +74,7 @@ export class WorkLogComponent implements OnInit {
                 checkOut: entry.checkOut ? new Date(entry.checkOut) : null
               }))
             }));
+            console.log('Work logs fetched:', this.workLogs);
             this.groupWorkLogsByEmployeeAndDate();
           } else {
             console.error('Data received from API is not an array:', response);
@@ -96,6 +97,7 @@ export class WorkLogComponent implements OnInit {
                 checkOut: entry.checkOut ? new Date(entry.checkOut) : null
               }))
             }));
+            console.log('Work logs fetched for employee:', this.workLogs);
             this.groupWorkLogsByEmployeeAndDate();
           } else {
             console.error('Data received from API is not an array:', response);
@@ -108,9 +110,36 @@ export class WorkLogComponent implements OnInit {
     } else {
       console.error('User role not supported for fetching work logs.');
     }
+    this.loadEmployeeNames();
+  }
+
+  loadEmployeeNames() {
+    console.log('Grouped work logs before fetching employee names:', this.groupedWorkLogs);
+    const employeeIds = Array.from(new Set(this.groupedWorkLogs.map(logGroup => logGroup.employeeId)));
+    console.log('Unique employee IDs:', employeeIds);
+
+    const observables = employeeIds.map(employeeId => this.workLogService.getUserById(employeeId));
+
+    forkJoin(observables).subscribe(
+      users => {
+        users.forEach((user, index) => {
+          console.log(`Fetched user for ID ${employeeIds[index]}:`, user);
+          this.employeeNames.push({ id: employeeIds[index], name: user.userName });
+        });
+      },
+      error => {
+        console.error('Error fetching user details:', error);
+      }
+    );
+  }
+
+  getEmployeeName(employeeId: string): string {
+    const employee = this.employeeNames.find(e => e.id === employeeId);
+    return employee ? employee.name : 'Unknown';
   }
 
   groupWorkLogsByEmployeeAndDate() {
+    console.log('Grouping work logs:', this.workLogs);
     const grouped = this.workLogs.reduce((acc, log) => {
       const key = `${log.employeeId}_${new Date(log.date).toLocaleDateString('en-CA')}`;
       if (!acc[key]) {
@@ -127,6 +156,7 @@ export class WorkLogComponent implements OnInit {
     }, {});
 
     this.groupedWorkLogs = Object.values(grouped);
+    console.log('Grouped work logs:', this.groupedWorkLogs);
   }
 
   checkIn() {
@@ -135,7 +165,7 @@ export class WorkLogComponent implements OnInit {
       return;
     }
 
-    const today = new Date().toLocaleDateString('en-CA'); // תאריך של היום בפורמט 'yyyy-MM-dd'
+    const today = new Date().toLocaleDateString('en-CA');
     const existingWorkLog = this.workLogs.find(log => log.employeeId == this.employeeId && new Date(log.date).toLocaleDateString('en-CA') === today);
 
     if (existingWorkLog) {
@@ -207,19 +237,7 @@ export class WorkLogComponent implements OnInit {
     if (this.selectedLog && this.selectedEntry) {
       this.selectedEntry.checkIn = this.editedCheckIn;
       this.selectedEntry.checkOut = this.editedCheckOut;
-      this.selectedEntry.hoursWorked = this.calculateHours(this.selectedEntry.checkIn, this.selectedEntry.checkOut);
-
-      const updateDto: UpdateWorkLogDto = {
-        _id: this.selectedLog.logs[0]._id,
-        timeEntries: this.selectedLog.logs.flatMap(log => log.timeEntries.map(entry => ({
-          _id: entry._id,
-          checkIn: entry.checkIn,
-          checkOut: entry.checkOut,
-          hoursWorked: entry.hoursWorked
-        })))
-      };
-      this.updateWorkLog(updateDto);
-      this.displayDialog = false;
+      this.selectedEntry
     }
   }
 
@@ -231,7 +249,6 @@ export class WorkLogComponent implements OnInit {
     const today = new Date();
     return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
   }
-
   updateWorkLog(workLog: any) {
     this.workLogService.updateWorkLog(workLog._id, workLog.timeEntries).subscribe(
       response => {

@@ -6,10 +6,10 @@ import { CreateUserDto, UpdateUserDto } from '../../Models/dto/user.dto';
 import { User } from 'server/src/Models/user.model';
 // import { HttpErrorFilter } from '../../common/filters/http-error.filter';
 
-import { TokenService } from 'server/src/services/jwt.service';
-import { equals } from 'class-validator';
-import { hashPasswordService } from 'server/src/services/hash-password';
-import { ValidationException } from 'server/src/common/exceptions/validation.exception';
+import { TokenService } from '../../services/jwt.service';
+// import { equals } from 'class-validator';
+import { hashPasswordService } from '../../services/hash-password';
+// import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 
 
 @ApiTags('users')

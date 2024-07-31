@@ -9,6 +9,8 @@ import { UpdateTimeEntryDto } from "../../../../../timesheet/src/dto/workLog.dto
 })
 export class WorkLogService {
   private apiUrl = 'http://localhost:3002/api/worklogs';
+  private userApiUrl = 'http://localhost:8080/users'; // הוספת URL לשירות המשתמש
+
 
 constructor(private http: HttpClient) {}
 
@@ -59,5 +61,10 @@ getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
     return this.http.get<{ data: WorkLog[] }>(url).pipe(
       map(response => response.data)
     );
+  }
+ 
+  getUserById(userId:string): Observable<any>{
+    console.log("gggggggg");
+    return this.http.get(this.userApiUrl+`/findOne?id=${userId}`)
   }
 }

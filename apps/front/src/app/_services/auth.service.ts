@@ -19,7 +19,6 @@ const httpOptions = {
 export class AuthService {
   private apiUrl = AUTH_ENDPOINT;
 
-  // פונקציה שתשמש כ-Callback
   private credentialResponseHandler: (email: string, password: string) => void = () => {};
 
   constructor(private http: HttpClient, private hashService: HashPasswordService) {
@@ -98,7 +97,7 @@ export class AuthService {
     try {
       const userObject: any = jwt_decode(response.credential);
       const email = userObject.email;
-      const password = 'Aa123456'; // Use a fixed password or generate dynamically as needed
+      const password = 'Aa123456'; 
       console.log();
 
       this.credentialResponseHandler(email, password);
