@@ -246,5 +246,7 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
     //return to last page
     window.history.back();
   }
+
+  
   
 }
