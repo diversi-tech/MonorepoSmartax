@@ -19,16 +19,18 @@
     <tr (click)="selectTaxRefunds(task)" [ngClass]="{ 'highlight': currentTaxRefunds === task }">
       <td><button *ngIf="currentTaxRefunds === task" pButton
           class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
-          (click)="goToSteps(getClientName(task.idUser), task)"></button>
+          (click)="goToSteps( task)"></button>
       </td>
       <td class="{{task.status.color}}">{{task.status.name}}</td>
       <td>{{task.entityType}}</td>
-      <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
       <td>{{ task.balanceDue }}</td>
       <td>{{ task.paymentAmountPaid }}</td>
-      <td>{{ task.price }}</td>
+      <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
+     
       <td>{{ task.date | date : 'dd/MM/yyyy' }}</td>
       <td>{{ task.year }}</td>
+      <td>{{ task.price }}</td>
+
     </tr>
   </ng-template>
 </p-table>

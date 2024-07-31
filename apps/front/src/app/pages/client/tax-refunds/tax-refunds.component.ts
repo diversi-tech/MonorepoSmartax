@@ -9,7 +9,7 @@ import { TableModule } from 'primeng/table';
 import { StepperModule } from 'primeng/stepper';
 import { CommonModule } from '@angular/common';
 import { StepsModule } from 'primeng/steps';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tax-refunds',
@@ -29,17 +29,28 @@ export class TaxRefundsComponent {
   constructor(
     private taxRefundsService: TaxRefundsService,
     private userService: UserService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute
+
+  ) {
+    this.currentRoute = this.route.snapshot.url.join('/');
+    console.log('Current route path:', this.currentRoute);
+  
+  }
   client: Client;
   allTaxRefunds: TaxRefunds[] | null;
   allEmploye: User[];
   currentTaxRefunds: TaxRefunds;
+  currentRoute: string;
 
 
   ngOnInit(): void {
     this.client = history.state.client;
-    this.getTaxRefundsForClient();
+    if(this.currentRoute === 'allClientTaxRefunds') {
+      this.getTaxRefunds()
+    }
+    else{    this.getTaxRefundsForClient();
+    }
     console.log('report after', this.allTaxRefunds);
 
     this.userService.getAllUsers().subscribe(
@@ -50,6 +61,8 @@ export class TaxRefundsComponent {
         console.error('Error ', error);
       }
     );
+  }
+  getTaxRefunds(): void {
   }
   getTaxRefundsForClient(): void {
     debugger

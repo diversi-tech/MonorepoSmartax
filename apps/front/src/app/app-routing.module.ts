@@ -217,6 +217,26 @@ export const routes: Routes = [
           label: 'דוחות חודשיים',
           icon: icons.reports,
         },
+      },
+      {
+        path: 'allClientTaxRefunds',
+        component: TaxRefundsComponent,
+        data: {
+          authType: 6,
+          forToolbar: false,
+          label: 'החזרי מס/ שבח',
+          icon: icons.reports,
+        },
+      },
+      {
+        path: 'allClientFinancialStatement',
+        component: FinancialStatementComponent,
+        data: {
+          authType: 6,
+          forToolbar: false,
+          label: ' הצהרות הון',
+          icon: icons.reports,
+        },
       }
     ],
       
