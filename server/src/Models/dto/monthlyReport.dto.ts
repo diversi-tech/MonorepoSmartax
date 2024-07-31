@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsDateString, IsNotEmpty } from 'class-validator';
 import { StepFieldController } from 'server/src/controller/yearlyReport/stepField.controller';
 import { StepFieldMonth } from '../stepFieldMonth.model';
+import { Status } from '../status.model';
 
 @Schema()
 export class CreateMonthlyReportDto  {
@@ -53,4 +54,8 @@ export class UpdateMonthlyReportDto  {
     @IsNotEmpty()
     monthlyReportFields: StepFieldMonth[];
 
+    @Prop()
+    @ApiProperty()
+    @IsNotEmpty()
+    status: Status;
 }

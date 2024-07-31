@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { StepField } from '../../../_models/stepField.module';
 import { StepperModule } from 'primeng/stepper';
 import { Client } from '../../../../../../../server/src/Models/client.model';
@@ -15,7 +15,9 @@ import { TaxRefundsService } from '../../../_services/taxRefunds.service';
   styleUrl: './tax-refunds-steps.component.css',
 })
 export class TaxRefundsStepsComponent {
-  constructor(private taxRefundsService: TaxRefundsService) {}
+  constructor(private taxRefundsService: TaxRefundsService,
+    private location: Location,
+  ) { }
   tasksStep: StepField[] = [];
   responseData: any;
   allSteps: StepField[] = [];
@@ -50,8 +52,8 @@ export class TaxRefundsStepsComponent {
     return Object.keys(this.stepsByNumber).map(Number);
   }
 
-  isStepComplete(stepNumber: number): boolean {    
-    return this.getStepByNumber(stepNumber).every((task) => task.isCompleted==true);
+  isStepComplete(stepNumber: number): boolean {
+    return this.getStepByNumber(stepNumber).every((task) => task.isCompleted == true);
   }
   isStepBeginned(stepNumber: number): boolean {
     return (
@@ -95,4 +97,8 @@ export class TaxRefundsStepsComponent {
       console.log(error);
     }
   }
+  goBack() {
+    this.location.back();
+  }
+
 }

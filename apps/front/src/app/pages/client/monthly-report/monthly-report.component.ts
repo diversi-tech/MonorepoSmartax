@@ -12,6 +12,8 @@ import { TreeTableModule } from 'primeng/treetable';
 import { stepFieldMonth } from '../../../_models/stepFieldMonth.module';
 import { YearService } from '../../../_services/year.service';
 import { Year } from '../../../_models/year.module';
+import { ActivatedRoute } from '@angular/router';
+
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-monthly-report',
@@ -31,10 +33,16 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class MonthlyReportComponent implements OnInit {
-  constructor(private monthlyReportService: MonthlyReportService,
-    private yearService: YearService, private router: Router,
 
-  ) { }
+
+  constructor(private monthlyReportService: MonthlyReportService,
+    private yearService: YearService,
+    private route: ActivatedRoute, private router: Router,
+
+  ) {
+    this.currentRoute = this.route.snapshot.url.join('/');
+    console.log('Current route path:', this.currentRoute);
+  }
   ngOnInit(): void {
     this.client = history.state.client;
     this.yearService.getAllYear().subscribe({
@@ -47,13 +55,17 @@ export class MonthlyReportComponent implements OnInit {
       },
     },
     );
+    if (this.currentRoute === "allClientMonthlyReport") {
+      this.getMonthlyReports();
+    }
     this.getMonthlyReportsForClient();
 
+    // this.getStepByType('מעם');
   }
   years: Year[] = [];
-  months: any = [{ "num": "01" }, { "num": "02" }, { "num": "03" }, { "num": "04" }, { "num": "05" }, { "num": "06" }, { "num": "07" }, { "num": "08" }, { "num": "09" }, { "num": "10" }, { "num": "11" }, { "num": "12" }];
-  selectedYear: string = (new Date().getFullYear()).toString();
-  selectedMonth: string = (new Date().getMonth() + 1).toString();
+  selectedYear: Year;
+  months: string[] = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+  selectedMonth: any;
   allMonthlyReportsClient: MonthlyReport[] | undefined;
   client: Client;
   clientId: string;
@@ -64,6 +76,8 @@ export class MonthlyReportComponent implements OnInit {
   steps: any[];
   allFields: stepFieldMonth[];
   fieldByType: { [key: string]: stepFieldMonth[] } = {};
+  currentRoute: string;
+
   fieldBymonths: stepFieldMonth[] = [];
 
 
@@ -72,13 +86,14 @@ export class MonthlyReportComponent implements OnInit {
     this.monthlyReportService.getMonthlyReportForClient(clientId).subscribe({
       next: (reports: any) => {
         this.allMonthlyReportsClient = reports;
+        console.log(Number(this.selectedYear.yearNum), Number(this.selectedMonth), "year, month");
         this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];
 
       },
-      error:(error) => {
+      error: (error) => {
         console.error('Error fetching monthly reports for client', error);
       }
-  });
+    });
   }
   changeDate(){
     this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];    
@@ -89,4 +104,4 @@ export class MonthlyReportComponent implements OnInit {
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createMonthlyReport'], { state: { client: this.client } });
 }
 
-}
+  }
