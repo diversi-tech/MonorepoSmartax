@@ -74,7 +74,7 @@
 
 
 <h2 *ngIf="tasks.length == 0">ללקוח זה אין משימות</h2>
-<div *ngIf="tasks.length != 0" class="p-grid">
+<div class="p-grid">
   <div class="p-col-4" style="text-align: right; align-items: right">
     <div class="content-container" style="display: flex; flex-direction: column">
       <p-button class="buttons" (click)="createTask()" id="addBtn" type="button" icon="pi pi-plus"
@@ -83,7 +83,7 @@
       <!-- <p-button class="buttons" type="text" (click)="display = true" (click)="toggleFilter()" icon="pi pi-filter"
         label="Filter"></p-button> -->
 
-      <input class="buttons" id="float-input" pInputText type="text" placeholder="Search Task" (change)="searchTask()"
+      <input *ngIf="tasks.length != 0" class="buttons" id="float-input" pInputText type="text" placeholder="Search Task" (change)="searchTask()"
         [(ngModel)]="searchTerm" />
     </div>
   </div>

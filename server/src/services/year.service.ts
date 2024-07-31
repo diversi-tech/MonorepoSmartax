@@ -11,7 +11,7 @@ export class YearService {
   constructor(@InjectModel('Year') private readonly YearModel: Model<Year>) {}
 
   async createYear(createYearDto: createYearDto): Promise<Year> {
-    const createYear =new this.YearModel(createYearDto);
+    const createYear = new this.YearModel(createYearDto);
     return createYear.save();
   }
 

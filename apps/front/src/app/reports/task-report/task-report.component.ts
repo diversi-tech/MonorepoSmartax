@@ -50,8 +50,6 @@ export class TaskReportComponent implements OnInit {
 
     selectSort: any = [{ name: "deadline" }, { name: "dueDate" }]
 
-
-
     clients: Client[] | undefined | null;
 
     lableClient: string[] = [];
