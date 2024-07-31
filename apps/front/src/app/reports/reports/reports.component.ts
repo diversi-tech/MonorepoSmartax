@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PaymentsReportsComponent } from '../payments-reports/payments-reports.component';
-import { RouterOutlet, Routes } from '@angular/router';
 import { SplitterModule } from 'primeng/splitter';
 import { PanelModule } from 'primeng/panel';
 import { SplitButtonModule } from 'primeng/splitbutton';
@@ -9,6 +8,7 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
 import { PaymentsReportsService } from '../../_services/payments-reports.service';
 import { NgIf } from '@angular/common';
 import { SidebarModule } from 'primeng/sidebar';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-reports',

@@ -1,12 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Client } from '../../../_models/client.module';
 import { ClientService } from '../../../_services/client.service';
-import { FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { ConfirmationService, PrimeNGConfig, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule, AutoCompleteSelectEvent, } from 'primeng/autocomplete';
 import { NgClass, NgIf } from '@angular/common';
-import { Router, RouterOutlet, RouterLink, } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
@@ -17,6 +15,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ImportClientComponent } from '../import-clients/import-client.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { FormControl, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-client-search',
@@ -131,8 +131,7 @@ export class ClientSearchComponent implements OnInit {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
         (client.firstName && client.firstName.toLowerCase().includes(query)) ||
-        (client.lastName && client.lastName.toLowerCase().includes(query)) ||
-        (client.companyName && client.companyName.toLowerCase().includes(query))
+        (client.lastName && client.lastName.toLowerCase().includes(query)) 
       );
     }
     // this.selectedClient = null;

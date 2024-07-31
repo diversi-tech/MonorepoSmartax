@@ -14,6 +14,7 @@ import { User, UserModel } from './Models/user.model';
 import { GoogleDriveController } from './controller/google-drive/google-drive.controller';
 import { GoogleDriveService } from './services/google-drive.service';
 import { CommunicationsService } from './services/communication.service';
+import { ScheduleModule } from '@nestjs/schedule';
 import {
   Communication,
   communicationModel,
@@ -154,6 +155,12 @@ import { TasksGateway } from './services/socket/socket.gateway';
 import { TaxRefundsService } from './services/taxRefunds.service';
 import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
 import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
+import { YearArchive, YearArchiveModel } from './Models/yearArchive.model';
+import { YearArchiveController } from './controller/yearArchive/yearArchive.controller';
+import { YearArchiveService } from './services/yearArchive.service';
+import { FinancialStatement, FinancialStatementModel } from './Models/financialStatement.model';
+import { FinancialStatementController } from './controller/financialStatement/financialStatement.controller';
+import { FinancialStatementService } from './services/financialStatement.service';
 import { MonthlyReportService } from './services/monthlyReport.service';
 import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
 import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
@@ -164,21 +171,13 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     MongooseModule.forFeature([{ name: ClientField.name, schema: ClientFieldModel }]),
     MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
-    MongooseModule.forFeature([
-      { name: ClientType.name, schema: ClientTypeModel },
-    ]),
+    MongooseModule.forFeature([{ name: YearArchive.name, schema: YearArchiveModel }]),
+    MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel },]),
     MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
-    MongooseModule.forFeature([
-      { name: SensitiveData.name, schema: SensitiveDataModel },
-    ]),
-
+    MongooseModule.forFeature([{ name: SensitiveData.name, schema: SensitiveDataModel },]),
     MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
-    MongooseModule.forFeature([
-      { name: BillingStatus.name, schema: BillingStatusModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: Communication.name, schema: communicationModel },
-    ]),
+    MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel },]),
+    MongooseModule.forFeature([{ name: Communication.name, schema: communicationModel },]),
     MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
     MongooseModule.forFeature([{ name: Docs.name, schema: DocumentsModel }]),
     MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
@@ -187,64 +186,37 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-    MongooseModule.forFeature([
-      { name: callTopicSchema.name, schema: callTopicSchemaModel },
-    ]),
+    MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel },]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
-
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-    MongooseModule.forFeature([
-      { name: callTopicSchema.name, schema: callTopicSchemaModel },
-    ]),
-
-    MongooseModule.forFeature([
-      { name: Frequency.name, schema: frequencyModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: PaymentMethod.name, schema: PaymentMethodModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: PaymentDetails.name, schema: PaymentDetailsModel },
-    ]),
+    MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel },]),
+    MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel },]),
+    MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel },]),
+    MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel },]),
     MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
     MongooseModule.forFeature([{ name: Timer.name, schema: TimerModel }]),
     MongooseModule.forFeature([{ name: RepeatableTask.name, schema: RepeatableTaskModel }]),
     MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
-    ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '../uploads'),
-      serveRoot: '/uploads', // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
-    }),
-    MongooseModule.forFeature([
-      { name: CommunicationArchive.name, schema: communicationArchiveModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: StepField.name, schema: stepFieldModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: CommunicationArchive.name, schema: communicationArchiveModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: YearlyReport.name, schema: YearlyReportstModel },
-    ]),
+    ServeStaticModule.forRoot({rootPath: path.join(__dirname, '../uploads'),serveRoot: '/uploads',}), // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
+    MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
+    MongooseModule.forFeature([{ name: StepField.name, schema: stepFieldModel },]),
+    MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
+    MongooseModule.forFeature([{ name: YearlyReport.name, schema: YearlyReportstModel },]),
     MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]),
+    MongooseModule.forFeature([{ name: CheckListItem.name, schema: CheckListItemModel },]),
+    MongooseModule.forFeature([{ name: CheckList.name, schema: CheckListModel },]),
+    MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
+    MongooseModule.forFeature([{ name: TaxRefunds.name, schema: taxRefundsModel },]),
     MongooseModule.forFeature([
-      { name: CheckListItem.name, schema: CheckListItemModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: CheckList.name, schema: CheckListModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: CommunicationArchive.name, schema: communicationArchiveModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: TaxRefunds.name, schema: taxRefundsModel },
-    ]),
-    MongooseModule.forFeature([
+      { name: FinancialStatement.name, schema: FinancialStatementModel },
       { name: MonthlyReport.name, schema: MonthlyReportModel },
     ]),
     JwtModule,
+    ScheduleModule.forRoot(),
+        
   ],
   controllers: [
+    YearArchiveController,
     AppController,
     CheckListItemController,
     CheckListController,
@@ -283,6 +255,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     RepeatableTaskController,
     FrequencyController,
     TaxRefundsController,
+    FinancialStatementController,
     MonthlyReportController
   ],
 
@@ -290,6 +263,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     AppService,
     UserService,
     MailService,
+    YearArchiveService,
     TokenService,
     hashPasswordService,
     JwtService,
@@ -320,6 +294,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     ClientFieldService,
     repeatableTaskService,
     TaxRefundsService,
+    FinancialStatementService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
