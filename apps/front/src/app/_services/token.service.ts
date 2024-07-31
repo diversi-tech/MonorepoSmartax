@@ -22,6 +22,7 @@ export class TokenService {
     }
     return null;
   }
+
   getCurrentDetail(detail: string): any {
     const tokenData = this.getToken();
     if (!tokenData || !tokenData.access_token) {
@@ -31,6 +32,7 @@ export class TokenService {
   
     return payload ? payload[detail] : null;
   }
+
 
   decodeToken(token: string): any {
     try {

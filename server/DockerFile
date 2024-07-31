@@ -1,0 +1,28 @@
+# שלב 1: התקנת התלויות ובניית הקוד של NestJS
+FROM node:18-alpine AS builder
+WORKDIR /app
+# העתקת קבצי הקונפיגורציה והחבילות
+COPY nx.json tsconfig.base.json package*.json ./
+#COPY apps ./apps
+COPY server ./server
+# התקנת התלויות
+RUN npm install
+# ניקוי מטמון Nx
+RUN npx nx reset
+# בניית הקוד של NestJS
+RUN npx nx build server --prod --verbose
+# שלב 2: הפעלת היישום
+FROM node:18-alpine
+WORKDIR /app
+# התקנת nx גלובלית
+#RUN npm install -g @nrwl/cli
+# התקנת @nrwl/workspace (אם נדרש)
+#RUN npm install @nrwl/workspace --legacy-peer-deps
+# העתקת החבילות הנדרשות לפרודקשן בלבד
+COPY package*.json ./
+# העתקת התוצרים מהשלב הקודם
+RUN npm install --only=production --legacy-peer-deps
+
+COPY --from=builder /app/server/dist /app/dist
+# הפעלת היישום
+CMD ["node", "dist/main.js"]
