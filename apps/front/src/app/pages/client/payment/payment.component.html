@@ -38,6 +38,7 @@
               <p>{{details.dateFinish | date: 'dd/MM/yy'}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.maxHours">:מקסימום שעות עבודה</span>
               <p>{{thisPayment.mainPaymentDetails.maxHours}}</p>
+              <button class="checkout-btn" id="showBtn" (click)="stopPaymentDetails()">סיום המנוי והעברה להסטוריה</button>
             </div>
             <div class="quantity">
             </div>

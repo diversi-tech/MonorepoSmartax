@@ -18,7 +18,7 @@ import { ObjectId } from "typeorm";
 @Injectable()
 export class PaymentService {
 
-    constructor(@InjectModel('Payment') private readonly PaymentModel: Model<Payment>, private billingService: BillingsService, private PaymentDetailsService: PaymentDetailsService) { }
+    constructor(@InjectModel('Payment') private readonly PaymentModel: Model<Payment>, private billingService: BillingsService, private paymentDetailsService: PaymentDetailsService) { }
 
     async createPayment(createPaymentDto: CreatePaymentDto): Promise<Payment> {
         console.log('start create payment');
@@ -111,7 +111,7 @@ export class PaymentService {
         const currentPaymentDetails = payment.mainPaymentDetails;
         console.log("currentPaymentDetails: " + currentPaymentDetails);
         try {
-            payment.mainPaymentDetails = await this.PaymentDetailsService.createPaymentDetails(newPaymentDetails);
+            payment.mainPaymentDetails = await this.paymentDetailsService.createPaymentDetails(newPaymentDetails);
             console.log("payment.mainPaymentDetails: " + payment.mainPaymentDetails);
         } catch (err) {
             console.log(err);
@@ -138,7 +138,7 @@ export class PaymentService {
         console.log(payment);
 
 
-        const newMorePaymentDetails = await this.PaymentDetailsService.createPaymentDetails(newPaymentDetails);
+        const newMorePaymentDetails = await this.paymentDetailsService.createPaymentDetails(newPaymentDetails);
         if (newMorePaymentDetails) {
             console.log('payment created');
             if (!payment.morePaymentDetails) {
@@ -176,23 +176,72 @@ export class PaymentService {
     }
     async updateBillingStatus(paymentId: string, billingId: string, status: boolean): Promise<Payment> {
         const payment = await this.PaymentModel.findById(paymentId);
+        console.log("payment found ");
+
         if (!payment) {
             throw new NotFoundException('Payment not found');
         }
+        const billing = await this.billingService.getBillingById(billingId);
+        //const billing = payment.billingHistory.find(b => b.id === billingId);
+        console.log("billing found ");
 
-        const billing = payment.billingHistory.find(b => b._id === billingId);
 
         if (!billing) {
+            console.log("sssssssssssssss billing not found");
+
             throw new NotFoundException('Billing not found');
         }
+        try {
+            await this.billingService.updateBillingStatus(billingId, status)
+            if (status == false)
+                payment.totalPayment -= billing.amount;
+            else
+                payment.totalPayment += billing.amount;
+            console.log("ccc");
 
-        await this.billingService.updateBillingStatus(billingId, status)
-        if (status == false)
-            payment.totalPayment -= billing.amount;
-        else
-            payment.totalPayment += billing.amount;
+            return payment.save();
 
+        }
+        catch (err) {
+            console.log("failed");
+
+            console.log(err);
+        }
+        finally {
+            console.log("v");
+        }
+    }
+
+    async stopPaymentDetails(paymentId: string, paymentDetailsId: string): Promise<Payment> {
+        const payment = await this.PaymentModel.findById(paymentId);
+        if (!payment) {
+            throw new NotFoundException('Payment not found');
+        }
+    
+        const paymentDetails = await this.paymentDetailsService.getPaymentDetailsById(paymentDetailsId);
+        if (!paymentDetails) {
+            throw new NotFoundException('Payment details not found');
+        }
+    
+        if (paymentDetails && paymentDetails._id) {
+            paymentDetails.dateFinish = new Date();
+            console.log("currentPaymentDetails.dateFinish: " + paymentDetails.dateFinish);
+            payment.paymentHistory = payment.paymentHistory.concat(paymentDetails);
+            console.log("payment.paymentHistory: " + payment.paymentHistory);
+
+        }
+    
+        if (!Array.isArray(payment.morePaymentDetails)) {
+            payment.morePaymentDetails = [];
+        }
+        payment.morePaymentDetails = payment.morePaymentDetails.filter(detail => detail._id.toString() !== paymentDetailsId);
+    
+       
+    
         return payment.save();
     }
+    
+
+
 
 }

@@ -44,6 +44,18 @@ export class PaymentDetailsService {
         }
         return paymentDetails;
     }
+    async getPaymentDetailsById(id: string): Promise<PaymentDetails> {
+        try {
+            const PaymentDetails = await this.PaymentDetailsModel.findById(id).exec();
+            if (!PaymentDetails) {
+                throw new NotFoundException('PaymentDetails not found');
+            }
+            return PaymentDetails;
+        } catch (err) {
+            console.log(err);
+
+        }
+    }
 
     async updatePaymentDetails(updatePaymentDetailsDto: UpdatePaymentDetailsDto): Promise<PaymentDetails> {
         const { _id, ...updateData } = updatePaymentDetailsDto;
