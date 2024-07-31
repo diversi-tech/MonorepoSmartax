@@ -7,14 +7,16 @@
      [(ngModel)]="selectedYear"
      placeholder="בחירת שנה"
        [editable]="true"
-        optionLabel="yearNum"  />
+        optionLabel="yearNum"
+        (onChange)="changeDate()"  />
 </div>
 <div >
     <p-dropdown [options]="months"
      [(ngModel)]="selectedMonth"
      placeholder="בחירת חודש"
        [editable]="true"
-        optionLabel="num" />
+        optionLabel="num"
+        (onChange)="changeDate()" />
 </div>
 
 

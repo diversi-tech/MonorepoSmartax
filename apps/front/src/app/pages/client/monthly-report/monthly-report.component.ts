@@ -85,7 +85,7 @@
       this.monthlyReportService.getMonthlyReportForClient(clientId).subscribe({
         next: (reports: any) => {
           this.allMonthlyReportsClient = reports;
-          console.log(Number(this.selectedYear.yearNum), Number(this.selectedMonth), "year, month");
+         // console.log(Number(this.selectedYear.yearNum), Number(this.selectedMonth), "year, month");
           this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];
   
         },
@@ -112,10 +112,10 @@
       console.log(this.steps, 'steps');
     }
       changeDate(){
-        this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];
+        console.log(this.selectedMonth,this.selectedYear);
+        this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum))[0];
         if (this.myReport) {
-  
-  
+          
           this.fieldBymonths = this.myReport.monthlyReportFields;
         }
       }
