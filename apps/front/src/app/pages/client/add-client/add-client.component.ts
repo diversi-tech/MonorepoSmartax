@@ -1,14 +1,13 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { trigger, state, style, transition, animate} from '@angular/animations';
 import { ClientService } from '../../../_services/client.service';
 import { Client, ReportType } from '../../../_models/client.module';
-import { User } from '../../../_models/user.module';
 import { NgIf } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../../_services/token.service';
-import { Router, ActivatedRoute } from '@angular/router'; // הוספתי את Router ו-ActivatedRoute
 import { ButtonModule } from 'primeng/button';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-client',

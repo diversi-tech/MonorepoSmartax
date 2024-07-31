@@ -1,12 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Client } from '../../../_models/client.module';
 import { ClientService } from '../../../_services/client.service';
-import { FormControl, FormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { ConfirmationService, PrimeNGConfig, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule, AutoCompleteSelectEvent, } from 'primeng/autocomplete';
 import { NgClass, NgIf } from '@angular/common';
-import { Router, RouterOutlet, RouterLink, } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
@@ -15,6 +13,10 @@ import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ImportClientComponent } from '../import-clients/import-client.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule } from 'primeng/tooltip';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { FormControl, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-client-search',
@@ -23,6 +25,8 @@ import { ImportClientComponent } from '../import-clients/import-client.component
   standalone: true,
   imports: [
     ConfirmDialogModule,
+    InputTextModule,
+    TooltipModule,
     AutoCompleteModule,
     FormsModule,
     PrimeTemplate,
@@ -80,7 +84,21 @@ export class ClientSearchComponent implements OnInit {
       }
     });
   }
+  sortClientsByNameAsc(): void {
+    this.filteredClients.sort((a, b) => {
+      const nameA = `${a.firstName} ${a.lastName}`;
+      const nameB = `${b.firstName} ${b.lastName}`;
+      return nameA.localeCompare(nameB, 'he'); // מיון לפי א' עד ת'
+    });
+  }
 
+  sortClientsByNameDesc(): void {
+    this.filteredClients.sort((a, b) => {
+      const nameA = `${a.firstName} ${a.lastName}`;
+      const nameB = `${b.firstName} ${b.lastName}`;
+      return nameB.localeCompare(nameA, 'he'); // מיון לפי ת' עד א'
+    });
+  }
   loadAllClients(): void {
     this.clientService.getAllClients().subscribe((clients) => {
       this.clients = clients;
@@ -113,12 +131,12 @@ export class ClientSearchComponent implements OnInit {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
         (client.firstName && client.firstName.toLowerCase().includes(query)) ||
-        (client.lastName && client.lastName.toLowerCase().includes(query)) ||
-        (client.companyName && client.companyName.toLowerCase().includes(query))
+        (client.lastName && client.lastName.toLowerCase().includes(query)) 
       );
     }
     // this.selectedClient = null;
   }
+
   filterClientsBynamecom(): void {
     this.filteredClients = this.clients;
     if (this.filternamecom != ""){
@@ -127,6 +145,7 @@ export class ClientSearchComponent implements OnInit {
     else
       this.filteredClients = this.clients;
   }
+
   filterClientsByNumber(): void {
     this.filteredClients = this.clients;
     if (this.filterNumber != "")
@@ -134,6 +153,7 @@ export class ClientSearchComponent implements OnInit {
     else
       this.filteredClients = this.clients;
   }
+
   filterClientsByTZ(): void {
     this.filteredClients = this.clients;
     if (this.filterTZ != "")
@@ -141,9 +161,11 @@ export class ClientSearchComponent implements OnInit {
     else
       this.filteredClients = this.clients;
   }
+
   openContactFormDialog() {
     this.displayDialog = true;
   }
+
   addNewClient() {
     console.log("in")
     // this.displayDialog = true;
@@ -163,7 +185,7 @@ export class ClientSearchComponent implements OnInit {
         this.choosedClients.splice(index, 1);
       }
     }
-    console.log(this.choosedClients);
+    console.log(this.choosedClients, 'after update'); 
   }
 
   chooseAllClients(): void {
@@ -185,13 +207,15 @@ export class ClientSearchComponent implements OnInit {
   }
 
   isFavoriteClient(client: Client) {
-    return this.user.favoritesClient.find(c => c._id === client._id) != undefined;
+    return this.user.favoritesClient.find(c => c=== client._id) != undefined;
   }
+
   addFavoritesClient() {
-    this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)))
+    this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)).map(c => c._id));
     this.updateFavorite();
-    console.log(this.user.favoritesClient);
+    console.log(this.user.favoritesClient, 'after add favorite');
   }
+
   updateFavorite() {
     this.userService
       .update(
@@ -211,18 +235,18 @@ export class ClientSearchComponent implements OnInit {
         },
       });
   }
+
   removeFromFavorite(client: Client) {
-    this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
     this.updateFavorite();
   }
 
   addToFavorite(client: Client) {
-    this.user.favoritesClient.push(client);
+    this.user.favoritesClient.push(client._id);
     this.updateFavorite();
   }
 
   showConfirmationDelete(): void {
-    debugger
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this clients?',
       header: 'Confirmation',

@@ -1,4 +1,4 @@
-import { Component, NgModule, NgModuleRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { Client } from '../../../_models/client.module';
 import { TaskService } from '../../../_services/task.service';
@@ -10,13 +10,13 @@ import { Tag } from '../../../_models/tag.module';
 import { UserService } from '../../../_services/user.service';
 import { ClientService } from '../../../_services/client.service';
 import { TagService } from '../../../_services/tag.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { StatusService } from '../../../_services/status.service';
 import { Status } from '../../../_models/status.module';
-import { FormsModule, } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -80,7 +80,6 @@ export class ClientTasksComponent implements OnInit {
     private clientService: ClientService,
     private tagService: TagService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
     private statusService: StatusService
   ) { }
 

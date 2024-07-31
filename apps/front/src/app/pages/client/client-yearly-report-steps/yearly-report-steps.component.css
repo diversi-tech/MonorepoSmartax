@@ -96,3 +96,94 @@
     text-align: center; /* Center the buttons */
     margin-top: 20px; /* Space above the buttons */
   }
+  .flex {
+    direction: rtl;
+}
+.checkbox-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+    text-align: right;
+}
+
+  
+
+.form-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .details-container {
+    margin-bottom: 20px;
+  }
+  
+  .details-container p {
+    display: inline-block;
+    margin: 0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .highlight {
+    font-weight: normal;
+  }
+  
+  .value {
+    font-weight: bold;
+  }
+  
+  p-button {
+    display: block;
+    margin: 20px auto;
+  }
+  
+  .p-stepper {
+    margin-top: 20px;
+  }
+  
+  .p-stepperPanel {
+    padding: 20px;
+  }
+  button{
+    margin: 0;
+  }
+  p-button {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .buttons-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .completed{
+    background-color:#28a745;
+    color:white;
+  }
+  .beginned{
+    background-color:#ff7f50;
+    color:white;
+  }
+  .notstarted{
+    background-color: #7d7979;
+    color:white;
+  }
+  .current-step {
+    height: 40px;
+    width: 40px;
+  }
+  
+  

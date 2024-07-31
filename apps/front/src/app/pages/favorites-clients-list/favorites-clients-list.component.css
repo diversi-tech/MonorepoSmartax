@@ -1,3 +1,16 @@
 th,td {
     text-align: center;
   }
+
+  /* Add to your component's CSS file */
+
+.clickable:hover {
+  color: rgb(61, 61, 249);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.clickable:hover {
+  text-decoration: underline;
+  text-decoration: none;
+}

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CheckList } from '../_models/checkList.model';
 import { CheckListItem } from '../_models/checkListItem.model';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -12,6 +11,7 @@ import { CheckListItemService } from '../_services/checkListItem.service';
 import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-task-check-list',
@@ -38,7 +38,7 @@ export class TaskCheckListComponent implements OnInit {
   delete = new EventEmitter<string>();
 
 
-  constructor(private formBuilder: FormBuilder, private checkListService: CheckListService, private checkListItemService: CheckListItemService) { }
+  constructor(private checkListService: CheckListService) { }
 
   ngOnInit(): void {
     if (this.checkList == null) {

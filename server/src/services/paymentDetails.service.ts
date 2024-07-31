@@ -27,6 +27,8 @@ export class PaymentDetailsService {
             dateFinish, 
             description 
         });
+        console.log("createdPaymentDetails",createdPaymentDetails);
+        
 
         return await createdPaymentDetails.save();
     }
@@ -44,10 +46,10 @@ export class PaymentDetailsService {
     }
 
     async updatePaymentDetails(updatePaymentDetailsDto: UpdatePaymentDetailsDto): Promise<PaymentDetails> {
-        const { id, ...updateData } = updatePaymentDetailsDto;
-        const updatedPaymentDetails = await this.PaymentDetailsModel.findByIdAndUpdate(id, updateData, { new: true });
+        const { _id, ...updateData } = updatePaymentDetailsDto;
+        const updatedPaymentDetails = await this.PaymentDetailsModel.findByIdAndUpdate(_id, updateData, { new: true });
         if (!updatedPaymentDetails) {
-            throw new NotFoundException(`PaymentDetails with ID ${id} not found`);
+            throw new NotFoundException(`PaymentDetails with ID ${_id} not found`);
         }
         return updatedPaymentDetails;
     }

@@ -15,6 +15,8 @@ import { TableModule } from 'primeng/table';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { DialogModule } from 'primeng/dialog';
 import { EventEmitter } from '@angular/core';
+import { TokenService } from '../../../_services/token.service';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
@@ -31,6 +33,7 @@ import { EventEmitter } from '@angular/core';
       AddClientComponent,
       RouterOutlet,
       DialogModule,
+      ButtonModule
     ],
 })
 export class ClientAddCommunicationComponent implements OnInit {
@@ -56,10 +59,14 @@ export class ClientAddCommunicationComponent implements OnInit {
   newcallTopicSchema: callTopicSchema={ name:"" };
   displayDialog: boolean = true;
   @Output() close = new EventEmitter<void>();
-
+  statusOptions = [
+    { label: 'ליד', value: true },
+    { label: 'מעקב', value: false }
+  ];
 
   constructor(private router: Router, private communicationService: CommunicationService, private userService: UserService,
-    private calltopicservice : CallTopicService
+    private calltopicservice : CallTopicService,private tokenService: TokenService,
+
   ) { }
 
   ngOnInit(): void {
@@ -92,7 +99,7 @@ export class ClientAddCommunicationComponent implements OnInit {
 
   createCommunication(): void {
     this.newCommunication.Subject=this.thisSubject;
-    
+    this.newCommunication.assignedTo=this.tokenService.getCurrentDetail("_id");
     console.log('Creating communication:', this.newCommunication);
     this.communicationService.createCommunication(this.newCommunication)
       .subscribe(

@@ -1,11 +1,7 @@
-<a 
-[routerLink]="['/popup', 'create']"
-[queryParams]="{ parent: parentId }">+</a>
-
+<a [routerLink]="['/popup', 'create']" [queryParams]="{ parent: parentId }">+</a>
 
 <div style="text-align: right; align-items: right" *ngIf="tasks.length!=0">
     <div class="content-container">
-
         <div *ngFor="let status of statuses">
             <p-panel header="{{ status.name }}">
                 <p-table [value]="categorizeTasks(status)">
@@ -43,7 +39,6 @@
                             <th style="width: auto">מחיקה</th>
                         </tr>
                     </ng-template>
-
                     <ng-template pTemplate="body" let-task>
                         <tr>
                             <td>{{ task.taskName }}</td>
@@ -70,11 +65,11 @@
                                 </button>
                             </td>
                             <td>
-                                <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil"
-                                    style="color: blue;cursor: pointer;"></i>
+                                <i [routerLink]="['/popup', task._id]" [queryParams]="{ parent: parentId }"
+                                    class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
                             </td>
                             <td>
-                                <i (click)="showConfirmation(task)" class="pi pi-trash"
+                                <i (click)="confirmDelete(task)" class="pi pi-trash"
                                     style="color: red;cursor: pointer;"></i>
                             </td>
                         </tr>
@@ -82,7 +77,6 @@
                 </p-table>
             </p-panel>
         </div>
-
     </div>
 </div>
 

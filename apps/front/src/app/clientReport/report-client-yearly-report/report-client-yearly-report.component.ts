@@ -4,9 +4,6 @@ import { YearlyReport } from '../../_models/yearlyReport.module';
 import { Client } from '../../_models/client.module';
 import { User } from '../../_models/user.module';
 import { YearlyReportService } from '../../_services/yearlyReport.service';
-import { Router, RouterOutlet } from '@angular/router';
-import { stepFieldService } from '../../_services/step_field.service';
-import { TokenService } from '../../_services/token.service';
 import { UserService } from '../../_services/user.service';
 import { ClientService } from '../../_services/client.service';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +11,7 @@ import { TableModule } from 'primeng/table';
 import { IconProfileComponent } from '../../share/icon-profile/icon-profile.component';
 import { Location } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-report-client-yearly-report',
@@ -29,12 +27,11 @@ export class ReportClientYearlyReportComponent implements OnInit {
   allEmployes: User[] = [];
   allClient: Client[] = [];
   sortedReports: YearlyReport[] = [];
+  currentYearlyReport: YearlyReport;
 
   constructor(
-    private stepFieldsService: stepFieldService,
     private yearlyReportService: YearlyReportService,
     private router: Router,
-    private tokenService: TokenService,
     private employeService: UserService,
     private clientService: ClientService,
     private location: Location
@@ -88,23 +85,27 @@ export class ReportClientYearlyReportComponent implements OnInit {
 
   filterByClient(name: string): void {
     this.sortedReports = this.allYearlyReport.filter((task) =>
-      (this.getClientName(task.idUser)?.firstName + ' ' + this.getClientName(task.idUser)?.lastName).toLowerCase().includes(name.toLowerCase())
+      (this.getClientName(task.idClient)?.firstName + ' ' + this.getClientName(task.idClient)?.lastName).toLowerCase().includes(name.toLowerCase())
     );
   }
 
   sortReports(): void {
     this.sortedReports = [...this.allYearlyReport].sort((a, b) => {
-      const nameA = this.getClientName(a.idUser)?.firstName || '';
-      const nameB = this.getClientName(b.idUser)?.firstName || '';
+      const nameA = this.getClientName(a.idClient)?.firstName || '';
+      const nameB = this.getClientName(b.idClient)?.firstName || '';
       return nameA.localeCompare(nameB);
     });
   }
 
   sortReportsByClientName(): void {
     this.sortedReports = [...this.allYearlyReport].sort((a, b) => {
-      const clientNameA = this.getClientName(a.idUser)?.firstName || '';
-      const clientNameB = this.getClientName(b.idUser)?.firstName || '';
+      const clientNameA = this.getClientName(a.idClient)?.firstName || '';
+      const clientNameB = this.getClientName(b.idClient)?.firstName || '';
       return clientNameA.localeCompare(clientNameB);
     });
+  }
+
+  selectYearlyReport(yearlyReport: YearlyReport) {
+    this.currentYearlyReport = yearlyReport;
   }
 }
