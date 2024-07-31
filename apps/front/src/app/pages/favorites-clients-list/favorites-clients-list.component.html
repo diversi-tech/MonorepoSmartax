@@ -1,27 +1,28 @@
-
 <h1 *ngIf="user.favoritesClient.length == 0">אין לקוחות מועדפים</h1>
-  <p-table dir="rtl" *ngIf="user.favoritesClient.length > 0" [value]="user.favoritesClient" >
+<h3 *ngIf="user.favoritesClient.length > 0">לקוחות מועדפים</h3>
+
+<p-table dir="rtl" *ngIf="user.favoritesClient.length > 0" [value]="user.favoritesClient" [tableStyle]="{ 'min-width': '80rem' }">
     <h3>favorite clients List</h3>
     <ng-template pTemplate="header" let-columns>
-      <tr (click)="selectClientFromList(client)">
-        <th></th>
-        <th></th>
-        <th>שם החברה</th>
-        <th>שם פרטי ומשפחה</th>
-        <th>תעודת זהות</th>
-        <th>טלפון</th>
-      </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>שם החברה</th>
+            <th>שם פרטי ומשפחה</th>
+            <th>תעודת זהות</th>
+            <th>טלפון</th>
+        </tr>
     </ng-template>
     <ng-template pTemplate="body" let-client let-columns="columns">
-      <tr (click)="selectClientFromList(client)">
-        <td><i class="pi pi-tag" [style.color]="client.tag?.color || '#000'"></i></td>
-        <td>
-          <i [style.color]="'yellow'" class="pi pi-star" (click)="$event.stopPropagation();removeFromFavorite(client)"></i>
-        </td>
-        <td>{{client.companyName}}</td>
-        <td>{{client.firstName}} {{client.lastName}}</td>
-        <td>{{client.tz}}</td>
-        <td>{{client.phone}}</td>
-      </tr>
+        <tr>
+            <td><i class="pi pi-tag" [style.color]="client.tag?.color || '#000'"></i></td>
+            <td>
+                <i [style.color]="'yellow'" class="pi pi-star" (click)="$event.stopPropagation(); removeFromFavorite(client)"></i>
+            </td>
+            <td><span class="clickable" (click)="selectClientFromList(client)">{{client.companyName}}</span></td>
+            <td><span class="clickable" (click)="selectClientFromList(client)">{{client.firstName}} {{client.lastName}}</span></td>
+            <td>{{client.tz}}</td>
+            <td>{{client.phone}}</td>
+        </tr>
     </ng-template>
-  </p-table>
+</p-table>

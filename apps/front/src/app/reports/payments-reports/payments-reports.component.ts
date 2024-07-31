@@ -6,8 +6,6 @@ import { Payment } from '../../_models/payment.module';
 import { PaymentService } from '../../_services/payment.service';
 import { Client } from '../../_models/client.module';
 import { ClientService } from '../../_services/client.service';
-import { catchError } from 'rxjs';
-import { error } from 'console';
 import { Billing } from '../../_models/billing.module';
 import { PanelModule } from 'primeng/panel';
 import { Router } from '@angular/router';
@@ -20,7 +18,7 @@ import { Router } from '@angular/router';
 })
 export class PaymentsReportsComponent implements OnInit {
 
-  constructor(private router:Router,private paymentServise: PaymentService, private clientService: ClientService) { }
+  constructor(private router: Router, private paymentServise: PaymentService, private clientService: ClientService) { }
 
   clients: Client[] = [];
   payments: { client: Client, payment: Payment }[] = [];
@@ -45,47 +43,44 @@ export class PaymentsReportsComponent implements OnInit {
 
   async getPayments() {
     console.log("get payments");
-    //get payments
-    await this.clients!.forEach(c => {
-      if (c.payment && c.payment != "") {
-        this.paymentServise.getPayment(c.payment).subscribe({
-          next: (data) => {
-            console.log(`payments of ${c.firstName!}`, data);
-            this.payments.push({ client: c, payment: data })
-            console.log("payments: \n" + this.payments);
-            if (this.clients.indexOf(c) == this.clients.length - 1) {
-              this.sortByPayments()
-            }
-          },
-          error: (error) => {
-            console.log(error);
+  
+    for (const c of this.clients!) {
+      if (c.payment && c.payment !== "") {
+        await this.paymentServise.getPayment(c.payment).toPromise().then((data) => {
+          console.log(`payments of ${c.firstName!}`, data);
+          this.payments.push({ client: c, payment: data });
+  
+          if (this.clients!.indexOf(c) === this.clients!.length - 1) {
+            this.sortByPayments();
           }
+        }).catch((error) => {
+          console.log(error);
+        });
+      } else {
+        if (this.clients!.indexOf(c) === this.clients!.length - 1) {
+          this.sortByPayments();
         }
-        )
       }
-      else {
-        console.log("there are'nt payments");
-
-      }
-    });
+    }
+  
     console.log("finish get payments");
     console.log(this.payments);
   }
-
+  
   async sortByPayments() {
     console.log("sort payments");
     //sort by payment type
 
     if (this.payments != undefined) {
       this.clientsWithoutHOC = this.payments!.filter(c => c.payment.paymentMethod!.name != "Credit Card")
-        .map(c => ({_id:c.client._id, name: c.client.firstName, serviceStartDate: c.payment.mainPaymentDetails.dateStart, totalDebtAmount: c.payment.totalPayment }));
+        .map(c => ({ _id: c.client._id, name: c.client.firstName, serviceStartDate: c.payment.mainPaymentDetails.dateStart, totalDebtAmount: c.payment.totalPayment }));
       console.log("clientsWithoutHOC", this.clientsWithoutHOC);
 
 
       this.clientsWithReturnedHOC = this.payments!.filter
         (c => c.payment.paymentMethod!.name == "Credit Card"
           && (this.returnedHOC(c.payment.billingHistory).res))
-        .map(c => ({_id:c.client._id,  name: c.client.firstName, returnedHOCNumber: this.returnedHOC(c.payment.billingHistory).count, totalDebtAmount: c.payment.totalPayment }))
+        .map(c => ({ _id: c.client._id, name: c.client.firstName, returnedHOCNumber: this.returnedHOC(c.payment.billingHistory).count, totalDebtAmount: c.payment.totalPayment }))
       console.log("clientsWithReturnedHOC", this.clientsWithReturnedHOC);
     }
     console.log("finish sort payments");
@@ -127,14 +122,14 @@ export class PaymentsReportsComponent implements OnInit {
     return { res, count }
   }
 
-  openClientPayment(_id:string) {
+  openClientPayment(_id: string) {
     this.router.navigate(['clientSearch/clientManagement/clientNavbar/payments'], { state: { client: this.clients.find(c => c._id == _id) } });
-   }
+  }
 
-   openClientPaymentHistory(_id:string){
+  openClientPaymentHistory(_id: string) {
     // this.router.navigate(['paymentsHistory'], { state: { client: this.clients.find(c => c._id == _id) } });
 
-   }
+  }
 
 }
 

@@ -1,19 +1,20 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Output } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, } from '@angular/core';
 import { CommunicationService } from '../../../_services/communicaton.service';
 import { Communication } from '../../../_models/communication.module';
 import { UserService } from '../../../_services/user.service';
 import { ConfirmationService, PrimeTemplate, SelectItem } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
-import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf, DatePipe, NgClass } from '@angular/common';
 import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { callTopicSchema } from '../../../_models/callTopic.module'
 import { CallTopicService } from "../../../_services/callTopic.service"
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
-import { AddClientComponent } from '../add-client/add-client.component';
-import { RouterOutlet } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TooltipModule } from 'primeng/tooltip';
+import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
+import { AddClientComponent } from '../add-client/add-client.component';
 
 @Component({
   // standalone:true,
@@ -25,6 +26,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     Button,
     NgFor,
     NgIf,
+    TooltipModule,
     FormsModule,
     DropdownModule,
     DatePipe,
@@ -54,6 +56,7 @@ export class AllCommunicationComponent {
   filterCallTopic: string = "";
   callTopics: callTopicSchema[] = [];
   selectedCallTopic: string = '';
+  selectedCallStatus: string ="";
   selectedCallTopic2: callTopicSchema | null = null;
   filteredCallTopic: callTopicSchema[] = [];
   callTopics2: callTopicSchema[] = [{ name: "לא נמצא" }]
@@ -86,12 +89,21 @@ export class AllCommunicationComponent {
       .subscribe(communications => {
         this.communications = communications
         this.filteredCommunicatio = communications
+        this.sortCommunicatioByDate();
       });
 
   }
-
+  sortCommunicatioByDate(): void {
+    this.filteredCommunicatio.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+  }
+  sortCommunicatioByDate2(): void {
+    this.filteredCommunicatio.sort((a, b) => {
+      return new Date(a.date).getTime() - new Date(b.date).getTime(); // מהישן לחדש
+    });
+  }
   selectCommunication(communication: Communication): void {
-    debugger
     this.selectedCommunication = { ...communication }; // Clone the communication for editing
   }
 
@@ -112,7 +124,6 @@ export class AllCommunicationComponent {
   }
 
   deleteCommunication(): void {
-    debugger
     this.communicationService.deleteCommunication(this.currentCommunication._id)
       .subscribe(() => {
         this.communications = this.communications.filter(c => c._id !== this.currentCommunication._id);
@@ -130,27 +141,37 @@ export class AllCommunicationComponent {
         }));
       });
   }
+  sortCommunicatioBySubjectAsc(): void {
+    this.filteredCommunicatio.sort((a, b) => a.Subject.localeCompare(b.Subject));
+  }
+
+  sortCommunicatioBySubjectDesc(): void {
+    this.filteredCommunicatio.sort((a, b) => b.Subject.localeCompare(a.Subject));
+  }
   onSelectionChange(a : any) {
-    // alert( (event.target as HTMLSelectElement).value)
-    // debugger
-    // const selectedValue = (event.target as HTMLSelectElement).value;
     this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;
   }
+
   filterByCallTopic(event: Event) {
+    this.filteredCommunicatio = this.communications;
     this.filterCallTopic = (event.target as HTMLSelectElement).value
     if (this.filterCallTopic != "")
       this.filteredCommunicatio = this.communications.filter(communication => communication.Subject.includes(this.filterCallTopic));
     else
       this.filteredCommunicatio = this.communications;
   }
+
   filterClientsByname(): void {
+    this.filteredCommunicatio = this.communications;
     if (this.filtername != "")
       this.filteredCommunicatio = this.communications.filter(communication => communication.client.includes(this.filtername));
     else
       this.filteredCommunicatio = this.communications;
   }
-  filterByStatus(): void {
+  filterByStatus(event: Event): void { 
+    this.filteredCommunicatio = this.communications;
+    this.filterstatus=(event.target as HTMLSelectElement).value
     if (this.filterstatus == "ליד")
       this.filterBySTtetus2('true');
     else if (this.filterstatus == "מעקב")
@@ -158,10 +179,14 @@ export class AllCommunicationComponent {
     else
       this.filteredCommunicatio = this.communications;
   }
+
   filterBySTtetus2(status): void {
+    
     this.filteredCommunicatio = this.communications.filter(communication => communication.Status === status);
   }
+
   filterByDate(): void {
+    this.filteredCommunicatio = this.communications;
     if (this.filterdate) {
       // המרת התאריך ממחרוזת לאובייקט Date
       const selectedDate = new Date(this.filterdate);
@@ -179,8 +204,9 @@ export class AllCommunicationComponent {
       this.filteredCommunicatio = this.communications;
     }
   }
-  filterByNameCallTopic(value: string): void {
 
+  filterByNameCallTopic(value: string): void {
+    this.filteredCommunicatio = this.communications;
     if (value != "") {
       this.is = false
       const query = value.toLowerCase();
@@ -201,11 +227,13 @@ export class AllCommunicationComponent {
     this.selectedCallTopic2 = null;
 
   }
+
   select(event: AutoCompleteSelectEvent): void {
 
     const callTopic = event.value as callTopicSchema;
     this.thisSubject = callTopic.name
   }
+  
   add() {
     this.newcallTopicSchema.name = this.thisSubject2
     this.callTopicService.createCallTopic(this.newcallTopicSchema).subscribe(response => {
@@ -215,12 +243,10 @@ export class AllCommunicationComponent {
   }
 
   selectCurrentCommunication(communication: Communication) {
-    debugger
     this.currentCommunication = communication;
   }
 
   showConfirmationEdit(): void {
-    debugger
     this.confirmationService.confirm({
       header: 'עריכת שיחה',
       icon: 'pi pi-pencil',
@@ -229,7 +255,6 @@ export class AllCommunicationComponent {
   }
 
   showConfirmationDelete(): void {
-    debugger
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this communication?',
       header: 'Confirmation',

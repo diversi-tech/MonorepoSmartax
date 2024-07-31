@@ -4,6 +4,10 @@ body {
     background-color: chartreuse;
 }
 
+#app{
+    margin-top: 15rem;
+}
+
 :host {
     /* margin-top: 10%;
     font-size: 3.5rem;
@@ -12,3 +16,26 @@ body {
     text-align: right;
     font-family: "Inter var", sans-serif;
 }
+
+/* .smarttax-logo {
+    width: 200px; 
+    height: 45px; 
+    background-image: url('../assets/image/logo1.png'); 
+    background-size: contain; 
+    background-repeat: no-repeat;
+    background-position: center; 
+    display: inline-block; 
+    text-indent: -9999px; 
+  } */
+
+:host ::ng-deep .smartaxToolbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+
+
+

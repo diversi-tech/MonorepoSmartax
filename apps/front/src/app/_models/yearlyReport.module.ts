@@ -1,7 +1,9 @@
+import { Status } from "./status.module";
 import { StepField } from "./stepField.module";
 
 export interface YearlyReport {
-  idUser: string;
+  _id?: string;
+  idClient: string;
   assignee: string[];
   idEmploye: string;
   yearReport: string;
@@ -11,7 +13,5 @@ export interface YearlyReport {
   balanceDue: number;
   stepsList: StepField[];
   entityType: string;
-
- 
-
+  status: Status;
 }

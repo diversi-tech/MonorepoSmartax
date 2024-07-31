@@ -1,4 +1,4 @@
-.buttons{
+.buttons {
   margin: 5%;
 }
 
@@ -16,37 +16,45 @@
 
 .custom-button {
   margin: 5px;
-  padding: 5px 10px; /* Smaller padding */
+  padding: 5px 10px;
+  /* Smaller padding */
   border: none;
   border-radius: 5px;
   position: relative;
   display: inline-block;
   color: white;
   cursor: pointer;
-  font-size: 14px; /* Smaller font size */
-  line-height: 1.2; /* Adjust line height if needed */
+  font-size: 14px;
+  /* Smaller font size */
+  line-height: 1.2;
+  /* Adjust line height if needed */
 }
+
 .custom-button .delete-button {
   display: none;
   position: absolute;
   top: -5px;
   right: -5px;
-  width: 16px; /* Smaller size */
-  height: 16px; /* Smaller size */
+  width: 16px;
+  /* Smaller size */
+  height: 16px;
+  /* Smaller size */
   line-height: 16px;
   text-align: center;
   background: red;
   color: white;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 12px; /* Smaller font size */
+  font-size: 12px;
+  /* Smaller font size */
 }
+
 .custom-button:hover .delete-button {
   display: block;
 }
 
 
-.filter-container > div {
+.filter-container>div {
   margin-bottom: 10px;
 }
 
@@ -54,6 +62,7 @@
   display: block;
   margin-bottom: 5px;
 }
+
 /* .filter-panel {
   background-color: #f9f9f9;
   padding: 10px;
@@ -73,3 +82,14 @@
   margin-bottom: 10px;
 } */
 
+.highlight {
+  background-color: #edecec;
+}
+
+.p-button-rounded {
+  border-radius: 20%;
+}
+
+td, th{
+  text-align: center;
+}

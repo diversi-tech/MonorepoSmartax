@@ -48,8 +48,7 @@ export class TasksController {
     } catch (error) {
       console.log(error);
       throw new HttpException(
-        'Failed to create task',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        error.message!, error.status!
       );
     }
   }
@@ -72,12 +71,30 @@ export class TasksController {
   @ApiBody({
     schema: { type: 'object', properties: { id: { type: 'string' } } },
   })
+
   @Post('findOne')
   async searchClient(
-    @Body(new ValidationPipe()) body: { id: string }
-  ): Promise<Task> {
+    @Body(new ValidationPipe()) body: { id: string }): Promise<Task> {
     return await this.taskService.findOne(body.id);
   }
+
+  @Post('by-client')
+  @ApiOperation({ summary: 'Get communications by Client ID' })
+  @ApiBody({
+      schema: {
+          type: 'object',
+          properties: {
+              clientId: {
+                  type: 'string',
+                  example: '123456789'
+              }
+          }
+      }
+  })
+  async getTasksByClientId(@Body() body: { clientId: string }): Promise<Task[]> {
+      return this.taskService.getTasksByClientId(body.clientId);
+  }
+
 
   @Put('update/:id')
   @ApiOperation({ summary: 'Update a task by ID' })

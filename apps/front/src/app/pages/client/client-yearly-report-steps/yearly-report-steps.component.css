@@ -9,9 +9,181 @@
     width: 100%; /* תן רוחב מלא */
     text-align: right; /* טקסט מימין */
 }
-.completed {
-    background-color: green; /* Change to your desired color */
-    color: white; /* Change text color if needed */
-    color: green;
+
+  
+
+  /* Container for the entire form */
+.form-container {
+    /* background-color: #f5f5f5; Light gray background */
+    max-width: 800px; /* Adjust width as needed */
+    margin: 20px auto; /* Center horizontally */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center;
   }
+  
+  /* Container for the year icon */
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .year-icon {
+    background-color: #f6f3f3; /* Light gray background */
+    color:#007bff;
+    border-radius: 50%;
+    width: 80px; /* Icon size */
+    height: 80px; /* Icon size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px; /* Font size for year */
+    font-weight: bold;
+  }
+  
+  /* Container for the details */
+  .details-container {
+    margin-bottom: 20px;
+  }
+  
+  /* Style for <p> tags */
+  .details-container p {
+    display: inline-block;
+    margin: 0;
+    padding: 5px 10px;
+    /* background-color: #fff; */
+    border-radius: 5px;
+    margin-right: 10px; /* Space between items */
+  }
+  
+  /* Style for the labels and values */
+  .highlight {
+    font-weight: normal;
+  }
+  
+  .value {
+    font-weight: bold;
+  }
+  
+  /* Button styling */
+  p-button {
+    display: block;
+    margin: 20px auto; /* Center the button */
+  }
+  
+  /* PrimeNG stepper styles */
+  .p-stepper {
+    margin-top: 20px;
+  }
+  
+  .p-stepperPanel {
+    padding: 20px;
+  }
+  button{
+    margin: 0;
+    display: inline-block;
+
+  }
+  p-button {
+    display: inline-block;
+    margin-right: 10px; /* Space between buttons */
+  }
+  
+  /* Ensure the buttons are aligned horizontally */
+  .buttons-container {
+    text-align: center; /* Center the buttons */
+    margin-top: 20px; /* Space above the buttons */
+  }
+  .flex {
+    direction: rtl;
+}
+.checkbox-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+    text-align: right;
+}
+
+  
+
+.form-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .details-container {
+    margin-bottom: 20px;
+  }
+  
+  .details-container p {
+    display: inline-block;
+    margin: 0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .highlight {
+    font-weight: normal;
+  }
+  
+  .value {
+    font-weight: bold;
+  }
+  
+  p-button {
+    display: block;
+    margin: 20px auto;
+  }
+  
+  .p-stepper {
+    margin-top: 20px;
+  }
+  
+  .p-stepperPanel {
+    padding: 20px;
+  }
+  button{
+    margin: 0;
+  }
+  p-button {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .buttons-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .completed{
+    background-color:#28a745;
+    color:white;
+  }
+  .beginned{
+    background-color:#ff7f50;
+    color:white;
+  }
+  .notstarted{
+    background-color: #7d7979;
+    color:white;
+  }
+  .current-step {
+    height: 40px;
+    width: 40px;
+  }
+  
   

@@ -48,5 +48,22 @@ export class BillingsService {
   //   console.log('Billings found:', Billings);
   //   return Billings;
   // }
+  async getBillingById(id: string): Promise<Billing> {
+    try {
+      const Billing = await this.BillingModel.findById(id).exec();
+      if (!Billing) {
+        throw new NotFoundException('Billing not found');
+      }
+      return Billing;
+    } catch (err) {
+      console.log(err);
+
+    }
+  }
+  async updateBillingStatus(id: string, status: boolean): Promise<Billing> {
+    const billing = await this.BillingModel.findById(id).exec();
+    billing.ifRreturn=status;
+    return billing.save();
+  }
 
 }

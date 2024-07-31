@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-end; /* מציב את הכפתורים בצד ימין */
+}
+
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin-left: 20px; /* נותן רווח קטן מהצד השמאלי של המסך */
+}
+
+.b {
+  margin-bottom: 10px; /* נותן רווח קטן בין הכפתורים */
+}
+
+.content {
+  flex: 1;
+  margin-right: 20px; /* נותן רווח קטן מהצד הימני של המסך */
+}
+.profile{
+  text-align: left;
+}

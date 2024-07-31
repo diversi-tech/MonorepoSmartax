@@ -51,7 +51,7 @@ export class TableComponent implements OnInit {
         this.getTableNames()
 
       },
-      error => {
+      error=>{
         console.log(error)
       }
     )

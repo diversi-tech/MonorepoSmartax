@@ -8,6 +8,8 @@ import { User } from './user.module';
 
 export interface Task {
   _id?: string;
+  parent?: string,
+  subTasks?: string[],
   client?: Client;
   taskName?: string;
   description?: string;

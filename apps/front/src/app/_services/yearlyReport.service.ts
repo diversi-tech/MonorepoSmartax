@@ -38,7 +38,7 @@ export class YearlyReportService {
    // Get all yearly reports for a specific client (filtered on the client side)
    getYearlyReportsForClient(clientId: string): Observable<YearlyReport[]> {
     return this.getAllYearlyReports().pipe(
-      map(reports => reports.filter(report => report.idUser === clientId)),
+      map(reports => reports.filter(report => report.idClient === clientId)),
       catchError(this.handleError<YearlyReport[]>('getYearlyReportsForClient', []))
     );
   }
