@@ -12,10 +12,15 @@
 }
 .fixed-button {
     position: fixed;
-    top: 160px; 
+    top: 205px; 
     right: 20px; 
     z-index: 1000; 
 }
+
+.chidTable{
+    margin-right: 15px;
+}
+
 /* .fixed-button {
     position: fixed;
     bottom: 20px; 

@@ -207,11 +207,11 @@ export class ClientSearchComponent implements OnInit {
   }
 
   isFavoriteClient(client: Client) {
-    return this.user.favoritesClient.find(c => c._id === client._id) != undefined;
+    return this.user.favoritesClient.find(c => c=== client._id) != undefined;
   }
 
   addFavoritesClient() {
-    this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)))
+    this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)).map(c => c._id));
     this.updateFavorite();
     console.log(this.user.favoritesClient, 'after add favorite');
   }
@@ -237,12 +237,12 @@ export class ClientSearchComponent implements OnInit {
   }
 
   removeFromFavorite(client: Client) {
-    this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
     this.updateFavorite();
   }
 
   addToFavorite(client: Client) {
-    this.user.favoritesClient.push(client);
+    this.user.favoritesClient.push(client._id);
     this.updateFavorite();
   }
 
