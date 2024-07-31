@@ -12,7 +12,7 @@
 }
 .fixed-button {
     position: fixed;
-    top: 160px; 
+    top: 205px; 
     right: 20px; 
     z-index: 1000; 
 }
