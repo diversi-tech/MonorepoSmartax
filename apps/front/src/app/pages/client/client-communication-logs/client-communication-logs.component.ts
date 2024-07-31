@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { Communication } from '../../../_models/communication.module';
 import { Client } from '../../../_models/client.module';
 import { DropdownModule } from 'primeng/dropdown';
-import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf, DatePipe, NgClass } from '@angular/common';
 import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -13,6 +11,8 @@ import { ClientAddCommunicationComponent } from "../client-add-communication/cli
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, SelectItem } from 'primeng/api';
 import { UserService } from '../../../_services/user.service';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-communication-logs',

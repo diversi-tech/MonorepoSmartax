@@ -1,4 +1,4 @@
-button {
+/* button {
   padding: 12px 20px;
   font-family: var(--font);
   font-size: 14px;
@@ -6,7 +6,7 @@ button {
   border: none;
   background: var(--color-button);
   color: var(--color-button-text);
-  box-shadow: inset #4c924c 0 -2px 0; /* דוגמה לצל כפתור */
+  box-shadow: inset #4c924c 0 -2px 0;
   cursor: pointer;
   outline: none;
   transition: background-color 0.2s ease-out;
@@ -15,17 +15,16 @@ button {
 
 button:disabled {
   background: var(--color-button-disabled);
-  box-shadow: inset #b3b3b3 0 -2px 0; /* דוגמה לצל כפתור מנוטרל */
-}
+  box-shadow: inset #b3b3b3 0 -2px 0; 
 
 button:hover {
-  background: #59a059; /* דוגמה לצבע רקע כאשר העכבר מעל */
+  background: #59a059;
 }
 
 button:active {
-  box-shadow: inset #338033 0 0 0; /* דוגמה לאנימציה כאשר הכפתור נלחץ */
+  box-shadow: inset #338033 0 0 0; 
   transform: translateY(2px);
-}
+} */
 
 .error {
   color: red;
@@ -50,3 +49,16 @@ input.ng-touched.ng-invalid, .custom-dropdown.ng-touched.ng-invalid {
 .sort{
   margin: 0;
 }
+
+.highlight {
+  background-color: #edecec;
+}
+
+th, td {
+  text-align: center;
+}
+
+.p-button-rounded {
+  border-radius: 20%;
+  margin: 1%;
+} 

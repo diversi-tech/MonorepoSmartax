@@ -1,4 +1,15 @@
-.green{
+.highlight {
+    background-color: #edecec;
+  }
+  
+  th, td {
+    text-align: center;
+  }
+  
+  .p-button-rounded {
+    border-radius: 20%;
+    margin: 1%;
+  } .green{
     color:#28a745;
   }
   .blue{

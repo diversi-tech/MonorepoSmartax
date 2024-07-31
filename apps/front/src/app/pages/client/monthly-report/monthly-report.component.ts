@@ -68,7 +68,9 @@ import { InputOtpModule } from 'primeng/inputotp';
       if (this.currentRoute === "allClientMonthlyReport") {
         this.getMonthlyReports();
       }
-      this.getMonthlyReportsForClient();
+      else{
+        this.getMonthlyReportsForClient();
+      }
       }
     years: Year[] = [];
     selectedYear: Year;
@@ -120,13 +122,20 @@ import { InputOtpModule } from 'primeng/inputotp';
       );
       console.log(this.steps, 'steps');
     }
-      changeDate(){
-        this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum))[0];
-        if (this.myReport) {
-          
-          this.fieldBymonths = this.myReport.monthlyReportFields;
-        }
+    changeDate() {
+      debugger
+      console.log(this.selectedMonth, this.selectedYear);
+      if (this.currentRoute === "allClientMonthlyReport") {
+        this.myReport[0] = this.allMonthlyReports.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum));
       }
+      else {
+        this.myReport [0]= this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum));
+      }
+      if (this.myReport) {
+  console.log(this.myReport, "myReport");
+      //  this.fieldBymonths = this.myReport.map( m => m.monthlyReportFields);
+      }
+    }
       createReprtTag(): void {
         this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createMonthlyReport'], { state: { client: this.client } });
       }

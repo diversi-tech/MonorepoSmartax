@@ -6,19 +6,21 @@
       <th>ישות</th>
       <th>יתרה לתשלום</th>
       <th>סכום ששולם</th>
-      <th>תאריך יצירה</th>
       <th>עובד מטפל</th>
       <th>תאריך יצירה</th>
-      <th pSortableColumn="yearReport" class="sort">
-        :שנה <p-sortIcon field="yearReport" />
+      <th pSortableColumn="taxRefunds" class="sort">
+        :שנה <p-sortIcon field="taxRefunds" />
       </th>
       <th>מחיר</th>
       <th></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task>
-    <tr>
-      <td><p-button (click)="goToSteps(task)" label="עדכן"></p-button></td>
+    <tr (click)="selectTaxRefunds(task)" [ngClass]="{ 'highlight': currentTaxRefunds === task }">
+      <td><button *ngIf="currentTaxRefunds === task" pButton
+          class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+          (click)="goToSteps(getClientName(task.idUser), task)"></button>
+      </td>
       <td class="{{task.status.color}}">{{task.status.name}}</td>
       <td>{{task.entityType}}</td>
       <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
