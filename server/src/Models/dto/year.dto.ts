@@ -7,5 +7,5 @@ export class createYearDto{
     })
     @IsNotEmpty()
     @IsString()
-    yearNUm: string;
+    yearNum: string;
 }

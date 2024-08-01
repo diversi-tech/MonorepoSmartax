@@ -1,24 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
-
+/* 
 @import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
+@import "primeng/resources/primeng.css"; */
 /* @import "apps/front/src/styles.css"; */
-@import "primeicons/primeicons.css";
+/* @import "primeicons/primeicons.css"; */
 
 /* Import Quill styles */
-@import "~quill/dist/quill.core.css";
+/* @import "~quill/dist/quill.core.css";
 @import "~quill/dist/quill.snow.css";
 @import "node_modules/primeng/resources/themes/nova-light/theme.css";
-
+@import "primeng/resources/primeng.css"; */
+/* 
 :host ::ng-deep .highlight {
-  background-color: #edecec;
+    background-color: #edecec;
 }
 
-th, td {
-  text-align: center;
+th,
+td {
+    text-align: center;
 }
 
 .p-button-rounded {
-  border-radius: 20%;
-  margin: 1%;
+    border-radius: 20%;
+    margin: 1%;
 }
+
+:host ::ng-deep .p-ripple,
+:host ::ng-deep .p-element,
+:host ::ng-deep .p-button,
+:host ::ng-deep .p-component {
+    color: darkmagenta important;
+}
+
+:host ::ng-deep.p-button:not(:disabled) {
+    color: rgb(233, 35, 35);
+}
+
+:host ::ng-deep.p-button:disabled {
+    color: rgb(222, 49, 49);
+}
+*/
+
+/* body {
+    background-color: #cb1010;
+  } */
+
+/* .d{
+    color: aqua;
+}  */
+/*   
+div{color: aqua !important;} */

@@ -1,14 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { trigger, state, style, transition, animate} from '@angular/animations';
 import { ClientService } from '../../../_services/client.service';
 import { Client, ReportType } from '../../../_models/client.module';
-import { User } from '../../../_models/user.module';
 import { NgIf } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../../_services/token.service';
-import { Router, ActivatedRoute } from '@angular/router'; // הוספתי את Router ו-ActivatedRoute
 import { ButtonModule } from 'primeng/button';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-client',
@@ -95,7 +96,10 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
     private clientService: ClientService,
     private tokenService: TokenService,
     private router: Router, // הוספתי את Router
-    private route: ActivatedRoute // הוספתי את ActivatedRoute
+    private route: ActivatedRoute, // הוספתי את ActivatedRoute
+    private confirmationService: ConfirmationService,
+
+
   ) {}
 
   ngOnInit() {
@@ -200,43 +204,55 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   }
 
   sent() {
-    
-      if (this.editingClient) {
-        // עדכון לקוח קיים
-        const updatedClient = { ...this.editingClient, ...this.contactForm.value };
-        updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-        updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-        this.clientService.updateClient(updatedClient).subscribe(response => {
-          console.log('Client updated successfully:', response);
-          alert('לקוח עודכן בהצלחה');
-          this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
-
-          this.close.emit();
-        });
-      } 
-      else {
-
-        // יצירת לקוח חדש
-        this.savedData = this.contactForm.value;
-        console.log("saveData",this.savedData)
-
-        this.newClient =  {...this.newClient,...this.savedData}  ;
-        console.log("in submit",this.newClient)
-
-        this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-        // this.newClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-        console.log("newClient",this.newClient);
-
-        this.clientService.createClient(this.newClient.client).subscribe(response => {
-          if(response){
-            console.log('Client created successfully:', response);
-            alert('לקוח נוצר בהצלחה');
+    if (this.editingClient) {
+      // עדכון לקוח קיים
+      const updatedClient = { ...this.editingClient, ...this.contactForm.value };
+      updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+      updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
+  
+      this.clientService.updateClient(updatedClient).subscribe(
+        response => {
+          if (response?._id) {
+            console.log('Client updated successfully:', response);
+            Swal.fire('Success', 'לקוח עודכן בהצלחה', 'success');
+            this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
+          } else {
+            Swal.fire('Error', 'Invalid client', 'error');
           }
           this.close.emit();
-        });
-      
+        },
+        error => {
+          console.error('Error updating client:', error);
+          Swal.fire('Error', `Failed to update client: ${error.message}`, 'error');
+        }
+      );
+    } else {
+      // יצירת לקוח חדש
+      this.savedData = this.contactForm.value;
+      console.log("saveData", this.savedData);
+  
+      this.newClient = { ...this.newClient, ...this.savedData };
+      console.log("in submit", this.newClient);
+  
+      this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+      // this.newClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
+      console.log("newClient", this.newClient);
+  
+      this.clientService.createClient(this.newClient.client).subscribe(
+        response => {
+          if (response) {
+            console.log('Client created successfully:', response);
+            Swal.fire('Success', 'לקוח נוצר בהצלחה', 'success');
+          }
+          this.close.emit();
+        },
+        error => {
+          console.error('Error creating client:', error);
+          Swal.fire('Error', `Failed to create client: ${error.message}`, 'error');
+        }
+      );
     }
-  }
+   }
 
   onClose() {
     this.close.emit();
@@ -246,7 +262,7 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
     //return to last page
     window.history.back();
   }
-
+ 
   
   
 }

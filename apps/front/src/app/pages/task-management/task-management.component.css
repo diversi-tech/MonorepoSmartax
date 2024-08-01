@@ -89,3 +89,7 @@
 .p-button-rounded {
   border-radius: 20%;
 }
+
+td, th{
+  text-align: center;
+}
