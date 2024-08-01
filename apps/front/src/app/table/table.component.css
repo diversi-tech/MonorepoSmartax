@@ -1,3 +1,4 @@
+@import '../../styles.css';
 .checkbox-container {
     display: flex;
     align-items: center;
@@ -10,15 +11,4 @@
 .label{
     margin-right: 10px;
 }
-.fixed-button {
-    position: fixed;
-    top: 160px; 
-    right: 20px; 
-    z-index: 1000; 
-}
-/* .fixed-button {
-    position: fixed;
-    bottom: 20px; 
-    right: 20px; 
-    z-index: 1000; 
-} */
+

@@ -57,12 +57,10 @@
                             <td>{{ task.deadline | date : 'shortDate' }}</td>
 
                             <td>
-                                <button *ngFor="let tag of task.tags; let i = index" [ngStyle]="{
-                          backgroundColor: tag.color,
-                          color: 'white'
-                        }" class="custom-button">
-                                    {{ tag.text }}
-                                </button>
+                                <button *ngFor="let tag of task.tags; let i = index"
+                                    [ngStyle]="{ backgroundColor: tag.color, color: 'white' }"
+                                    class="p-button-text p-button-raised p-button-rounded"> {{
+                                    tag.text }} </button>
                             </td>
                             <td>
                                 <i [routerLink]="['/popup', task._id]" [queryParams]="{ parent: parentId }"
