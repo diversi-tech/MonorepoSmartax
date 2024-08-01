@@ -6,6 +6,7 @@ import { UserService } from '../../_services/user.service';
 import { User } from '../../_models/user.module'
 import { Client } from '../../_models/client.module';
 import { Router } from '@angular/router';
+import { ClientService } from '../../_services/client.service';
 
 @Component({
   selector: 'app-favorites-clients-list',
@@ -21,11 +22,13 @@ import { Router } from '@angular/router';
 export class FavoritesClientsListComponent implements OnInit {
 
   user: User;
+  favoriteClients: Client[]=[];
 
   constructor(
     private tokenService: TokenService,
     private userService: UserService,
     private router: Router,
+    private clientService: ClientService,
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +38,14 @@ export class FavoritesClientsListComponent implements OnInit {
         next: (response: any) => {
           this.user = response;
           console.log(this.user);
+          this.user.favoritesClient.forEach(c => {this.clientService.searchClient(c).subscribe
+            ({
+              next:(favoriteClients)=>{
+                console.log(favoriteClients);
+                
+                this.favoriteClients.push(favoriteClients);
+              }
+          })})
         },
         error: (err) => {
           console.error('Error get current user', err);
@@ -63,7 +74,8 @@ export class FavoritesClientsListComponent implements OnInit {
   }
 
   removeFromFavorite(client: Client) {
-    this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
+    this.favoriteClients= this.favoriteClients.filter(c=> c._id!= client._id);
     this.updateFavorite();
   }
 

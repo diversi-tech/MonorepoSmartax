@@ -21,7 +21,7 @@ export class TableController {
 
 @Post()
 @ApiOperation({ summary: 'Get the data based on selected fields' })
-  async fetchSelectedFields(@Body() selectedValues: { [key: string]: { [field: string]: boolean } }) {
+  async fetchSelectedFields(@Body() selectedValues:any) {
     return this.tableService.fetchSelectedFields(selectedValues);
   }
 }
