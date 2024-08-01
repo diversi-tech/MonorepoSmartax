@@ -22,7 +22,7 @@
 //   send(message: any) {
 //     this.socket.emit('message', message);
 //     console.log('message', message);
-    
+
 //   }
 
 // //   public get messages$() {
@@ -43,7 +43,6 @@
 // import { Subject } from 'rxjs';
 // import { io, Socket } from 'socket.io-client';
 // // import * as io from 'socket.io-client';
-
 
 // @Injectable({
 //   providedIn: 'root',
@@ -85,13 +84,13 @@
 
 //   // onTaskCreated(callback: (task: any) => void) {
 //   //   console.log('callback', callback);
-    
+
 //   //   this.socket.on('taskCreated', callback);
 //   // }
 
 //   onTaskCreated(callback: (task: any) => void) {
 //     this.taskCreatedSource.subscribe(callback);
-    
+
 //     console.log('callback', callback);
 //   }
 // }
@@ -106,7 +105,7 @@ export class SocketServiceW {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:3000'); // שנה את הכתובת לכתובת השרת שלך אם יש צורך
+    this.socket = io('https://monoreposmartax.onrender.com'); // שנה את הכתובת לכתובת השרת שלך אם יש צורך
   }
 
   onTaskCreated(callback: (task: any) => void) {

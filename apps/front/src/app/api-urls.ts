@@ -1,5 +1,6 @@
 // export const API_URL = 'http://localhost:8080';
-export const API_URL = 'https://monoreposmartax.onrender.com'
+export const API_URL = 'https://monoreposmartax.onrender.com';
+// https://monoreposmartax-n13o.onrender.com/
 export const AUTH_ENDPOINT = `${API_URL}/auth`;
 export const USER_ENDPOINT = `${API_URL}/users`;
 export const TASK_ENDPOINT = `${API_URL}/tasks`;
@@ -16,15 +17,23 @@ export const TIMER_ENDPOINT = `${API_URL}/timer`;
 export const TABLE_ENDPOINT = `${API_URL}/tables`;
 export const REPEATABLE_ENDPOINT = `${API_URL}/repeatableTask`;
 export const TAX_REFUNDS = `${API_URL}/tax-refunds`;
-export const BILLING_ENDPOINT=`${API_URL}/billings`;
-export const PAYMENT_ENDPOINT=`${API_URL}/Payment`;
-export const PAYMENT_DETAILS_ENDPOINT=`${API_URL}/PaymentDetails`;
-export const PAYMENT_METHOD_ENDPOINT=`${API_URL}/PaymentMethod`;
-export const FREQUENCY_ENDPOINT=`${API_URL}/Frequency`;
-
-
+export const BILLING_ENDPOINT = `${API_URL}/billings`;
+export const PAYMENT_ENDPOINT = `${API_URL}/Payment`;
+export const PAYMENT_DETAILS_ENDPOINT = `${API_URL}/PaymentDetails`;
+export const PAYMENT_METHOD_ENDPOINT = `${API_URL}/PaymentMethod`;
+export const FREQUENCY_ENDPOINT = `${API_URL}/Frequency`;
 export const CHECKLIST_ENDPOINT = `${API_URL}/checkList`;
 export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checkListItem`;
 export const IMPORTCLIENTS_ENDPOIMT = `${API_URL}/importclients`;
 export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;
 export const MONTHLY_REPORT = `${API_URL}/monthly report`;
+export const CALL_TOPIC = `${API_URL}/CallTopicController`;
+export const SENSITIVE_DATA = `${API_URL}/SensitiveData`;
+export const CLIENTS = `${API_URL}/clients`;
+export const CLIENT_TYPE = `${API_URL}/clientTypes`;
+export const COMMUNICATIONS = `${API_URL}/communications`;
+export const FIELD = `${API_URL}/field`;
+export const PRIORITY = `${API_URL}/Priority`;
+export const STEP_FIELD = `${API_URL}/step-field`;
+export const WORK_LOGS = `${API_URL}/worklogs`;
+export const YEARS = `${API_URL}/years`;

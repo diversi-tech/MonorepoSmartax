@@ -10,8 +10,8 @@ import { Client } from '../_models/client.module';
 const API_URL = 'http://localhost:8080/api/test/';
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
+    'Content-Type': 'application/json',
+  }),
 };
 
 @Injectable({
@@ -21,40 +21,40 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private hashService: HashPasswordService,
-    private roleService: RoleServiceService) { }
+    private roleService: RoleServiceService
+  ) {}
 
   private apiUrl = USER_ENDPOINT;
 
   register(username: string, email: string, role: Role): Observable<any> {
-    const passwordHash = this.hashService.encryptPassword('Aa123456')
+    const passwordHash = this.hashService.encryptPassword('Aa123456');
     const newUser = {
-      "userName": username,
-      "passwordHash": passwordHash,
-      "role": role,
-      "email": email
-    }
-    return this.http.put(
-      this.apiUrl + "/create",
-      newUser,
-      httpOptions
-    );
+      userName: username,
+      passwordHash: passwordHash,
+      role: role,
+      email: email,
+    };
+    return this.http.put(this.apiUrl + '/create', newUser, httpOptions);
   }
-  update(id: string, userName: string, email: string, passwordHash: string, role: string,favoritesClient:Client[]) {
+  update(
+    id: string,
+    userName: string,
+    email: string,
+    passwordHash: string,
+    role: string,
+    favoritesClient: Client[]
+  ) {
     const user = {
-      "id": id,
-      "userName": userName,
-      "passwordHash": passwordHash,
-      "role": role,
-      "email": email,
-      "favoritesClient":favoritesClient
-    }
+      id: id,
+      userName: userName,
+      passwordHash: passwordHash,
+      role: role,
+      email: email,
+      favoritesClient: favoritesClient,
+    };
     console.log(user);
 
-    return this.http.post(
-      this.apiUrl + "/update",
-      user,
-      httpOptions
-    );
+    return this.http.post(this.apiUrl + '/update', user, httpOptions);
   }
 
   getPublicContent(): Observable<any> {
@@ -74,23 +74,23 @@ export class UserService {
   }
 
   getAllUsers(): Observable<any> {
-    return this.http.get(this.apiUrl + '/findAll')
+    return this.http.get(this.apiUrl + '/findAll');
   }
 
-  findOne(userId:string): Observable<any>{
-    return this.http.get(this.apiUrl +`/findOne?id=${userId}`)
+  findOne(userId: string): Observable<any> {
+    return this.http.get(this.apiUrl + `/findOne?id=${userId}`);
   }
 
-  changPassword(newPassword: string, email:string): Observable<any> {
+  changPassword(newPassword: string, email: string): Observable<any> {
     const body = {
-       newPassword: this.hashService.encryptPassword(newPassword),
-       emailFront:email
-     };
-     return this.http.put<any>(this.apiUrl + '/changePassword', body)
+      newPassword: this.hashService.encryptPassword(newPassword),
+      emailFront: email,
+    };
+    return this.http.put<any>(this.apiUrl + '/changePassword', body);
   }
   deleteUser(id: string) {
     console.log('delete user in service');
 
-    return this.http.delete<any>(this.apiUrl + '/delete?id=' + id)
+    return this.http.delete<any>(this.apiUrl + '/delete?id=' + id);
   }
 }
