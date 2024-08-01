@@ -15,7 +15,6 @@ import { hashPasswordService } from '../../services/hash-password';
 @ApiTags('users')
 @Controller('users')
 // @UseFilters(HttpErrorFilter)
-//@UseFilters(ValidationException)
 export class UserController {
 
   constructor(private readonly userService: UserService, private jwtToken: TokenService, private hashService: hashPasswordService) { }
