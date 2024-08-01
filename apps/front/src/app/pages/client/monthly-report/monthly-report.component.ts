@@ -17,6 +17,8 @@
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputOtpModule } from 'primeng/inputotp';
+import { Status } from '../../../_models/status.module';
+import { StatusService } from '../../../_services/status.service';
 
   @Component({
     selector: 'app-monthly-report',
@@ -48,7 +50,8 @@ import { InputOtpModule } from 'primeng/inputotp';
   
     constructor(private monthlyReportService: MonthlyReportService,
       private yearService: YearService,
-      private route: ActivatedRoute,private router: Router
+      private route: ActivatedRoute,private router: Router,
+      private statusService: StatusService
     ) {
       this.currentRoute = this.route.snapshot.url.join('/');
       console.log('Current route path:', this.currentRoute);
@@ -58,6 +61,16 @@ import { InputOtpModule } from 'primeng/inputotp';
       this.yearService.getAllYear().subscribe({
         next: (data) => {
           this.years = data;
+  
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      },
+      );
+      this.statusService.getAllStatuses().subscribe({
+        next: (data) => {
+          this.statuses = data;
   
         },
         error: (error) => {
@@ -80,7 +93,7 @@ import { InputOtpModule } from 'primeng/inputotp';
     client: Client;
     clientId: string;
     allMonthlyReports: MonthlyReport[] | undefined;
-    myReport: MonthlyReport;
+    myReport: MonthlyReport| undefined;
     y: boolean = false;
     types: string[] = [];
     steps: any[];
@@ -88,8 +101,13 @@ import { InputOtpModule } from 'primeng/inputotp';
     fieldByType: { [key: string]: stepFieldMonth[] } = {};
     currentRoute: string;
   create:boolean=false;
-    fieldBymonths: stepFieldMonth[] = [];
-  
+    fieldBymonths: stepFieldMonth[];
+    visible: boolean = false;
+    statuses: Status[] = [];
+
+    showDialog() {
+        this.visible = true;
+    }
   
     getMonthlyReportsForClient(): void {
       const clientId = String(this.client._id);
@@ -97,7 +115,7 @@ import { InputOtpModule } from 'primeng/inputotp';
         next: (reports: any) => {
           this.allMonthlyReportsClient = reports;
          // console.log(Number(this.selectedYear.yearNum), Number(this.selectedMonth), "year, month");
-          this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];
+         // this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];
   
         },
         error: (error) => {
@@ -123,20 +141,30 @@ import { InputOtpModule } from 'primeng/inputotp';
       console.log(this.steps, 'steps');
     }
     changeDate() {
-      debugger
       console.log(this.selectedMonth, this.selectedYear);
       if (this.currentRoute === "allClientMonthlyReport") {
-        this.myReport[0] = this.allMonthlyReports.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum));
+        this.myReport = this.allMonthlyReports.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum))[0];
       }
       else {
-        this.myReport [0]= this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum));
+        this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum))[0];
       }
       if (this.myReport) {
-  console.log(this.myReport, "myReport");
-      //  this.fieldBymonths = this.myReport.map( m => m.monthlyReportFields);
+        this.fieldBymonths = this.myReport.monthlyReportFields;
+        console.log(this.fieldBymonths, "myReport");
       }
     }
-      createReprtTag(): void {
-        this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createMonthlyReport'], { state: { client: this.client } });
+
+      onSubmit(){
+        this.monthlyReportService.createMonthlyReport({reportDate:new Date(`${this.selectedYear.yearNum}-${this.selectedMonth}-01`), idUser:this.clientId,idEmploye:this.clientId, monthlyReportFields:this.fieldBymonths,status:this.statuses[0]})
+        .subscribe({
+          next: (data) => {
+            console.log('Monthly report created successfully', data);
+    
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        },
+        );;
       }
     }
