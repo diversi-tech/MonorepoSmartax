@@ -7,6 +7,7 @@
     "clean": "nx run-many --target=clean --all",
     "start:all": "concurrently \"nx serve front\" \"nx serve server\" \"nx serve api-gateway\" \"nx serve timesheet\"",
     "build:front": "npx nx build front --prod",
+    "start": "npx serve -s dist/apps/front -l $PORT",
     "build:server": "npx nx build server --prod",
     "test:e2e": "nx test server-e2e --verbose",
     "test": "nx test"
