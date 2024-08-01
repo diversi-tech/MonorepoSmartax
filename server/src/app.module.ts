@@ -187,7 +187,7 @@ import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.mod
     MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
     MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
     MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
-    MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+    // MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
     MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel },]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),

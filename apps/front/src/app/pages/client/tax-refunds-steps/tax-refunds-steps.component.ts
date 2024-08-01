@@ -6,6 +6,7 @@ import { Client } from '../../../../../../../server/src/Models/client.model';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { TaxRefundsService } from '../../../_services/taxRefunds.service';
+import { Status } from '../../../_models/status.module';
 
 @Component({
   selector: 'app-tax-refunds-steps',
@@ -26,6 +27,7 @@ export class TaxRefundsStepsComponent {
   changes: { [key: string]: boolean } = {};
   client: Client;
   stepNumbers: number[] = [];
+  statusList:Status[]=[];
   ngOnInit() {
     this.responseData = history.state.data;
     this.client = history.state.client;
@@ -71,6 +73,24 @@ export class TaxRefundsStepsComponent {
       this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
     }
   }
+  determineStatus(): Status {
+    const stepsList = this.responseData.stepsList;
+
+    const allCompleted = stepsList.every(step => step.isCompleted);
+    const someCompleted = stepsList.some(step => step.isCompleted);
+
+    if (allCompleted) {
+      return this.statusList.find(s => s.name == 'COMPLETE') || null;
+      ;
+    } else if (someCompleted) {
+      return this.statusList.find(s => s.name == 'IN PROGRESS') || null;
+    } else {
+      return this.statusList.find(s => s.name == 'TO DO') || null;
+    }
+  }
+  getStatusObject(statusName: string): Status | null {
+    return this.statusList.find(s => s.name === statusName) || null;
+  }
   async submitChanges() {
     console.log('Submitting changes:', this.changes);
 
@@ -95,6 +115,14 @@ export class TaxRefundsStepsComponent {
       this.changes = {};
     } catch (error) {
       console.log(error);
+    }
+    const status = this.determineStatus();
+
+    if (status) {
+      this.responseData.status = status;
+    } else {
+      console.error('Status not found');
+      return;
     }
   }
   goBack() {

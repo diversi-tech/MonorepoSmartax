@@ -20,7 +20,7 @@ export class MonthlyReport extends Document {
     monthlyReportFields: StepFieldMonth[];
     
     @Prop()
-    status: Status;
+    status: Status[];
 }
 
 export const MonthlyReportModel = SchemaFactory.createForClass(MonthlyReport);

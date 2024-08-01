@@ -1,3 +1,5 @@
+<!-- <p-button (click)="createReprtTag()" label="יצירת דוח  חדש" /> -->
+
 <p-table [value]="allTaxRefunds" [tableStyle]="{ 'max-width': '50rem' }">
   <ng-template pTemplate="header">
     <tr>
@@ -21,14 +23,8 @@
         <button *ngIf="currentTaxRefunds === task" pButton
           class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
           (click)="goToSteps(task)"></button>
-          <!-- (click)="goToSteps(getClientName(task.idClient), task)"> -->
       </td>
-      <!-- <td *ngIf="currentRoute != 'allClientTaxRefunds'">
-        <button *ngIf="currentTaxRefunds === task" pButton
-          class="pi pi-pencil p-button-outlined p-button-rounded p-button-info" 
-          (click)="goToSteps(task)"></button>
-      </td> -->
-      <!-- <td class="{{task.status.color}}">{{task.status.name}}</td> -->
+      <td class="{{task.status.color}}">{{task.status.name}}</td>
       <td>{{task.entityType}}</td>
       <td>{{ task.balanceDue }}</td>
       <td>{{ task.paymentAmountPaid }}</td>

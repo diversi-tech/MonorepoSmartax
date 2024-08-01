@@ -227,8 +227,6 @@ export const routes: Routes = [
           label: 'החזרי מס/ שבח',
           icon: icons.reports
         },
-        children: [{ path: "taxrefundsteps", component: TaxRefundsStepsComponent }
-        ]
       },
       {
         path: 'allClientFinancialStatement',

@@ -98,7 +98,7 @@ export class TaxRefundsComponent {
    goToSteps(task: any) {  
     debugger
     if(this,this.currentRoute === 'allClientTaxRefunds'){
-      this.router.navigate(['clientReport/allClientTaxRefunds/taxrefundsteps'], { state: { data: task, client: this.getClientName(task.idClient) } });
+      this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps'], { state: { data: task, client: this.getClientName(task.idClient) } });
 
     }
     else{
