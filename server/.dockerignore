@@ -20,4 +20,3 @@ Thumbs.db
 *.env
 *.local
 # קבצים ספציפיים של NX
-*.eslintrc.json
