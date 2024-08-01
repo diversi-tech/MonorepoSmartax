@@ -15,7 +15,6 @@ import { GoogleDriveController } from './controller/google-drive/google-drive.co
 import { GoogleDriveService } from './services/google-drive.service';
 import { CommunicationsService } from './services/communication.service';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ScheduleModule } from '@nestjs/schedule';
 import {
   Communication,
   communicationModel,
