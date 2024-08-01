@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { TaxRefundsService } from '../../../_services/taxRefunds.service';
 import { Status } from '../../../_models/status.module';
+import { StatusService } from '../../../_services/status.service';
 
 @Component({
   selector: 'app-tax-refunds-steps',
@@ -18,6 +19,7 @@ import { Status } from '../../../_models/status.module';
 export class TaxRefundsStepsComponent {
   constructor(private taxRefundsService: TaxRefundsService,
     private location: Location,
+    private statusService: StatusService,
   ) { }
   tasksStep: StepField[] = [];
   responseData: any;
@@ -32,6 +34,14 @@ export class TaxRefundsStepsComponent {
     this.responseData = history.state.data;
     this.client = history.state.client;
     this.allSteps = this.responseData.stepsList;
+    this.statusService.getAllStatuses().subscribe({
+      next: (data) => {
+        this.statusList = data;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
     this.groupSteps();
   }
 
@@ -103,7 +113,13 @@ export class TaxRefundsStepsComponent {
           this.changes[taskId];
       }
     }
-
+    const status = this.determineStatus();
+    if (status) {
+      this.responseData.status = status;
+    } else {
+      console.error('Status not found');
+      return;
+    }
     try {
       const response = await this.taxRefundsService.updateTaxRefunds(
         this.responseData._id,
@@ -116,14 +132,7 @@ export class TaxRefundsStepsComponent {
     } catch (error) {
       console.log(error);
     }
-    const status = this.determineStatus();
-
-    if (status) {
-      this.responseData.status = status;
-    } else {
-      console.error('Status not found');
-      return;
-    }
+    
   }
   goBack() {
     this.location.back();

@@ -48,7 +48,6 @@ export class TaxRefundsComponent {
 
   ngOnInit(): void {
     this.client = history.state.client;
-
     if(this.currentRoute === 'allClientTaxRefunds') {
       this.getAllClients();
       this.getTaxRefunds()
@@ -57,8 +56,9 @@ export class TaxRefundsComponent {
        this.getTaxRefundsForClient();
     }
     console.log('report after', this.allTaxRefunds);
-
+debugger
     this.userService.getAllUsers().subscribe(
+      
       (Employes) => {
         this.allEmploye = Employes;
       },
