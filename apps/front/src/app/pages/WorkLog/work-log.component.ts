@@ -119,17 +119,17 @@ export class WorkLogComponent implements OnInit {
 
     const observables = employeeIds.map(employeeId => this.workLogService.getUserById(employeeId));
 
-    forkJoin(observables).subscribe(
-      users => {
-        users.forEach((user, index) => {
-          console.log(`Fetched user for ID ${employeeIds[index]}:`, user);
-          this.employeeNames.push({ id: employeeIds[index], name: user.userName });
-        });
-      },
-      error => {
-        console.error('Error fetching user details:', error);
-      }
-    );
+    // forkJoin(observables).subscribe(
+    //   users => {
+    //     users.forEach((user, index) => {
+    //       console.log(`Fetched user for ID ${employeeIds[index]}:`, user);
+    //       this.employeeNames.push({ id: employeeIds[index], name: user.userName });
+    //     });
+    //   },
+    //   error => {
+    //     console.error('Error fetching user details:', error);
+    //   }
+    // );
   }
 
   getEmployeeName(employeeId: string): string {
