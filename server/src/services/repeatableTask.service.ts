@@ -2,7 +2,7 @@ import { RepeatableTask } from './../Models/repeatableTask.model';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ValidationException } from '../common/exceptions/validation.exception';
+// import { ValidationException } from '../common/exceptions/validation.exception';
 import {
   CreaterepeatableTaskDto,
   UpdaterepeatableTaskDto,
@@ -60,7 +60,7 @@ export class repeatableTaskService {
   async findOne(id: string): Promise<RepeatableTask> {
     const task = await this.repeatableTask.findById({ _id: id }).exec();
     if (!task) {
-      throw new ValidationException('Task not found');
+      // throw new ValidationException('Task not found');
     }
     return task;
   }
@@ -104,7 +104,7 @@ export class repeatableTaskService {
       .exec();
 
     if (!updatedTask) {
-      throw new ValidationException('repeatableTask not found');
+      // throw new ValidationException('repeatableTask not found');
     }
     return updatedTask;
   }
@@ -112,7 +112,7 @@ export class repeatableTaskService {
   async delete(id: string): Promise<RepeatableTask> {
     const deletedTask = await this.repeatableTask.findByIdAndDelete(id).exec();
     if (!deletedTask) {
-      throw new ValidationException('repeatableTask not found');
+      // throw new ValidationException('repeatableTask not found');
     }
     return deletedTask;
   }
