@@ -219,7 +219,8 @@ export class ClientSearchComponent implements OnInit {
   updateFavorite() {
     this.userService
       .update(this.user._id, this.user.userName, this.user.email, this.user.passwordHash,
-        this.user.role, this.user.favoritesClient
+        this.user.role, []
+        // this.user.favoritesClient
       )
       .subscribe({
         next: (response: any) => {
