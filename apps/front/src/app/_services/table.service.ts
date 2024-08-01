@@ -15,9 +15,7 @@ export class TableService {
     return this.http.get<any>(this.url);
   }
 
-  getData(selectedValues: {
-    [key: string]: { [field: string]: boolean };
-  }): Observable<any> {
+  getData(selectedValues: any):Observable<any> {
     return this.http.post<any>(this.url, selectedValues);
   }
 }

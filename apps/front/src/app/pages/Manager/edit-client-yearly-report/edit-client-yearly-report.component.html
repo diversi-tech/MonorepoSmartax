@@ -4,15 +4,7 @@
 
 <!-- כפתור הוספה -->
 <div class="mb-3">
-    <button 
-        pButton 
-        pRipple 
-        type="button" 
-        label="הוספת רשומה חדשה" 
-        icon="pi pi-plus" 
-        (click)="showAddDialog()"
-        class="p-button-success">
-    </button>
+    <button pButton pRipple type="button" label="הוספת רשומה חדשה" icon="pi pi-plus" (click)="showAddDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
 </div>
 
 <!-- דיאלוג הוספה -->
@@ -24,18 +16,15 @@
         </div>
         <div class="p-field">
             <label for="stepNumber">Step Number</label>
-            <p-dropdown 
-                id="stepNumber" 
-                [options]="numberOptions" 
-                [(ngModel)]="newStepStepNumber" 
+            <p-dropdown id="stepNumber" [options]="numberOptions" [(ngModel)]="newStepStepNumber"
                 placeholder="Select a step number">
             </p-dropdown>
         </div>
     </div>
     <br><br><br>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" label="Add" (click)="addStep()"></button>
-        <button type="button" pButton icon="pi pi-times" label="Cancel" (click)="hideAddDialog()"></button>
+        <button type="button" pButton icon="pi pi-check" label="Add" (click)="addStep()" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <button type="button" pButton icon="pi pi-times" label="Cancel" (click)="hideAddDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
     </p-footer>
 </p-dialog>
 
@@ -44,96 +33,55 @@
         <tr>
             <th style="width:50%">
                 פירוט
-                <input 
-                    type="text" 
-                    pInputText 
-                    (input)="filterByDescription($event.target.value)"
-                    placeholder="חפש..."/>
+                <input type="text" pInputText (input)="filterByDescription($event.target.value)" placeholder="חפש..." />
             </th>
             <th style="width:25%">
                 מספר שלב
-                <p-dropdown 
-                    [options]="numberOptions"
-                    placeholder="בחר מספר"
+                <p-dropdown [options]="numberOptions" placeholder="בחר מספר"
                     (onChange)="filterByStepNumber($event.value)">
                 </p-dropdown>
             </th>
             <th style="width:25%"></th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-        <tr [pEditableRow]="product">
+    <ng-template pTemplate="body" let-stepField let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="stepField" (click)="selectStepField(stepField)"
+            [ngClass]="{ 'highlight': currentStepField === stepField }">
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input 
-                            [value]="product.value"
-                            pInputText 
-                            type="text" 
-                            required
-                            [(ngModel)]="product.value" />
+                        <input [value]="stepField.value" pInputText type="text" required
+                            [(ngModel)]="stepField.value" />
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{product.value}}
+                        {{stepField.value}}
                     </ng-template>
                 </p-cellEditor>
             </td>
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input 
-                            [value]="product.stepNumber"
-                            pInputText 
-                            type="number"
-                            min="1" 
-                            max="5" 
-                            [(ngModel)]="product.stepNumber" 
-                            required />
+                        <input [value]="stepField.stepNumber" pInputText type="number" min="1" max="5"
+                            [(ngModel)]="stepField.stepNumber" required />
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{product.stepNumber}}
+                        {{stepField.stepNumber}}
                     </ng-template>
                 </p-cellEditor>
             </td>
             <td>
                 <div class="flex align-items-center justify-content-center gap-2">
-                    <button 
-                        *ngIf="!editing" 
-                        pButton 
-                        pRipple 
-                        type="button" 
-                        pInitEditableRow 
-                        icon="pi pi-pencil" 
-                        class="p-button-rounded p-button-text">
+                    <button *ngIf="!editing && currentStepField === stepField" pButton pRipple type="button"
+                        pInitEditableRow class="pi pi-pencil p-button-outlined p-button-rounded p-button-info">
                     </button>
-                    <button 
-                        *ngIf="editing" 
-                        pButton 
-                        pRipple 
-                        type="button" 
-                        pSaveEditableRow 
-                        icon="pi pi-check" 
-                        (click)="update(product)" 
-                        class="p-button-rounded p-button-text p-button-success mr-2">
+                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow
+                        (click)="update(stepField)" class="pi pi-check p-button-outlined p-button-rounded p-button-info mr-2">
                     </button>
-                    <button 
-                        *ngIf="editing" 
-                        pButton 
-                        pRipple 
-                        type="button" 
-                        pCancelEditableRow 
-                        icon="pi pi-trash" 
-                        (click)="delete(product._id)" 
-                        class="p-button-rounded p-button-text p-button-danger">
+                    <button *ngIf="!editing && currentStepField === stepField" pButton pRipple type="button" pCancelEditableRow
+                        (click)="delete(stepField._id)" class="pi pi-trash p-button-outlined p-button-rounded p-button-danger">
                     </button>
-                    <button 
-                        *ngIf="editing" 
-                        pButton 
-                        pRipple 
-                        type="button" 
-                        pCancelEditableRow 
-                        icon="pi pi-times" 
-                        class="p-button-rounded p-button-text p-button-danger">
+                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow
+                        class="pi pi-times p-button-outlined p-button-rounded p-button-danger">
                     </button>
                 </div>
             </td>

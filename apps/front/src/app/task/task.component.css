@@ -1,3 +1,5 @@
+@import '../../styles.css';
+
 #divHover:hover{
     background-color: rgb(240, 240, 240);
     cursor: pointer;
@@ -18,7 +20,7 @@
   text-align: right;
   right: 0%;
 }
-.ql-formats button {
+.ql-formats p-button{
   margin-right: 5px;
 }
 .avatar:hover {
@@ -77,8 +79,6 @@
   height: 375px;
 }
 
-
-/* editor.component.css */
 .editor-toolbar {
   border-bottom: 1px solid #ccc;
   padding: 8px;

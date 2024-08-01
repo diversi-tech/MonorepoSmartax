@@ -6,8 +6,6 @@ import { Payment } from '../../_models/payment.module';
 import { PaymentService } from '../../_services/payment.service';
 import { Client } from '../../_models/client.module';
 import { ClientService } from '../../_services/client.service';
-import { catchError } from 'rxjs';
-import { error } from 'console';
 import { Billing } from '../../_models/billing.module';
 import { PanelModule } from 'primeng/panel';
 import { Router } from '@angular/router';

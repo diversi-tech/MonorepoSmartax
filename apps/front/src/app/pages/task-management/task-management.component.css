@@ -1,6 +1,4 @@
-.buttons {
-  margin: 5%;
-}
+@import '../../../styles.css';
 
 .p-grid {
   display: flex;
@@ -12,7 +10,10 @@
   margin: 0 10px;
 }
 
-
+.content-container {
+  display: flex;
+  flex-direction: column;
+}
 
 .custom-button {
   margin: 5px;
@@ -29,30 +30,6 @@
   line-height: 1.2;
   /* Adjust line height if needed */
 }
-
-.custom-button .delete-button {
-  display: none;
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  width: 16px;
-  /* Smaller size */
-  height: 16px;
-  /* Smaller size */
-  line-height: 16px;
-  text-align: center;
-  background: red;
-  color: white;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 12px;
-  /* Smaller font size */
-}
-
-.custom-button:hover .delete-button {
-  display: block;
-}
-
 
 .filter-container>div {
   margin-bottom: 10px;
@@ -81,11 +58,3 @@
   max-width: 200px; /* Adjust as needed 
   margin-bottom: 10px;
 } */
-
-.highlight {
-  background-color: #edecec;
-}
-
-.p-button-rounded {
-  border-radius: 20%;
-}

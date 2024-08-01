@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 // import { User, UserModel } from '../models/user.model';
@@ -9,11 +9,13 @@ import * as bcrypt from 'bcryptjs';
 import { Task } from '../Models/task.model';
 import { CreateTaskDto, UpdateTaskDto } from '../Models/dto/task.dto';
 import { TasksGateway } from './socket/socket.gateway';
+import { YearArchiveService } from './yearArchive.service';
 
 @Injectable()
 export class TaskService {
   constructor(
     @InjectModel('Task') private readonly taskModel: Model<Task>,
+    private yearArchiveService:YearArchiveService,
     private jwtToken: TokenService,
     private readonly tasksGateway: TasksGateway
   ) { }
@@ -147,10 +149,21 @@ export class TaskService {
   }
 
   async deleteTask(id: string): Promise<Task> {
+    const task = await this.taskModel.findById(id).exec();
     const deletedTask = await this.taskModel.findByIdAndDelete(id).exec();
     if (!deletedTask) {
-      throw new ValidationException('User not found');
+      throw new ValidationException('task not found');
     }
+    const yearNum = new Date().getFullYear().toString();
+   // Example logic to get year number
+    await this.yearArchiveService.addTaskToYearArchive(yearNum, task)
+    
+    await this.taskModel.findByIdAndDelete(id).exec();
     return deletedTask;
   }
+
+
 }
+
+
+

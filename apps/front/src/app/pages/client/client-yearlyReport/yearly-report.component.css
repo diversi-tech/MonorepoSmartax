@@ -1,32 +1,4 @@
-button {
-  padding: 12px 20px;
-  font-family: var(--font);
-  font-size: 14px;
-  text-transform: uppercase;
-  border: none;
-  background: var(--color-button);
-  color: var(--color-button-text);
-  box-shadow: inset #4c924c 0 -2px 0; /* דוגמה לצל כפתור */
-  cursor: pointer;
-  outline: none;
-  transition: background-color 0.2s ease-out;
-  border-radius: 0;
-}
-
-button:disabled {
-  background: var(--color-button-disabled);
-  box-shadow: inset #b3b3b3 0 -2px 0; /* דוגמה לצל כפתור מנוטרל */
-}
-
-button:hover {
-  background: #59a059; /* דוגמה לצבע רקע כאשר העכבר מעל */
-}
-
-button:active {
-  box-shadow: inset #338033 0 0 0; /* דוגמה לאנימציה כאשר הכפתור נלחץ */
-  transform: translateY(2px);
-}
-
+@import '../../../../styles.css';
 .error {
   color: red;
 }

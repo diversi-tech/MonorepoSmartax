@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable,Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MonthlyReport } from '../_models/monthlyReport.module';
 import { MONTHLY_REPORT } from '../api-urls';
@@ -14,14 +14,16 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class MonthlyReportService {
-  constructor(private http: HttpClient) {}
+  constructor(@Inject(HttpClient) private http: HttpClient) {}
 
+ 
   private apiUrl = MONTHLY_REPORT;
 
   createMonthlyReport(monthlyReport: MonthlyReport): Observable<MonthlyReport> {
-    return this.http
-      .post<MonthlyReport>(`${this.apiUrl}/create`, monthlyReport)
-      .pipe(catchError(this.handleError<MonthlyReport>('createMonthlyReport')));
+    return this.http.post<MonthlyReport>(`${this.apiUrl}/create`, monthlyReport)
+      .pipe(
+        catchError(this.handleError<MonthlyReport>('createMonthlyReport'))
+      );
   }
 
   getAllMonthlyReport(): Observable<MonthlyReport[]> {
@@ -39,16 +41,15 @@ export class MonthlyReportService {
         this.handleError<MonthlyReport[]>('getMonthlyReportForClient', [])
       )
     );
+
   }
 
-  async updateMonthlyReport(
-    id: string,
-    monthlyReport: MonthlyReport
-  ): Promise<MonthlyReport> {
+
+
+
+  async updateMonthlyReport(id: string, monthlyReport: MonthlyReport): Promise<MonthlyReport> {
     try {
-      const response = await this.http
-        .post<MonthlyReport>(`${this.apiUrl}/update/${id}`, monthlyReport)
-        .toPromise();
+      const response = await this.http.post<MonthlyReport>(`${this.apiUrl}/update/${id}`, monthlyReport).toPromise();
       return response;
     } catch (error) {
       this.handleError<MonthlyReport>('updateMonthlyReport', error);
@@ -57,8 +58,7 @@ export class MonthlyReportService {
   }
 
   deleteMonthlyReport(id: string): Observable<boolean> {
-    return this.http
-      .delete<boolean>(`${this.apiUrl}`, { body: { id } })
+    return this.http.delete<boolean>(`${this.apiUrl}`, { body: { id } })
       .pipe(
         catchError(this.handleError<boolean>('deleteMonthlyReport', false))
       );
@@ -70,4 +70,6 @@ export class MonthlyReportService {
       return of(result as T);
     };
   }
+
+
 }
