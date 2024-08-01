@@ -54,6 +54,7 @@ export class ClientCommunicationLogsComponent {
   ) { }
 
   ngOnInit(): void {
+    debugger
     this.client = history.state.client;
     this.getCommunications();
     this.loadUsers();

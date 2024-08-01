@@ -9,4 +9,12 @@
   .p-button-rounded {
     border-radius: 20%;
     margin: 1%;
-  } 
+  } .green{
+    color:#28a745;
+  }
+  .blue{
+    color:#ff7f50;
+  }
+  .gray{
+   color: #7d7979;
+}

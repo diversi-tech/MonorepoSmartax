@@ -15,6 +15,7 @@ import { GoogleDriveController } from './controller/google-drive/google-drive.co
 import { GoogleDriveService } from './services/google-drive.service';
 import { CommunicationsService } from './services/communication.service';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ScheduleModule } from '@nestjs/schedule';
 import {
   Communication,
   communicationModel,
@@ -164,6 +165,9 @@ import { FinancialStatementService } from './services/financialStatement.service
 import { MonthlyReportService } from './services/monthlyReport.service';
 import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
 import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
+import { StepFieldMonthController } from './controller/stepFieldMonth/stepFieldMonth.controller';
+import { StepFieldMonthService } from './services/stepFieldMonth.service';
+import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.model';
 
 @Module({
   //add
@@ -184,7 +188,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
     MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
     MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
-    MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+    // MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
     MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
     MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel },]),
     MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
@@ -210,6 +214,9 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     MongooseModule.forFeature([
       { name: FinancialStatement.name, schema: FinancialStatementModel },
       { name: MonthlyReport.name, schema: MonthlyReportModel },
+    ]),
+    MongooseModule.forFeature([
+      { name: StepFieldMonth.name, schema: stepFieldMonthModel },
     ]),
     JwtModule,
     ScheduleModule.forRoot(),
@@ -256,7 +263,8 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     FrequencyController,
     TaxRefundsController,
     FinancialStatementController,
-    MonthlyReportController
+    MonthlyReportController,
+    StepFieldMonthController
   ],
 
   providers: [
@@ -295,6 +303,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     repeatableTaskService,
     TaxRefundsService,
     FinancialStatementService,
+    StepFieldMonthService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
@@ -306,6 +315,7 @@ import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
     YearService,
     TableService,
     TasksGateway,
+    StepFieldMonthService
     // PopupGateway,
   ],
 })

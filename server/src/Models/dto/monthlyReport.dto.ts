@@ -1,6 +1,9 @@
 import { Prop, Schema} from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDateString, IsNotEmpty } from 'class-validator';
+import { StepFieldController } from 'server/src/controller/yearlyReport/stepField.controller';
+import { StepFieldMonth } from '../stepFieldMonth.model';
+import { Status } from '../status.model';
 
 @Schema()
 export class CreateMonthlyReportDto  {
@@ -21,6 +24,16 @@ export class CreateMonthlyReportDto  {
     @IsDateString()
     reportDate: Date;
 
+    @Prop([StepFieldController])
+    @ApiProperty({ type: [StepFieldMonth] })
+    @IsNotEmpty()
+    monthlyReportFields: StepFieldMonth[];
+
+    @Prop()
+    @ApiProperty()
+    @IsNotEmpty()
+    status: Status[];
+
 }
 
 export class UpdateMonthlyReportDto  {
@@ -40,4 +53,14 @@ export class UpdateMonthlyReportDto  {
     @IsNotEmpty()
     @IsDateString()
     reportDate: Date;
+
+    @Prop([StepFieldMonth])
+    @ApiProperty({ type: [StepFieldMonth] })
+    @IsNotEmpty()
+    monthlyReportFields: StepFieldMonth[];
+
+    @Prop()
+    @ApiProperty()
+    @IsNotEmpty()
+    status: Status[];
 }
