@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 // import { User, UserModel } from '../models/user.model';
 import { CreateUserDto, UpdateUserDto } from '../Models/dto/user.dto';
-// import { ValidationException } from '../common/exceptions/validation.exception';
+import { ValidationException } from '../common/exceptions/validation.exception';
 import { TokenService } from './jwt.service';
 import * as bcrypt from 'bcryptjs';
 import { Task } from '../Models/task.model';
@@ -138,7 +138,7 @@ export class TaskService {
         .exec();
 
       if (!updatedTask) {
-        // throw new ValidationException('Task not found');
+        throw new ValidationException('Task not found');
       }
       return updatedTask;
     } catch (err) {
@@ -149,7 +149,7 @@ export class TaskService {
   async deleteTask(id: string): Promise<Task> {
     const deletedTask = await this.taskModel.findByIdAndDelete(id).exec();
     if (!deletedTask) {
-      // throw new ValidationException('User not found');
+      throw new ValidationException('User not found');
     }
     return deletedTask;
   }
