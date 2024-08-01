@@ -10,9 +10,9 @@ COPY apps ./apps
 COPY server ./server
 
 # Copy ESLint configuration files
-# COPY .eslintrc.json ./
-# COPY apps/front/.eslintrc.json ./apps/front/.eslintrc.json
-# COPY server/.eslintrc.json ./server/.eslintrc.json
+COPY .eslintrc.json ./
+COPY apps/front/.eslintrc.json ./apps/front/.eslintrc.json
+COPY server/.eslintrc.json ./server/.eslintrc.json
 # COPY .eslintignore ./
 
 # Install the dependencies
