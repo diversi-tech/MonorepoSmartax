@@ -28,6 +28,7 @@ export class TableComponent implements OnInit {
 
   constructor(private tableService: TableService) { }
   ngOnInit(): void {
+    debugger
     this.getAllTables()
   }
 
