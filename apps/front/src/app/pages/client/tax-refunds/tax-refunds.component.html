@@ -20,7 +20,7 @@
       <td >
         <button *ngIf="currentTaxRefunds === task" pButton
           class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
-          (click)="getClientName(task)"></button>
+          (click)="goToSteps(task)"></button>
           <!-- (click)="goToSteps(getClientName(task.idClient), task)"> -->
       </td>
       <!-- <td *ngIf="currentRoute != 'allClientTaxRefunds'">

@@ -98,8 +98,8 @@ export class TaxRefundsComponent {
    goToSteps(task: any) {  
     debugger
     if(this,this.currentRoute === 'allClientTaxRefunds'){
+      this.router.navigate(['clientReport/allClientTaxRefunds/taxrefundsteps'], { state: { data: task, client: this.getClientName(task.idClient) } });
 
-      this.router.navigate(['clientReport/allClientTaxRefunds/taxrefundsteps', this.router], { state: { data: task, client:this.getClientName(task.idClient)} });
     }
     else{
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });
@@ -113,6 +113,9 @@ export class TaxRefundsComponent {
     );
   }
   getClientName(idClient: string): Client | undefined {
+    debugger
+    console.log(this.allClients.find((x) => x._id === idClient),'client');
+    
     return this.allClients.find((x) => x._id === idClient);
   }
 
