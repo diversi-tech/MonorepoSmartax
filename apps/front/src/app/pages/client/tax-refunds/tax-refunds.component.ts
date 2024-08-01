@@ -10,6 +10,7 @@ import { StepperModule } from 'primeng/stepper';
 import { CommonModule } from '@angular/common';
 import { StepsModule } from 'primeng/steps';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ClientService } from '../../../_services/client.service';
 
 @Component({
   selector: 'app-tax-refunds',
@@ -30,7 +31,8 @@ export class TaxRefundsComponent {
     private taxRefundsService: TaxRefundsService,
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private clientService: ClientService
 
   ) {
     this.currentRoute = this.route.snapshot.url.join('/');
@@ -42,14 +44,17 @@ export class TaxRefundsComponent {
   allEmploye: User[];
   currentTaxRefunds: TaxRefunds;
   currentRoute: string;
-
+  allClients: Client[] = [];
 
   ngOnInit(): void {
     this.client = history.state.client;
+
     if(this.currentRoute === 'allClientTaxRefunds') {
+      this.getAllClients();
       this.getTaxRefunds()
     }
-    else{    this.getTaxRefundsForClient();
+    else{   
+       this.getTaxRefundsForClient();
     }
     console.log('report after', this.allTaxRefunds);
 
@@ -63,6 +68,15 @@ export class TaxRefundsComponent {
     );
   }
   getTaxRefunds(): void {
+    this.taxRefundsService.getAllTaxRefunds().subscribe(
+      (reports) => {
+        this.allTaxRefunds = reports;
+        console.log('report', this.allTaxRefunds);
+      },
+      (error) => {
+        console.error('Error fetching tax refunds', error);
+      }
+    );
   }
   getTaxRefundsForClient(): void {
     debugger
@@ -81,8 +95,25 @@ export class TaxRefundsComponent {
     return this.allEmploye.find((x) => x._id == idEmploye);
   }
  
-   goToSteps(task: any) {    
-    this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });
+   goToSteps(task: any) {  
+    debugger
+    if(this,this.currentRoute === 'allClientTaxRefunds'){
+
+      this.router.navigate(['clientReport/allClientTaxRefunds/taxrefundsteps', this.router], { state: { data: task, client:this.getClientName(task.idClient)} });
+    }
+    else{
+      this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });
+
+    }  
+  }
+  getAllClients(): void {
+    this.clientService.getAllClients().subscribe(
+      (clients) => (this.allClients = clients),
+      (error) => console.error('Error ', error)
+    );
+  }
+  getClientName(idClient: string): Client | undefined {
+    return this.allClients.find((x) => x._id === idClient);
   }
 
   selectTaxRefunds(taxRefunds: TaxRefunds) {

@@ -169,7 +169,7 @@ export const routes: Routes = [
       icon: icons.employees,
     },
   },
-  
+
 
   {
     path: '',
@@ -225,8 +225,10 @@ export const routes: Routes = [
           authType: 6,
           forToolbar: false,
           label: 'החזרי מס/ שבח',
-          icon: icons.reports,
+          icon: icons.reports
         },
+        children: [{ path: "taxrefundsteps", component: TaxRefundsStepsComponent }
+        ]
       },
       {
         path: 'allClientFinancialStatement',
@@ -237,9 +239,9 @@ export const routes: Routes = [
           label: ' הצהרות הון',
           icon: icons.reports,
         },
-      }
-    ],
-      
+      },
+      ],
+
   },
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
   { path: 'clientSearch', component: ClientSearchComponent, data: { authType: 6, forToolbar: true, label: 'לקוחות', icon: icons.clients } },
@@ -255,16 +257,14 @@ export const routes: Routes = [
       { path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent, },
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       { path: 'clientTasks', component: ClientTasksComponent, },
-      { path: 'payments', component: PaymentComponent,
-        children:[
+      {
+        path: 'payments', component: PaymentComponent,
+        children: [
           { path: 'billingHistory', component: BillingHistoryComponent },
           { path: 'paymentDetailsHistory', component: PaymentDetailsHistoryComponent },
           { path: 'addBilling', component: AddBillingComponent },
           { path: 'changeMainPayment', component: ChangeMainPaymentComponent },
           { path: 'addMorePaymentDetails', component: AddMorePaymentDetailsComponent }
-
-
-
 
         ]
       },

@@ -87,8 +87,6 @@ export class MonthlyReportComponent implements OnInit {
     this.monthlyReportService.getMonthlyReportForClient(clientId).subscribe({
       next: (reports: any) => {
         this.allMonthlyReportsClient = reports;
-        // console.log(Number(this.selectedYear.yearNum), Number(this.selectedMonth), "year, month");
-       // this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];
 
       },
       error: (error) => {
@@ -101,7 +99,6 @@ export class MonthlyReportComponent implements OnInit {
     this.monthlyReportService.getAllMonthlyReport().subscribe({
       next: (reports: any) => {
         this.allMonthlyReports = reports;
-       // this.myReport = this.allMonthlyReports.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum))[0];
         console.log(this.allMonthlyReports, "allmyReport");
 
       },
@@ -130,7 +127,7 @@ export class MonthlyReportComponent implements OnInit {
     }
     if (this.myReport) {
 console.log(this.myReport, "myReport");
-    //  this.fieldBymonths = this.myReport.map( m => m.monthlyReportFields);
+    // this.fieldBymonths = this.myReport.map( m => m.monthlyReportFields);
     }
 
   }
