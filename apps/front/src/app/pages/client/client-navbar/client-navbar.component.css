@@ -26,3 +26,6 @@ body {
   flex: 1;
   margin-right: 20px; /* נותן רווח קטן מהצד הימני של המסך */
 }
+.profile{
+  text-align: left;
+}

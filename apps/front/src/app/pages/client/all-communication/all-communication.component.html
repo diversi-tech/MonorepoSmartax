@@ -1,6 +1,6 @@
-<h1 (click)="onSelectionChange(1)">רשימת שיחות</h1>
-<p-button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
-<p-button *ngIf="isSelected == 2" (click)="onSelectionChange(1)" label="ללא מיון"></p-button>
+<!-- <h1 (click)="onSelectionChange(1)">רשימת שיחות</h1> -->
+<button pButton *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי" class= "p-button-text p-button-raised p-button-rounded"></button>
+<button pButton *ngIf="isSelected == 2" (click)="onSelectionChange(1)" label="ללא מיון" class= "p-button-text p-button-raised p-button-rounded"></button>
 
   <p-table [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications">
   <ng-template pTemplate="header" let-columns>
@@ -11,16 +11,24 @@
         <span (click)="onSelectionChange(2)">שם לקוח</span>
         <div>
           <input *ngIf="isSelected == 2" type="text" class="filter-input" [(ngModel)]="filtername"
-            (input)="filterClientsByname()">
+            (input)="filterClientsByname()" pInputText>
         </div>
       </th>
       <th>
         <span (click)="onSelectionChange(3)">תאריך</span>
-        <i _ngcontent-ng-c649353484="" class="pi pi-caret-up" style="cursor: pointer; margin-left: 5px;" (click)="sortCommunicatioByDate()"></i>
-        <i _ngcontent-ng-c649353484="" class="pi pi-caret-down" style="cursor: pointer; margin-left: 5px;" (click)="sortCommunicatioByDate2()"></i>
+        <i class="pi pi-caret-up" 
+        style="cursor: pointer; margin-left: 5px;"
+        pTooltip="מיון לפי תאריך בסדר עולה" 
+        tooltipPosition="bottom"
+        (click)="sortCommunicatioByDate2()"></i>
+     <i class="pi pi-caret-down" 
+        style="cursor: pointer; margin-left: 5px;"
+        pTooltip="מיון לפי תאריך בסדר יורד"
+        tooltipPosition="bottom"
+        (click)="sortCommunicatioByDate()"></i>
         <div>
           <input *ngIf="isSelected == 2" type="date" class="filter-input" [(ngModel)]="filterdate"
-            (input)="filterByDate()"> 
+            (input)="filterByDate()" pInputText> 
         </div>
       </th>
       <th>
@@ -34,6 +42,16 @@
       </th>
       <th>
         <span (click)="onSelectionChange(5)">נושא שיחה</span>
+        <i class="pi pi-caret-up" 
+        style="cursor: pointer; margin-left: 5px;"
+        pTooltip="מיון לפי א' עד ת'"
+        tooltipPosition="bottom"
+        (click)="sortCommunicatioBySubjectAsc()"></i>
+     <i class="pi pi-caret-down" 
+        style="cursor: pointer; margin-left: 5px;"
+        pTooltip="מיון לפי ת' עד א'"
+        tooltipPosition="bottom"
+        (click)="sortCommunicatioBySubjectDesc()"></i>
         <div *ngIf="isSelected == 2 ">
           <select [(ngModel)]="selectedCallTopic" (change)="filterByCallTopic($event)">
             <option *ngFor="let topic of callTopics" [value]="topic.name">{{ topic.name }}</option>
@@ -68,9 +86,9 @@
 
 <p-confirmDialog header="Confirmation" key="delete">
   <p-footer>
-    <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+    <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text p-button-raised p-button-rounded"
       (click)="cancelDelete()"></button>
-    <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+    <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-danger p-button-text p-button-raised p-button-rounded"
       (click)="confirmDelete()"></button>
   </p-footer>
 </p-confirmDialog>
@@ -104,7 +122,7 @@
           <p-dropdown [options]="users" [(ngModel)]="selectedCommunication.assignedTo" name="editAssignedTo"
             optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
         </div>
-        <button type="submit" class="p-button">Update Communication</button>
+        <button pButton type="submit" class= "p-button-text p-button-raised p-button-rounded">Update Communication</button>
       </form>
     </div>
   </p-footer>

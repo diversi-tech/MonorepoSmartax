@@ -1,5 +1,5 @@
 <div style="margin-top: 10%">
-  <p-card header="Meeting" subheader="Create and update your meet" [style]="{ width: '800px' }">
+  <p-card header="פגישה" subheader="צור ועדכן את הפגישה שלך" [style]="{ width: '800px' }">
     <ng-template pTemplate="header">
       <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
     </ng-template>
@@ -15,7 +15,7 @@
         <p-inputGroup class="w-full" [style]="{ height: '20px', marginLeft: '90px' }">
           <input type="text" pInputText [(ngModel)]="form.address" />
           <div *ngIf="isValidURL(form.address)">
-            <a [href]="form.address" target="_blank">Open Link</a>
+            <a [href]="form.address" target="_blank">פתח קישור</a>
           </div>
         </p-inputGroup>
       </div>
@@ -144,9 +144,9 @@
     <!-- footer -->
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1" style="margin-left: 70%">
-        <p-button label="ביטול" icon="pi pi-undo" [text]="true" [raised]="true" severity="secondary"
-          (click)="cancel()" />
-        <p-button label="שמירה" icon="pi pi-check" [text]="true" [raised]="true" severity="secondary" (click)="showDialog()" />
+        <button pButton  label="ביטול" icon="pi pi-undo" severity="secondary"
+          (click)="cancel()" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <button pButton  label="שמירה" icon="pi pi-check" severity="secondary" (click)="showDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
       </div>
     </ng-template>
   </p-card>
@@ -163,7 +163,7 @@
              />
     </div>
     <div class="flex justify-content-end gap-2">
-        <p-button label="No" severity="secondary" (click)="cancelDialog()" />
-        <p-button label="Yes" (click)="scheduleMeeting()" />
+        <button pButton  label="No" severity="secondary" (click)="cancelDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <button pButton  label="Yes" (click)="scheduleMeeting()" class= "p-button-text p-button-raised p-button-rounded"></button>
     </div>
 </p-dialog>

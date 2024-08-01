@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { WorkLogService } from '../../_services/workLog.service';
 import { WorkLog, TimeEntry } from '../../_models/workLog.model';
 import { MessageService } from 'primeng/api';
-import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
@@ -11,7 +10,7 @@ import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../_services/token.service';
 import { UpdateWorkLogDto } from '../../../../../../timesheet/src/dto/workLog.dto';
-import { forkJoin } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-work-log',

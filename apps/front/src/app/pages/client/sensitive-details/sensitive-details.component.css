@@ -1,25 +1,11 @@
-/* סגנון בסיסי, ניתן לשפר לפי הצורך */
-/* div {
-    margin: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-  } */
-  
-  input {
-    margin-bottom: 10px;
-    width: 50%;
-  }
-  
-  button {
-    display: block;
-    margin-top: 10px;
-    width: 50%;
+@import '../../../../styles.css';
 
-  }
-  /* Style for form to align items in a row */
+input {
+  margin-bottom: 10px;
+  width: 50%;
+}
+
+/* Style for form to align items in a row */
 .form-inline {
   display: flex;
   align-items: center;
@@ -27,19 +13,10 @@
 
 /* Style for input field */
 .form-input {
-  flex: 1; /* Takes up available space */
+  flex: 1;
+  /* Takes up available space */
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-}
-
-/* Style for button */
-.form-button {
-  flex-shrink: 0; /* Prevents button from shrinking */
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  margin-top: -8px;
-  margin-right: 8px; /* Adjust the space between input and button */
-
 }
