@@ -89,14 +89,14 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   };
   isWorkData: boolean = false;
   form: FormGroup;
-  editingClient: Client | null = null; // משתנה לשמירת הלקוח שנערך
+  editingClient: Client | null = null; 
 
   constructor(
     private formBuilder: FormBuilder,
     private clientService: ClientService,
     private tokenService: TokenService,
-    private router: Router, // הוספתי את Router
-    private route: ActivatedRoute, // הוספתי את ActivatedRoute
+    private router: Router, 
+    private route: ActivatedRoute, 
     private confirmationService: ConfirmationService,
 
 
@@ -151,13 +151,7 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
       isPreferWhatsapp: [false]
     });
 
-    // בדיקה אם יש לקוח ב-state והגדרת קומפוננטת עריכה
-    // this.route.queryParams.subscribe(params => {
-    //   if (params['client']) {
-    //     this.editingClient = JSON.parse(params['client']);
-    //     this.populateForm(this.editingClient);
-    //   }
-    // });
+    
 
     if(history.state.client){
       this.editingClient= history.state.client
@@ -205,7 +199,6 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
 
   sent() {
     if (this.editingClient) {
-      // עדכון לקוח קיים
       const updatedClient = { ...this.editingClient, ...this.contactForm.value };
       updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
       updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
@@ -227,7 +220,6 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
         }
       );
     } else {
-      // יצירת לקוח חדש
       this.savedData = this.contactForm.value;
       console.log("saveData", this.savedData);
   
