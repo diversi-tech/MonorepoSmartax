@@ -1,4 +1,5 @@
-export const API_URL = 'http://localhost:8080';
+// export const API_URL = 'http://localhost:8080';
+export const API_URL = 'https://monoreposmartax.onrender.com/'
 export const AUTH_ENDPOINT = `${API_URL}/auth`;
 export const USER_ENDPOINT = `${API_URL}/users`;
 export const TASK_ENDPOINT = `${API_URL}/tasks`;
