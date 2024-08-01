@@ -1,1 +1,52 @@
-<p>monthly-report works!</p>
+<router-outlet></router-outlet>
+<p-button (click)="createReprtTag()" label="יצירת דוח חודשי חדש" />
+
+
+
+<div >
+    <p-dropdown [options]="years"
+     [(ngModel)]="selectedYear"
+     placeholder="בחירת שנה"
+       [editable]="true"
+        optionLabel="yearNum"
+        (onChange)="changeDate()"  />
+</div>
+<div >
+    <p-dropdown [options]="months"
+     [(ngModel)]="selectedMonth"
+     placeholder="בחירת חודש"
+       [editable]="true"
+        (onChange)="changeDate()" />
+</div>
+
+
+
+
+ <p-table
+ [value]="fieldBymonths" 
+  sortField="type"
+    sortMode="single" 
+    dataKey="type" 
+    rowGroupMode="subheader" 
+    groupRowsBy="type" 
+    [tableStyle]="{'min-width': '70rem'}">
+        <ng-template pTemplate="groupheader" let-fieldBymonth let-rowIndex="rowIndex" let-expanded="expanded">
+            <tr>
+                <td colspan="5">
+                    <h4 class="font-bold ml-2">{{fieldBymonth.type}}</h4>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fieldBymonth>
+            <th><div class="text-center">{{fieldBymonth.value}}</div>
+                <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" value="{{fieldBymonth.content}}" />
+                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" />
+            </th>
+        </ng-template>
+</p-table>
+
+
+
+
+
+

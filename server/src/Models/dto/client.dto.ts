@@ -29,7 +29,7 @@ export class CreateClientDto {
     @IsString()
     contactPersonName: string;
 
-    @ApiProperty({ example: '123456' })
+    @ApiProperty({uniqueItems:true, example: '123456' })
     @IsOptional()
     @IsString()
     tz: string;
@@ -164,7 +164,7 @@ export class UpdateClientDto {
     @IsString()
     contactPersonName?: string;
 
-    @ApiProperty({ example: '123456' })
+    @ApiProperty({uniqueItems:true, example: '123456' })
     @IsOptional()
     @IsString()
     tz?: string;

@@ -27,6 +27,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 export class FavoritesClientsListComponent implements OnInit {
 
   user: User;
+  favoriteClients: Client[]=[];
   currentClient: Client | null = null;
 
 
@@ -45,6 +46,14 @@ export class FavoritesClientsListComponent implements OnInit {
         next: (response: any) => {
           this.user = response;
           console.log(this.user);
+          this.user.favoritesClient.forEach(c => {this.clientService.searchClient(c).subscribe
+            ({
+              next:(favoriteClients)=>{
+                console.log(favoriteClients);
+                
+                this.favoriteClients.push(favoriteClients);
+              }
+          })})
         },
         error: (err) => {
           console.error('Error get current user', err);
@@ -73,7 +82,8 @@ export class FavoritesClientsListComponent implements OnInit {
   }
 
   removeFromFavorite(client: Client) {
-    this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
+    this.favoriteClients= this.favoriteClients.filter(c=> c._id!= client._id);
     this.updateFavorite();
   }
 

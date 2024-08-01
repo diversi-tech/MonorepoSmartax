@@ -17,7 +17,7 @@
         </p-inputGroup>
       </div>
     </div>
-    <br />
+    <br/>
     <!--  -->
     <!-- Select User -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
@@ -217,9 +217,9 @@
           <button pButton  (click)="showTagsList = !showTagsList"
             [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }" icon="pi pi-tag" [outlined]="true"
             severity="secondary">
-          </button >
-          <button pButton  (click)="showTags = !showTags" [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
-            label="new" [outlined]="true" severity="secondary"></button >
+          </button>
+          <button pButton (click)="showTags = !showTags" [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
+            label="חדש" [outlined]="true" severity="secondary"></button>
           <!--  -->
           <button *ngFor="let button of buttons; let i = index"
             [ngStyle]="{ backgroundColor: button.color, color: 'white' }" class="custom-button"
@@ -472,7 +472,7 @@
 <!--  -->
 
 <p-dialog header="Google Calendar" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-  <span class="p-text-secondary block mb-5">להוסיף את המשימה הזו ליומן גוגך שלך?</span>
+  <span class="p-text-secondary block mb-5">להוסיף את המשימה הזו ליומן גוגל שלך?</span>
   <br />
   <div>
     <button pButton  icon="pi pi-times" label="לא" severity="secondary" (click)="cancelDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
