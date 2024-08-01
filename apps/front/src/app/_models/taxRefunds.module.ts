@@ -1,9 +1,10 @@
-import { Status } from "./status.module";
-import { StepField } from "./stepField.module";
+import { Status } from './status.module';
+import { StepField } from './stepField.module';
 
 export interface TaxRefunds {
   idClient: string;
   idEmploye: string;
+  idUser: string;
   year: string;
   date: Date;
   stepsList: StepField[];
