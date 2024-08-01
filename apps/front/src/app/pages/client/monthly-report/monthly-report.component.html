@@ -1,3 +1,27 @@
+<p-button (onClick)="showDialog()" label="חדש" />
+<p-dialog header="יצירת דוח חדש" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-dropdown
+        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="years"
+        [(ngModel)]="createdYear"
+        placeholder="בחירת שנה"
+          [editable]="true"
+           optionLabel="yearNum"
+           ></p-dropdown>
+    </div>
+    <div class="flex align-items-center gap-3 mb-5">
+        <p-dropdown
+        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="months"
+        [(ngModel)]="createdMonth"
+        placeholder="בחירת חודש"
+          [editable]="true"
+           ></p-dropdown>
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="ביטול" severity="secondary" (onClick)="visible = false" />
+        <p-button label="שמור" (onClick)="visible = false;onSubmit()" />
+    </div>
+</p-dialog>
 <div >
     <p-dropdown [options]="years"
      [(ngModel)]="selectedYear"
@@ -34,8 +58,8 @@
         </ng-template>
         <ng-template pTemplate="body" let-fieldBymonth>
             <th><div class="text-center">{{fieldBymonth.value}}</div>
-                <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" value="{{fieldBymonth.content}}" />
-                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" />
+                <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" [(ngModel)]="fieldBymonth.content" />
+                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" [(ngModel)]="fieldBymonth.content" />
             </th>
         </ng-template>
 </p-table>
@@ -44,31 +68,6 @@
 
 
 
-<p-button (onClick)="showDialog()" label="Show" />
-<p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-    <span class="p-text-secondary block mb-5">Update your information.</span>
-    <div class="flex align-items-center gap-3 mb-3">
-        <p-dropdown id="year" formControlName="year"
-        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="years"
-        [(ngModel)]="selectedYear"
-        placeholder="בחירת שנה"
-          [editable]="true"
-           optionLabel="yearNum"
-           ></p-dropdown>
-    </div>
-    <div class="flex align-items-center gap-3 mb-5">
-        <p-dropdown id="month" formControlName="month"
-        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="months"
-        [(ngModel)]="selectedMonth"
-        placeholder="בחירת חודש"
-          [editable]="true"
-           ></p-dropdown>
-    </div>
-    <div class="flex justify-content-end gap-2">
-        <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
-        <p-button label="Save" (onClick)="visible = false;onSubmit()" />
-    </div>
-</p-dialog>
     <!-- <form [formGroup]="yearlyReportForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <p-dropdown id="year" formControlName="year"

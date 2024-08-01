@@ -18,7 +18,6 @@ import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputOtpModule } from 'primeng/inputotp';
 import { Status } from '../../../_models/status.module';
-import { StatusService } from '../../../_services/status.service';
 
   @Component({
     selector: 'app-monthly-report',
@@ -51,7 +50,6 @@ import { StatusService } from '../../../_services/status.service';
     constructor(private monthlyReportService: MonthlyReportService,
       private yearService: YearService,
       private route: ActivatedRoute,private router: Router,
-      private statusService: StatusService
     ) {
       this.currentRoute = this.route.snapshot.url.join('/');
       console.log('Current route path:', this.currentRoute);
@@ -68,16 +66,6 @@ import { StatusService } from '../../../_services/status.service';
         },
       },
       );
-      this.statusService.getAllStatuses().subscribe({
-        next: (data) => {
-          this.statuses = data;
-  
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      },
-      );
       if (this.currentRoute === "allClientMonthlyReport") {
         this.getMonthlyReports();
       }
@@ -87,8 +75,10 @@ import { StatusService } from '../../../_services/status.service';
       }
     years: Year[] = [];
     selectedYear: Year;
+    createdYear: Year;
     months: string[] = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
     selectedMonth: any;
+    createdMonth: any;
     allMonthlyReportsClient: MonthlyReport[] | undefined;
     client: Client;
     clientId: string;
@@ -141,7 +131,7 @@ import { StatusService } from '../../../_services/status.service';
       console.log(this.steps, 'steps');
     }
     changeDate() {
-      console.log(this.selectedMonth, this.selectedYear);
+      console.log(this.createdMonth, this.createdYear);
       if (this.currentRoute === "allClientMonthlyReport") {
         this.myReport = this.allMonthlyReports.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum))[0];
       }
@@ -154,8 +144,8 @@ import { StatusService } from '../../../_services/status.service';
       }
     }
 
-      onSubmit(){
-        this.monthlyReportService.createMonthlyReport({reportDate:new Date(`${this.selectedYear.yearNum}-${this.selectedMonth}-01`), idUser:this.clientId,idEmploye:this.clientId, monthlyReportFields:this.fieldBymonths,status:this.statuses[0]})
+      onSubmit(){        
+        this.monthlyReportService.createMonthlyReport({reportDate:new Date(`${this.createdYear.yearNum}-${this.createdMonth}-01`), idUser:this.clientId,idEmploye:this.clientId, monthlyReportFields:[],status:[]})
         .subscribe({
           next: (data) => {
             console.log('Monthly report created successfully', data);
