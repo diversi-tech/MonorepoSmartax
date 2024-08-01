@@ -46,10 +46,6 @@ COPY --from=builder /app/dist /app/dist
 COPY package*.json ./
 RUN npm install --only=production
 
-COPY service-account.json ./
-
-COPY .env ./
-
 # Starting the application
 CMD ["node", "dist/server/main.js"] 
  # Updated path to main.js
