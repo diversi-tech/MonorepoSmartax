@@ -1,6 +1,5 @@
-<div class="card flex justify-content-center">
-    <!-- <p-button label="show"></p-button><br> -->
-    <p-button (click)="showDialog()" label="צור שדה חדש" />
+<div>
+    <button pButton  (click)="showDialog()" label="צור שדה חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
 
     <p-dialog header="ערוך שדה" [modal]="true" [(visible)]="visible" [style]="{ width: '20 rem' ,height: '400px' }">
         <app-custom-field (closePopup)="onClosePopup()"></app-custom-field>
@@ -8,9 +7,9 @@
 
     <p-confirmDialog header="מחיקה סופית" icon="pi pi-exclamation-triangle" [visible]="vD">
         <p-footer>
-            <button type="button" pButton icon="pi pi-times" label="ביטול" class="p-button-text"
+            <button type="button" pButton icon="pi pi-times" label="ביטול" class="p-button-text p-button-raised p-button-rounded"
                 (click)="cancelDelete()"></button>
-            <button type="button" pButton icon="pi pi-check" label="מחיקה" class="p-button-text"
+            <button type="button" pButton icon="pi pi-check" label="מחיקה" class="p-button-text p-button-raised p-button-rounded"
                 (click)="confirmDelete()"></button>
         </p-footer>
     </p-confirmDialog>
@@ -20,7 +19,7 @@
             <tr>
                 <th>שם השדה</th>
                 <th>סוג השדה</th>
-                <td></td>
+                <th></th>
             </tr>
         </ng-template>
 
@@ -28,10 +27,10 @@
             <tr (click)="selectCurrentField(field)" [ngClass]="{ 'highlight': currentField === field }">
                 <td>{{field.key}}</td>
                 <td>{{field.type}}</td>
-                <!-- <td><p-button styleClass="dbtn" severity="danger" (click)="deletepopup(field._id)"> 
+                <!-- <td><button pButton  styleClass="dbtn" severity="danger" (click)="deletepopup(field._id)"> 
                 <span class="px-3">מחק</span> 
                 <i class="pi pi-trash"></i>
-            </p-button></td> -->
+            </button ></td> -->
                 <td>
                     <button *ngIf="currentField === field" pButton
                         class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"

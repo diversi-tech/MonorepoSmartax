@@ -20,7 +20,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
 import { NgIf, NgFor, NgStyle, NgClass, DatePipe } from '@angular/common';
 import { SidebarModule } from 'primeng/sidebar';
-import { ButtonDirective, Button } from 'primeng/button';
+import { Button, ButtonDirective, ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -51,6 +51,7 @@ import { Router, RouterLink } from '@angular/router';
     NgClass,
     ToastModule,
     DatePipe,
+    ButtonModule,
   ],
 })
 export class TaskManagementComponent implements OnInit {

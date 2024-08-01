@@ -23,12 +23,12 @@
     margin-left: 10px; /* מרווח משמאל */
   }
   
-  .home-link .p-button {
+  .home-link .button  {
     color: #ffffff;
     font-weight: bold;
   }
   
-  .home-link .p-button:hover {
+  .home-link .button :hover {
     text-decoration: underline;
   }
   

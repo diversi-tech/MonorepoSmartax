@@ -12,9 +12,8 @@
           <div class="p-field p-mb-3">
             <label for="searchName" class="form-label">נושא שיחה</label>
             <p-autoComplete [(ngModel)]="selectedCallTopic" [suggestions]="filteredCallTopic"
-              (completeMethod)="filterByNameCallTopic($event.query)" [minLength]="1"
-              placeholder="Search callTopics" field="name" [dropdown]="true" (onSelect)="select($event)"
-              [style]="{width: '100%'}" required>
+              (completeMethod)="filterByNameCallTopic($event.query)" [minLength]="1" placeholder="Search callTopics"
+              field="name" [dropdown]="true" (onSelect)="select($event)" [style]="{width: '100%'}" required>
               <ng-template let-callTopicSchema pTemplate="item">
                 <div class="p-d-flex p-ai-center">{{ callTopicSchema.name }}
                   <ng-container *ngIf="is">
@@ -31,14 +30,14 @@
           </div>
           <div class="p-field mb-5">
             <label for="status" class="form-label">סוג שיחה</label>
-            <p-dropdown [options]="statusOptions" [(ngModel)]="newCommunication.Status" name="status" [style]="{width: '100%'}"
-              appendTo="body" required>
+            <p-dropdown [options]="statusOptions" [(ngModel)]="newCommunication.Status" name="status"
+              [style]="{width: '100%'}" appendTo="body" required>
             </p-dropdown>
           </div>
-            <button type="submit" pButton label="יצירת שיחה" icon="pi pi-check"  class="mb-2"
-            [disabled]="!createForm.form.valid"></button>
-            <button type="button" pButton label="ביטול" icon="pi pi-times"
-              (click)="onClose()"></button>
+          <button pButton label="אישור" icon="pi pi-check" class= "p-button-text p-button-raised p-button-rounded"
+            [disabled]="!createForm.form.valid" [style]="{width: '8rem'}"></button>
+          <button pButton label="ביטול" icon="pi pi-times" (click)="onClose()" [style]="{width: '8rem'}"
+            class="p-m p-button-text p-button-raised p-button-rounded"></button>
         </form>
       </div>
     </div>

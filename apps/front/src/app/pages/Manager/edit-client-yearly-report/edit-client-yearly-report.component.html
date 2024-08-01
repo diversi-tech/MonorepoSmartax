@@ -4,8 +4,7 @@
 
 <!-- כפתור הוספה -->
 <div class="mb-3">
-    <button pButton pRipple type="button" label="הוספת רשומה חדשה" icon="pi pi-plus" (click)="showAddDialog()">
-    </button>
+    <button pButton pRipple type="button" label="הוספת רשומה חדשה" icon="pi pi-plus" (click)="showAddDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
 </div>
 
 <!-- דיאלוג הוספה -->
@@ -24,8 +23,8 @@
     </div>
     <br><br><br>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" label="Add" (click)="addStep()"></button>
-        <button type="button" pButton icon="pi pi-times" label="Cancel" (click)="hideAddDialog()"></button>
+        <button type="button" pButton icon="pi pi-check" label="Add" (click)="addStep()" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <button type="button" pButton icon="pi pi-times" label="Cancel" (click)="hideAddDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
     </p-footer>
 </p-dialog>
 

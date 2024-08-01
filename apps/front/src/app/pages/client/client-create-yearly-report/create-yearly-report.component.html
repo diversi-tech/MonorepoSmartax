@@ -28,7 +28,7 @@
           <div class="p-d-flex p-ai-center">
             שנת  {{ yearname.yearNum}}
             <ng-container *ngIf="is">
-              <button type="button" pButton class="p-ml-2" (click)="add()">רוצה להוסיף שנה </button>
+              <button type="button" pButton class= "p-button-text p-button-raised p-button-rounded" (click)="add()">רוצה להוסיף שנה </button>
             </ng-container>
           </div>
         </ng-template>
@@ -62,6 +62,6 @@
       </div>
     </div>
 
-    <button type="submit" pButton label="Submit" class="custom-button"></button>
+    <button type="submit" pButton label="אישור " class= "p-button-text p-button-raised p-button-rounded"></button>
   </form>
 </div>
