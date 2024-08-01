@@ -355,7 +355,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   // app.use(cors())
   app.enableCors({
-    origin: 'http://localhost:4200',
+    // origin: 'http://localhost:4200',
+    origin: 'https://monoreposmartax-fronted.onrender.com',
     credentials: true,
   });
   // קבע את הנתיב לתיקיית התמונות הציבורית
