@@ -20,3 +20,4 @@ Thumbs.db
 *.env
 *.local
 # קבצים ספציפיים של NX
+package-lock.json
