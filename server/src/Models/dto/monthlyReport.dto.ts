@@ -29,6 +29,11 @@ export class CreateMonthlyReportDto  {
     @IsNotEmpty()
     monthlyReportFields: StepFieldMonth[];
 
+    @Prop()
+    @ApiProperty()
+    @IsNotEmpty()
+    status: Status[];
+
 }
 
 export class UpdateMonthlyReportDto  {
@@ -57,5 +62,5 @@ export class UpdateMonthlyReportDto  {
     @Prop()
     @ApiProperty()
     @IsNotEmpty()
-    status: Status;
+    status: Status[];
 }

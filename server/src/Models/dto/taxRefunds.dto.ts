@@ -57,7 +57,7 @@ export class CreateTaxRefundsDto  {
     @Prop()
     @ApiProperty()
     @IsNotEmpty()
-    status: Status;
+    status: Status[];
 
 
 }
@@ -93,7 +93,7 @@ export class UpdateTaxRefundsDto  {
     @Prop()
     @ApiProperty()
     @IsNotEmpty()
-    status: Status;
+    status: Status[];
      
    
 

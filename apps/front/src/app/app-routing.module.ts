@@ -18,7 +18,7 @@ import { AuthGuard } from './auth.guard';
 import { ClientSearchComponent } from './pages/client/client-search/client-search.component';
 import { ClientProfileComponent } from './pages/client/client-profile/client-profile.component';
 import { ReportsComponent } from './reports/reports/reports.component';
-import { TaskReportComponent } from './task-report/task-report.component';
+import { TaskReportComponent } from './reports/task-report/task-report.component';
 import { EmployeesTableComponent } from './pages/employees-table/employees-table.component';
 // import { CommunicationClientComponent } from './pages/client/communication-client/communication-client.component';
 import { EditorComponent } from './editor/editor.component';
@@ -169,7 +169,7 @@ export const routes: Routes = [
       icon: icons.employees,
     },
   },
-  
+
 
   {
     path: '',
@@ -217,9 +217,29 @@ export const routes: Routes = [
           label: 'דוחות חודשיים',
           icon: icons.reports,
         },
-      }
-    ],
-      
+      },
+      {
+        path: 'allClientTaxRefunds',
+        component: TaxRefundsComponent,
+        data: {
+          authType: 6,
+          forToolbar: false,
+          label: 'החזרי מס/ שבח',
+          icon: icons.reports
+        },
+      },
+      {
+        path: 'allClientFinancialStatement',
+        component: FinancialStatementComponent,
+        data: {
+          authType: 6,
+          forToolbar: false,
+          label: ' הצהרות הון',
+          icon: icons.reports,
+        },
+      },
+      ],
+
   },
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
   { path: 'clientSearch', component: ClientSearchComponent, data: { authType: 6, forToolbar: true, label: 'לקוחות', icon: icons.clients } },
@@ -235,16 +255,14 @@ export const routes: Routes = [
       { path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent, },
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       { path: 'clientTasks', component: ClientTasksComponent, },
-      { path: 'payments', component: PaymentComponent,
-        children:[
+      {
+        path: 'payments', component: PaymentComponent,
+        children: [
           { path: 'billingHistory', component: BillingHistoryComponent },
           { path: 'paymentDetailsHistory', component: PaymentDetailsHistoryComponent },
           { path: 'addBilling', component: AddBillingComponent },
           { path: 'changeMainPayment', component: ChangeMainPaymentComponent },
           { path: 'addMorePaymentDetails', component: AddMorePaymentDetailsComponent }
-
-
-
 
         ]
       },

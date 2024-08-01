@@ -22,7 +22,7 @@ export class TaxRefunds extends Document {
     stepsList: StepField[]
    
     @Prop()
-    status: Status;
+    status: Status[];
    
 
     @Prop()
