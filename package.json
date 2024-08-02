@@ -39,7 +39,7 @@
     "@nestjs/schedule": "^4.1.0",
     "@nestjs/serve-static": "4.0.2",
     "@nestjs/swagger": "7.4.0",
-    "@nrwl/cli": "^15.9.3",
+    "@nrwl/cli": "^16.6.0",
     "@nrwl/jest": "19.5.1",
     "@nrwl/node": "19.5.1",
     "@nx/angular": "19.4.1",
