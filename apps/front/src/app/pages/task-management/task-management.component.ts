@@ -127,16 +127,15 @@ export class TaskManagementComponent implements OnInit {
   }
 
   searchTask(): void {
-    console.log(typeof this.searchTerm);
-
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
     } else {
-      this.filteredTasks = this.tasks.filter((task) =>
+      this.filteredTasks = this.tasks?.filter((task) =>
         {task!.taskName!=undefined?
         task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
        : false}
       );
+      alert(this.filteredTasks)
       console.log('filter: ', this.filteredTasks);
     }
   }
@@ -203,10 +202,10 @@ export class TaskManagementComponent implements OnInit {
   }
 
   searchTasks(event: any): void {
-    const query = event.query.toLowerCase().toLowerCase();
-    this.taskSuggestions = this.tasks
+    const query = event.query.toLowerCase();
+    this.taskSuggestions = this.tasks!
       .filter((task) =>
-        task.taskName.toLowerCase().includes(query.toLowerCase())
+        (task.taskName?.toLowerCase())?.includes(query.toLowerCase())
       )
       .map((task) => ({ taskName: task.taskName }));
   }

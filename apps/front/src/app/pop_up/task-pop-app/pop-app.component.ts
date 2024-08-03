@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule, DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { TaskComponent } from '../../task/task.component';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Footer, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonDirective, Button } from 'primeng/button';
@@ -52,20 +52,20 @@ export class PopAppComponent implements OnInit {
    @Input() parent: string | null = null;
  
   visible: boolean = true;
+  show = true
+
 
   create = false
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute ,private router:Router) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
 
     if (this.id == 'create') {
-      alert("יצירה בפופאפ")
       this.id == null
       this.create=true
     }
     else{
-      alert("עריכה בפופאפ")
       this.create = false
     }
 
@@ -77,5 +77,11 @@ export class PopAppComponent implements OnInit {
   showDialog() {
     this.visible = true;
   }
-  show = true
+
+  onDialogClose() {
+    this.visible = false;
+    this.router.navigate([`/taskSpe/${this.parent}`]);
+    
+  }
+
 }
