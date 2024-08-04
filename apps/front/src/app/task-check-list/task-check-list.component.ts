@@ -91,7 +91,7 @@ export class TaskCheckListComponent implements OnInit {
 
   deleteItem(_id: string): void {
     try {
-      if (_id!="1234") {
+      if (_id != "1234") {
         const index = this.checkList.items.findIndex(item => item._id === _id)
         if (index || index == 0) {
           this.checkList.items.splice(index, 1);
@@ -103,7 +103,7 @@ export class TaskCheckListComponent implements OnInit {
 
       }
       else {
-       this.editNewItem = false
+        this.editNewItem = false
       }
     } catch (err) {
       console.log(err);

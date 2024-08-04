@@ -14,11 +14,8 @@
     [enableService]="false" 
     [closable]="false" />
 
-
- 
-
  <br>
 <p *ngIf="v==true">חסרים פרטים</p>
-<p-button class="buttons"  id="fieldN" type="button" icon="pi pi-plus"
- label="הוסף" (click)="createField()"></p-button>
+<button pButton type="button" icon="pi pi-plus"
+ label="הוסף" (click)="createField()" class= "p-button-text p-button-raised p-button-rounded"></button >
 </div>

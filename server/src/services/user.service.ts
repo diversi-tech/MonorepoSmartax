@@ -39,11 +39,17 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<User> {
-    const user = await this.userModel.findById(id).exec();
-    if (!user) {
-      throw new ValidationException('User not found');
+    try {
+      const user = await this.userModel.findById(id).exec();
+      if (!user) {
+        throw new ValidationException('User not found');
+      }
+      return user;
+      
+    } catch (error) {
+      console.log(error);
+      
     }
-    return user;
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {

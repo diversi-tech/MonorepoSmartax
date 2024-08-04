@@ -7,7 +7,6 @@ import { AutoCompleteModule, AutoCompleteSelectEvent, } from 'primeng/autocomple
 import { NgClass, NgIf } from '@angular/common';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
-import { Button } from 'primeng/button';
 import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
@@ -17,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormControl, FormsModule } from '@angular/forms';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-client-search',
@@ -103,11 +103,11 @@ export class ClientSearchComponent implements OnInit {
     this.clientService.getAllClients().subscribe((clients) => {
       this.clients = clients;
       this.filteredClients = clients;
-     
+
     });
   }
 
-  
+
   selectClient(event: AutoCompleteSelectEvent): void {
     const client = event.value as Client;
     this.router.navigate(['/clientSearch/clientManagement'], { state: { client } });
@@ -131,7 +131,7 @@ export class ClientSearchComponent implements OnInit {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
         (client.firstName && client.firstName.toLowerCase().includes(query)) ||
-        (client.lastName && client.lastName.toLowerCase().includes(query)) 
+        (client.lastName && client.lastName.toLowerCase().includes(query))
       );
     }
     // this.selectedClient = null;
@@ -139,7 +139,7 @@ export class ClientSearchComponent implements OnInit {
 
   filterClientsBynamecom(): void {
     this.filteredClients = this.clients;
-    if (this.filternamecom != ""){
+    if (this.filternamecom != "") {
       this.filteredClients = this.clients.filter(client => client.companyName.includes(this.filternamecom));
     }
     else
@@ -185,7 +185,7 @@ export class ClientSearchComponent implements OnInit {
         this.choosedClients.splice(index, 1);
       }
     }
-    console.log(this.choosedClients, 'after update'); 
+    console.log(this.choosedClients, 'after update');
   }
 
   chooseAllClients(): void {
@@ -218,13 +218,8 @@ export class ClientSearchComponent implements OnInit {
 
   updateFavorite() {
     this.userService
-      .update(
-        this.user._id,
-        this.user.userName,
-        this.user.email,
-        this.user.passwordHash,
-        this.user.role,
-        this.user.favoritesClient
+      .update(this.user._id, this.user.userName, this.user.email, this.user.passwordHash,
+        this.user.role, this.user.favoritesClient
       )
       .subscribe({
         next: (response: any) => {
@@ -238,10 +233,12 @@ export class ClientSearchComponent implements OnInit {
 
   removeFromFavorite(client: Client) {
     this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
     this.updateFavorite();
   }
 
   addToFavorite(client: Client) {
+    this.user.favoritesClient.push(client._id);
     this.user.favoritesClient.push(client._id);
     this.updateFavorite();
   }
@@ -285,8 +282,8 @@ export class ClientSearchComponent implements OnInit {
     this.confirmationService.close();
   }
 
-  editClient(){
-      this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
+  editClient() {
+    this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
   }
 
   @HostListener('document:click')
@@ -296,7 +293,6 @@ export class ClientSearchComponent implements OnInit {
   }
 
   selectCurrentClient(client: Client) {
-    debugger
     this.currentClient = client;
   }
 

@@ -61,7 +61,7 @@ export class SocketService {
   taskConfirmed$ = this.taskConfirmedSource.asObservable();
 
   constructor() {
-    this.socket = io('http://192.168.174.1:3000');
+    this.socket = io('http://localhost:3000'); // Replace with your server URL
 
     this.socket.on('connect', () => {
       console.log('מחובר לשרת WebSocket');

@@ -3,7 +3,6 @@ import { Communication } from '../../../_models/communication.module';
 import { Client } from '../../../_models/client.module';
 import { DropdownModule } from 'primeng/dropdown';
 import { NgFor, NgIf, DatePipe, NgClass } from '@angular/common';
-import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TokenService } from '../../../_services/token.service';
 import { CommunicationService } from '../../../_services/communicaton.service';
@@ -13,6 +12,7 @@ import { ConfirmationService, SelectItem } from 'primeng/api';
 import { UserService } from '../../../_services/user.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-client-communication-logs',
@@ -54,6 +54,7 @@ export class ClientCommunicationLogsComponent {
   ) { }
 
   ngOnInit(): void {
+    debugger
     this.client = history.state.client;
     this.getCommunications();
     this.loadUsers();

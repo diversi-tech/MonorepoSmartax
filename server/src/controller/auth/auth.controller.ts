@@ -22,6 +22,7 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Email and password are required' })
   @ApiResponse({ status: 404, description: 'User not found' })
   async signin(@Body() loginDto: any) {
+    debugger
     try {
 
       const { email, passwordHash } = loginDto;
