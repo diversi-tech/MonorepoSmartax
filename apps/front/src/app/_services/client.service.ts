@@ -22,12 +22,14 @@ export class ClientService {
 
   // Create a new Client
   createClient(client: Client): Observable<Client> {
+
     return this.isIDExists(client).pipe(
       switchMap(exists => {
         if (exists) {
           return throwError(() => new Error('תעודת זהות כבר קיימת.'));
         } else {
           return this.http.post<Client>(`${this.apiUrl}`, client, this.httpOptions)
+          
             .pipe(
               catchError(this.handleError<Client>('updateClient'))
             );
