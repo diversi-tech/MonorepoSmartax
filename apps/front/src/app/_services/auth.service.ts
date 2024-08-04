@@ -4,7 +4,7 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { HashPasswordService } from '../_services/hash-password.service';
 import { AUTH_ENDPOINT } from '../api-urls';
 import { Role } from '../_models/role.module';
-import jwt_decode from 'jwt-decode'; // Correct import statement
+import jwt_decode from 'jwt-decode';// Correct import statement
 
 const httpOptions = {
   headers: new HttpHeaders({
