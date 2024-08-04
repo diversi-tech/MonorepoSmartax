@@ -91,6 +91,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddMorePaymentDetailsComponent } from './pages/client/addMorePaymentDetails/addMorePaymentDetails.component';
 import { CreateMonthlyReportComponent } from './pages/client/client-create-monthly-report/create-monthly-report.component';
 import { ClientCreateTaxRefunds } from './pages/client/client-create-tax-refunds/client-create-tax-refunds.component';
+import { EditMonthlyReportComponent } from './pages/Manager/edit-monthly-report/edit-monthly-report.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -314,7 +315,8 @@ export const routes: Routes = [
     path: 'manager', component: ManagerNavbarComponent, data: { authType: 3, forToolbar: true, icon: icons.manager, label: "מנהל" },
     children: [
       { path: 'editClientYearlyReport', component: EditClientYearlyReportComponent },
-      { path: 'editTaxRefuned', component: EditClientTaxRefunedComponent }
+      { path: 'editTaxRefuned', component: EditClientTaxRefunedComponent },
+      { path: 'editMonthlyReport', component: EditMonthlyReportComponent }
 
     ]
   },
