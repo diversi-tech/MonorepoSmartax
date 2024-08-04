@@ -3,8 +3,8 @@
 
   <!-- Existing buttons for check-in and check-out -->
   <div>
-    <p-button label="כניסה" icon="pi pi-sign-in" (click)="checkIn()"></p-button>
-    <p-button label="יציאה" icon="pi pi-sign-out" (click)="checkOut()"></p-button>
+    <button pButton label="כניסה" icon="pi pi-sign-in" (click)="checkIn()" class= "p-button-text p-button-raised p-button-rounded"></button >
+    <button pButton label="יציאה" icon="pi pi-sign-out" (click)="checkOut()" class= "p-button-text p-button-raised p-button-rounded"></button >
   </div>
 
   <!-- Table to display work logs -->
@@ -26,7 +26,7 @@
           <td>{{ logGroup.employeeId }}</td>
           <td>{{ logGroup.totalHoursWorked ? logGroup.totalHoursWorked.toFixed(2) : '---' }}</td>
           <td>
-            <p-button icon="pi pi-plus" (click)="logGroup.expanded = !logGroup.expanded"></p-button>
+            <button pButton  class="pi pi-plus p-button-outlined p-button-rounded p-button-info" (click)="logGroup.expanded = !logGroup.expanded"></button >
           </td>
         </tr>
         <tr *ngIf="logGroup.expanded">
@@ -71,11 +71,11 @@
       </div>
     </div>
     <p-footer>
-      <p-button label="שמירה" icon="pi pi-check" (click)="saveEditedWorkLog()"></p-button>
-      <p-button label="ביטול" icon="pi pi-times" (click)="cancelEdit()"></p-button>
+      <button pButton  label="שמירה" icon="pi pi-check" (click)="saveEditedWorkLog()"></button >
+      <button pButton  label="ביטול" icon="pi pi-times" (click)="cancelEdit()"></button >
     </p-footer>
   </p-dialog>
 
-  <!-- Export to Excel button -->
-  <p-button label="ייצוא לאקסל" icon="pi pi-file-excel" (click)="exportToExcel()"></p-button>
+  <!-- Export to Excel p-button-->
+  <button pButton  label="ייצוא לאקסל" icon="pi pi-file-excel" (click)="exportToExcel()" class= "p-button-text p-button-raised p-button-rounded"></button >
 </div>

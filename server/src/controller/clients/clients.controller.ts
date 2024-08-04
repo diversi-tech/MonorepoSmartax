@@ -15,10 +15,7 @@ export class ClientController {
 
     constructor(private readonly clientService: ClientService) { }
     // @UseGuards(AuthGuard, RoleGuard(3))
-    @Post()
-    async createClient(@Body(new ValidationPipe()) createClientDto: CreateClientDto): Promise<Client> {
-        return await this.clientService.createClient(createClientDto);
-    }
+    
     // @UseGuards(AuthGuard, RoleGuard(3))
     @Get()
     async getAllClients(): Promise<Client[]> {
@@ -31,6 +28,12 @@ export class ClientController {
         return await this.clientService.searchClient(body.id);
     }
     // @UseGuards(AuthGuard, RoleGuard(3))
+    @Post()
+    @ApiBody({ type: CreateClientDto })
+    async createClient(@Body() createClientDto: CreateClientDto): Promise<Client> {
+        console.log("controller",createClientDto);
+        return await this.clientService.createClient(createClientDto);
+    }
     @Put()
     @ApiBody({ type: UpdateClientDto })
     async updateClient(@Body() updateClientDto: UpdateClientDto): Promise<Client> {
