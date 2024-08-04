@@ -9,6 +9,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-edit-client-yearly-report',
   standalone: true,
@@ -98,12 +99,12 @@ export class EditClientYearlyReportComponent implements OnInit {
 
   update(step: StepField) {
     if (step.value.length < 2) {
-      alert('הפירוט חייב להיות לפחות 2 תווים.');
+      Swal.fire('Error', 'מינימום 2 תווים', 'error');
       return;
     }
 
     if (step.stepNumber < 1 || step.stepNumber > 5) {
-      alert('מספר השלב חייב להיות בטווח 1 עד 5.');
+      Swal.fire('Error', '.מספר השלב חייב להיות בטווח 1 עד 5', 'error');
       return;
     }
 
@@ -140,4 +141,6 @@ export class EditClientYearlyReportComponent implements OnInit {
   selectStepField(stepField: StepField) {
     this.currentStepField = stepField;
   }
+
+  
 }

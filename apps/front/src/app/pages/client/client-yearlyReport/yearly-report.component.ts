@@ -80,12 +80,8 @@ filterToDoWithBalanceDue2(): void {
   this.filterallYearlyReport = this.allYearlyReport
 }
   filterByStatus(event: Event): void { 
-    // שמירה על כל הדוחות
     this.filterallYearlyReport = this.allYearlyReport;
-
-    // קבלת הערך הנבחר
     this.filterstatus = (event.target as HTMLSelectElement).value;
-    // סינון על פי הסטטוס שנבחר
     if (this.filterstatus === "TO DO" || this.filterstatus === "IN PROGRESS") {
         this.filterallYearlyReport = this.allYearlyReport.filter(report => 
             report.status.name === this.filterstatus

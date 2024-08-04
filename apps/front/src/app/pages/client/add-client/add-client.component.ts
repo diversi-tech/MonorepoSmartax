@@ -214,13 +214,13 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
             Swal.fire('Success', 'לקוח עודכן בהצלחה', 'success');
             this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
           } else {
-            Swal.fire('Error', 'Invalid client', 'error');
+            Swal.fire('Error', 'לקוח לא תקין', 'error');
           }
           this.close.emit();
         },
         error => {
           console.error('Error updating client:', error);
-          Swal.fire('Error', `Failed to update client: ${error.message}`, 'error');
+          Swal.fire('Error', `:נכשל ביצירת לקוח ${error.message}`, 'error');
         }
       );
     }
@@ -236,7 +236,7 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
         },
         error => {
           console.error('Error creating client:', error);
-          Swal.fire('Error', `Failed to create client: ${error.message}`, 'error');
+          Swal.fire('Error', `:נכשל ביצירת לקוח ${error.message}`, 'error');
         }
       );
     }
