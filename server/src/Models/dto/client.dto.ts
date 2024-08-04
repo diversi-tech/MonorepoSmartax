@@ -79,6 +79,10 @@ export class CreateClientDto {
     @ApiProperty({ example: ['<user_id_1>', '<user_id_2>'] })
     assignTo: User[];
 
+    @ApiProperty({ example: 1001 })
+    @IsOptional()
+    @IsNumber()
+    clientId?: string;
 
     @ApiProperty({ example: '1969-01-01' })
     @IsDateString()
