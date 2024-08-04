@@ -8,6 +8,8 @@ import { ButtonModule } from 'primeng/button';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-client',
@@ -87,14 +89,17 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   };
   isWorkData: boolean = false;
   form: FormGroup;
-  editingClient: Client | null = null; // משתנה לשמירת הלקוח שנערך
+  editingClient: Client | null = null; 
+  get VATFileNumber() { return this.form.get('VATFileNumber'); }
+
 
   constructor(
     private formBuilder: FormBuilder,
     private clientService: ClientService,
     private tokenService: TokenService,
-    private router: Router, // הוספתי את Router
-    private route: ActivatedRoute // הוספתי את ActivatedRoute
+    private router: Router, 
+    private route: ActivatedRoute, 
+    private confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit() {
@@ -146,23 +151,19 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
       isPreferWhatsapp: [false]
     });
 
-    // בדיקה אם יש לקוח ב-state והגדרת קומפוננטת עריכה
-    // this.route.queryParams.subscribe(params => {
-    //   if (params['client']) {
-    //     this.editingClient = JSON.parse(params['client']);
-    //     this.populateForm(this.editingClient);
-    //   }
-    // });
+    
 
     if(history.state.client){
       this.editingClient= history.state.client
       this.populateForm(this.editingClient)
     }
+    else{
+      this.populateForm(this.newClient);
+    }
 
     this.onCHangeIsWorkData();
   }
 
-  get VATFileNumber() { return this.form.get('VATFileNumber'); }
 
   onCHangeIsWorkData(): void {
     this.isWorkData = this.contactForm.get('isWorkData')?.value;
@@ -199,42 +200,47 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   }
 
   sent() {
-    
-      if (this.editingClient) {
-        // עדכון לקוח קיים
-        const updatedClient = { ...this.editingClient, ...this.contactForm.value };
-        updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-        updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-        this.clientService.updateClient(updatedClient).subscribe(response => {
-          console.log('Client updated successfully:', response);
-          alert('לקוח עודכן בהצלחה');
-          this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
-
-          this.close.emit();
-        });
-      } 
-      else {
-
-        // יצירת לקוח חדש
-        this.savedData = this.contactForm.value;
-        console.log("saveData",this.savedData)
-
-        this.newClient =  {...this.newClient,...this.savedData}  ;
-        console.log("in submit",this.newClient)
-
-        this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-        // this.newClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-        console.log("newClient",this.newClient);
-
-        this.clientService.createClient(this.newClient.client).subscribe(response => {
-          if(response){
-            console.log('Client created successfully:', response);
-            alert('לקוח נוצר בהצלחה');
+    if(this.contactForm.valid) {
+    if (this.editingClient) {
+      console.log('update client');
+      const updatedClient = { ...this.editingClient, ...this.contactForm.value };
+      updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+      updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
+  
+      this.clientService.updateClient(updatedClient).subscribe(
+        response => {
+          if (response?._id) {
+            console.log('Client updated successfully:', response);
+            Swal.fire('Success', 'לקוח עודכן בהצלחה', 'success');
+            this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
+          } else {
+            Swal.fire('Error', 'Invalid client', 'error');
           }
           this.close.emit();
-        });
-      
+        },
+        error => {
+          console.error('Error updating client:', error);
+          Swal.fire('Error', `Failed to update client: ${error.message}`, 'error');
+        }
+      );
     }
+     else {
+  
+      this.clientService.createClient(this.newClient).subscribe(
+        response => {
+          if (response) {
+            console.log('Client created successfully:', response);
+            Swal.fire('Success', 'לקוח נוצר בהצלחה', 'success');
+          }
+          this.close.emit();
+        },
+        error => {
+          console.error('Error creating client:', error);
+          Swal.fire('Error', `Failed to create client: ${error.message}`, 'error');
+        }
+      );
+    }
+  }
   }
 
   onClose() {
@@ -245,5 +251,7 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
     //return to last page
     window.history.back();
   }
+ 
+  
   
 }

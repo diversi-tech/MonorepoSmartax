@@ -59,6 +59,8 @@
       <div class="form-group">
         <label for="dateOfBirth">:תאריך לידה</label>
         <input type="date" id="dateOfBirth" formControlName="dateOfBirth" class="form-control">
+        <div *ngIf="contactForm.get('dateOfBirth')?.errors?.['required']" class="red"> ערך חובה</div>
+
       </div>
 
       <div class="form-group">
@@ -220,8 +222,8 @@
 
   </div>
   <!-- <button type="submit" (click)="sent()">שלח</button> -->
-  <p-button label="ביטול" icon="pi pi-undo" [text]="true" [raised]="true" severity="danger" (click)="cancel()" />
-  <p-button label="אישור" icon="pi pi-check" [text]="true" [raised]="true" (click)="sent()" />
+  <button pButton label="ביטול" icon="pi pi-undo" severity="danger" (click)="cancel()" class="p-button-text p-button-raised p-button-rounded"></button>
+  <button pButton label="אישור" icon="pi pi-check" (click)="sent()" class= "p-button-text p-button-raised p-button-rounded"></button>
   <br>
   <br>
 

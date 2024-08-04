@@ -1,8 +1,4 @@
-th,td {
-    text-align: center;
-  }
-
-  /* Add to your component's CSS file */
+@import '../../../styles.css';
 
 .clickable:hover {
   color: rgb(61, 61, 249);

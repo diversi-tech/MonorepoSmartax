@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Client } from '../../../_models/client.module';
-import { Button } from 'primeng/button';
 import {  RouterLink, RouterLinkActive, RouterOutlet, RouterModule, Router } from '@angular/router';
 import { ClientProfileComponent } from '../client-profile/client-profile.component';
+import { Button } from 'primeng/button';
 
 @Component({
     // standalone:true,
