@@ -94,7 +94,6 @@
       <div>
         <div *ngIf="filteredTasks.length == 0">
           <div *ngFor="let status of statuses">
-            <tr [value]="condition ? 'value1' : 'value2'"></tr>
             <p-panel *ngIf="categorizeTasks(status).length != 0" header="{{ status.name }}">
               <p-table *ngIf="categorizeTasks(status).length != 0"
                 [value]="categorizeTasks(status).length != 0 ? categorizeTasks(status) : filteredTasks ">
