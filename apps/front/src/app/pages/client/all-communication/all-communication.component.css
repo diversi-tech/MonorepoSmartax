@@ -1,12 +1,6 @@
-.highlight {
-  background-color: #edecec;
-}
+@import '../../../../styles.css';
 
-th, td {
-  text-align: center;
-}
-
-.p-button-rounded {
-  border-radius: 20%;
-  margin: 1%;
+:host ::ng-deep input {
+  width: 8rem;
+  height: 2rem;
 }

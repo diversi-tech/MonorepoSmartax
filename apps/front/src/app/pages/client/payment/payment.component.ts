@@ -13,12 +13,13 @@ import { PaymentDetailsHistoryComponent } from "../payment-details-history/payme
 import { AddBillingComponent } from "../addBilling/addBilling.component";
 import { AddMorePaymentDetailsComponent } from "../addMorePaymentDetails/addMorePaymentDetails.component";
 import { ChangeMainPaymentComponent } from "../changeMainPayment/changeMainPayment.component";
+import { Button } from 'primeng/button';
 
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [CommonModule, DataViewModule, TabViewModule, RouterLinkActive, RouterOutlet, RouterModule, BillingHistoryComponent, PaymentDetailsHistoryComponent, AddBillingComponent, AddMorePaymentDetailsComponent, ChangeMainPaymentComponent],
+  imports: [CommonModule, DataViewModule, Button, TabViewModule, RouterLinkActive, RouterOutlet, RouterModule, BillingHistoryComponent, PaymentDetailsHistoryComponent, AddBillingComponent, AddMorePaymentDetailsComponent, ChangeMainPaymentComponent],
   providers: [PaymentService, ClientService, RouterLink],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css',
