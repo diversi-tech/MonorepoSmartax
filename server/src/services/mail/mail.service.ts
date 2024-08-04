@@ -60,7 +60,7 @@ export class MailService {
 }
 
 // pack
-{
+// {
   //   "name": "@monorepo-smartax/source",
   //   "homepage": "https://monoreposmartax-fronted.onrender.com",
   //   "version": "0.0.0",
