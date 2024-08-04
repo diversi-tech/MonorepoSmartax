@@ -36,11 +36,13 @@ export class FinancialStatementService {
     }
 
     // Get all financial statements for a specific client (filtered on the client side)
-    getFinancialStatementsForClient(clientId: string): Observable<FinancialStatement[]> {
+    getFinancialStatementsForClient(clientId: any): Observable<FinancialStatement[]> {
+        debugger
         return this.getAllFinancialStatements().pipe(
-            map(statements => statements.filter(statement => statement.client.tz === clientId)),
+            map(statements => statements.filter(statement =>( statement.client === clientId))),
             catchError(this.handleError<FinancialStatement[]>('getFinancialStatementsForClient', []))
         );
+        debugger
     }
 
     // Update an existing financial statement

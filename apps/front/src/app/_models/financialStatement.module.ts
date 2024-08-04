@@ -5,6 +5,7 @@ import { User } from "./user.module";
 import { Year } from "./year.module";
 
 export interface FinancialStatement {
+    _id?: string;
     isInterested: boolean;
     client: Client;
     assignee: User[];
