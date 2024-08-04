@@ -21,39 +21,23 @@ export class BillingHistoryComponent implements OnInit {
   payment: Payment;
   constructor(private paymentService: PaymentService, private billingService: BillingService) { }
   ngOnInit(): void {
-    console.log("paymentId " + history.state.client.payment);
-
-
     this.paymentService.getPayment(history.state.client.payment).subscribe(
       s => {
         this.payment = s,
-          console.log(this.payment._id);
-
-        console.log(this.payment);
-        console.log('arr: ');
-        console.log(this.payment.billingHistory);
-        this.allBillings = this.payment.billingHistory
-
+          this.allBillings = this.payment.billingHistory
       },
       f => {
-        console.log(f),
-          console.log('נפל בחיפוש החשבונית');
+        console.log('נפל בחיפוש החשבונית');
       }
     )
-
-
   }
+
   changeIsReturned(billing: Billing) {
-    console.log("click on changeIsReturned ");
-    
-    console.log("start changeIsReturned "+ billing._id);
-    
     this.paymentService.updateBillingStatus(this.payment._id, billing._id, !billing.ifRreturn).subscribe(
-      s =>{ console.log(s);
-        this.ngOnInit() 
+      s => {
+        this.ngOnInit()
 
       },
       f => console.log(f))
   }
-
 }

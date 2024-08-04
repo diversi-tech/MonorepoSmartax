@@ -4,7 +4,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { Client } from '../../../_models/client.module';
 import { PrimeTemplate, SelectItem } from 'primeng/api';
 import { Communication } from '../../../_models/communication.module';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { CommunicationService } from '../../../_services/communicaton.service';
 import { UserService } from '../../../_services/user.service';
 import { callTopicSchema } from '../../../_models/callTopic.module';
@@ -20,21 +20,20 @@ import { ButtonModule } from 'primeng/button';
 
 
 @Component({
-    // standalone:true,
-    selector: 'app-client-add-communication',
-    templateUrl: './client-add-communication.component.html',
-    styleUrl: './client-add-communication.component.css',
-    standalone: true,
-    imports: [FormsModule, DropdownModule,
-      AutoCompleteModule,
-      PrimeTemplate,
-      NgIf,
-      TableModule,
-      AddClientComponent,
-      RouterOutlet,
-      DialogModule,
-      ButtonModule
-    ],
+  selector: 'app-client-add-communication',
+  templateUrl: './client-add-communication.component.html',
+  styleUrl: './client-add-communication.component.css',
+  standalone: true,
+  imports: [FormsModule, DropdownModule,
+    AutoCompleteModule,
+    PrimeTemplate,
+    NgIf,
+    TableModule,
+    AddClientComponent,
+    RouterOutlet,
+    DialogModule,
+    ButtonModule
+  ],
 })
 export class ClientAddCommunicationComponent implements OnInit {
   client: Client | null = null;
@@ -45,18 +44,18 @@ export class ClientAddCommunicationComponent implements OnInit {
     summary: '',
     assignedTo: null,
     Status: false,
-    Subject:""
+    Subject: ""
   };
-  thisSubject="";
-  thisSubject2="";
+  thisSubject = "";
+  thisSubject2 = "";
   formattedDate: string = '';
   isSelected: number;
-  selectedCallTopic: callTopicSchema| null = null;
+  selectedCallTopic: callTopicSchema | null = null;
   filteredCallTopic: callTopicSchema[] = [];
   callTopics: callTopicSchema[];
-  callTopics2: callTopicSchema[]=[{name:"לא נמצא"}];
+  callTopics2: callTopicSchema[] = [{ name: "לא נמצא" }];
   is: boolean = false;
-  newcallTopicSchema: callTopicSchema={ name:"" };
+  newcallTopicSchema: callTopicSchema = { name: "" };
   displayDialog: boolean = true;
   @Output() close = new EventEmitter<void>();
   statusOptions = [
@@ -64,9 +63,11 @@ export class ClientAddCommunicationComponent implements OnInit {
     { label: 'מעקב', value: false }
   ];
 
-  constructor(private router: Router, private communicationService: CommunicationService, private userService: UserService,
-    private calltopicservice : CallTopicService,private tokenService: TokenService,
-
+  constructor(
+    private communicationService: CommunicationService,
+    private userService: UserService,
+    private calltopicservice: CallTopicService,
+    private tokenService: TokenService,
   ) { }
 
   ngOnInit(): void {
@@ -76,43 +77,46 @@ export class ClientAddCommunicationComponent implements OnInit {
     this.loadUsers();
     this.getCallTopics();
   }
- getCallTopics(): void {
+
+  getCallTopics(): void {
     this.calltopicservice.getAll().subscribe(callTopic => {
       this.callTopics = callTopic
-      this.filteredCallTopic= callTopic ;
+      this.filteredCallTopic = callTopic;
     });
   }
+
   private formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
+
   onStatusChange(statusValue: any) {
-    if(statusValue=="0: true")
-    this.newCommunication.Status = true;
+    if (statusValue == "0: true")
+      this.newCommunication.Status = true;
   }
+
   setTodayDate(): void {
     this.newCommunication.date = new Date();
     this.formattedDate = this.formatDate(this.newCommunication.date);
   }
 
   createCommunication(): void {
-    this.newCommunication.Subject=this.thisSubject;
-    this.newCommunication.assignedTo=this.tokenService.getCurrentDetail("_id");
-    console.log('Creating communication:', this.newCommunication);
+    this.newCommunication.Subject = this.thisSubject;
+    this.newCommunication.assignedTo = this.tokenService.getCurrentDetail("_id");
     this.communicationService.createCommunication(this.newCommunication)
       .subscribe(
         (newCommunication: Communication) => {
-          console.log('Communication created:', newCommunication);
           this.resetForm();
         },
         error => {
           console.error('Error creating communication:', error);
         }
       );
-      this.close.emit();
+    this.close.emit();
   }
+
   private resetForm(): void {
     this.newCommunication = {
       client: this.client?._id ?? '',
@@ -120,7 +124,7 @@ export class ClientAddCommunicationComponent implements OnInit {
       summary: '',
       assignedTo: null,
       Status: false,
-      Subject : ""
+      Subject: ""
     };
     this.formattedDate = this.formatDate(this.newCommunication.date);
   }
@@ -134,43 +138,40 @@ export class ClientAddCommunicationComponent implements OnInit {
         }));
       });
   }
-  add(){
-    this.newcallTopicSchema.name=this.thisSubject2
+
+  add() {
+    this.newcallTopicSchema.name = this.thisSubject2
     this.calltopicservice.createCallTopic(this.newcallTopicSchema).subscribe(response => {
-      this.callTopics.push(response); 
-      alert( response.name+" "+"נוסף בהצלחה")
-       // הוספת הנושא החדש לרשימה המקומית
+      this.callTopics.push(response);
+      alert(response.name + " " + "נוסף בהצלחה")
     });
   }
+
   filterByNameCallTopic(value: string): void {
-  
     if (value != "") {
-      this.is=false
+      this.is = false
       const query = value.toLowerCase();
-      this.filteredCallTopic = this.callTopics.filter(callTopic => 
+      this.filteredCallTopic = this.callTopics.filter(callTopic =>
         callTopic.name.toLowerCase().includes(query.toLowerCase())
       );
-      if(this.filteredCallTopic.length==0)
-        {
-          this.filteredCallTopic=this.callTopics2
-          this.thisSubject2=value
-          this.is=true;
-          
-        }
+      if (this.filteredCallTopic.length == 0) {
+        this.filteredCallTopic = this.callTopics2
+        this.thisSubject2 = value
+        this.is = true;
+      }
     }
-    else
-    {
-      this.is=false
+    else {
+      this.is = false
       this.filteredCallTopic = this.callTopics;
     }
     this.selectedCallTopic = null;
-    
+
   }
-  select(event:  AutoCompleteSelectEvent): void {
-      const callTopic = event.value as callTopicSchema;
-      this.thisSubject=callTopic.name
-    }
-    onClose() {
-      this.close.emit();
-    }
+  select(event: AutoCompleteSelectEvent): void {
+    const callTopic = event.value as callTopicSchema;
+    this.thisSubject = callTopic.name
+  }
+  onClose() {
+    this.close.emit();
+  }
 }

@@ -35,7 +35,6 @@ export class TaskService {
 
   // Search for a Client by ID
   searchTask(id: string): Observable<Task> {
-    console.log("id in FE"+id );
     return this.http.post<Task>(`${this.apiUrl}/findOne`, { id }, this.httpOptions)
       .pipe(
         catchError(this.handleError<Task>('findOne'))
@@ -43,7 +42,6 @@ export class TaskService {
   }
 
   getTasksByClientId(clientId: string): Observable<Task[]> {
-    console.log("clientId in FE"+clientId);
     return this.http.post<Task[]>(`${this.apiUrl}/by-client`, { clientId }, this.httpOptions)
       .pipe(
         catchError(this.handleError<Task[]>('getTasksByClientId', []))
@@ -74,9 +72,4 @@ export class TaskService {
       return of(result as T); // Return default result to keep the app running
     };
   }
-
-  // 
-  
-
-
 }

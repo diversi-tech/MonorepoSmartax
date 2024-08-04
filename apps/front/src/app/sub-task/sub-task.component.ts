@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Footer, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { ButtonDirective, Button, ButtonModule } from 'primeng/button';
+import { ButtonDirective, ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -20,16 +20,16 @@ import { SidebarModule } from 'primeng/sidebar';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { IconProfileComponent } from '../share/icon-profile/icon-profile.component';
-import { TaskComponent } from '../task/task.component';
 import { DialogModule } from 'primeng/dialog';
-import { setTimeout } from 'timers/promises';
-import { error } from 'console';
+
 
 @Component({
   selector: 'app-sub-task',
   standalone: true,
-  imports: [ConfirmDialogModule, RouterLink, RouterOutlet,
-    // TaskComponent,
+  imports: [
+    ConfirmDialogModule,
+    RouterLink,
+    RouterOutlet,
     DialogModule,
     Footer,
     ButtonDirective,
@@ -56,7 +56,9 @@ import { error } from 'console';
   templateUrl: './sub-task.component.html',
   styleUrl: './sub-task.component.css',
 })
+
 export class SubTaskComponent implements OnInit {
+
   marginStyles = { 'margin-right': '10%' };
   newList: boolean = false;
   tagSuggestions: Tag[] = [];
@@ -72,7 +74,11 @@ export class SubTaskComponent implements OnInit {
   @Input()
   task: Task | null
 
-  constructor(private tagService: TagService, private taskService: TaskService, private statusService: StatusService) { }
+  constructor(
+    private tagService: TagService,
+    private taskService: TaskService,
+    private statusService: StatusService
+  ) { }
 
   ngOnInit() {
     if (this.parentId)
@@ -93,19 +99,14 @@ export class SubTaskComponent implements OnInit {
             this.statusService.getAllStatuses().subscribe({
               next: (data) => {
                 this.statuses = data;
-
               }
             })
           })
-
         },
         error: (err) => {
-          console.log(err);
           alert(err)
         }
       })
-
-
   }
 
   confirmDelete(task: Task) {
@@ -138,7 +139,6 @@ export class SubTaskComponent implements OnInit {
               resolve(true);
             },
             error: (err) => {
-              console.log(err);
               resolve(false)
             }
           });
@@ -156,14 +156,9 @@ export class SubTaskComponent implements OnInit {
           }
         })
       } catch (err) {
-        // console.log(err);
-
       }
     }
-    return currentTasks
-    // return this.tasks.filter((task) => {
-    //   { return task.status && task.status.name === status.name; }
-    // });
+    return currentTasks;
   }
 
   sortTasks(field: string, list: Task[], reverse: boolean) {

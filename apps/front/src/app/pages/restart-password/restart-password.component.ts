@@ -8,12 +8,16 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 @Component({
-    selector: 'app-restart-password',
-    templateUrl: './restart-password.component.html',
-    styleUrl: './restart-password.component.css',
-    standalone: true,
-    imports: [FormsModule, NgClass]
+  selector: 'app-restart-password',
+  templateUrl: './restart-password.component.html',
+  styleUrl: './restart-password.component.css',
+  standalone: true,
+  imports: [
+    FormsModule,
+    NgClass
+  ]
 })
+
 export class RestartPasswordComponent {
   form: any = {
     password: null,
@@ -23,31 +27,24 @@ export class RestartPasswordComponent {
   isLoginFailed = false;
   errorMessage = '';
   email: string = '';
-  // roles: string[] = [];
 
-
-  constructor(private storageService: StorageService,
+  constructor(
     private userService: UserService,
     private router: Router,
-    private tokenService:TokenService,
-    private routeActive: ActivatedRoute,) { }
+    private routeActive: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    // if (this.storageService.isLoggedIn()) {
-    //   this.isLoggedIn = true;
-    // }
     this.email = this.routeActive.snapshot.paramMap.get('email')!;
-    console.log(this.email)
   }
 
   onSubmit(): void {
-
     if (this.form.password !== this.form.passwordAuthentication) {
       this.isLoginFailed = true;
       this.errorMessage = "הסיסמאות אינן תואמות";
     }
     else {
-      this.userService.changPassword(this.form.password,this.email).subscribe(
+      this.userService.changPassword(this.form.password, this.email).subscribe(
         success => {
           Swal.fire({
             icon: 'success',

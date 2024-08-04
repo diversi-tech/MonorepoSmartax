@@ -53,7 +53,6 @@ export class CreatePaymentComponent implements OnInit {
 
   setForm() {
     if (this.type === 'edit' && history.state.client.payment) {
-
       this.paymentService.searchPayment(history.state.client.payment).subscribe(
         suc => {
           this.thisPayment = suc;
@@ -99,7 +98,6 @@ export class CreatePaymentComponent implements OnInit {
               },
               err => console.log(err)
             );
-
             this.setForm()
           },
           err => console.log(err)
@@ -121,14 +119,12 @@ export class CreatePaymentComponent implements OnInit {
       ).subscribe(
         suc => {
           this.newPaymentDetails = suc
-          console.log(suc);
           this.paymentService.createPayment(
             this.newPaymentDetails,
             this.payment.totalPayment,
             this.payment.paymentMethod
           ).subscribe(
             sucs => {
-              console.log(sucs);
               this.newPayment = sucs
             },
             erro => console.log(erro)

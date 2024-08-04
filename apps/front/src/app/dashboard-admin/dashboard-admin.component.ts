@@ -91,7 +91,6 @@ export class DashboardAdminComponent implements OnInit {
   getAllTasks() {
     this.taskService.getAllTasks().subscribe((data: any) => {
       this.tasks = data;
-      console.log(data);
       this.filterTasks();
       this.chartTasks();
     });
@@ -99,21 +98,18 @@ export class DashboardAdminComponent implements OnInit {
   getStatuses() {
     this.statusService.getAllStatuses().subscribe((data: any) => {
       this.statuses = data;
-      console.log(data);
     });
   }
 
   getAllUsers() {
     this.userService.getAllUsers().subscribe((data: any) => {
       this.users = data;
-      console.log(data);
     });
   }
 
   getAllMeets() {
     this.meetService.getAllMeetings().subscribe((data: any) => {
       this.meets = data;
-      console.log(data);
       this.todayMeet();
     });
   }
@@ -121,7 +117,6 @@ export class DashboardAdminComponent implements OnInit {
   getAllClients() {
     this.clientService.getAllClients().subscribe((data: any) => {
       this.clients = data;
-      console.log(data);
     });
   }
 
@@ -221,14 +216,6 @@ export class DashboardAdminComponent implements OnInit {
     this.data = {
       labels: months,
       datasets: [
-        // {
-        //     label: 'Dataset 1',
-        //     fill: false,
-        //     borderColor: documentStyle.getPropertyValue('--blue-500'),
-        //     yAxisID: 'y',
-        //     tension: 0.4,
-        //     data: [65, 59, 80, 81, 56, 55, 10]
-        // },
         {
           label: 'סך חודשי',
           fill: false,
@@ -287,7 +274,7 @@ export class DashboardAdminComponent implements OnInit {
     };
   }
 
-  // פונקציה שמחזירה את כל החודשים מתחילת השנה ועד החודש הנוכחי
+  // A function that returns all the months from the beginning of the year to the current month
   getMonthsUntilCurrent() {
     const months = [
       'January',
@@ -304,7 +291,7 @@ export class DashboardAdminComponent implements OnInit {
       'December',
     ];
     const now = new Date();
-    const currentMonth = now.getMonth(); // החודש הנוכחי (0-11)
+    const currentMonth = now.getMonth(); 
 
     return months.slice(0, currentMonth + 1);
   }
@@ -422,8 +409,6 @@ export class DashboardAdminComponent implements OnInit {
     }, {});
 
     this.groupedWorkLogs = Object.values(grouped);
-    console.log(this.groupedWorkLogs);
-    //
     this.bestUsers();
   }
 
@@ -432,8 +417,6 @@ export class DashboardAdminComponent implements OnInit {
       (a, b) => b.totalHoursWorked - a.totalHoursWorked
     );
     this.bestUser = this.groupedWorkLogs.slice(0, 3);
-    console.log(this.bestUser);
-
     this.valueUser1 = [
       {
         label: 'שעות עבודה',

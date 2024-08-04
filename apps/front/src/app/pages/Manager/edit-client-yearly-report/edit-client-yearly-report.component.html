@@ -9,14 +9,14 @@
 </div>
 
 <!-- דיאלוג הוספה -->
-<p-dialog header="Add New Step" [(visible)]="displayAddDialog" modal="modal" [style]="{'width': '300px'}">
+<p-dialog header="הוסף שלב חדש" [(visible)]="displayAddDialog" modal="modal" [style]="{'width': '300px'}">
     <div class="p-fluid">
         <div class="p-field">
-            <label for="value">Value</label>
+            <label for="value">פירוט</label>
             <input id="value" type="text" pInputText [(ngModel)]="newStepValue" />
         </div>
         <div class="p-field">
-            <label for="stepNumber">Step Number</label>
+            <label for="stepNumber">מספר שלב</label>
             <p-dropdown id="stepNumber" [options]="numberOptions" [(ngModel)]="newStepStepNumber"
                 placeholder="Select a step number">
             </p-dropdown>
@@ -24,8 +24,8 @@
     </div>
     <br><br><br>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" label="Add" (click)="addStep()"></button>
-        <button type="button" pButton icon="pi pi-times" label="Cancel" (click)="hideAddDialog()"></button>
+        <button type="button" pButton icon="pi pi-check" label="הוספה" (click)="addStep()"></button>
+        <button type="button" pButton icon="pi pi-times" label="ביטול" (click)="hideAddDialog()"></button>
     </p-footer>
 </p-dialog>
 

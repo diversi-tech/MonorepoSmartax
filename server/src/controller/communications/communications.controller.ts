@@ -1,18 +1,20 @@
 import { Controller, Post, Body, UseFilters, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { CommunicationsService } from '../../services/communication.service';
 import { CreateCommunicationDto, UpdateCommunicationDto } from '../../Models/dto/communication.dto';
 import { Communication } from '../../Models/communication.model';
 import { HttpErrorFilter } from '../../common/filters/http-error.filter';
-import { CommunicationArchive } from 'server/src/Models/communicationArchive.model';
 import { RoleGuard } from 'server/src/guards/role.guard';
 import { AuthGuard } from 'server/src/guards/auth.guard';
 
 @ApiTags('communications')
 @Controller('communications')
 @UseFilters(HttpErrorFilter)
+
 export class CommunicationsController {
+
     constructor(private readonly communicationsService: CommunicationsService) { }
+
     // @UseGuards(AuthGuard, RoleGuard(3))
     @Post('create')
     @ApiOperation({ summary: 'Create a new communication' })

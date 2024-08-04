@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule, DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { TaskComponent } from '../../task/task.component';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
@@ -20,8 +20,10 @@ import { IconProfileComponent } from '../../share/icon-profile/icon-profile.comp
 @Component({
   selector: 'app-pop-app',
   standalone: true,
-  imports: [ConfirmDialogModule, RouterLink, RouterOutlet,
-    // TaskComponent,
+  imports: [
+    ConfirmDialogModule,
+    RouterLink,
+    RouterOutlet,
     DialogModule,
     Footer,
     ButtonDirective,
@@ -42,15 +44,18 @@ import { IconProfileComponent } from '../../share/icon-profile/icon-profile.comp
     NgStyle,
     NgClass,
     ToastModule,
-    DatePipe, TaskComponent],
+    DatePipe,
+    TaskComponent
+  ],
   templateUrl: './pop-app.component.html',
   styleUrl: './pop-app.component.css',
 })
+
 export class PopAppComponent implements OnInit {
 
   id: string | null
-   @Input() parent: string | null = null;
- 
+  @Input() parent: string | null = null;
+
   visible: boolean = true;
 
   create = false
@@ -62,9 +67,9 @@ export class PopAppComponent implements OnInit {
     if (this.id == 'create') {
       alert("יצירה בפופאפ")
       this.id == null
-      this.create=true
+      this.create = true
     }
-    else{
+    else {
       alert("עריכה בפופאפ")
       this.create = false
     }

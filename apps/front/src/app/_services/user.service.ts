@@ -48,8 +48,6 @@ export class UserService {
       "email": email,
       "favoritesClient":favoritesClient
     }
-    console.log(user);
-
     return this.http.post(
       this.apiUrl + "/update",
       user,
@@ -89,8 +87,6 @@ export class UserService {
      return this.http.put<any>(this.apiUrl + '/changePassword', body)
   }
   deleteUser(id: string) {
-    console.log('delete user in service');
-
     return this.http.delete<any>(this.apiUrl + '/delete?id=' + id)
   }
 }

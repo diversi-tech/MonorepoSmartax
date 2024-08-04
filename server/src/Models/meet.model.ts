@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document, Types } from 'mongoose';
-// import { User } from '../Models/user.model';
+import { Document, Types } from 'mongoose';
 
 @Schema()
 export class Meet extends Document {

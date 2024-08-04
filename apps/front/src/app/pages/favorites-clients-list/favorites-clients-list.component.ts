@@ -22,7 +22,7 @@ import { ClientService } from '../../_services/client.service';
 export class FavoritesClientsListComponent implements OnInit {
 
   user: User;
-  favoriteClients: Client[]=[];
+  favoriteClients: Client[] = [];
 
   constructor(
     private tokenService: TokenService,
@@ -37,22 +37,21 @@ export class FavoritesClientsListComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.user = response;
-          console.log(this.user);
-          this.user.favoritesClient.forEach(c => {this.clientService.searchClient(c).subscribe
-            ({
-              next:(favoriteClients)=>{
-                console.log(favoriteClients);
-                
-                this.favoriteClients.push(favoriteClients);
-              }
-          })})
+          this.user.favoritesClient.forEach(c => {
+            this.clientService.searchClient(c).subscribe
+              ({
+                next: (favoriteClients) => {
+                  this.favoriteClients.push(favoriteClients);
+                }
+              })
+          })
         },
         error: (err) => {
           console.error('Error get current user', err);
         },
       });
   }
-  
+
   updateFavorite() {
     this.userService
       .update(
@@ -75,7 +74,7 @@ export class FavoritesClientsListComponent implements OnInit {
 
   removeFromFavorite(client: Client) {
     this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
-    this.favoriteClients= this.favoriteClients.filter(c=> c._id!= client._id);
+    this.favoriteClients = this.favoriteClients.filter(c => c._id != client._id);
     this.updateFavorite();
   }
 
@@ -84,5 +83,4 @@ export class FavoritesClientsListComponent implements OnInit {
       state: { client },
     });
   }
-
 }

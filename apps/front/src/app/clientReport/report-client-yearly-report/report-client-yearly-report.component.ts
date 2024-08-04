@@ -16,10 +16,18 @@ import { Router, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-report-client-yearly-report',
   standalone: true,
-  imports: [CommonModule, ButtonModule, RouterOutlet, TableModule, IconProfileComponent,InputTextModule],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    RouterOutlet,
+    TableModule,
+    IconProfileComponent,
+    InputTextModule
+  ],
   templateUrl: './report-client-yearly-report.component.html',
   styleUrls: ['./report-client-yearly-report.component.css'],
 })
+
 export class ReportClientYearlyReportComponent implements OnInit {
   allYearlyReport: YearlyReport[] = [];
   client: Client | null = null;
@@ -35,7 +43,7 @@ export class ReportClientYearlyReportComponent implements OnInit {
     private employeService: UserService,
     private clientService: ClientService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllYearlyReport();

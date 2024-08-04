@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Field } from '../_models/field.module';
-; // Update the path according to the location of your model
 
 @Injectable({
   providedIn: 'root'

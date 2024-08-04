@@ -10,12 +10,20 @@ import { TaxRefundsService } from '../../../_services/taxRefunds.service';
 @Component({
   selector: 'app-tax-refunds-steps',
   standalone: true,
-  imports: [CommonModule, StepperModule, ButtonModule, FormsModule],
+  imports: [
+    CommonModule,
+    StepperModule,
+    ButtonModule,
+    FormsModule
+  ],
   templateUrl: './tax-refunds-steps.component.html',
   styleUrl: './tax-refunds-steps.component.css',
 })
+
 export class TaxRefundsStepsComponent {
-  constructor(private taxRefundsService: TaxRefundsService) {}
+
+  constructor(private taxRefundsService: TaxRefundsService) { }
+
   tasksStep: StepField[] = [];
   responseData: any;
   allSteps: StepField[] = [];
@@ -24,6 +32,7 @@ export class TaxRefundsStepsComponent {
   changes: { [key: string]: boolean } = {};
   client: Client;
   stepNumbers: number[] = [];
+
   ngOnInit() {
     this.responseData = history.state.data;
     this.client = history.state.client;
@@ -40,7 +49,6 @@ export class TaxRefundsStepsComponent {
       this.stepsByNumber[stepNumber].push(step);
     });
     this.stepNumbers = this.getStepNumbers();
-
   }
 
   getStepByNumber(stepNumber: number) {
@@ -50,8 +58,8 @@ export class TaxRefundsStepsComponent {
     return Object.keys(this.stepsByNumber).map(Number);
   }
 
-  isStepComplete(stepNumber: number): boolean {    
-    return this.getStepByNumber(stepNumber).every((task) => task.isCompleted==true);
+  isStepComplete(stepNumber: number): boolean {
+    return this.getStepByNumber(stepNumber).every((task) => task.isCompleted == true);
   }
   isStepBeginned(stepNumber: number): boolean {
     return (
@@ -70,8 +78,6 @@ export class TaxRefundsStepsComponent {
     }
   }
   async submitChanges() {
-    console.log('Submitting changes:', this.changes);
-
     for (const taskId in this.changes) {
       const taskIndex = this.responseData.stepsList.findIndex(
         (t) => t._id === taskId
@@ -81,13 +87,11 @@ export class TaxRefundsStepsComponent {
           this.changes[taskId];
       }
     }
-
     try {
       const response = await this.taxRefundsService.updateTaxRefunds(
         this.responseData._id,
         this.responseData
       );
-      console.log('response from server', response);
       alert('Successful update response');
       this.responseData = response;
       this.changes = {};

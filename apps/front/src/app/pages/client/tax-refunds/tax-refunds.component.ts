@@ -30,7 +30,8 @@ export class TaxRefundsComponent {
     private taxRefundsService: TaxRefundsService,
     private userService: UserService,
     private router: Router
-  ) {}
+  ) { }
+
   client: Client;
   allTaxRefunds: TaxRefunds[] | null;
   allEmploye: User[];
@@ -40,8 +41,6 @@ export class TaxRefundsComponent {
   ngOnInit(): void {
     this.client = history.state.client;
     this.getTaxRefundsForClient();
-    console.log('report after', this.allTaxRefunds);
-
     this.userService.getAllUsers().subscribe(
       (Employes) => {
         this.allEmploye = Employes;
@@ -56,7 +55,6 @@ export class TaxRefundsComponent {
     this.taxRefundsService.getTaxRefundsForClient(clientId).subscribe(
       (reports) => {
         this.allTaxRefunds = reports;
-        console.log('report', this.allTaxRefunds);
       },
       (error) => {
         console.error('Error fetching yearly reports for client', error);
@@ -66,8 +64,8 @@ export class TaxRefundsComponent {
   getEmployeName(idEmploye: string): any {
     return this.allEmploye.find((x) => x._id == idEmploye);
   }
- 
-   goToSteps(task: any) {    
+
+  goToSteps(task: any) {
     this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });
   }
 

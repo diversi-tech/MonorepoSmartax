@@ -12,14 +12,9 @@ export class MonthlyReportService {
     constructor(@InjectModel('MonthlyReport') private readonly MonthlyReportModel: Model<MonthlyReport>) {}
 
     async createMonthlyReport(createMonthlyReportDto: CreateMonthlyReportDto): Promise<MonthlyReport> {
-        // const allStepFields = await this.stepFieldModel.find().exec();
-        // const filteredStepFields = allStepFields.filter(stepField => stepField.type === 'החזרי מס');
-                  
         const createdMonthlyReport = new this.MonthlyReportModel({
              ...createMonthlyReportDto,
-        //      stepsList: filteredStepFields,
-         });
-                  
+         });       
        return createdMonthlyReport.save();
     }
                   
@@ -28,13 +23,11 @@ export class MonthlyReportService {
       const updatedMonthlyReport = await this.MonthlyReportModel.findByIdAndUpdate(
         id,
         updateMonthlyReportDto,
-        // { new: true }
       ).exec();
   
       if (!updatedMonthlyReport) {
         throw new NotFoundException('monthly report not found');
       }
-  
       return updatedMonthlyReport.save();
     }
 
@@ -48,6 +41,4 @@ export class MonthlyReportService {
     async getAllMonthlyReport(): Promise<MonthlyReport[]> {
       return this.MonthlyReportModel.find().exec();
     }
-
-
 }

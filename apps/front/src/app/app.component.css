@@ -1,4 +1,4 @@
-body {
+/* body {
     text-align: right;
     direction: rtl;
     background-color: chartreuse;
@@ -8,14 +8,14 @@ body {
     margin-top: 15rem;
 }
 
-:host {
+:host { */
     /* margin-top: 10%;
     font-size: 3.5rem;
     padding: 0.6rem 2.5rem 0.6rem 2.5rem; */
     /* color: brown; */
-    text-align: right;
+    /* text-align: right;
     font-family: "Inter var", sans-serif;
-}
+} */
 
 /* .smarttax-logo {
     width: 200px; 
@@ -28,7 +28,7 @@ body {
     text-indent: -9999px; 
   } */
 
-:host ::ng-deep .smartaxToolbar{
+/* :host ::ng-deep .smartaxToolbar{
     position: fixed;
     top: 0;
     left: 0;
@@ -36,6 +36,6 @@ body {
     z-index: 1000;
 }
 
-
+ */
 
 

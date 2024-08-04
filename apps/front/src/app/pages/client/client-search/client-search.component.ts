@@ -40,7 +40,9 @@ import { FormControl, FormsModule } from '@angular/forms';
     NgClass,
   ],
 })
+
 export class ClientSearchComponent implements OnInit {
+
   filterNumber: string = '';
   filterTZ: string = '';
   isSelected: number = 0;
@@ -49,7 +51,6 @@ export class ClientSearchComponent implements OnInit {
   filteredClients: Client[] = [];
   searchName = new FormControl('');
   selectedClient: Client | null = null;
-  // displayDialog: boolean = false;
   choosedClients: Client[] = [];
   user: User;
   isChoosedAllClient: boolean = false;
@@ -88,7 +89,7 @@ export class ClientSearchComponent implements OnInit {
     this.filteredClients.sort((a, b) => {
       const nameA = `${a.firstName} ${a.lastName}`;
       const nameB = `${b.firstName} ${b.lastName}`;
-      return nameA.localeCompare(nameB, 'he'); // מיון לפי א' עד ת'
+      return nameA.localeCompare(nameB, 'he');
     });
   }
 
@@ -96,22 +97,21 @@ export class ClientSearchComponent implements OnInit {
     this.filteredClients.sort((a, b) => {
       const nameA = `${a.firstName} ${a.lastName}`;
       const nameB = `${b.firstName} ${b.lastName}`;
-      return nameB.localeCompare(nameA, 'he'); // מיון לפי ת' עד א'
+      return nameB.localeCompare(nameA, 'he');
     });
   }
+
   loadAllClients(): void {
     this.clientService.getAllClients().subscribe((clients) => {
       this.clients = clients;
       this.filteredClients = clients;
-     
+
     });
   }
 
-  
   selectClient(event: AutoCompleteSelectEvent): void {
     const client = event.value as Client;
     this.router.navigate(['/clientSearch/clientManagement'], { state: { client } });
-
   }
 
   selectClientFromList(client: Client): void {
@@ -121,7 +121,6 @@ export class ClientSearchComponent implements OnInit {
   }
 
   onSelectionChange(a: any) {
-    // const selectedValue = (event.target as HTMLSelectElement).value;
     this.isSelected = Number(a);
     this.filteredClients = this.clients;
   }
@@ -131,15 +130,14 @@ export class ClientSearchComponent implements OnInit {
       const query = value.toLowerCase();
       this.filteredClients = this.clients.filter(client =>
         (client.firstName && client.firstName.toLowerCase().includes(query)) ||
-        (client.lastName && client.lastName.toLowerCase().includes(query)) 
+        (client.lastName && client.lastName.toLowerCase().includes(query))
       );
     }
-    // this.selectedClient = null;
   }
 
   filterClientsBynamecom(): void {
     this.filteredClients = this.clients;
-    if (this.filternamecom != ""){
+    if (this.filternamecom != "") {
       this.filteredClients = this.clients.filter(client => client.companyName.includes(this.filternamecom));
     }
     else
@@ -167,14 +165,8 @@ export class ClientSearchComponent implements OnInit {
   }
 
   addNewClient() {
-    console.log("in")
-    // this.displayDialog = true;
     this.router.navigate(['addClient'])
   }
-
-  // closeDialog() {
-  //   this.displayDialog = false;
-  // }
 
   updateChoosedClients(client: Client, isChecked: boolean) {
     if (isChecked && !this.choosedClients.includes(client)) {
@@ -185,7 +177,6 @@ export class ClientSearchComponent implements OnInit {
         this.choosedClients.splice(index, 1);
       }
     }
-    console.log(this.choosedClients, 'after update'); 
   }
 
   chooseAllClients(): void {
@@ -207,13 +198,12 @@ export class ClientSearchComponent implements OnInit {
   }
 
   isFavoriteClient(client: Client) {
-    return this.user.favoritesClient.find(c => c=== client._id) != undefined;
+    return this.user.favoritesClient.find(c => c === client._id) != undefined;
   }
 
   addFavoritesClient() {
     this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)).map(c => c._id));
     this.updateFavorite();
-    console.log(this.user.favoritesClient, 'after add favorite');
   }
 
   updateFavorite() {
@@ -248,7 +238,7 @@ export class ClientSearchComponent implements OnInit {
 
   showConfirmationDelete(): void {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this clients?',
+      message: '?האם אתה בטוח שברצונך למחוק לקוח זה',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       key: "delete"
@@ -278,15 +268,14 @@ export class ClientSearchComponent implements OnInit {
         error: (err) => console.error('Error deleting client: ', err),
       });
     }
-
   }
 
   cancelDelete(): void {
     this.confirmationService.close();
   }
 
-  editClient(){
-      this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
+  editClient() {
+    this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
   }
 
   @HostListener('document:click')
@@ -296,8 +285,6 @@ export class ClientSearchComponent implements OnInit {
   }
 
   selectCurrentClient(client: Client) {
-    debugger
     this.currentClient = client;
   }
-
 }

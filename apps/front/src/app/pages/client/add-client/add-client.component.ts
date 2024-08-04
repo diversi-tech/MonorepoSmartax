@@ -7,7 +7,7 @@ import { TokenService } from '../../../_services/token.service';
 import { ButtonModule } from 'primeng/button';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-client',
@@ -38,9 +38,9 @@ import { ActivatedRoute, Router } from '@angular/router';
     ]),
   ],
   standalone: true,
-  imports: [DialogModule, FormsModule, ReactiveFormsModule, NgIf,ButtonModule],
+  imports: [DialogModule, FormsModule, ReactiveFormsModule, NgIf, ButtonModule],
 })
-export class AddClientComponent implements OnInit { // הוספתי implements OnInit
+export class AddClientComponent implements OnInit {
   contactForm!: FormGroup;
   displayDialog: boolean = true;
   @Output() close = new EventEmitter<void>();
@@ -61,7 +61,6 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
     encryptedPasswords: [],
     comments: '',
     lastUserUpdate: {
-      // _id: '',
       userName: '',
       email: '',
       passwordHash: '',
@@ -87,15 +86,14 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   };
   isWorkData: boolean = false;
   form: FormGroup;
-  editingClient: Client | null = null; // משתנה לשמירת הלקוח שנערך
+  editingClient: Client | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private clientService: ClientService,
     private tokenService: TokenService,
-    private router: Router, // הוספתי את Router
-    private route: ActivatedRoute // הוספתי את ActivatedRoute
-  ) {}
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.contactForm = this.formBuilder.group({
@@ -146,16 +144,8 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
       isPreferWhatsapp: [false]
     });
 
-    // בדיקה אם יש לקוח ב-state והגדרת קומפוננטת עריכה
-    // this.route.queryParams.subscribe(params => {
-    //   if (params['client']) {
-    //     this.editingClient = JSON.parse(params['client']);
-    //     this.populateForm(this.editingClient);
-    //   }
-    // });
-
-    if(history.state.client){
-      this.editingClient= history.state.client
+    if (history.state.client) {
+      this.editingClient = history.state.client
       this.populateForm(this.editingClient)
     }
 
@@ -199,51 +189,35 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   }
 
   sent() {
-    
-      if (this.editingClient) {
-        // עדכון לקוח קיים
-        const updatedClient = { ...this.editingClient, ...this.contactForm.value };
-        updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-        updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-        this.clientService.updateClient(updatedClient).subscribe(response => {
-          console.log('Client updated successfully:', response);
-          alert('לקוח עודכן בהצלחה');
-          this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
 
-          this.close.emit();
-        });
-      } 
-      else {
-
-        // יצירת לקוח חדש
-        this.savedData = this.contactForm.value;
-        console.log("saveData",this.savedData)
-
-        this.newClient =  {...this.newClient,...this.savedData}  ;
-        console.log("in submit",this.newClient)
-
-        this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-        // this.newClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-        console.log("newClient",this.newClient);
-
-        this.clientService.createClient(this.newClient.client).subscribe(response => {
-          if(response){
-            console.log('Client created successfully:', response);
-            alert('לקוח נוצר בהצלחה');
-          }
-          this.close.emit();
-        });
-      
+    if (this.editingClient) {
+      const updatedClient = { ...this.editingClient, ...this.contactForm.value };
+      updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+      updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
+      this.clientService.updateClient(updatedClient).subscribe(response => {
+        alert('לקוח עודכן בהצלחה');
+        this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
+        this.close.emit();
+      });
+    }
+    else {
+      this.savedData = this.contactForm.value;
+      this.newClient = { ...this.newClient, ...this.savedData };
+      this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+      this.clientService.createClient(this.newClient.client).subscribe(response => {
+        if (response) {
+          alert('לקוח נוצר בהצלחה');
+        }
+        this.close.emit();
+      });
     }
   }
 
   onClose() {
     this.close.emit();
   }
-  
+
   cancel() {
-    //return to last page
     window.history.back();
   }
-  
 }

@@ -13,7 +13,6 @@ import { InputOtpModule } from 'primeng/inputotp';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { DialogModule } from 'primeng/dialog';
 import { Location } from '@angular/common';
@@ -39,10 +38,10 @@ import { TableModule } from 'primeng/table';
     ReactiveFormsModule,
     DialogModule,
     InputNumberModule,
-      AutoCompleteModule,
-      PrimeTemplate,
-      TableModule,
-      RouterOutlet
+    AutoCompleteModule,
+    PrimeTemplate,
+    TableModule,
+    RouterOutlet
   ],
   templateUrl: './create-yearly-report.component.html',
   styleUrl: './create-yearly-report.component.css',
@@ -50,7 +49,9 @@ import { TableModule } from 'primeng/table';
 @Injectable({
   providedIn: 'root', // Ensure it's provided in root or a specific module
 })
+
 export class CreateYearlyReportComponent implements OnInit {
+
   displayModal: boolean = false;
   yearlyReportForm: FormGroup;
   userId: string; // Assuming the client ID is passed via the state
@@ -75,6 +76,7 @@ export class CreateYearlyReportComponent implements OnInit {
   thisSubject2="";
   is: boolean=false;
   thisSubject="";
+
   constructor(
     private fb: FormBuilder,
     private stepFieldsService: stepFieldService,
@@ -82,7 +84,6 @@ export class CreateYearlyReportComponent implements OnInit {
     private yearService: YearService,
     private tokenService: TokenService,
     private router: Router,
-    private route: ActivatedRoute,// Inject ActivatedRoute
     private location: Location,
     private statusService: StatusService ,
 
@@ -93,10 +94,8 @@ export class CreateYearlyReportComponent implements OnInit {
   loadData() {
     this.yearService.getAllYear().subscribe({
       next: (data) => {
-        console.log(data);
         this.yearList = data;
         this.yearList2 = data;
-
       },
       error: (error) => {
         console.log(error);
@@ -115,19 +114,14 @@ export class CreateYearlyReportComponent implements OnInit {
     this.userId = this.tokenService.getCurrentDetail('_id');
     this.client = history.state.client;
     this.reportToUpdate = history.state.report || null;
-    console.log('client', this.client);
-    console.log('user', this.userId);
-    console.log('reportToUpdate', this.reportToUpdate);
   }
 
   showModalDialog() {
     this.displayModal = true;
-
   }
 
   hideModalDialog() {
     this.displayModal = false;
-
   }
 
   ngOnInit(): void {
@@ -136,7 +130,6 @@ export class CreateYearlyReportComponent implements OnInit {
       price: ['', Validators.required],
       paymentAmountPaid: ['', Validators.required],
       balanceDue: ['', Validators.required],
-      // status: ['', Validators.required],
     });
     if (this.reportToUpdate) {
       this.yearlyReportForm.patchValue({
@@ -152,13 +145,11 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   onSubmit() {
-   
     this.formSubmitted = true;
     if (this.yearlyReportForm.valid) {
       const yearlyReport = this.yearlyReportForm.value;
       yearlyReport.yearReport=this.thisSubject
       // const status =  this.determineStatus();
-
       if (this.reportToUpdate) {
         const status =  this.determineStatus();
         this.updateYearlyReport(yearlyReport,status);
@@ -168,12 +159,10 @@ export class CreateYearlyReportComponent implements OnInit {
     }
     this.hideModalDialog(); //
     // this.location.back();
-
   }
 
   determineStatus(): Status {
     const stepsList = this.reportToUpdate ? this.reportToUpdate.stepsList : [];
-
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
 
@@ -187,8 +176,6 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   createYearlyReport(yearlyReport: any) {
-    
-    console.log('yearlyReport', yearlyReport);
     yearlyReport.status = this.statusList.find(s => s.name == 'TO DO') || null;
     const yearly: YearlyReport = {
       idClient: this.client._id,
@@ -206,12 +193,10 @@ export class CreateYearlyReportComponent implements OnInit {
 
     this.yearlyReportService.createYearlyReport(yearly).subscribe(
       (response) => {
-        console.log("response", response);
         this.router.navigate(
           ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
           {
             state: { data: response, client: this.client },
-
           });
       },
       (error) => {
@@ -238,7 +223,6 @@ export class CreateYearlyReportComponent implements OnInit {
           console.log(response);
           if (response)
             this.location.back();
-
         },
         (error) => {
           console.log(error);
@@ -249,7 +233,6 @@ export class CreateYearlyReportComponent implements OnInit {
     this.location.back();
   }
   filterByyear(value: string): void {
-   console.log(this.yearList2,'2')
     if (value != "") {
       this.is=false
       const query = value.toLowerCase();
@@ -266,7 +249,6 @@ export class CreateYearlyReportComponent implements OnInit {
     else
     {
       this.is=false
-      console.log(this.yearList,'1')
       this.yearList2 = this.yearList;
     }
     this.selectedyear = null;

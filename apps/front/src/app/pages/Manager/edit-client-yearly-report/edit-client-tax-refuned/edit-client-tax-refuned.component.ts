@@ -1,13 +1,11 @@
 import { Component, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EditClientYearlyReportComponent } from '../edit-client-yearly-report.component';
-
 import { stepFieldService } from '../../../../_services/step_field.service';
 import { StepField } from '../../../../_models/stepField.module';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown'; // ייבוא של קומפוננטת ה-Dropdown
+import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,13 +13,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-edit-client-tax-refuned',
   standalone: true,
-  imports: [CommonModule,TableModule, ToastModule, ButtonModule, ReactiveFormsModule, FormsModule,DialogModule,DropdownModule,InputTextModule],
+  imports: [
+    CommonModule,
+    TableModule,
+    ToastModule,
+    ButtonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    DialogModule,
+    DropdownModule,
+    InputTextModule
+  ],
   templateUrl: '../../edit-client-yearly-report/edit-client-yearly-report.component.html',
   styleUrl: '../../edit-client-yearly-report/edit-client-yearly-report.component.css',
 })
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class EditClientTaxRefunedComponent {
   allStepFields: StepField[] = [];
   filteredStepFields: StepField[] = [];
@@ -31,7 +41,7 @@ export class EditClientTaxRefunedComponent {
   newStepValue: string = '';
   newStepStepNumber: number = 1;
 
-  constructor(private stepFieldService: stepFieldService) {}
+  constructor(private stepFieldService: stepFieldService) { }
 
   ngOnInit(): void {
     this.stepFieldService.getAllStepField().subscribe(
@@ -72,7 +82,7 @@ export class EditClientTaxRefunedComponent {
   }
 
   addStep(): void {
-    const newStep ={
+    const newStep = {
       value: this.newStepValue,
       stepNumber: this.newStepStepNumber,
       isCompleted: false,
