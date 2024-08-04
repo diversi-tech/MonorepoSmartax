@@ -343,11 +343,12 @@ export class DashboardAdminComponent implements OnInit {
   todayClient() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return this.clients.filter((item) => {
-      const itemDate = new Date(item.joinDate);
-      itemDate.setHours(0, 0, 0, 0);
-      return itemDate.getTime() === today.getTime();
-    }).length;
+    if (this.clients)
+      return this.clients.filter((item) => {
+        const itemDate = new Date(item.joinDate);
+        itemDate.setHours(0, 0, 0, 0);
+        return itemDate.getTime() === today.getTime();
+      }).length;
   }
 
   getWorkLogs() {

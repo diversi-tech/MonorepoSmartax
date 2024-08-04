@@ -9,10 +9,11 @@ label {
 }
 
 .card {
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
+  background-color: white;
   padding: 20px 25px 30px;
   margin: 0 auto 25px;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
@@ -52,4 +53,13 @@ app-forgot-password{
   text-align: center !important;
   vertical-align: middle  !important;
   direction: rtl;
+}
+body{
+  background-color: '#f5f5f5';
+}
+html{
+  background-color: '#f5f5f5';
+}
+.page-background {
+  background-color: #f5f5f5; /* צבע רקע אפור בהיר */
 }
