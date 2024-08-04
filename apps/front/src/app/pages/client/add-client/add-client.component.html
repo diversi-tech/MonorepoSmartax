@@ -59,6 +59,8 @@
       <div class="form-group">
         <label for="dateOfBirth">:תאריך לידה</label>
         <input type="date" id="dateOfBirth" formControlName="dateOfBirth" class="form-control">
+        <div *ngIf="contactForm.get('dateOfBirth')?.errors?.['required']" class="red"> ערך חובה</div>
+
       </div>
 
       <div class="form-group">
