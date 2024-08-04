@@ -1,14 +1,11 @@
 {
   "name": "@monorepo-smartax/source",
-  "homepage": "https://monoreposmartax-fronted.onrender.com",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "clean": "nx run-many --target=clean --all",
     "start:all": "concurrently \"nx serve front\" \"nx serve server\" \"nx serve api-gateway\" \"nx serve timesheet\"",
     "build:front": "npx nx build front --prod",
-    "start": "npx serve -s dist/apps/front -l $PORT",
-    "start:server": "node dist//server/main.js",
     "build:server": "npx nx build server --prod",
     "test:e2e": "nx test server-e2e --verbose",
     "test": "nx test"
@@ -39,7 +36,6 @@
     "@nestjs/schedule": "^4.1.0",
     "@nestjs/serve-static": "4.0.2",
     "@nestjs/swagger": "7.4.0",
-    "@nrwl/cli": "^16.6.0",
     "@nrwl/jest": "19.5.1",
     "@nrwl/node": "19.5.1",
     "@nx/angular": "19.4.1",
