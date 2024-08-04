@@ -90,6 +90,8 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   isWorkData: boolean = false;
   form: FormGroup;
   editingClient: Client | null = null; 
+  get VATFileNumber() { return this.form.get('VATFileNumber'); }
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -98,8 +100,6 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
     private router: Router, 
     private route: ActivatedRoute, 
     private confirmationService: ConfirmationService,
-
-
   ) {}
 
   ngOnInit() {
@@ -157,11 +157,13 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
       this.editingClient= history.state.client
       this.populateForm(this.editingClient)
     }
+    else{
+      this.populateForm(this.newClient);
+    }
 
     this.onCHangeIsWorkData();
   }
 
-  get VATFileNumber() { return this.form.get('VATFileNumber'); }
 
   onCHangeIsWorkData(): void {
     this.isWorkData = this.contactForm.get('isWorkData')?.value;
@@ -198,7 +200,9 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   }
 
   sent() {
+    if(this.contactForm.valid) {
     if (this.editingClient) {
+      console.log('update client');
       const updatedClient = { ...this.editingClient, ...this.contactForm.value };
       updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
       updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
@@ -219,18 +223,10 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
           Swal.fire('Error', `Failed to update client: ${error.message}`, 'error');
         }
       );
-    } else {
-      this.savedData = this.contactForm.value;
-      console.log("saveData", this.savedData);
+    }
+     else {
   
-      this.newClient = { ...this.newClient, ...this.savedData };
-      console.log("in submit", this.newClient);
-  
-      this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-      // this.newClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-      console.log("newClient", this.newClient);
-  
-      this.clientService.createClient(this.newClient.client).subscribe(
+      this.clientService.createClient(this.newClient).subscribe(
         response => {
           if (response) {
             console.log('Client created successfully:', response);
@@ -244,7 +240,8 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
         }
       );
     }
-   }
+  }
+  }
 
   onClose() {
     this.close.emit();
