@@ -233,12 +233,10 @@ export class ClientSearchComponent implements OnInit {
 
   removeFromFavorite(client: Client) {
     this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
-    this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
     this.updateFavorite();
   }
 
   addToFavorite(client: Client) {
-    this.user.favoritesClient.push(client._id);
     this.user.favoritesClient.push(client._id);
     this.updateFavorite();
   }
