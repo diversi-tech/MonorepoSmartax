@@ -10,8 +10,8 @@
     "start:all": "concurrently \"nx serve front\" \"nx serve server\" \"nx serve api-gateway\" \"nx serve timesheet\"",
     "build:front": "npx nx build front --prod",
     "start": "npx serve -s dist/apps/front -l $PORT",
-    "start:server": "npx serve -s dist/server/main.js",
-    "build:server": "node dist/server/main.js",
+    "start:server": "node dist/server/main.js",
+    "build:server": "npx nx build server --prod",
     "test:e2e": "nx test server-e2e --verbose",
     "test": "nx test"
   },
