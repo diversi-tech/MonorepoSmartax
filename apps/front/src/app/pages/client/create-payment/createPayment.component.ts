@@ -11,11 +11,12 @@ import { PaymentService } from '../../../_services/payment.service';
 import { Payment } from '../../../_models/payment.module';
 import { PaymentDetailsService } from '../../../_services/payment-details.service';
 import { PaymentDetails } from '../../../_models/paymentDetails.module';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-create-payment',
   standalone: true,
-  imports: [CommonModule, FormsModule, DropdownModule],
+  imports: [CommonModule, FormsModule, DropdownModule, ButtonModule],
   templateUrl: './createPayment.component.html',
   styleUrl: './createPayment.component.css',
 })

@@ -1,3 +1,4 @@
+@import '../../../../styles.css';
 .flex {
     direction: rtl; /* Right-to-left layout */
 }
@@ -67,13 +68,6 @@
     font-weight: bold;
   }
   
-  /* Button styling */
-  p-button {
-    display: block;
-    margin: 20px auto; /* Center the button */
-  }
-  
-  /* PrimeNG stepper styles */
   .p-stepper {
     margin-top: 20px;
   }
@@ -81,21 +75,7 @@
   .p-stepperPanel {
     padding: 20px;
   }
-  button{
-    margin: 0;
-    display: inline-block;
 
-  }
-  p-button {
-    display: inline-block;
-    margin-right: 10px; /* Space between buttons */
-  }
-  
-  /* Ensure the buttons are aligned horizontally */
-  .buttons-container {
-    text-align: center; /* Center the buttons */
-    margin-top: 20px; /* Space above the buttons */
-  }
   .flex {
     direction: rtl;
 }
@@ -145,29 +125,12 @@
     font-weight: bold;
   }
   
-  p-button {
-    display: block;
-    margin: 20px auto;
-  }
-  
   .p-stepper {
     margin-top: 20px;
   }
   
   .p-stepperPanel {
     padding: 20px;
-  }
-  button{
-    margin: 0;
-  }
-  p-button {
-    display: inline-block;
-    margin-right: 10px;
-  }
-  
-  .buttons-container {
-    text-align: center;
-    margin-top: 20px;
   }
   .completed{
     background-color:#28a745;

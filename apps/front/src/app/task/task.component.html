@@ -134,8 +134,8 @@
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
-          <p-button [style]="{ height: '20px' }" label="{{ selectStatus ? selectStatus.name : 'NOT_STARTED' }}"
-            [outlined]="true" severity="secondary" (click)="showStatus = !showStatus"></p-button>
+          <button pButton  [style]="{ height: '20px' }" label="{{ selectStatus ? selectStatus.name : 'NOT_STARTED' }}"
+            [outlined]="true" severity="secondary" (click)="showStatus = !showStatus"></button >
           <p-inputGroupAddon><i class="pi pi-angle-right"></i></p-inputGroupAddon>
           <p-inputGroupAddon>
             <div class="card flex justify-content-center">
@@ -214,12 +214,12 @@
       <!-- buttons -->
       <div style="margin-left: 100px">
         <p-inputGroup class="w-full md:w-30rem flex-container">
-          <p-button (click)="showTagsList = !showTagsList"
+          <button pButton  (click)="showTagsList = !showTagsList"
             [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }" icon="pi pi-tag" [outlined]="true"
             severity="secondary">
-          </p-button>
-          <p-button (click)="showTags = !showTags" [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
-            label="חדש" [outlined]="true" severity="secondary"></p-button>
+          </button>
+          <button pButton (click)="showTags = !showTags" [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
+            label="חדש" [outlined]="true" severity="secondary"></button>
           <!--  -->
           <button *ngFor="let button of buttons; let i = index"
             [ngStyle]="{ backgroundColor: button.color, color: 'white' }" class="custom-button"
@@ -441,8 +441,8 @@
               <input pInputText id="name" [(ngModel)]="newListName" class="flex-auto" autocomplete="off" />
             </div>
             <div class="flex justify-content-end gap-2">
-              <p-button label="ביטול" severity="secondary" (onClick)="visible = false" />
-              <p-button label="אישור" (onClick)="addNewList()" />
+              <button pButton  label="ביטול" severity="secondary" (click)="visible = false"></button>
+              <button pButton  label="אישור" (click)="addNewList()"></button>
             </div>
           </p-dialog>
         </p-tabPanel>
@@ -460,8 +460,8 @@
     <!-- footer -->
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1" style="margin-left: 70%">
-        <p-button label="ביטול" icon="pi pi-undo" [text]="true" [raised]="true" severity="danger" (click)="cancel()" />
-        <p-button label="שמירה" icon="pi pi-check" [text]="true" [raised]="true" (click)="showDialog()" />
+        <button pButton  label="ביטול" icon="pi pi-undo" severity="danger" (click)="cancel()" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <button pButton  label="אישור" icon="pi pi-check" (click)="showDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
       </div>
     </ng-template>
 
@@ -474,9 +474,9 @@
 <p-dialog header="Google Calendar" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
   <span class="p-text-secondary block mb-5">להוסיף את המשימה הזו ליומן גוגל שלך?</span>
   <br />
-  <div class="flex justify-content-end gap-2">
-    <p-button icon="pi pi-times" label="לא" severity="secondary" (click)="cancelDialog()" />
-    <p-button icon="pi pi-check" label="כן" (click)="createGoogleTask()" />
+  <div>
+    <button pButton  icon="pi pi-times" label="לא" severity="secondary" (click)="cancelDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
+    <button pButton  icon="pi pi-check" label="כן" (click)="createGoogleTask()" class= "p-button-text p-button-raised p-button-rounded"></button>
   </div>
 </p-dialog>
 

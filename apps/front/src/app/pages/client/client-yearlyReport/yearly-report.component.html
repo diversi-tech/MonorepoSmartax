@@ -1,11 +1,11 @@
 <router-outlet></router-outlet>
 
 <br><br>
-<p-button (click)="createReprtTag()" label="יצירת דוח שנתי חדש" />
-<p-button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
-<p-button *ngIf="isSelected == 2" (click)="onSelectionChange(5)" label="ללא מיון"></p-button>
-<p-button *ngIf="is == 2" (click)="filterToDoWithBalanceDue()" label="TO DO סנן לפי סכום ששלום ו" />
-<p-button *ngIf="is != 2" (click)="filterToDoWithBalanceDue2()" label="ללא סינון" />
+<button pButton  (click)="createReprtTag()" label="יצירת דוח שנתי חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
+<button pButton  *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי" class= "p-button-text p-button-raised p-button-rounded"></button >
+<button pButton  *ngIf="isSelected == 2" (click)="onSelectionChange(5)" label="ללא מיון" class= "p-button-text p-button-raised p-button-rounded"></button >
+<button pButton  *ngIf="is == 2" (click)="filterToDoWithBalanceDue()" label="TO DO סנן לפי סכום ששלום ו" class= "p-button-text p-button-raised p-button-rounded"></button>
+<button pButton  *ngIf="is != 2" (click)="filterToDoWithBalanceDue2()" label="ללא סינון" class= "p-button-text p-button-raised p-button-rounded"></button>
 <p-table [value]="isSelected != 1 && isSelected != 0 ?filterallYearlyReport :allYearlyReport " [tableStyle]="{ 'max-width': '50rem' }">
     <ng-template pTemplate="header" let-columns>
         <tr>

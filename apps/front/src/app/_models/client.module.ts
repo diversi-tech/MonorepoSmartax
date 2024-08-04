@@ -9,7 +9,7 @@ export enum ReportType {
   NotReporting = 'לא מדווח',
 }
 export interface Client {
-  _id: string;
+  _id?: string;
   companyName: string;
   firstName: string;
   lastName: string;
