@@ -23,7 +23,7 @@ export class YearService {
 
  // Create a new yearly report
  createYear(year: Year): Observable<any> {
-    return this.http.post<Year>(this.apiUrl, year)
+    return this.http.post<Year>("http://localhost:8080/years", year)
       .pipe(
         catchError(this.handleError<YearlyReport>('createYear'))
       );

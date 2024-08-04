@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -19,7 +18,7 @@ import { AuthGuard } from './auth.guard';
 import { ClientSearchComponent } from './pages/client/client-search/client-search.component';
 import { ClientProfileComponent } from './pages/client/client-profile/client-profile.component';
 import { ReportsComponent } from './reports/reports/reports.component';
-import { TaskReportComponent } from './task-report/task-report.component';
+import { TaskReportComponent } from './reports/task-report/task-report.component';
 import { EmployeesTableComponent } from './pages/employees-table/employees-table.component';
 // import { CommunicationClientComponent } from './pages/client/communication-client/communication-client.component';
 import { EditorComponent } from './editor/editor.component';
@@ -83,6 +82,14 @@ import { TableComponent } from './table/table.component';
 import { ReportClientYearlyReportComponent } from './clientReport/report-client-yearly-report/report-client-yearly-report.component';
 import { ClientTasksComponent } from './pages/client/client-tasks/client-tasks.component';
 import { PopAppComponent } from './pop_up/task-pop-app/pop-app.component';
+import { CreatePaymentComponent } from './pages/client/create-payment/createPayment.component';
+import { BillingHistoryComponent } from './pages/client/billing-history/billingHistory.component';
+import { PaymentDetailsHistoryComponent } from './pages/client/payment-details-history/paymentDetailsHistory.component';
+import { AddBillingComponent } from './pages/client/addBilling/addBilling.component';
+import { ChangeMainPaymentComponent } from './pages/client/changeMainPayment/changeMainPayment.component';
+import { RouterModule, Routes } from '@angular/router';
+import { AddMorePaymentDetailsComponent } from './pages/client/addMorePaymentDetails/addMorePaymentDetails.component';
+import { CreateMonthlyReportComponent } from './pages/client/client-create-monthly-report/create-monthly-report.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -151,6 +158,17 @@ export const routes: Routes = [
       icon: icons.employees,
     },
   },
+  {
+    path: 'createPayment',
+    component: CreatePaymentComponent,
+    canActivate: [AuthGuard],
+    data: {
+      authType: 6,
+      forToolbar: true,
+      label: 'יצירת תשלום',
+      icon: icons.employees,
+    },
+  },
 
 
   {
@@ -189,11 +207,43 @@ export const routes: Routes = [
           label: 'דוחות שנתיים',
           icon: icons.reports,
         },
-      }]
+      },
+      {
+        path: 'allClientMonthlyReport',
+        component: MonthlyReportComponent,
+        data: {
+          authType: 6,
+          forToolbar: false,
+          label: 'דוחות חודשיים',
+          icon: icons.reports,
+        },
+      },
+      {
+        path: 'allClientTaxRefunds',
+        component: TaxRefundsComponent,
+        data: {
+          authType: 6,
+          forToolbar: false,
+          label: 'החזרי מס/ שבח',
+          icon: icons.reports
+        },
+      },
+      {
+        path: 'allClientFinancialStatement',
+        component: FinancialStatementComponent,
+        data: {
+          authType: 6,
+          forToolbar: false,
+          label: ' הצהרות הון',
+          icon: icons.reports,
+        },
+      },
+      ],
+
   },
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
   { path: 'clientSearch', component: ClientSearchComponent, data: { authType: 6, forToolbar: true, label: 'לקוחות', icon: icons.clients } },
-  { path: 'favoritesClientsList', component: FavoritesClientsListComponent, data: { authType: 6, forToolbar: true, label: 'לקוחות מועדפים', icon: icons.favorite } },
+  { path: 'favoritesClientsList', component: FavoritesClientsListComponent, data: { authType: 6, forToolbar: false, label: 'לקוחות מועדפים', icon: icons.favorite } },
   { path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 6, forToolbar: false, label: 'ניהול לקוחות', icon: '' } },
 
   { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'פרופיל לקוח', icon: '' } },
@@ -205,7 +255,17 @@ export const routes: Routes = [
       { path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent, },
       { path: 'clientUploadDoc', component: ClientUploadDocComponent },
       { path: 'clientTasks', component: ClientTasksComponent, },
-      { path: 'payments', component: PaymentComponent },
+      {
+        path: 'payments', component: PaymentComponent,
+        children: [
+          { path: 'billingHistory', component: BillingHistoryComponent },
+          { path: 'paymentDetailsHistory', component: PaymentDetailsHistoryComponent },
+          { path: 'addBilling', component: AddBillingComponent },
+          { path: 'changeMainPayment', component: ChangeMainPaymentComponent },
+          { path: 'addMorePaymentDetails', component: AddMorePaymentDetailsComponent }
+
+        ]
+      },
       { path: 'clientBillings', component: ClientBillingsComponent },
       { path: 'clientTypeTab', component: ClientTypeTabComponent },
       { path: 'clientType', component: ClientTypeComponent },
@@ -227,10 +287,12 @@ export const routes: Routes = [
       { path: 'taxRefunds', component: TaxRefundsComponent, },
       { path: 'taxrefundsteps', component: TaxRefundsStepsComponent },
       { path: 'monthlyReport', component: MonthlyReportComponent },
+      { path: 'createMonthlyReport', component: CreateMonthlyReportComponent },
       { path: 'financialStatement', component: FinancialStatementComponent },
       { path: 'sensitiveDetails', component: SensitiveDetailsComponent }
     ],
   },
+  // { path: 'monthlyReport',component: MonthlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
   // { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
   { path: 'allCommunication', component: AllCommunicationComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'כלל השיחות', icon: icons.communications } },
   { path: 'clientAddCommunication', component: ClientAddCommunicationComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, icon: '' } },

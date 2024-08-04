@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Role } from '../../_models/role.module';
 import { UserService } from '../../_services/user.service';
-import { AuthService } from '../../_services/auth.service';
 import { RoleServiceService } from '../../_services/role-service.service';
 import { NgClass } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.css'],
     standalone: true,
-    imports: [FormsModule, DropdownModule, NgClass]
+    imports: [FormsModule, DropdownModule, NgClass, ButtonModule]
 })
 export class RegisterComponent implements OnInit {
   allRolies: Role[] = [];
@@ -26,9 +26,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     public ar: ActivatedRoute,
-    private router: Router,
     private userService: UserService,
-    private authService: AuthService,
     private roleService: RoleServiceService
   ) { }
 
@@ -72,11 +70,7 @@ export class RegisterComponent implements OnInit {
   isSignUpFailed = false;
   errorMessage = '';
 
-
-
   onSubmit(): void {
-
-
     const { username, email, role } = this.form;
     console.log(username, email);
     if (this.type === 'register') {

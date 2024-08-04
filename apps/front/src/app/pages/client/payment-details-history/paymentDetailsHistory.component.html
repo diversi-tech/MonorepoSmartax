@@ -1,0 +1,59 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
+    <p-footer>
+        <!-- <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text"
+            (click)="cancelDelete()"></button>
+        <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text"
+            (click)="confirmDelete(selectedUser)"></button> -->
+    </p-footer>
+</p-confirmDialog>
+
+<!-- <button pButton  (click)="addUser()" label="הוספת משתמש" /> -->
+
+<p-table [value]="allpaymentDetails" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+           
+            <th>תיאור השירות</th>
+            <th>תאריך סיום המנוי</th>
+            <th>תאריך התחלת המנוי</th>
+            <th>מקסימום שעות עבודה למנוי</th>
+            <th>תקופת המנוי</th>
+            <th>סכום לגביה</th>
+
+
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-paymentDetails let-columns="columns">
+        <tr>
+            <!-- <td>
+                <button pButton  (click)="editDetails(user)" label="עריכת פרטי המשתמש" />
+            </td>
+            <td>
+                <button pButton  (click)="showConfirmation(user)" label="מחיקת משתמש זה"></button >
+            </td> -->
+            <td>
+                {{paymentDetails.description && paymentDetails.description}}
+            </td>
+            <td>
+                {{paymentDetails.dateFinish && paymentDetails.dateFinish | date: 'dd/MM/yy'}}
+            </td>
+
+            
+            <td>
+                {{paymentDetails.dateStart && paymentDetails.dateStart | date: 'dd/MM/yy'}}
+            </td>
+            <td>
+                {{paymentDetails.maxHours && paymentDetails.maxHours}}
+            </td>
+            <td>
+                {{paymentDetails.frequency && paymentDetails.frequency.name}}
+            </td>
+            <td>
+                {{paymentDetails.sumForMonth && paymentDetails.sumForMonth}}
+            </td>
+           
+            
+        </tr>
+    </ng-template>
+</p-table>
+

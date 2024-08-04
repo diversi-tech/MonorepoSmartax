@@ -2,12 +2,13 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 import { stepFieldModel, StepField } from './stepField.model';
+import { Status } from './status.model';
 
 @Schema()
 export class YearlyReport extends Document {
     
     @Prop()
-    idUser: string;
+    idClient: string;
 
     @Prop()
     assignee: string[];
@@ -33,19 +34,12 @@ export class YearlyReport extends Document {
     @Prop()
     entityType: string;
 
-    // @Prop()
-    // step2: Step2[];
-
-    // @Prop()
-    // step3: Step3[];
-
-    // @Prop()
-    // step4: Step4[];
-
-    // @Prop()
-    // step5: Step5[];
+    
     @Prop([StepField])
     stepsList: StepField[]
+
+    @Prop()
+    status: Status;
    
 }
 

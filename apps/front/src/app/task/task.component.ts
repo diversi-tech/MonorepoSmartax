@@ -12,16 +12,9 @@ import {
 } from '@angular/core';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/user.module';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
 import { ClientService } from '../_services/client.service';
 import { Client } from '../_models/client.module';
 import { TagService } from '../_services/tag.service';
-import { ActivatedRoute } from '@angular/router';
 import { TaskService } from '../_services/task.service';
 import { Task } from '../_models/task.module';
 import { Tag } from '../_models/tag.module';
@@ -46,10 +39,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
-// import { UploadDocComponent } from '../pages/client/upload-doc/upload-doc.component';
 import { CommonModule, NgFor } from '@angular/common';
 import { EditorComponent } from '../editor/editor.component';
-import { UploadDocTaskComponent } from '../upload-doc-task/upload-doc-task.component';
 import { DocumentService } from '../_services/document.service';
 import { CardModule } from 'primeng/card';
 import { EditorModule } from 'primeng/editor';
@@ -57,19 +48,21 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
 import { StatusService } from '../_services/status.service';
 import { GoogleAuthService } from '../_services/google-calendar.service';
-import { MultiSelect, MultiSelectModule } from 'primeng/multiselect';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { DividerModule } from 'primeng/divider';
 import { MenuItem, SelectItem, SelectItemGroup } from 'primeng/api';
 import { TaskCheckListComponent } from '../task-check-list/task-check-list.component';
 import { TabViewModule } from 'primeng/tabview';
 import { SubTaskComponent } from '../sub-task/sub-task.component';
 import { TimerComponent } from '../timer/timer.component'; // וודא שהנתיב נכון
-
 import { SocketService } from '../_services/socket.service';
 import { DialogModule } from 'primeng/dialog';
 import { Subscription } from 'rxjs';
 import { CheckList } from '../_models/checkList.model';
 import { CheckListService } from '../_services/checkList.service';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UploadDocTaskComponent } from '../upload-doc-task/upload-doc-task.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-task',
@@ -81,7 +74,6 @@ import { CheckListService } from '../_services/checkList.service';
     NgFor,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     CardModule,
     PanelModule,
     ButtonModule,
@@ -179,7 +171,7 @@ export class TaskComponent implements OnInit {
   formGroupStatus!: FormGroup;
   formGroupTags!: FormGroup;
   //
-  @Input() create:boolean|null = null;
+  @Input() create: boolean | null = null;
   @Input() parent: string | null = null;
   @Input() taskId: string | null = null;
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
@@ -192,8 +184,6 @@ export class TaskComponent implements OnInit {
     private statusService: StatusService,
     private priorityService: PriorityService,
     private route: ActivatedRoute,
-    private http: HttpClient,
-    private googleCalendarService: GoogleAuthService,
     private socketService: SocketService,
     private googleTask: GoogleTaskService,
     private checkListServise: CheckListService
@@ -204,7 +194,7 @@ export class TaskComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId)
       this.id = this.taskId;
-    if (this.id != 'create'||(this.create==null||(this.create&&!this.create))) {
+    if (this.id != 'create' || (this.create == null || (this.create && !this.create))) {
 
       this.tasksService.searchTask(this.id!).subscribe({
         next: (data) => {
@@ -387,7 +377,7 @@ export class TaskComponent implements OnInit {
 
   showDialog() {
     debugger
-    if (this.id == 'create'||this.parent) {
+    if (this.id == 'create' || this.parent) {
       this.visible = true;
     }
     else {
@@ -517,7 +507,7 @@ export class TaskComponent implements OnInit {
 
   //functions
   save() {
-    // debugger
+    debugger
     // בדוק אם המשימה אינה משויכת לאף משתמש
     // if (!this.selectedUsers || this.selectedUsers.length === 0) {
     //   this.visiblePopup = true;
@@ -543,7 +533,7 @@ export class TaskComponent implements OnInit {
     // newTask.checkList = this.currentTask.checkList;
     console.log(this.eventId);
 
-    if (this.id == 'create'||(this.create==null||this.create==true)) {
+    if (this.id == 'create' || (this.create == null || this.create == true)) {
       this.tasksService.createTask(newTask).subscribe({
         next: (task) => {
           console.log(task);
@@ -553,6 +543,7 @@ export class TaskComponent implements OnInit {
                 parentTask.subTasks.push(task._id);
                 this.tasksService.updateTask(this.parent, parentTask).subscribe({
                   next: (data) => {
+
                   },
                   error: (err) => {
                     console.log(err);
@@ -577,14 +568,18 @@ export class TaskComponent implements OnInit {
     } else
       if (this.id != 'create') {
         this.tasksService.updateTask(this.id!, newTask).subscribe({
-          next: (dataClients) => {
-            console.log(dataClients);
+          next: (data) => {
+            alert("ok")
+            alert(data)
+            window.location.reload()
+            console.log(data);
             // Task updated
             if (this.eventId) this.updateTask();
             if (this.taskId) this.closeModal.emit();
           },
-          error: (errClients) => {
-            console.log(errClients);
+          error: (err) => {
+            console.log(err);
+            alert("העדכון נכשל")
           },
         });
       }
@@ -601,7 +596,7 @@ export class TaskComponent implements OnInit {
 
     this.googleTask.updateGoogleTask(taskDetails);
   }
-  
+
   //
   cancel() {
     //return to last page
@@ -693,6 +688,7 @@ export class TaskComponent implements OnInit {
   selectPlaceholder = 'בחר רשימה'
 
   addNewList() {
+    debugger
     this.newList = false;
     if (this.newListName) {
       let l: CheckList = { name: this.newListName, items: [] }
@@ -717,6 +713,7 @@ export class TaskComponent implements OnInit {
 
   // create new list
   createList(i: any) {
+    debugger
     this.selectedList = i.value
     if (this.selectedList && this.selectedList != "new") {
       this.checkListServise.getCheckLists(this.selectedList).subscribe({

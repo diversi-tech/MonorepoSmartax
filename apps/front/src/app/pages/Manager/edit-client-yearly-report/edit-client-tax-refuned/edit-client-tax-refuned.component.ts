@@ -7,15 +7,15 @@ import { StepField } from '../../../../_models/stepField.module';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown'; // ייבוא של קומפוננטת ה-Dropdown
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-client-tax-refuned',
   standalone: true,
-  imports: [CommonModule,TableModule, ToastModule, ButtonModule, ReactiveFormsModule, FormsModule,DialogModule,DropdownModule,InputTextModule],
+  imports: [CommonModule, TableModule, ToastModule, ButtonModule, ReactiveFormsModule, FormsModule, DialogModule, DropdownModule, InputTextModule],
   templateUrl: '../../edit-client-yearly-report/edit-client-yearly-report.component.html',
   styleUrl: '../../edit-client-yearly-report/edit-client-yearly-report.component.css',
 })
@@ -26,12 +26,12 @@ export class EditClientTaxRefunedComponent {
   allStepFields: StepField[] = [];
   filteredStepFields: StepField[] = [];
   numberOptions = [1, 2, 3];
-
+  currentStepField: StepField;
   displayAddDialog: boolean = false;
   newStepValue: string = '';
   newStepStepNumber: number = 1;
 
-  constructor(private stepFieldService: stepFieldService) {}
+  constructor(private stepFieldService: stepFieldService) { }
 
   ngOnInit(): void {
     this.stepFieldService.getAllStepField().subscribe(
@@ -72,7 +72,7 @@ export class EditClientTaxRefunedComponent {
   }
 
   addStep(): void {
-    const newStep ={
+    const newStep = {
       value: this.newStepValue,
       stepNumber: this.newStepStepNumber,
       isCompleted: false,
@@ -137,5 +137,9 @@ export class EditClientTaxRefunedComponent {
         console.error('Error deleting step', error);
       }
     );
+  }
+
+  selectStepField(stepField: StepField) {
+    this.currentStepField = stepField;
   }
 }

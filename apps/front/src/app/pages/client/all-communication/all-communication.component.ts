@@ -1,19 +1,21 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Output } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, } from '@angular/core';
 import { CommunicationService } from '../../../_services/communicaton.service';
 import { Communication } from '../../../_models/communication.module';
 import { UserService } from '../../../_services/user.service';
 import { ConfirmationService, PrimeTemplate, SelectItem } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
-import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf, DatePipe, NgClass } from '@angular/common';
-import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { callTopicSchema } from '../../../_models/callTopic.module'
 import { CallTopicService } from "../../../_services/callTopic.service"
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
-import { AddClientComponent } from '../add-client/add-client.component';
-import { RouterOutlet } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TooltipModule } from 'primeng/tooltip';
+import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
+import { AddClientComponent } from '../add-client/add-client.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { Button } from 'primeng/button';
 
 @Component({
   // standalone:true,
@@ -25,6 +27,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     Button,
     NgFor,
     NgIf,
+    TooltipModule,
     FormsModule,
     DropdownModule,
     DatePipe,
@@ -36,6 +39,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     RouterOutlet,
     NgClass,
     ConfirmDialogModule,
+    InputTextModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -139,7 +143,13 @@ export class AllCommunicationComponent {
         }));
       });
   }
+  sortCommunicatioBySubjectAsc(): void {
+    this.filteredCommunicatio.sort((a, b) => a.Subject.localeCompare(b.Subject));
+  }
 
+  sortCommunicatioBySubjectDesc(): void {
+    this.filteredCommunicatio.sort((a, b) => b.Subject.localeCompare(a.Subject));
+  }
   onSelectionChange(a : any) {
     this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;

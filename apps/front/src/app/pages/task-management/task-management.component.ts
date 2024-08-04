@@ -7,23 +7,23 @@ import { TagService } from '../../_services/tag.service';
 import { User } from '../../_models/user.module';
 import { Client } from '../../_models/client.module';
 import { Tag } from '../../_models/tag.module';
-import { ConfirmationService, MessageService, Footer, PrimeTemplate,} from 'primeng/api';
+import { ConfirmationService, Footer, PrimeTemplate, } from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
-import { Router, RouterLink } from '@angular/router';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { IconProfileComponent } from '../../share/icon-profile/icon-profile.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { NgIf, NgFor, NgStyle, NgClass, DatePipe } from '@angular/common';
 import { SidebarModule } from 'primeng/sidebar';
-import { ButtonDirective, Button } from 'primeng/button';
+import { Button, ButtonDirective, ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-task-management',
   templateUrl: './task-management.component.html',
@@ -51,6 +51,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     NgClass,
     ToastModule,
     DatePipe,
+    ButtonModule,
   ],
 })
 export class TaskManagementComponent implements OnInit {
@@ -74,7 +75,7 @@ export class TaskManagementComponent implements OnInit {
     task: Task | null;
     tags: Tag[];
   } = {
-    deadline: null,
+      deadline: null,
       client: null,
       user: null,
       task: null,
@@ -97,7 +98,7 @@ export class TaskManagementComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private statusService: StatusService,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getTasks();
@@ -106,22 +107,22 @@ export class TaskManagementComponent implements OnInit {
     });
     this.statusService.getAllStatuses().subscribe((data) => {
       this.statuses = data;
-      console.log(this.statuses);
+      // console.log(this.statuses);
     });
   }
 
   getTasks(): void {
     this.taskService.getAllTasks().subscribe((allTasks: Task[]) => {
       this.tasks = allTasks;
-      console.log(this.tasks);
+      // console.log(this.tasks);
     });
   }
 
   categorizeTasks(status: Status): Task[] {
-    console.log(status.name);
-    console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
+    // console.log(status.name);
+    // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
-      console.log('Task status:', task.status); // הדפסת המצב של המשימה
+      // console.log('Task status:', task.status); // הדפסת המצב של המשימה
       { return task.status && task.status.name === status.name; }
     });
   }
@@ -129,14 +130,18 @@ export class TaskManagementComponent implements OnInit {
   searchTask(): void {
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
+      alert("לחיפוש משימה אנא הקלידו את שם המשימה")
     } else {
-      this.filteredTasks = this.tasks?.filter((task) =>
-        {task!.taskName!=undefined?
-        task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
-       : false}
-      );
-      alert(this.filteredTasks)
-      console.log('filter: ', this.filteredTasks);
+      this.filteredTasks = [];
+      this.searchTerm.trim()
+      this.searchTerm.toLowerCase()
+      this.tasks.forEach(t => {
+        if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
+          this.filteredTasks.push(t);
+      });
+      if(this.filteredTasks.length == 0){
+        alert("לא נמצאות משימות בשם זה")
+      }
     }
   }
 
@@ -168,7 +173,7 @@ export class TaskManagementComponent implements OnInit {
     });
   }
 
-  editTask(){
+  editTask() {
     debugger
     this.router.navigate(['/taskSpe', this.currentTask._id]);
   }
@@ -220,17 +225,18 @@ export class TaskManagementComponent implements OnInit {
   }
 
   applyFilter() {
-    this.filteredTasks = this.tasks.filter((task) => {
+    this.tasks.forEach((task) => {
       this.filterFirstStatus = false;
 
       const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
       const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
 
-        const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
-        
-        const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
+      const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
+
+      const taskNameMatch = !this.filter.task || task.taskName!.toLowerCase()!.includes(this.filter.task.taskName.trim().toLowerCase());
       let tagsMatch = true;
+
       if (this.filter.tags && this.filter.tags.length > 0) {
         tagsMatch = this.filter.tags.every((filterTag) => {
           return task.tags.some((taskTag) =>
@@ -239,19 +245,11 @@ export class TaskManagementComponent implements OnInit {
         });
       }
 
-      console.log(
-        deadlineMatch,
-        clientMatch,
-        userMatch,
-        taskNameMatch,
-        tagsMatch
-      );
-
-      return (
-        deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
-      );
+      if (deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch)
+        this.filteredTasks.push(task);
     });
   }
+
   // sort
   // בקומפוננטה שלך
   // sortTasks(field: string, list: Task[], reverse: boolean) {
@@ -310,10 +308,10 @@ export class TaskManagementComponent implements OnInit {
       }
       return 0;
     });
-}
+  }
 
-selectCurrentTask(task: Task) {
-  debugger
-  this.currentTask = task;
-}
+  selectCurrentTask(task: Task) {
+    debugger
+    this.currentTask = task;
+  }
 }
