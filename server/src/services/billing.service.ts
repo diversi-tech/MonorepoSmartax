@@ -65,17 +65,10 @@ export class BillingsService {
     console.log("start change billing status in billing service front ");
     const billing = await this.BillingModel.findById(id).exec();
     console.log("billing found in billing service ");
-    this.billingIfRreturn={
-      "id":id,
-     // "date": billing.date,
-      "amount": billing.amount,
-      "paymentMethod": billing.paymentMethod,
-      "assignedTo": billing.assignedTo,
-      "isReturn": status
-    }
+    billing.ifRreturn = status
     
 
-    this.updateBilling(id, this.billingIfRreturn);   
+    // this.updateBilling(id, this.billingIfRreturn);   
      console.log("billing updated in billing service ", billing);
 
     return billing.save();

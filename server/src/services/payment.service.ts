@@ -174,8 +174,9 @@ export class PaymentService {
         }
 
     }
+
     async updateBillingStatus(paymentId: string, billingId: string, status: boolean): Promise<Payment> {
-        const payment = await this.PaymentModel.findById(paymentId);
+       try{ const payment = await this.PaymentModel.findById(paymentId);
         console.log("payment found ");
 
         if (!payment) {
@@ -192,14 +193,22 @@ export class PaymentService {
             throw new NotFoundException('Billing not found');
         }
         try {
-            await this.billingService.updateBillingStatus(billingId, status)
+            const i = payment.billingHistory.findIndex(b=> billing._id === b._id);
+
+            payment.billingHistory[i]=await this.billingService.updateBillingStatus(billingId, status)
             if (status == false)
                 payment.totalPayment -= billing.amount;
             else
                 payment.totalPayment += billing.amount;
             console.log("ccc");
+            console.log(payment.billingHistory[i]);
+            
 
-            return payment.save();
+             payment.save();
+             console.log("---------------------------------");
+             
+console.log(payment.billingHistory[i]);
+return payment
 
         }
         catch (err) {
@@ -209,6 +218,9 @@ export class PaymentService {
         }
         finally {
             console.log("v");
+        }}catch(err){
+            console.log(err);
+            
         }
     }
 
@@ -217,12 +229,12 @@ export class PaymentService {
         if (!payment) {
             throw new NotFoundException('Payment not found');
         }
-    
+
         const paymentDetails = await this.paymentDetailsService.getPaymentDetailsById(paymentDetailsId);
         if (!paymentDetails) {
             throw new NotFoundException('Payment details not found');
         }
-    
+
         if (paymentDetails && paymentDetails._id) {
             paymentDetails.dateFinish = new Date();
             console.log("currentPaymentDetails.dateFinish: " + paymentDetails.dateFinish);
@@ -230,17 +242,17 @@ export class PaymentService {
             console.log("payment.paymentHistory: " + payment.paymentHistory);
 
         }
-    
+
         if (!Array.isArray(payment.morePaymentDetails)) {
             payment.morePaymentDetails = [];
         }
         payment.morePaymentDetails = payment.morePaymentDetails.filter(detail => detail._id.toString() !== paymentDetailsId);
-    
-       
-    
+
+
+
         return payment.save();
     }
-    
+
 
 
 

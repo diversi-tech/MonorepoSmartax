@@ -98,11 +98,16 @@ export class PaymentService {
 
   }
   updateBillingStatus(paymentId: string, billingId: string, status: boolean): Observable<Billing> {
-    console.log("updateBillingStatus in service front ", paymentId, billingId, status);
-    const body = { paymentId, billingId, status };
-    console.log("body: ", body);
+    try {
+      console.log("updateBillingStatus in service front ", paymentId, billingId, status);
+      const body = { paymentId, billingId, status };
+      console.log("body: ", body);
 
-    return this.http.post<Billing>(`${this.apiUrl}/updateBillingStatus`, body);
+      return this.http.post<Billing>(`${this.apiUrl}/updateBillingStatus`, body);
+    } catch (err) {
+      console.log(err);
+
+    }
   } addMorePaymentDetails(paymentId: string,
     sumForMonth: number,
     maxHours: number,
