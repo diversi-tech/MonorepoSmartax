@@ -45,7 +45,6 @@ export class ClientTypeTabComponent {
     this.clientTypeService.getAllClientTypes().subscribe(types => {
       this.clientTypes = types;
       console.log(this.clientTypes);
-
     });
   }
 

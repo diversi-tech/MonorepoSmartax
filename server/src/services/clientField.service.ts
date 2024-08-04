@@ -19,7 +19,7 @@ export class ClientFieldService {
         const ccfd = createClientFieldDto;
         console.log(clientId);
         
-        const client = await this.clientModel.findById({_id:'669f95d2592b56c4f2be695b'});
+        const client = await this.clientModel.findById({_id:clientId });
         if (!client) {
           throw new Error('Client not found');
         }

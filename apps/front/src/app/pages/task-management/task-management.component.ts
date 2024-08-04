@@ -7,7 +7,7 @@ import { TagService } from '../../_services/tag.service';
 import { User } from '../../_models/user.module';
 import { Client } from '../../_models/client.module';
 import { Tag } from '../../_models/tag.module';
-import { ConfirmationService, MessageService, Footer, PrimeTemplate,} from 'primeng/api';
+import { ConfirmationService, MessageService, Footer, PrimeTemplate, } from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
 import { ToastModule } from 'primeng/toast';
@@ -74,7 +74,7 @@ export class TaskManagementComponent implements OnInit {
     task: Task | null;
     tags: Tag[];
   } = {
-    deadline: null,
+      deadline: null,
       client: null,
       user: null,
       task: null,
@@ -97,7 +97,7 @@ export class TaskManagementComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private statusService: StatusService,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getTasks();
@@ -118,26 +118,26 @@ export class TaskManagementComponent implements OnInit {
   }
 
   categorizeTasks(status: Status): Task[] {
-    console.log(status.name);
-    console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
+    // console.log(status.name);
+    // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
-      console.log('Task status:', task.status); // הדפסת המצב של המשימה
+      // console.log('Task status:', task.status); // הדפסת המצב של המשימה
       { return task.status && task.status.name === status.name; }
     });
   }
 
   searchTask(): void {
-    console.log(typeof this.searchTerm);
-
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
     } else {
-      this.filteredTasks = this.tasks.filter((task) =>
-        {task!.taskName!=undefined?
-        task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
-       : false}
-      );
-      console.log('filter: ', this.filteredTasks);
+      this.searchTerm.trim()
+      this.searchTerm.toLowerCase()
+      this.tasks.forEach(t => {
+        if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
+          this.filteredTasks.push(t);
+        else {
+        }
+      });
     }
   }
 
@@ -169,8 +169,8 @@ export class TaskManagementComponent implements OnInit {
     });
   }
 
-  editTask(){
-    debugger
+  editTask() {
+    // debugger
     this.router.navigate(['/taskSpe', this.currentTask._id]);
   }
 
@@ -187,7 +187,7 @@ export class TaskManagementComponent implements OnInit {
   }
 
   searchClients(event: any): void {
-    this.clientService.getAllClients().subscribe((clients: Client[]) => {
+    this.clientService.getAllClients().subscribe((clients: any[]) => {
       this.clientSuggestions = clients.filter(client => client.firstName && client["firstName"].toLowerCase().includes(event.query.toLowerCase()));
     });
   }
@@ -203,11 +203,10 @@ export class TaskManagementComponent implements OnInit {
   }
 
   searchTasks(event: any): void {
-    const query = event.query.toLowerCase().toLowerCase();
-    this.taskSuggestions = this.tasks
-      .filter((task) =>
-        task.taskName.toLowerCase().includes(query.toLowerCase())
-      )
+    const query = event.query.toLowerCase();
+    this.taskSuggestions = this.tasks.filter((task) =>
+      task.taskName.toLowerCase().includes(query)
+    )
       .map((task) => ({ taskName: task.taskName }));
   }
 
@@ -224,13 +223,14 @@ export class TaskManagementComponent implements OnInit {
     this.filteredTasks = this.tasks.filter((task) => {
       this.filterFirstStatus = false;
 
-      const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
+      const deadlineMatch = !this.filter.deadline || new Date(task.dueDate) <= new Date(this.filter.deadline);
 
-      const clientMatch = !this.filter.client || (task.client && task.client[0].firstName && task.client[0].firstName.includes(this.filter.client.firstName));
+      const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
 
-        const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
-        
-        const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
+      const userMatch = !this.filter.user || (task.assignedTo && task.assignedTo[0].userName && task.assignedTo[0].userName.includes(this.filter.user.userName));
+
+      const taskNameMatch = !this.filter.task || (task.taskName && task.taskName.includes(this.filter.task.taskName));
+
       let tagsMatch = true;
       if (this.filter.tags && this.filter.tags.length > 0) {
         tagsMatch = this.filter.tags.every((filterTag) => {
@@ -253,6 +253,7 @@ export class TaskManagementComponent implements OnInit {
       );
     });
   }
+
   // sort
   // בקומפוננטה שלך
   // sortTasks(field: string, list: Task[], reverse: boolean) {
@@ -311,10 +312,10 @@ export class TaskManagementComponent implements OnInit {
       }
       return 0;
     });
-}
+  }
 
-selectCurrentTask(task: Task) {
-  debugger
-  this.currentTask = task;
-}
+  selectCurrentTask(task: Task) {
+    // debugger
+    this.currentTask = task;
+  }
 }

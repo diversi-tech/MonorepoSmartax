@@ -1,0 +1,33 @@
+# שלב הבנייה
+FROM node:18-alpine AS build
+# הגדרת ספריית העבודה
+WORKDIR /app/front
+# התקנת Python וכלים נוספים שנדרשים ל-node-gyp
+RUN apk add --no-cache python3 make g++
+# העתקת קבצי package.json ו-package-lock.json לספריית העבודה
+COPY ../../package*.json ./
+# עדכון npm לגרסה האחרונה
+RUN npm install -g npm@latest
+# התקנת תלויות
+RUN npm install --legacy-peer-deps --no-optional --ignore-scripts
+# התקנת nx גלובלית
+RUN npm install -g @nrwl/cli
+# התקנת @nrwl/workspace
+RUN npm install @nrwl/workspace --legacy-peer-deps
+# העתקת הפרויקט כולו לספריית העבודה
+COPY . .
+RUN npx nx reset || true
+# בניית הפרויקט Angular (וודא שיש לך סקריפט build מוגדר ב-package.json)
+RUN npx nx build front --prod
+# שלב השרת
+FROM nginx:alpine
+# העתקת הפרויקט הבנוי מהשלב הקודם
+COPY --from=build /app/front/dist/front /usr/share/nginx/html
+# חשיפת פורט 80
+EXPOSE 80
+# הרצת Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+
+
+
