@@ -7,7 +7,7 @@ export interface TaxRefunds {
   year: string;
   date: Date;
   stepsList: StepField[];
-  status: Status;
+  status: Status[];
   assignee: string[];
   price: number;
   paymentAmountPaid: number;
