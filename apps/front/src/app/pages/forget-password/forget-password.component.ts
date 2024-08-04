@@ -1,7 +1,6 @@
 import { StorageService } from '../../_services/storage.service';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../_services/token.service';
-import { Button } from 'primeng/button';
 import { NgIf } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { AvatarModule } from 'primeng/avatar';
@@ -17,6 +16,7 @@ import { ForgotPasswordService } from '../../_services/forgot-password.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { InputOtpModule } from 'primeng/inputotp';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-forgot-password',

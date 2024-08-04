@@ -1,6 +1,6 @@
 <div>
   <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()" *ngIf="formShow" class="form-inline">
-    <button type="submit" pButton label="שלח" class="form-button"></button>
+    <button pButton label="שלח" class= "p-button-text p-button-raised p-button-rounded"></button>
 
     <input id="password" formControlName="password" type="password" placeholder="הכנס סיסמא" class="form-input">
   </form>

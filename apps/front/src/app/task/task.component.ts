@@ -12,17 +12,10 @@ import {
 } from '@angular/core';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/user.module';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
 import { PaymentDetails } from '../_models/paymentDetails.module';
 import { ClientService } from '../_services/client.service';
 import { Client } from '../_models/client.module';
 import { TagService } from '../_services/tag.service';
-import { ActivatedRoute } from '@angular/router';
 import { TaskService } from '../_services/task.service';
 import { Task } from '../_models/task.module';
 import { Tag } from '../_models/tag.module';
@@ -47,10 +40,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
-// import { UploadDocComponent } from '../pages/client/upload-doc/upload-doc.component';
 import { CommonModule, NgFor } from '@angular/common';
 import { EditorComponent } from '../editor/editor.component';
-import { UploadDocTaskComponent } from '../upload-doc-task/upload-doc-task.component';
 import { DocumentService } from '../_services/document.service';
 import { CardModule } from 'primeng/card';
 import { EditorModule } from 'primeng/editor';
@@ -58,19 +49,21 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
 import { StatusService } from '../_services/status.service';
 import { GoogleAuthService } from '../_services/google-calendar.service';
-import { MultiSelect, MultiSelectModule } from 'primeng/multiselect';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { DividerModule } from 'primeng/divider';
 import { MenuItem, SelectItem, SelectItemGroup } from 'primeng/api';
 import { TaskCheckListComponent } from '../task-check-list/task-check-list.component';
 import { TabViewModule } from 'primeng/tabview';
 import { SubTaskComponent } from '../sub-task/sub-task.component';
 import { TimerComponent } from '../timer/timer.component'; // וודא שהנתיב נכון
-
 import { SocketService } from '../_services/socket.service';
 import { DialogModule } from 'primeng/dialog';
 import { Subscription } from 'rxjs';
 import { CheckList } from '../_models/checkList.model';
 import { CheckListService } from '../_services/checkList.service';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UploadDocTaskComponent } from '../upload-doc-task/upload-doc-task.component';
+import { ActivatedRoute } from '@angular/router';
 interface payment{
   name:string;
  }
@@ -84,7 +77,6 @@ interface payment{
     NgFor,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     CardModule,
     PanelModule,
     ButtonModule,
@@ -199,8 +191,6 @@ export class TaskComponent implements OnInit {
     private statusService: StatusService,
     private priorityService: PriorityService,
     private route: ActivatedRoute,
-    private http: HttpClient,
-    private googleCalendarService: GoogleAuthService,
     private socketService: SocketService,
     private googleTask: GoogleTaskService,
     private checkListServise: CheckListService

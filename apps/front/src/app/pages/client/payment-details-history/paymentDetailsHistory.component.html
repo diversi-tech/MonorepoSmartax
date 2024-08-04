@@ -1,13 +1,13 @@
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
     <p-footer>
-        <!-- <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+        <!-- <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text"
             (click)="cancelDelete()"></button>
-        <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+        <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text"
             (click)="confirmDelete(selectedUser)"></button> -->
     </p-footer>
 </p-confirmDialog>
 
-<!-- <p-button (click)="addUser()" label="הוספת משתמש" /> -->
+<!-- <button pButton  (click)="addUser()" label="הוספת משתמש" /> -->
 
 <p-table [value]="allpaymentDetails" [tableStyle]="{'min-width': '50rem'}">
     <ng-template pTemplate="header" let-columns>
@@ -26,10 +26,10 @@
     <ng-template pTemplate="body" let-paymentDetails let-columns="columns">
         <tr>
             <!-- <td>
-                <p-button (click)="editDetails(user)" label="עריכת פרטי המשתמש" />
+                <button pButton  (click)="editDetails(user)" label="עריכת פרטי המשתמש" />
             </td>
             <td>
-                <p-button (click)="showConfirmation(user)" label="מחיקת משתמש זה"></p-button>
+                <button pButton  (click)="showConfirmation(user)" label="מחיקת משתמש זה"></button >
             </td> -->
             <td>
                 {{paymentDetails.description && paymentDetails.description}}

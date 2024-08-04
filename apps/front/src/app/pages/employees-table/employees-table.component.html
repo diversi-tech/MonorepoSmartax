@@ -1,15 +1,15 @@
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
     <p-footer>
-        <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+        <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text p-button-raised p-button-rounded"
             (click)="cancelDelete()"></button>
-        <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+        <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text p-button-raised p-button-rounded"
             (click)="confirmDelete()"></button>
     </p-footer>
 </p-confirmDialog>
 
-<p-button (click)="addUser()" label="הוספת משתמש" />
+<button pButton  (click)="addUser()" label="הוספת משתמש" class= "p-button-text p-button-raised p-button-rounded"></button>
 
-<p-table [value]="users" [tableStyle]="{'min-width': '50rem'}">
+<p-table [value]="users" [tableStyle]="{'max-width': '50rem'}">
     <ng-template pTemplate="header" let-columns>
         <tr>
             <th></th>
