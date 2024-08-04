@@ -8,7 +8,7 @@ import { Communication } from '../_models/communication.module';
 })
 export class CommunicationService {
 
-  private apiUrl = 'http://localhost:8080/communications';
+  private apiUrl = 'https://monoreposmartax-n13o.onrender.com/communications';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
