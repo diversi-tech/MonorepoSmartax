@@ -38,7 +38,7 @@ export class FavoritesClientsListComponent implements OnInit {
     private clientService: ClientService,
     private confirmationService: ConfirmationService
   ) { }
-
+  
   ngOnInit(): void {
     this.userService
       .findOne(this.tokenService.getCurrentDetail('_id'))
