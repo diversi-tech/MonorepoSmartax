@@ -11,7 +11,7 @@
     "build:front": "npx nx build front --prod",
     "start": "npx serve -s dist/apps/front -l $PORT",
     "start:server": "npx serve -s dist/server/main.js",
-    "build:server": "npx nx build server --prod",
+    "build:server": "node dist/server/main.js",
     "test:e2e": "nx test server-e2e --verbose",
     "test": "nx test"
   },
