@@ -1,3 +1,4 @@
+<p-button label="שמור שינויים" (onClick)="update()" />
 <p-button (onClick)="showDialog()" label="חדש" />
 <p-dialog header="יצירת דוח חדש" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
     <div class="flex align-items-center gap-3 mb-3">
@@ -59,7 +60,7 @@
         <ng-template pTemplate="body" let-fieldBymonth>
             <th><div class="text-center">{{fieldBymonth.value}}</div>
                 <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" [(ngModel)]="fieldBymonth.content" />
-                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" [(ngModel)]="fieldBymonth.content" />
+                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" (change)="fieldBymonth.content === 'לא בוצע'?fieldBymonth.content = 'בוצע':fieldBymonth.content = 'לא בוצע'"/>
             </th>
         </ng-template>
 </p-table>

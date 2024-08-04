@@ -18,6 +18,8 @@ import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputOtpModule } from 'primeng/inputotp';
 import { Status } from '../../../_models/status.module';
+import { TokenService } from '../../../_services/token.service';
+import { User } from '../../../../../../../server/src/Models/user.model';
 
   @Component({
     selector: 'app-monthly-report',
@@ -49,6 +51,7 @@ import { Status } from '../../../_models/status.module';
   
     constructor(private monthlyReportService: MonthlyReportService,
       private yearService: YearService,
+      private tokenService:TokenService,
       private route: ActivatedRoute,private router: Router,
     ) {
       this.currentRoute = this.route.snapshot.url.join('/');
@@ -56,10 +59,11 @@ import { Status } from '../../../_models/status.module';
     }
     ngOnInit(): void {
       this.client = history.state.client;
+      this.user=this.tokenService.getCurrentDetail('_id');
       this.yearService.getAllYear().subscribe({
         next: (data) => {
           this.years = data;
-  
+          
         },
         error: (error) => {
           console.log(error);
@@ -72,7 +76,8 @@ import { Status } from '../../../_models/status.module';
       else{
         this.getMonthlyReportsForClient();
       }
-      }
+    }
+    user:User;
     years: Year[] = [];
     selectedYear: Year;
     createdYear: Year;
@@ -90,23 +95,25 @@ import { Status } from '../../../_models/status.module';
     allFields: stepFieldMonth[];
     fieldByType: { [key: string]: stepFieldMonth[] } = {};
     currentRoute: string;
-  create:boolean=false;
+    create:boolean=false;
     fieldBymonths: stepFieldMonth[];
     visible: boolean = false;
     statuses: Status[] = [];
-
+    
     showDialog() {
-        this.visible = true;
+      this.visible = true;
     }
-  
+    
     getMonthlyReportsForClient(): void {
       const clientId = String(this.client._id);
       this.monthlyReportService.getMonthlyReportForClient(clientId).subscribe({
         next: (reports: any) => {
           this.allMonthlyReportsClient = reports;
-         // console.log(Number(this.selectedYear.yearNum), Number(this.selectedMonth), "year, month");
-         // this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];
-  
+          console.log(this.allMonthlyReportsClient);
+          
+          // console.log(Number(this.selectedYear.yearNum), Number(this.selectedMonth), "year, month");
+          // this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];
+          
         },
         error: (error) => {
           console.error('Error fetching monthly reports for client', error);
@@ -127,34 +134,50 @@ import { Status } from '../../../_models/status.module';
     getStepByType(type: string): void {
       this.steps = this.allMonthlyReports.map((r) =>
         r.monthlyReportFields.filter((r) => r.type === type)
-      );
-      console.log(this.steps, 'steps');
+    );
+    console.log(this.steps, 'steps');
     }
     changeDate() {
-      console.log(this.createdMonth, this.createdYear);
       if (this.currentRoute === "allClientMonthlyReport") {
-        this.myReport = this.allMonthlyReports.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum))[0];
+        this.myReport = this.getREportByMonth(this.allMonthlyReports,this.selectedYear,this.selectedMonth);
       }
       else {
-        this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum))[0];
+        this.myReport = this.getREportByMonth(this.allMonthlyReportsClient,this.selectedYear,this.selectedMonth)[0];
+    
+  }
+  if (this.myReport) {
+    this.fieldBymonths = this.myReport.monthlyReportFields;
       }
-      if (this.myReport) {
-        this.fieldBymonths = this.myReport.monthlyReportFields;
-        console.log(this.fieldBymonths, "myReport");
+      else {
+        this.fieldBymonths = [];
       }
     }
-
-      onSubmit(){        
-        this.monthlyReportService.createMonthlyReport({reportDate:new Date(`${this.createdYear.yearNum}-${this.createdMonth}-01`), idUser:this.clientId,idEmploye:this.clientId, monthlyReportFields:[],status:[]})
-        .subscribe({
-          next: (data) => {
-            console.log('Monthly report created successfully', data);
-    
+    getREportByMonth(data: any,year:Year,month:string){
+return data.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(month) && new Date(m.reportDate).getFullYear() === Number(year.yearNum));
+    }
+    onSubmit(){
+      if(!this.getREportByMonth(this.allMonthlyReports,this.createdYear,this.createdMonth)){
+        this.monthlyReportService.createMonthlyReport({reportDate:new Date(`${this.createdYear.yearNum}-${this.createdMonth}-01`), idUser:this.client._id,idEmploye:this.user, monthlyReportFields:[],status:[]})
+          .subscribe({
+            next: (data) => {
+              console.log('Monthly report created successfully', data);
+              this.allMonthlyReportsClient.push(data);
+              this.selectedYear=this.createdYear;
+              this.selectedMonth=this.createdMonth;
+              this.changeDate();
+            },
+            error: (error) => {
+              console.log(error);
+            },
           },
-          error: (error) => {
-            console.log(error);
-          },
-        },
-        );;
+          );;
+      }
+      else{
+        alert("Monthly report already exist");
+      }
+      }
+      update(){
+        this.myReport.monthlyReportFields=this.fieldBymonths
+        this.monthlyReportService.updateMonthlyReport(this.myReport._id, this.myReport)
       }
     }
