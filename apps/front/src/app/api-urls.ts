@@ -1,5 +1,7 @@
 // export const API_URL = 'http://localhost:8080';
-export const API_URL = 'https://monoreposmartax.onrender.com';
+import { environment } from '../environments/environment';
+
+export const API_URL = environment.apiUrl;
 // https://monoreposmartax-n13o.onrender.com/
 export const AUTH_ENDPOINT = `${API_URL}/auth`;
 export const USER_ENDPOINT = `${API_URL}/users`;

@@ -334,7 +334,7 @@ async function bootstrap() {
   // app.use(cors())
   app.enableCors({
     // origin: 'http://localhost:4200',
-    origin: 'https://monoreposmartax-fronted.onrender.com',
+    origin: process.env.PATH_FRONT,
     credentials: true,
   });
   // קבע את הנתיב לתיקיית התמונות הציבורית
