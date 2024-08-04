@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "nx run-many --target=clean --all",
     "start:all": "concurrently \"nx serve front\" \"nx serve server\" \"nx serve api-gateway\" \"nx serve timesheet\"",
-    "build:front": "npx nx build front --prod",
+    "build:front": "npm install nx -g && npx nx build front --prod",
     "start": "npx serve -s dist/apps/front -l $PORT",
     "start:server": "node dist//server/main.js",
     "build:server": "npx nx build server --prod",
