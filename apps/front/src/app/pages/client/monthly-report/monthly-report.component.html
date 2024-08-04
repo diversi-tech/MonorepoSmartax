@@ -1,5 +1,5 @@
 <router-outlet></router-outlet>
-<p-button (click)="createReprtTag()" label="יצירת דוח חודשי חדש" />
+<p-button *ngIf="currentRoute==='monthlyReport'"(click)="createReprtTag()" label="יצירת דוח חודשי חדש" />
 
 
 

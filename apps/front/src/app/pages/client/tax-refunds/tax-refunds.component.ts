@@ -37,7 +37,6 @@ export class TaxRefundsComponent {
   ) {
     this.currentRoute = this.route.snapshot.url.join('/');
     console.log('Current route path:', this.currentRoute);
-  
   }
   client: Client;
   allTaxRefunds: TaxRefunds[] | null;
@@ -48,17 +47,17 @@ export class TaxRefundsComponent {
 
   ngOnInit(): void {
     this.client = history.state.client;
-    if(this.currentRoute === 'allClientTaxRefunds') {
+    if (this.currentRoute === 'allClientTaxRefunds') {
       this.getAllClients();
       this.getTaxRefunds()
     }
-    else{   
-       this.getTaxRefundsForClient();
+    else {
+      this.getTaxRefundsForClient();
     }
     console.log('report after', this.allTaxRefunds);
-debugger
+    debugger
     this.userService.getAllUsers().subscribe(
-      
+
       (Employes) => {
         this.allEmploye = Employes;
       },
@@ -94,17 +93,17 @@ debugger
   getEmployeName(idEmploye: string): any {
     return this.allEmploye.find((x) => x._id == idEmploye);
   }
- 
-   goToSteps(task: any) {  
+
+  goToSteps(task: any) {
     debugger
-    if(this,this.currentRoute === 'allClientTaxRefunds'){
+    if (this, this.currentRoute === 'allClientTaxRefunds') {
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps'], { state: { data: task, client: this.getClientName(task.idClient) } });
 
     }
-    else{
+    else {
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });
 
-    }  
+    }
   }
   getAllClients(): void {
     this.clientService.getAllClients().subscribe(
@@ -114,9 +113,17 @@ debugger
   }
   getClientName(idClient: string): Client | undefined {
     debugger
-    console.log(this.allClients.find((x) => x._id === idClient),'client');
-    
+    console.log(this.allClients.find((x) => x._id === idClient), 'client');
+
     return this.allClients.find((x) => x._id === idClient);
+  }
+  createReprtTag(): void {
+      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client } });
+  }
+  goToUpdate(report: TaxRefunds) {
+    if (report) {
+      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/taxRefunds/createTaxRefunds'], { state: { client: this.client, report: report } });
+    }
   }
 
   selectTaxRefunds(taxRefunds: TaxRefunds) {

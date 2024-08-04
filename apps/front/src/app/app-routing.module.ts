@@ -90,6 +90,7 @@ import { ChangeMainPaymentComponent } from './pages/client/changeMainPayment/cha
 import { RouterModule, Routes } from '@angular/router';
 import { AddMorePaymentDetailsComponent } from './pages/client/addMorePaymentDetails/addMorePaymentDetails.component';
 import { CreateMonthlyReportComponent } from './pages/client/client-create-monthly-report/create-monthly-report.component';
+import { ClientCreateTaxRefunds } from './pages/client/client-create-tax-refunds/client-create-tax-refunds.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -288,6 +289,7 @@ export const routes: Routes = [
       { path: 'taxrefundsteps', component: TaxRefundsStepsComponent },
       { path: 'monthlyReport', component: MonthlyReportComponent },
       { path: 'createMonthlyReport', component: CreateMonthlyReportComponent },
+      { path: 'createTaxRefunds', component: ClientCreateTaxRefunds },
       { path: 'financialStatement', component: FinancialStatementComponent },
       { path: 'sensitiveDetails', component: SensitiveDetailsComponent }
     ],

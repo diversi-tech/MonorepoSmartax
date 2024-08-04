@@ -1,4 +1,4 @@
-<!-- <p-button (click)="createReprtTag()" label="יצירת דוח  חדש" /> -->
+<p-button *ngIf="currentRoute==='taxRefunds'" (click)="createReprtTag()" label="יצירת דוח  חדש" />
 
 <p-table [value]="allTaxRefunds" [tableStyle]="{ 'max-width': '50rem' }">
   <ng-template pTemplate="header">
@@ -6,15 +6,15 @@
       <th></th>
       <th>סטטוס</th>
       <th>ישות</th>
-      <th>מחיר</th>
       <th>יתרה לתשלום</th>
       <th>סכום ששולם</th>
+      <th>מחיר</th>
       <th>עובד מטפל</th>
       <th>תאריך יצירה</th>
       <th pSortableColumn="taxRefunds" class="sort">
         :שנה <p-sortIcon field="taxRefunds" />
       </th>
-      <th></th>
+      <th *ngIf="currentRoute==='allClientTaxRefunds'">לקוח</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task>
@@ -26,12 +26,16 @@
       </td>
       <td class="{{task.status[0].color}}">{{task.status[0].name}}</td>
       <td>{{task.entityType}}</td>
-      <td>{{ task.price }}</td>
       <td>{{ task.balanceDue }}</td>
       <td>{{ task.paymentAmountPaid }}</td>
+      <td>{{ task.price }}</td>
       <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
       <td>{{ task.date | date : 'dd/MM/yyyy' }}</td>
       <td>{{ task.year }}</td>
+        <td *ngIf="currentRoute==='allClientTaxRefunds'">{{getClientName(task.idClient)?.firstName }} {{getClientName(task.idClient)?.lastName }}</td>
+        <app-icon-profile
+            [userName]="getClientName(task.idClient)?.firstName  &&  getClientName(task.idClient)?.lastName"
+            style="width: 50px;"></app-icon-profile>
 
     </tr>
   </ng-template>
