@@ -171,7 +171,7 @@ export class TaskComponent implements OnInit {
   formGroupStatus!: FormGroup;
   formGroupTags!: FormGroup;
   //
-  @Input() create:boolean|null = null;
+  @Input() create: boolean | null = null;
   @Input() parent: string | null = null;
   @Input() taskId: string | null = null;
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
@@ -194,7 +194,7 @@ export class TaskComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId)
       this.id = this.taskId;
-    if (this.id != 'create'||(this.create==null||(this.create&&!this.create))) {
+    if (this.id != 'create' || (this.create == null || (this.create && !this.create))) {
 
       this.tasksService.searchTask(this.id!).subscribe({
         next: (data) => {
@@ -377,7 +377,7 @@ export class TaskComponent implements OnInit {
 
   showDialog() {
     debugger
-    if (this.id == 'create'||this.parent) {
+    if (this.id == 'create' || this.parent) {
       this.visible = true;
     }
     else {
@@ -507,7 +507,7 @@ export class TaskComponent implements OnInit {
 
   //functions
   save() {
-    // debugger
+    debugger
     // בדוק אם המשימה אינה משויכת לאף משתמש
     // if (!this.selectedUsers || this.selectedUsers.length === 0) {
     //   this.visiblePopup = true;
@@ -533,7 +533,7 @@ export class TaskComponent implements OnInit {
     // newTask.checkList = this.currentTask.checkList;
     console.log(this.eventId);
 
-    if (this.id == 'create'||(this.create==null||this.create==true)) {
+    if (this.id == 'create' || (this.create == null || this.create == true)) {
       this.tasksService.createTask(newTask).subscribe({
         next: (task) => {
           console.log(task);
@@ -543,6 +543,7 @@ export class TaskComponent implements OnInit {
                 parentTask.subTasks.push(task._id);
                 this.tasksService.updateTask(this.parent, parentTask).subscribe({
                   next: (data) => {
+
                   },
                   error: (err) => {
                     console.log(err);
@@ -567,14 +568,18 @@ export class TaskComponent implements OnInit {
     } else
       if (this.id != 'create') {
         this.tasksService.updateTask(this.id!, newTask).subscribe({
-          next: (dataClients) => {
-            console.log(dataClients);
+          next: (data) => {
+            alert("ok")
+            alert(data)
+            window.location.reload()
+            console.log(data);
             // Task updated
             if (this.eventId) this.updateTask();
             if (this.taskId) this.closeModal.emit();
           },
-          error: (errClients) => {
-            console.log(errClients);
+          error: (err) => {
+            console.log(err);
+            alert("העדכון נכשל")
           },
         });
       }
@@ -591,7 +596,7 @@ export class TaskComponent implements OnInit {
 
     this.googleTask.updateGoogleTask(taskDetails);
   }
-  
+
   //
   cancel() {
     //return to last page
@@ -683,6 +688,7 @@ export class TaskComponent implements OnInit {
   selectPlaceholder = 'בחר רשימה'
 
   addNewList() {
+    debugger
     this.newList = false;
     if (this.newListName) {
       let l: CheckList = { name: this.newListName, items: [] }
@@ -707,6 +713,7 @@ export class TaskComponent implements OnInit {
 
   // create new list
   createList(i: any) {
+    debugger
     this.selectedList = i.value
     if (this.selectedList && this.selectedList != "new") {
       this.checkListServise.getCheckLists(this.selectedList).subscribe({
