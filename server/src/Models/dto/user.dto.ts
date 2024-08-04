@@ -28,7 +28,7 @@ export class CreateUserDto {
     @IsOptional()
     role?: Role;
     @ApiProperty({ description: 'The favorites clients' })
-    favoritesClient: Client[]
+    favoritesClient: string[]
 }
 
 export class UpdateUserDto {
@@ -59,5 +59,5 @@ export class UpdateUserDto {
 
     @ApiProperty({ description: 'The favorites clients', required: false })
     @IsOptional()
-    favoritesClient: Client[]
+    favoritesClient: string[]
 }

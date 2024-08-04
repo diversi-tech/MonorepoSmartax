@@ -50,7 +50,7 @@ export class ClientSearchComponent implements OnInit {
   searchName = new FormControl('');
   selectedClient: Client | null = null;
   // displayDialog: boolean = false;
-  choosedClients: Client[] = [];
+  choosedClients: string[] = [];
   user: User;
   isChoosedAllClient: boolean = false;
   displayDialog: boolean;
@@ -177,10 +177,10 @@ export class ClientSearchComponent implements OnInit {
   // }
 
   updateChoosedClients(client: Client, isChecked: boolean) {
-    if (isChecked && !this.choosedClients.includes(client)) {
-      this.choosedClients.push(client);
+    if (isChecked && !this.choosedClients.includes(client._id)) {
+      this.choosedClients.push(client._id);
     } else if (!isChecked) {
-      const index = this.choosedClients.indexOf(client);
+      const index = this.choosedClients.indexOf(client._id);
       if (index !== -1) {
         this.choosedClients.splice(index, 1);
       }
@@ -203,15 +203,15 @@ export class ClientSearchComponent implements OnInit {
   }
 
   isClientChoosed(client: Client): boolean {
-    return this.choosedClients.includes(client);
+    return this.choosedClients.includes(client._id);
   }
 
-  isFavoriteClient(client: Client) {
-    return this.user.favoritesClient.find(c => c._id === client._id) != undefined;
+  isFavoriteClient(client: string) {
+    return this.user.favoritesClient.find(c =>  c=== client) != undefined;
   }
 
   addFavoritesClient() {
-    this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)))
+    this.user.favoritesClient.push(...this.choosedClients.filter(c => !c==this.isFavoriteClient(c)))
     this.updateFavorite();
     console.log(this.user.favoritesClient, 'after add favorite');
   }
@@ -237,12 +237,12 @@ export class ClientSearchComponent implements OnInit {
   }
 
   removeFromFavorite(client: Client) {
-    this.user.favoritesClient = this.user.favoritesClient.filter(c => c._id != client._id);
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
     this.updateFavorite();
   }
 
   addToFavorite(client: Client) {
-    this.user.favoritesClient.push(client);
+    this.user.favoritesClient.push(client._id);
     this.updateFavorite();
   }
 
@@ -262,7 +262,7 @@ export class ClientSearchComponent implements OnInit {
   deleteClient(): void {
     if (this.choosedClients.length > 0) {
       this.choosedClients.forEach((c) => {
-        this.clientService.deleteClient(c._id).subscribe({
+        this.clientService.deleteClient(c).subscribe({
           next: () => {
             window.location.reload();
           },

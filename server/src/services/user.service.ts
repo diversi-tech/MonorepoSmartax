@@ -28,7 +28,7 @@ export class UserService {
     if (!userName || !email || !passwordHash || !role) {
       throw new ValidationException('Missing required fields');
     }
-    const favoritesClient: Client[]=[];
+    const favoritesClient: string[]=[];
     const createdUser = new this.userModel({ userName, email, passwordHash, role,favoritesClient });
     
     return await createdUser.save();
