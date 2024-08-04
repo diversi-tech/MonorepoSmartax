@@ -1,0 +1,26 @@
+body {
+    text-align: right;
+    direction: rtl;
+    background-color: chartreuse;
+}
+
+#app{
+    margin-top: 13rem;
+}
+
+:host {
+    text-align: right;
+    font-family: "Inter var", sans-serif;
+}
+
+:host ::ng-deep .smartaxToolbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+
+
+
