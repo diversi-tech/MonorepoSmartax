@@ -18,6 +18,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { PaymentDetails } from '../_models/paymentDetails.module';
 import { ClientService } from '../_services/client.service';
 import { Client } from '../_models/client.module';
 import { TagService } from '../_services/tag.service';
@@ -70,7 +71,9 @@ import { DialogModule } from 'primeng/dialog';
 import { Subscription } from 'rxjs';
 import { CheckList } from '../_models/checkList.model';
 import { CheckListService } from '../_services/checkList.service';
-
+interface payment{
+  name:string;
+ }
 @Component({
   selector: 'app-task',
   standalone: true,
@@ -117,7 +120,10 @@ import { CheckListService } from '../_services/checkList.service';
   ],
   providers: [DocumentService],
 })
+
 export class TaskComponent implements OnInit {
+  payments: payment[]=[{name:'hhh'},{name:'bbbb'}]
+  selectedpayment:string
   users: User[] = [];
   clients: Client[] = [];
   listStatus: Status[] = [];
@@ -127,6 +133,7 @@ export class TaskComponent implements OnInit {
   newTask: Task | undefined;
   taskName!: string;
   rangeDates: Date[] = [];
+  paymentD:PaymentDetails[];
   dueDate: Date | undefined;
   id: string | undefined;
   checked: boolean = false;
@@ -198,9 +205,10 @@ export class TaskComponent implements OnInit {
     private googleTask: GoogleTaskService,
     private checkListServise: CheckListService
   ) { }
-
+    
   newTaskCreated: boolean = false;
   ngOnInit(): void {
+    console.log("clientSe")
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId)
       this.id = this.taskId;
@@ -232,7 +240,7 @@ export class TaskComponent implements OnInit {
           this.selectedTags = this.currentTask.tags;
           this.eventId = this.currentTask.googleId;
           this.currentTask.checkList?.forEach((listId: string) => {
-
+        
             this.checkListServise.getCheckLists(listId).subscribe((data: CheckList) => {
               this.checkList.push(data);
             });
@@ -275,6 +283,8 @@ export class TaskComponent implements OnInit {
         console.log(errClients);
       },
     });
+    
+   
     // status
     this.statusService.getAllStatuses().subscribe({
       next: (data) => {
@@ -374,8 +384,13 @@ export class TaskComponent implements OnInit {
     // });
 
     // alert(this.id)
-  }
-
+    if(this.selectedClient){ 
+      this.paymentD.push(this.selectedClient.payment.mainPaymentDetails);
+       console.log("clientSe")
+      }
+  };
+  
+ 
   notInThisTask(id: string) {
     this.currentTask.checkList.forEach(item => {
       if (item === id)

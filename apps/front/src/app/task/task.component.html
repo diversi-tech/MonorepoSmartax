@@ -1,5 +1,5 @@
 <!-- ===================== -->
-<div style="margin-top: 10%" id="container">
+<div style="margin-top: 10%  ;" id="container">
   <p-card header="משימה" subheader="ליצור ולערוך משימות" [style]="{ width: '800px' }">
     <app-timer *ngIf="id != 'create'" [taskId]="id"></app-timer>
     <ng-template pTemplate="header">
@@ -302,7 +302,8 @@
           <div (click)="showClients = !showClients">
             <app-icon-profile *ngIf="selectedClient"
               [userName]="selectedClient.firstName && selectedClient.firstName"></app-icon-profile>
-          </div>
+              
+          </div> 
         </p-inputGroup>
         <!-- <p-multiSelect
           [options]="clients"
@@ -337,7 +338,26 @@
             </div>
           </ng-template>
         </p-multiSelect> -->
+        
       </div>
+      <!-- מינויים -->
+       
+      <div class="card flex justify-content-center" *ngIf="selectedClient">
+        <!-- <h1>{{paymentD[1]}}</h1> -->
+        <p-dropdown
+          [style]="{ width: '150%', direction: 'rtl' }"
+          [options]="payments"
+          [(ngModel)]="selectedpayment"
+          optionLabel="name"
+          
+          placeholder="מינויים"
+        >
+         
+         
+        </p-dropdown>
+       
+      </div>
+      
     </div>
     <!-- pop -->
     <form [formGroup]="formGroupClient" *ngIf="showClients">
