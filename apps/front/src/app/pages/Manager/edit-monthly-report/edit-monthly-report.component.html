@@ -9,15 +9,32 @@
 </div>
 
 <!-- דיאלוג הוספה -->
-<p-dialog header="Add New Step" [(visible)]="displayAddDialog" modal="modal" [style]="{'width': '300px'}">
+<p-dialog header="הוספת רשומה חדשה" [(visible)]="displayAddDialog" modal="modal" [style]="{'width': '300px'}">
     <div class="p-fluid">
         <div class="p-field">
-            <label for="value">Value</label>
+            <label for="value"> ערך הרשומה</label>
             <input id="value" type="text" pInputText [(ngModel)]="newStepValue" />
         </div>
         
     </div>
-    <br><br><br>
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="value">האם מסוג טקסט חופשי</label>
+            <input id="value" type="checkbox"  [(ngModel)]="newStepContent" />
+        </div>
+        
+    </div>
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="value">סוג</label>
+                <select id="value" [(ngModel)]="newStepType">
+                  <option *ngFor="let i of allStepTypes" [value]="i">{{i}}</option>
+                </select>
+              </div>
+              
+            <input id="value" type="" pInputText [(ngModel)]="newStepType" />
+        </div>
+            <br><br><br>
     <p-footer>
         <button type="button" pButton icon="pi pi-check" label="Add" (click)="addStep()"></button>
         <button type="button" pButton icon="pi pi-times" label="Cancel" (click)="hideAddDialog()"></button>

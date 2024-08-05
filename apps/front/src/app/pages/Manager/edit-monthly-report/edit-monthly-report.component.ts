@@ -23,6 +23,7 @@ import { DropdownModule } from 'primeng/dropdown';
 export class EditMonthlyReportComponent implements OnInit {
   allStepFields: stepFieldMonth[] = [];
   filteredStepFields: stepFieldMonth[] = [];
+  allStepTypes:string[] = [];
   displayAddDialog: boolean = false;
   newStepValue: string = '';
   newStepType: string = '';
@@ -30,6 +31,15 @@ export class EditMonthlyReportComponent implements OnInit {
   constructor(private stepFieldMonthService: stepFieldMonthService) { }
 
   ngOnInit(): void {
+    this.stepFieldMonthService.getAllstepFieldMonth().subscribe(
+    (types) => {
+      this.allStepTypes = types.map(type => type.type);
+    },
+
+    (error) =>{
+      console.error('Error', error);
+    }
+   )
     this.stepFieldMonthService.getAllstepFieldMonth().subscribe(
       (stepFields) => {
         this.allStepFields = stepFields
