@@ -202,7 +202,7 @@ export class CreateMonthlyReportComponent {
 
     this.yearlyReportService
       .updateYearlyReport(this.reportToUpdate._id, updatedReport)
-      .then(
+      .subscribe(
         (response) => {
           console.log(response);
           // if (response)
