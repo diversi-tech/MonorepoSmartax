@@ -50,7 +50,6 @@ export class FavoritesClientsListComponent implements OnInit {
             ({
               next:(favoriteClients)=>{
                 console.log(favoriteClients);
-                
                 this.favoriteClients.push(favoriteClients);
               }
           })})
