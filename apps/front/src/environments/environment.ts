@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: 'https://monoreposmartax.onrender.com'
+    apiUrl: 'https://monoreposmartax-n13o.onrender.com'
   };
   

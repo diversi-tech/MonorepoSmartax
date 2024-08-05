@@ -10,7 +10,7 @@ import {
 } from '@angular/common';
 import { TaskComponent } from '../../task/task.component';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { Footer, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
@@ -64,8 +64,6 @@ export class PopAppComponent implements OnInit {
   @Input() parent: string | null = null;
 
   visible: boolean = true;
-  show = true
-
 
   create = false;
   constructor(private route: ActivatedRoute, private location: Location) {}

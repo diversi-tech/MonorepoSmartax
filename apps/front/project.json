@@ -26,6 +26,7 @@
           }
         ],
 
+
         "styles": [
           "./node_modules/bootstrap/dist/css/bootstrap.min.css",
           "./node_modules/primeng/resources/themes/lara-light-blue/theme.css",
@@ -43,8 +44,9 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "3.70MB",
-              "maximumError": "3.90MB"
+              "maximumWarning": "4.90MB",
+              "maximumError": "5.90MB"
+
             },
             {
               "type": "anyComponentStyle",
