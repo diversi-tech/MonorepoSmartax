@@ -104,9 +104,17 @@ export class PaymentController {
     @Body(new ValidationPipe()) body: { paymentId: string,billingId: string,status: boolean }
      
   ): Promise<Payment> {
-    console.log(body.paymentId,body.billingId,body.status);
-
+    console.log("start change billing status in controller front ", body.paymentId, body.billingId, body.status);
+    
     return await this.PaymentService.updateBillingStatus(body.paymentId,body.billingId,body.status);
 
+  }
+  @ApiBody({
+    schema: { type: 'object', properties: { paymentId: { type: 'string' } ,paymentDetailsId: { type: 'string' }} },
+  })
+  @Post('stopPaymentDetails')
+  async stopPaymentDetails(
+  @Body(new ValidationPipe())body:{ paymentId: string,paymentDetailsId: string}): Promise<Payment> {
+    return await this.PaymentService.stopPaymentDetails(body.paymentId,body.paymentDetailsId);
   }
 }
