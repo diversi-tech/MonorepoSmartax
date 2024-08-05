@@ -13,6 +13,7 @@ import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-yearly-report-steps',
@@ -143,7 +144,7 @@ export class YearlyReportStepsComponent implements OnInit {
       const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
 
       console.log("response from server", response);
-      alert("Successful update response");
+      Swal.fire('Success', 'דוח שנתי עודכן בהצלחה', 'success');
       this.responseData = response;
       this.changes = {};
     } catch (error) {

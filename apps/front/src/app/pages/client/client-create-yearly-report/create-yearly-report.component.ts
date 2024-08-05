@@ -23,6 +23,7 @@ import { StatusService } from '../../../_services/status.service';
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -281,11 +282,12 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   add() {
-    alert(this.thisSubject2)
     this.newYear.yearNum = this.thisSubject2
     this.yearService.createYear(this.newYear).subscribe(response => {
       this.yearList.push(response);
-      alert(response.yearNum + " " + "נוסף בהצלחה")
+      // alert(response.yearNum + " " + "נוסף בהצלחה")
+      Swal.fire('Success', ' שנה נוספה בהצלחה', 'success');
+
     });
   }
 }
