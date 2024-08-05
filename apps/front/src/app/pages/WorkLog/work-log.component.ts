@@ -47,8 +47,6 @@ export class WorkLogComponent implements OnInit {
   users: User[] = [];
   employName: string | null = null;
 
-
-
   constructor(
     private workLogService: WorkLogService,
     private messageService: MessageService,
@@ -59,12 +57,9 @@ export class WorkLogComponent implements OnInit {
     console.log(this.userRole);
     
   }
-
   ngOnInit() {
     this.getUsers();
   }
-
-
   getUsers() {
     this.workLogService.getUsers().subscribe((users: User[]) => {
       this.users = users;
@@ -128,7 +123,6 @@ export class WorkLogComponent implements OnInit {
     }));
     console.log(this.groupedWorkLogs);
   }
-
 
   checkIn() {
     if (!this.employeeId) {
@@ -309,10 +303,7 @@ export class WorkLogComponent implements OnInit {
         (error) => {
           console.error('Error exporting work logs:', error);
           this.messageService.add({ severity: 'error', summary: 'Failed to export work logs' });
-        }
-      );
-    }
-  }
+        }); } }
 
   private exportWorkLogsToExcel(workLogs: WorkLog[], year: number, month: number) {
     this.workLogService.exportWorkLogsForEmployee(this.employeeId, month, year).subscribe(
@@ -322,10 +313,7 @@ export class WorkLogComponent implements OnInit {
       (error) => {
         console.error('Error exporting work logs for employee:', error);
         this.messageService.add({ severity: 'error', summary: 'Failed to export work logs' });
-      }
-    );
-  }
-
+      } );}
   private downloadExcelBlob(blob: Blob, year: number, month: number) {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
