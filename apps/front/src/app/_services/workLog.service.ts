@@ -9,7 +9,9 @@ import { WORK_LOGS } from '../api-urls';
   providedIn: 'root',
 })
 export class WorkLogService {
-  private apiUrl = WORK_LOGS;
+  // private apiUrl = WORK_LOGS;
+  private apiUrl = 'https://api-gateway-m7cv.onrender.com';
+
 
   constructor(private http: HttpClient) {}
 

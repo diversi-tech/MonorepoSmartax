@@ -85,31 +85,6 @@ export class GoogleAuthService {
         this.gapiInited = true;
       });
   }
-
-  // public createGoogleEvent(eventDetails: any) {
-  //   if (!this.gapiInited || !this.gisInited) {
-  //     console.error("GAPI or GIS not initialized");
-  //     this.reinitializeGapi();
-  //     return;
-  //   }
-  //   this.tokenClient.callback = async (resp: any) => {
-  //     if (resp.error !== undefined) {
-  //       console.error("Error during token request", resp.error);
-  //       throw resp;
-  //     }
-  //     await this.scheduleEvent(eventDetails);
-  //   };
-  //   try {
-  //     if (gapi.client.getToken() === null) {
-  //       this.tokenClient.requestAccessToken({ prompt: "consent" });
-  //     } else {
-  //       this.tokenClient.requestAccessToken({ prompt: "" });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error requesting access token", error);
-  //   }
-  //   console.log('Token request initiated');
-  // }
   createGoogleEvent(eventDetails: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (!this.gapiInited || !this.gisInited) {
@@ -146,76 +121,6 @@ export class GoogleAuthService {
       }
     });
   }
-
-  // private async scheduleEvent(eventDetails: any) {
-  //   // Ensure event details have startTime and endTime
-  //   if (!eventDetails.startTime || !eventDetails.endTime) {
-  //     console.error('Missing event details: startTime or endTime');
-  //     return;
-  //   }
-
-  //   const event = {
-  //     summary: eventDetails.nameT,
-  //     location: "",
-  //     description: eventDetails.description,
-  //     start: {
-  //       dateTime: eventDetails.startTime,
-  //       timeZone: "Asia/Jerusalem",
-  //     },
-  //     end: {
-  //       dateTime: eventDetails.endTime,
-  //       timeZone: "Asia/Jerusalem",
-  //     },
-  //     attendees: [{ email: eventDetails.email }],
-  //     reminders: {
-  //       useDefault: false,
-  //       overrides: [
-  //         { method: "email", minutes: 24 * 60 },
-  //         { method: "popup", minutes: 10 },
-  //       ],
-  //     },
-  //     conferenceData: {
-  //       createRequest: {
-  //         requestId: Math.random().toString(36).substring(2),
-  //         conferenceSolutionKey: {
-  //           type: "hangoutsMeet"
-  //         }
-  //       }
-  //     }
-  //   };
-
-  //   try {
-  //     const request = gapi.client.calendar.events.insert({
-  //       calendarId: "primary",
-  //       resource: event,
-  //       conferenceDataVersion: 1
-  //     });
-
-  //     request.execute((event: any) => {
-  //       let conferenceLink = '';
-  //       if (event.conferenceData && event.conferenceData.entryPoints && event.conferenceData.entryPoints.length > 0) {
-  //         conferenceLink = event.conferenceData.entryPoints[0].uri;
-  //       }
-  //       Swal.fire({
-  //         position: "top-end",
-  //         icon: "success",
-  //         title: "המשימה נשמרה",
-  //         html: `
-  //           לצפיה בלוח המשימות
-  //           <a href="${event.htmlLink}" target="_blank" autofocus>לחץ כאן</a>
-  //           <br>
-  //           לפגישה ב-Google Meet
-  //           <a href="${conferenceLink}" target="_blank" autofocus>לחץ כאן</a>
-  //         `,
-  //         showConfirmButton: false,
-  //         timer: 3000
-  //       });
-  //     });
-  //   } catch (error) {
-  //     console.error("Error creating event:", error);
-  //   }
-  // }
-
   private async scheduleEvent(eventDetails: any) {
     // Ensure event details have startTime and endTime
     if (!eventDetails.startTime || !eventDetails.endTime) {
@@ -285,9 +190,9 @@ export class GoogleAuthService {
           showConfirmButton: false,
           timer: 3000,
         });
-        // שמירת ה-eventId
+        // save-eventId
         eventDetails.eventId = event.id;
-        // שידור ה-eventId והקישור המעודכן
+        // send-eventId & link
         this.eventDataSubject.next({ eventId: event.id, conferenceLink });
       });
     } catch (error) {
