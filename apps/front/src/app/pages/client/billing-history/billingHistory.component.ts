@@ -27,12 +27,11 @@ export class BillingHistoryComponent implements OnInit {
     this.paymentService.getPayment(history.state.client.payment).subscribe(
       s => {
         this.payment = s,
-          console.log(this.payment._id);
-
-        console.log(this.payment);
         console.log('arr: ');
         console.log(this.payment.billingHistory);
         this.allBillings = this.payment.billingHistory
+        console.log("allBillings: ", this.allBillings);
+        
 
       },
       f => {
@@ -48,8 +47,10 @@ export class BillingHistoryComponent implements OnInit {
     
     console.log("start changeIsReturned "+ billing._id);
     
-    this.paymentService.updateBillingStatus(this.payment._id, billing._id, !billing.ifRreturn).subscribe(
+   this.paymentService.updateBillingStatus(this.payment._id, billing._id, !billing.ifRreturn).subscribe(
       s =>{ console.log(s);
+        console.log("billing:" + billing);
+        
         this.ngOnInit() 
 
       },
