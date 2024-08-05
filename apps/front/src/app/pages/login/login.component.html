@@ -1,5 +1,5 @@
 <div class="col-md-12">
-  <div id="formText" class="card card-container">
+  <div  id="formText" class="card card-container">
     <img
       id="profile-img"
       src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -57,6 +57,15 @@
       <div class="form-group">
         <button class="btn btn-primary btn-block">התחברות</button>
       </div>
+      @if (!isLoggedIn) {
+        <div id="forgotBox"  class="col-md-12">
+          <div >
+            <!-- <a id="forgotText">שכחת סיסמה?</a> -->
+            <a id="forgotLink" (click)="forgotPassword()">שכחת סיסמה? </a>
+          </div>
+          <app-forgot-password *ngIf="forgot"></app-forgot-password>
+        </div>
+      }
       <div class="form-group">
         @if (f.submitted && isLoginFailed) {
         <div class="alert alert-danger" role="alert">
@@ -66,20 +75,23 @@
       </div>
     </form>
     } @else {
-    <div class="alert alert-success">מחובר כ-{{ role }}</div>
+    <!-- <div class="alert alert-success">מחובר כ-{{ role }}</div> -->
     }
   </div>
-  @if (!isLoggedIn) {
-    <div id="forgotBox"  class="col-md-12">
-      <div >
-        <a id="forgotText">שכחת סיסמה?</a>
-        <br><a id="forgotLink" (click)="forgotPassword()">לחץ כאן</a>
-      </div>
-      <app-forgot-password *ngIf="forgot"></app-forgot-password>
-    </div>
-  }
+  
 </div>
+<!-- <h1>Login with Google</h1>
+<div id="g_id_onload"
+  data-client_id="450626878965-7r8nl14gj5eh5h4lfb1qs2d4kfkvq15l.apps.googleusercontent.com"
+  data-callback="handleCredentialResponse">
+</div>
+<div class="g_id_signin" data-type="standard"></div>
+<button type="submit" (click)="loadGoogleApi()" class="submit-button"><i class="pi pi-google"></i></button> -->
+<!-- login.component.html -->
 <div id="googleSignInButton"></div>
-<!-- <button (click)="signInWithGoogle()">התחבר עם גוגל</button> -->
-<router-outlet/>
 
+<!-- <button (click)="signInWithGoogle()">Sign in with Google</button> -->
+
+
+<!-- <button type="submit" (click)="loadGoogleApi()" class="submit-button"><i class="pi pi-google"></i></button> -->
+<router-outlet/>

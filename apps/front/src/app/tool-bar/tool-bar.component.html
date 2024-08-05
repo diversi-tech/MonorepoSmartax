@@ -56,8 +56,8 @@
         </ul>
     </ng-template>
 </p-menubar> -->
-
-<p-menubar id="menu" [model]="items">
+<!-- ======================== -->
+<p-menubar [style]="{'background-color':'white','border':'none'}" id="menu" [model]="items">
     <ng-template pTemplate="item" let-item>
         <div *ngIf="!item.list" class="p-menuitem-link" [routerLink]="item.route" routerLinkActive="active-link">
             <span [class]="item.icon"></span>

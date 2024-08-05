@@ -16,7 +16,7 @@ import { ForgotPasswordService } from '../../_services/forgot-password.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { InputOtpModule } from 'primeng/inputotp';
-import { Button } from 'primeng/button';
+import { Button, ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-forgot-password',
@@ -31,6 +31,7 @@ import { Button } from 'primeng/button';
     NgIf,
     Button,
     InputOtpModule,
+    ButtonModule,
   ],
 })
 export class ForgotPasswordComponent {

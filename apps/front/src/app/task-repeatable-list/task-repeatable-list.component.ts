@@ -138,17 +138,28 @@ export class TaskRepeatableListComponent {
       .subscribe((allTasks: RepeatableTask[]) => {
         this.tasks = allTasks;
         console.log(this.tasks);
-        this.progressValue = this.progressDueDate()/this.tasks.length*100;
+        this.progressValue = (this.progressDueDate() / this.tasks.length) * 100;
         console.log(this.progressValue);
       });
   }
 
   categorizeTasks(f: Frequency): RepeatableTask[] {
-    return this.tasks.filter((task) => {
-      {
-        return task.frequency && task.frequency.name === f.name;
-      }
-    });
+    console.log(this.tasks);
+    console.log(this.filteredTasks);
+
+    if (this.filteredTasks.length > 0) {
+      return this.filteredTasks.filter((task) => {
+        {
+          return task.frequency && task.frequency.name === f.name;
+        }
+      });
+    } else {
+      return this.tasks.filter((task) => {
+        {
+          return task.frequency && task.frequency.name === f.name;
+        }
+      });
+    }
   }
 
   searchTask(): void {
@@ -167,9 +178,7 @@ export class TaskRepeatableListComponent {
   showConfirmation(task: RepeatableTask): void {
     this.selectedTask = task;
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this task?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
+      message: '?אתה בטוח רוצה למחוק את המשימה',
       accept: () => {
         console.log('delete start');
         this.deleteTask(this.selectedTask);
@@ -295,9 +304,12 @@ export class TaskRepeatableListComponent {
         deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
       );
     });
+    console.log(this.filteredTasks);
   }
   // sort
   sortTasks(field: string, list: Task[], reverse: boolean) {
+    if (this.filteredTasks.length > 0) list = this.filteredTasks;
+    else list = this.tasks;
     list.sort((a, b) => {
       if (field === 'taskName') {
         return reverse
@@ -337,5 +349,11 @@ export class TaskRepeatableListComponent {
       return objDate < today;
     });
     return t.length;
+  }
+  //
+  currentTask: RepeatableTask;
+  selectCurrentTask(task: RepeatableTask) {
+    debugger;
+    this.currentTask = task;
   }
 }
