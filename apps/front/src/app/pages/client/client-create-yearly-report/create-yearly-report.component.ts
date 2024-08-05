@@ -116,14 +116,10 @@ export class CreateYearlyReportComponent implements OnInit {
     this.userId = this.tokenService.getCurrentDetail('_id');
     this.client = history.state.client;
     this.reportToUpdate = history.state.report || null;
-    console.log('client', this.client);
-    console.log('user', this.userId);
-    console.log('reportToUpdate', this.reportToUpdate);
   }
 
   showModalDialog() {
     this.displayModal = true;
-
   }
 
   hideModalDialog() {
@@ -137,7 +133,6 @@ export class CreateYearlyReportComponent implements OnInit {
       price: ['', Validators.required],
       paymentAmountPaid: ['', Validators.required],
       balanceDue: ['', Validators.required],
-      // status: ['', Validators.required],
     });
     if (this.reportToUpdate) {
       this.yearlyReportForm.patchValue({
@@ -158,7 +153,6 @@ export class CreateYearlyReportComponent implements OnInit {
     if (this.yearlyReportForm.valid) {
       const yearlyReport = this.yearlyReportForm.value;
       yearlyReport.yearReport = this.thisSubject
-      // const status =  this.determineStatus();
 
       if (this.reportToUpdate) {
         const status = this.determineStatus();
@@ -168,7 +162,6 @@ export class CreateYearlyReportComponent implements OnInit {
       }
     }
     this.hideModalDialog(); //
-    // this.location.back();
 
   }
 
@@ -194,7 +187,6 @@ export class CreateYearlyReportComponent implements OnInit {
 
     const yearly: YearlyReport = {
       idClient: this.client._id,
-      assignee: [this.userId],
       idEmploye: this.userId,
       yearReport: yearlyReport.yearReport,
       dateTime: new Date(),
@@ -204,28 +196,38 @@ export class CreateYearlyReportComponent implements OnInit {
       stepsList: null,
       entityType: yearlyReport.type,
       status: yearlyReport.status,
-    };
+      assignee: [this.userId],
 
+    };
     this.yearlyReportService.createYearlyReport(yearly).subscribe(
       (response) => {
-        console.log("response", response);
-        this.router.navigate(
-          ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
-          {
-            state: { data: response, client: this.client },
-
-          });
+        if (response) {
+          console.log("response", response);
+          Swal.fire('Success', "הדוח נוסף בהצלחה", "success");
+          this.router.navigate(
+            ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
+            {
+              state: { data: response, client: this.client },
+            }
+          );
+        }
       },
       (error) => {
-        console.log(error);
+        console.error('Error occurred:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error || 'Something went wrong!',
+        });
       }
     );
   }
 
   updateYearlyReport(yearlyReport: any, status: any) {
+    console.log("updateYearlyReport", yearlyReport)
     const updatedReport: YearlyReport = {
       ...this.reportToUpdate,
-      yearReport: yearlyReport.yearNUm,
+      yearReport: yearlyReport.yearReport,
       price: yearlyReport.price,
       paymentAmountPaid: yearlyReport.paymentAmountPaid,
       balanceDue: yearlyReport.balanceDue,
@@ -237,22 +239,33 @@ export class CreateYearlyReportComponent implements OnInit {
     updatedReport.idEmploye = this.userId;
     this.yearlyReportService
       .updateYearlyReport(this.reportToUpdate._id, updatedReport)
-      .then(
+      .subscribe(
         (response) => {
-          console.log(response);
-          if (response)
-            this.location.back();
-
+          if (response) {
+            console.log("response", response);
+            Swal.fire('Success', "הדוח עודכן בהצלחה", "success");
+            this.router.navigate(
+              ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
+              {
+                state: { data: response, client: this.client },
+              }
+            );
+          }
         },
         (error) => {
-          console.log(error);
+          console.error('Error occurred:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error || 'Something went wrong!',
+          });
         }
       );
   }
   goBack(): void {
     this.location.back();
   }
-  
+
   filterByyear(value: string): void {
     console.log(this.yearList2, '2')
     if (value != "") {
@@ -285,7 +298,6 @@ export class CreateYearlyReportComponent implements OnInit {
     this.newYear.yearNum = this.thisSubject2
     this.yearService.createYear(this.newYear).subscribe(response => {
       this.yearList.push(response);
-      // alert(response.yearNum + " " + "נוסף בהצלחה")
       Swal.fire('Success', ' שנה נוספה בהצלחה', 'success');
 
     });
