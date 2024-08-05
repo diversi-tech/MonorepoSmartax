@@ -60,7 +60,7 @@ export class ClientCreateTaxRefunds implements OnInit {
   formSubmitted = false;
   newYear: Year={
     yearNum: "",
-    id: ''
+    _id: ''
   }
   typeOptions: any[] = [
     { label: 'פיצול לעצמאי', value: 'עצמאי' },
