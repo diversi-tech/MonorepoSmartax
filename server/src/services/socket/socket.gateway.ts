@@ -30,7 +30,7 @@ import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
-    origin: 'http://localhost:4200',
+    origin: 'https://monoreposmartax-fronted.onrender.com',
     methods: ['GET', 'POST'],
     credentials: true,
   },
