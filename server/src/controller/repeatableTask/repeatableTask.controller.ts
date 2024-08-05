@@ -35,7 +35,6 @@ import { RepeatableTask } from 'server/src/Models/repeatableTask.model';
 
 @ApiTags('repeatableTask')
 @UseFilters(HttpErrorFilter)
-@UseFilters(ValidationException)
 @Controller('repeatableTask')
 export class RepeatableTaskController {
   constructor(

@@ -2,51 +2,54 @@
 <input type="text" pInputText placeholder="חיפוש לפי שם לקוח" (input)="filterByClient($event.target.value)" />
 
 
-<p-table [value]="sortedReports" [tableStyle]="{ 'max-width': '50rem' }">
+<p-table [value]="sortedReports" [tableStyle]="{ 'max-width': '68rem' }">
     <ng-template pTemplate="header">
         <tr>
             <th></th>
-            <th>סטטוס</th>
+            <th>סטטוס
+                <div>
+                    <select *ngIf="isSelected == 2" [(ngModel)]="selectedStatus" (change)="filterByStatus($event)">
+                      <option>TO DO</option>
+                      <option>IN PROGRESS</option>
+                    </select>
+                  </div>   
+            </th>
             <th>ישות</th>
             <th>עובד מטפל</th>
-            <th pSortableColumn="balanceDue">
-                :יתרה לתשלום <p-sortIcon field="balanceDue" />
-            </th>
-            <th pSortableColumn="paymentAmountPaid">
-                :סכום ששולם <p-sortIcon field="paymentAmountPaid" />
-            </th>
-            <th pSortableColumn="price">
-                :מחיר <p-sortIcon field="price" />
+            <th>יתרה לתשלום</th>
+            <th>סכום ששולם</th>
+            <th pSortableColumn="price" class="sort">
+                מחיר <p-sortIcon field="price" />
             </th>
             <th>תאריך יצירה</th>
-            <th pSortableColumn="yearReport">
+
+            <th pSortableColumn="yearReport" class="sort">
                 :שנה <p-sortIcon field="yearReport" />
             </th>
-            <th pSortableColumn="name">
-            </th>
+            <th>שם לקוח</th>
 
+            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-yearlyReport>
         <tr (click)="selectYearlyReport(yearlyReport)"
-            [ngClass]="{ 'highlight': currentYearlyReport === yearlyReport }">
-            <td><button *ngIf="currentYearlyReport === yearlyReport" pButton
-                    class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
-                    (click)="goToSteps(getClientName(yearlyReport.idUser), yearlyReport)"></button>
-            </td>
-            <td class="{{yearlyReport.status?.color}}">{{yearlyReport.status?.name}}</td>
-            <td>{{yearlyReport.entityType}}</td>
-            <td>{{getEmployeName(yearlyReport.idEmploye)?.userName }}</td>
-            <td>{{ yearlyReport.balanceDue }}</td>
-            <td>{{ yearlyReport.paymentAmountPaid }}</td>
-            <td>{{ yearlyReport.price }}</td>
-            <td>{{ yearlyReport.dateTime | date:'dd/MM/yyyy' }}</td>
-            <td>{{ yearlyReport.yearReport }}</td>
-            <td>{{getClientName(yearlyReport.idUser)?.firstName }} {{getClientName(yearlyReport.idUser)?.lastName }}</td>
-            <app-icon-profile
-                [userName]="getClientName(yearlyReport.idUser)?.firstName  &&  getClientName(yearlyReport.idUser)?.lastName"
-                style="width: 50px;"></app-icon-profile>
-
-        </tr>
+        [ngClass]="{ 'highlight': currentYearlyReport === yearlyReport }">
+        <td><button *ngIf="currentYearlyReport === yearlyReport" pButton
+                class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+                (click)="goToSteps(yearlyReport.idClient,yearlyReport)"></button>
+        </td>
+        <td class="{{yearlyReport.status?.color}}">{{yearlyReport.status?.name}}</td>
+        <td>{{yearlyReport.entityType}}</td>
+        <td>{{getEmployeName(yearlyReport.idEmploye)?.userName }}</td>
+        <td>{{ yearlyReport.balanceDue }}</td>
+        <td>{{ yearlyReport.paymentAmountPaid }}</td>
+        <td>{{ yearlyReport.price }}</td>
+        <td>{{ yearlyReport.dateTime | date:'dd/MM/yyyy' }}</td>
+        <td>{{ yearlyReport.yearReport }}</td>
+        <td>{{ getClientName(yearlyReport.idClient) }} </td>
+        <app-icon-profile
+        [userName]="getClientName(yearlyReport.idClient)"
+        style="width: 50px;"></app-icon-profile>
+    </tr>
     </ng-template>
 </p-table>

@@ -5,6 +5,7 @@ import { IsNotEmpty, IsDateString, IsString, MaxLength, IsBoolean } from 'class-
 import { Types } from 'mongoose'; // Import Types from mongoose
 import { StepField } from '../stepField.model';
 import { Status } from '../status.model';
+import { Index } from 'typeorm';
 
 @Schema()
 export class CreateYearlyReportDto  {
@@ -65,6 +66,7 @@ export class CreateYearlyReportDto  {
     @ApiProperty()
     @IsNotEmpty()
     status: Status;
+
 
 }
 

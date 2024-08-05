@@ -225,8 +225,9 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
       );
     }
      else {
+      console.log('create client', this.contactForm.value);
   
-      this.clientService.createClient(this.newClient).subscribe(
+      this.clientService.createClient(this.contactForm.value).subscribe(
         response => {
           if (response) {
             console.log('Client created successfully:', response);
@@ -240,8 +241,8 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
         }
       );
     }
-  }
-  }
+   }
+   }
 
   onClose() {
     this.close.emit();

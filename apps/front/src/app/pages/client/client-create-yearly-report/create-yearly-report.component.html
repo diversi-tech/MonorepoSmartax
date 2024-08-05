@@ -13,18 +13,19 @@
   <form [formGroup]="yearlyReportForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <p-dropdown id="type" formControlName="type" [options]="typeOptions" placeholder="עבור-"
-        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown"></p-dropdown>
+      [style]="{width: '80%'}"  class="form-control-2" ></p-dropdown>
       <div *ngIf="yearlyReportForm.get('type').invalid && yearlyReportForm.get('type').touched" class="error">
         This field is required.
       </div>
     </div>
+    <div class="form-group">
 
     <div class="p-field p-mb-3">
-      <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2"
+      <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2" 
         (completeMethod)="filterByyear($event.query)" [minLength]="1"
         placeholder="בחירת שנה" field="yearNum" [dropdown]="true" (onSelect)="select($event)"
-        [style]="{width: '100%'}" required>
-        <ng-template let-yearname pTemplate="item">
+        [style]="{width: '80%'}" class="form-control-2" required>
+        <ng-template let-yearname pTemplate="item" class="template">
           <div class="p-d-flex p-ai-center">
             שנת  {{ yearname.yearNum}}
             <ng-container *ngIf="is">
@@ -33,6 +34,7 @@
           </div>
         </ng-template>
       </p-autoComplete>
+    </div>
     </div>
     
 
@@ -62,6 +64,6 @@
       </div>
     </div>
 
-    <button type="submit" pButton label="אישור " class= "p-button-text p-button-raised p-button-rounded"></button>
+    <button type="submit" pButton label="אישור "  id="submitButon"></button>
   </form>
 </div>
