@@ -6,7 +6,7 @@
 <button pButton  *ngIf="isSelected == 2" (click)="onSelectionChange(5)" label="ללא מיון" class= "p-button-text p-button-raised p-button-rounded"></button >
 <button pButton  *ngIf="is == 2" (click)="filterToDoWithBalanceDue()" label="TO DO סנן לפי סכום ששלום ו" class= "p-button-text p-button-raised p-button-rounded"></button>
 <button pButton  *ngIf="is != 2" (click)="filterToDoWithBalanceDue2()" label="ללא סינון" class= "p-button-text p-button-raised p-button-rounded"></button>
-<p-table [value]="isSelected != 1 && isSelected != 0 ?filterallYearlyReport :allYearlyReport " [tableStyle]="{ 'max-width': '50rem' }">
+<p-table [value]="isSelected != 1 && isSelected != 0 ?filterallYearlyReport :allYearlyReport " [tableStyle]="{ 'width': '68em' }">
     <ng-template pTemplate="header" let-columns>
         <tr>
             <th></th>
@@ -22,12 +22,17 @@
             <th>עובד מטפל</th>
             <th>יתרה לתשלום</th>
             <th>סכום ששולם</th>
-            <th>מחיר</th>
-
+            <th pSortableColumn="price" class="sort">
+                מחיר <p-sortIcon field="price" />
+            </th>
             <th>תאריך יצירה</th>
+
             <th pSortableColumn="yearReport" class="sort">
                 :שנה <p-sortIcon field="yearReport" />
             </th>
+            <th>שם לקוח</th>
+
+            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-yearlyReport>
@@ -45,6 +50,11 @@
             <td>{{ yearlyReport.price }}</td>
             <td>{{ yearlyReport.dateTime | date:'dd/MM/yyyy' }}</td>
             <td>{{ yearlyReport.yearReport }}</td>
+
+            <td>{{ getClientName(yearlyReport.idUser) }} </td>
+            <app-icon-profile
+            [userName]="getClientName(yearlyReport.idClient)"
+            style="width: 50px;"></app-icon-profile>
         </tr>
     </ng-template>
 </p-table>

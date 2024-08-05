@@ -16,11 +16,12 @@ import { User } from '../../../_models/user.module';
 import { NgZone } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
 
 @Component({
   selector: 'app-yearly-report',
   standalone: true,
-  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule,FormsModule],
+  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule,FormsModule, IconProfileComponent],
   templateUrl: './yearly-report.component.html',
   styleUrl: './yearly-report.component.css',
 })
@@ -127,5 +128,9 @@ filterToDoWithBalanceDue2(): void {
 
   selectYearlyReport(yearlyReport: YearlyReport) {
     this.currentYearlyReport = yearlyReport;
+  }
+
+  getClientName(name: string): string {
+    return this.client.firstName + " " + this.client.lastName;
   }
 }
