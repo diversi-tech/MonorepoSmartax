@@ -434,18 +434,10 @@ export class DashboardUserComponent implements OnInit {
   chartPie() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-
-    // קבלת נתונים מהפונקציה
+    // get data from function
     const timeData = this.getTotalTimeByTaskId();
     const taskIds = Object.keys(timeData);
     console.log(taskIds);
-
-    // יצירת מפת id לשם משימה
-    // const taskIdToNameMap = this.tasks.reduce((map, task) => {
-    //   map[task._id] = task.taskName;
-    //   return map;
-    // }, {} as Record<string, string>);
-    // console.log('Task ID to Name Map:', taskIdToNameMap);
 
     const taskIdToNameMap = this.taskName;
     const labels = taskIds.map(
@@ -455,12 +447,6 @@ export class DashboardUserComponent implements OnInit {
       const { hours, minutes, seconds } = timeData[taskId];
       return hours + minutes / 60 + seconds / 3600;
     });
-
-    // const backgroundColors = labels.map(() => this.generatePastelColor());
-    // // const hoverBackgroundColors = labels.map(() => this.generateRandomColor());
-    // const hoverBackgroundColors = backgroundColors.map((color) =>
-    //   this.generateLighterColor(color, 0.2)
-    // );
     const backgroundColors = labels.map(() => this.generatePastelColor());
     const hoverBackgroundColors = backgroundColors.map((color) =>
       this.generateLighterColor(color, 0.2)
@@ -489,7 +475,7 @@ export class DashboardUserComponent implements OnInit {
     };
   }
 
-  // פונקציה שמחזירה את כל החודשים מתחילת השנה ועד החודש הנוכחי
+  // get all month
   getMonthsUntilCurrent() {
     const months = [
       'January',

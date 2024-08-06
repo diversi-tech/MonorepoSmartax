@@ -36,14 +36,12 @@ export class PopupNotificationComponent implements OnInit {
 
   ngOnInit() {
     this.socketService.onTaskCreated((task) => {
-      console.log('אירוע taskCreated בצד הלקוח:', task);
       setTimeout(() => (this.task = null), 10000);
       this.task = task;
       this.display = true;
     });
 
     this.socketService.onTaskConfirmed((taskId) => {
-      console.log('אירוע taskConfirmed בצד הלקוח:', taskId);
       if (this.task && this.task.id === taskId) {
         this.task = null;
         this.display = false;

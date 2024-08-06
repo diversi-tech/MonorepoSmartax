@@ -263,14 +263,10 @@ export class TaskRepeatableListComponent {
         !this.filter.deadlineRange ||
         (new Date(task.dueDate) >= this.filter.deadlineRange[0] &&
           new Date(task.dueDate) <= this.filter.deadlineRange[1]);
-
-      // const clientMatch = !this.filter.client || task.client.firstName.includes(this.filter.client.firstName);
       const clientMatch =
         !this.filter.client ||
         (task.client &&
           task.client.firstName.includes(this.filter.client.firstName));
-
-      // const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
       const userMatch =
         !this.filter.user ||
         (task.assignedTo[0] &&
