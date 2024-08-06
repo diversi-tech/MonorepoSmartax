@@ -6,6 +6,7 @@ import { RoleServiceService } from '../../_services/role-service.service';
 import { NgClass } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     FormsModule,
     DropdownModule,
-    NgClass
+    NgClass,
+    ButtonModule
   ]
 })
 export class RegisterComponent implements OnInit {

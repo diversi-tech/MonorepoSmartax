@@ -409,6 +409,7 @@ export class TaskComponent implements OnInit {
                 parentTask.subTasks.push(task._id);
                 this.tasksService.updateTask(this.parent, parentTask).subscribe({
                   next: (data) => {
+
                   },
                   error: (err) => {
                     alert("ההוספה נכשלה, נא נסה שנית")
@@ -431,13 +432,18 @@ export class TaskComponent implements OnInit {
     } else
       if (this.id != 'create') {
         this.tasksService.updateTask(this.id!, newTask).subscribe({
-          next: (dataClients) => {
+          next: (data) => {
+            alert("ok")
+            alert(data)
+            window.location.reload()
+            console.log(data);
             // Task updated
             if (this.eventId) this.updateTask();
             if (this.taskId) this.closeModal.emit();
           },
-          error: (errClients) => {
-            console.log(errClients);
+          error: (err) => {
+            console.log(err);
+            alert("העדכון נכשל")
           },
         });
       }
@@ -541,6 +547,7 @@ export class TaskComponent implements OnInit {
   selectPlaceholder = 'בחר רשימה'
 
   addNewList() {
+    debugger
     this.newList = false;
     if (this.newListName) {
       let l: CheckList = { name: this.newListName, items: [] }
@@ -564,6 +571,7 @@ export class TaskComponent implements OnInit {
 
   // create new list
   createList(i: any) {
+    debugger
     this.selectedList = i.value
     if (this.selectedList && this.selectedList != "new") {
       this.checkListServise.getCheckLists(this.selectedList).subscribe({

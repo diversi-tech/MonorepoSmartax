@@ -36,7 +36,7 @@ export class EditClientTaxRefunedComponent {
   allStepFields: StepField[] = [];
   filteredStepFields: StepField[] = [];
   numberOptions = [1, 2, 3];
-
+  currentStepField: StepField;
   displayAddDialog: boolean = false;
   newStepValue: string = '';
   newStepStepNumber: number = 1;
@@ -147,5 +147,9 @@ export class EditClientTaxRefunedComponent {
         console.error('Error deleting step', error);
       }
     );
+  }
+
+  selectStepField(stepField: StepField) {
+    this.currentStepField = stepField;
   }
 }

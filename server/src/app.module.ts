@@ -150,7 +150,10 @@ import { FinancialStatementController } from './controller/financialStatement/fi
 import { FinancialStatementService } from './services/financialStatement.service';
 import { MonthlyReportService } from './services/monthlyReport.service';
 import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
-import { MonthlyReportModel, MonthlyReport } from './Models/monthlyReport.model';
+import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
+import { StepFieldMonthController } from './controller/stepFieldMonth/stepFieldMonth.controller';
+import { StepFieldMonthService } from './services/stepFieldMonth.service';
+import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.model';
 
 @Module({
   //add
@@ -243,7 +246,8 @@ import { MonthlyReportModel, MonthlyReport } from './Models/monthlyReport.model'
     FrequencyController,
     TaxRefundsController,
     FinancialStatementController,
-    MonthlyReportController
+    MonthlyReportController,
+    StepFieldMonthController
   ],
 
   providers: [
@@ -282,6 +286,7 @@ import { MonthlyReportModel, MonthlyReport } from './Models/monthlyReport.model'
     repeatableTaskService,
     TaxRefundsService,
     FinancialStatementService,
+    StepFieldMonthService,
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
@@ -293,6 +298,7 @@ import { MonthlyReportModel, MonthlyReport } from './Models/monthlyReport.model'
     YearService,
     TableService,
     TasksGateway,
+    StepFieldMonthService
   ],
 })
 export class AppModule { }

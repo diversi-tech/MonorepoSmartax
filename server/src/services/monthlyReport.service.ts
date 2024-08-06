@@ -5,16 +5,29 @@
  import { CreateMonthlyReportDto } from '../Models/dto/monthlyReport.dto';
  import { MonthlyReport } from '../Models/monthlyReport.model';
  import { UpdateMonthlyReportDto } from '../Models/dto/monthlyReport.dto';
+ import { StepFieldMonth } from '../Models/stepFieldMonth.model';
+import { Status } from '../Models/status.model';
 
 @Injectable()
 export class MonthlyReportService {
 
-    constructor(@InjectModel('MonthlyReport') private readonly MonthlyReportModel: Model<MonthlyReport>) {}
+    constructor(@InjectModel('MonthlyReport') private readonly MonthlyReportModel: Model<MonthlyReport>,
+    @InjectModel('StepFieldMonth')private readonly stepFieldMonthModel: Model<StepFieldMonth>,
+    @InjectModel('Status')private readonly statusModel: Model<Status>) {}
 
     async createMonthlyReport(createMonthlyReportDto: CreateMonthlyReportDto): Promise<MonthlyReport> {
+         const allStepFieldsMonth = await this.stepFieldMonthModel.find().exec();
+         console.log(allStepFieldsMonth, "allStepFieldsMonth" );
+         const allStatuses = await this.statusModel.find().exec();
+         const createStatus = allStatuses.filter(status => status.name === 'TO DO');
+
         const createdMonthlyReport = new this.MonthlyReportModel({
              ...createMonthlyReportDto,
-         });       
+             status:createStatus,
+             monthlyReportFields: allStepFieldsMonth,
+
+         });
+                  console.log(createdMonthlyReport, "createdMonthlyReport");
        return createdMonthlyReport.save();
     }
                   
@@ -39,6 +52,8 @@ export class MonthlyReportService {
     }
 
     async getAllMonthlyReport(): Promise<MonthlyReport[]> {
+      debugger
+      console.log( "monthly",this.MonthlyReportModel.find().exec())
       return this.MonthlyReportModel.find().exec();
     }
 }

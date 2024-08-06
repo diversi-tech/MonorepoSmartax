@@ -123,6 +123,7 @@ export class EditClientYearlyReportComponent implements OnInit {
   }
 
   delete(id: string) {
+    debugger
     this.stepFieldService.deleteStepField(id).subscribe(
       response => {
         if (response) {

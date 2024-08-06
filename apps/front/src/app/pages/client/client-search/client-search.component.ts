@@ -7,7 +7,6 @@ import { AutoCompleteModule, AutoCompleteSelectEvent, } from 'primeng/autocomple
 import { NgClass, NgIf } from '@angular/common';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { TableModule } from 'primeng/table';
-import { Button } from 'primeng/button';
 import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { TokenService } from '../../../_services/token.service';
@@ -17,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormControl, FormsModule } from '@angular/forms';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-client-search',
@@ -105,7 +105,6 @@ export class ClientSearchComponent implements OnInit {
     this.clientService.getAllClients().subscribe((clients) => {
       this.clients = clients;
       this.filteredClients = clients;
-
     });
   }
 
@@ -208,13 +207,8 @@ export class ClientSearchComponent implements OnInit {
 
   updateFavorite() {
     this.userService
-      .update(
-        this.user._id,
-        this.user.userName,
-        this.user.email,
-        this.user.passwordHash,
-        this.user.role,
-        this.user.favoritesClient
+      .update(this.user._id, this.user.userName, this.user.email, this.user.passwordHash,
+        this.user.role, this.user.favoritesClient
       )
       .subscribe({
         next: (response: any) => {

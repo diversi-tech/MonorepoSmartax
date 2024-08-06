@@ -6,6 +6,7 @@ import { TokenService } from '../../_services/token.service';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Button, ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-restart-password',
@@ -14,7 +15,9 @@ import Swal from 'sweetalert2';
   standalone: true,
   imports: [
     FormsModule,
-    NgClass
+    NgClass,
+    Button,
+    ButtonModule
   ]
 })
 

@@ -7,7 +7,7 @@
     </p-footer>
 </p-confirmDialog>
 
-<p-button (click)="addUser()" label="הוספת משתמש" />
+<button pButton  (click)="addUser()" label="הוספת משתמש" class= "p-button-text p-button-raised p-button-rounded"></button>
 
 <p-table [value]="users" [tableStyle]="{'max-width': '50rem'}">
     <ng-template pTemplate="header" let-columns>

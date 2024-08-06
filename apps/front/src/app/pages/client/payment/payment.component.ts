@@ -13,6 +13,7 @@ import { PaymentDetailsHistoryComponent } from "../payment-details-history/payme
 import { AddBillingComponent } from "../addBilling/addBilling.component";
 import { AddMorePaymentDetailsComponent } from "../addMorePaymentDetails/addMorePaymentDetails.component";
 import { ChangeMainPaymentComponent } from "../changeMainPayment/changeMainPayment.component";
+import { Button } from 'primeng/button';
 
 
 @Component({

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TimerService } from '../_services/timer.service';
 import { Timer } from '../_models/timer.model';
 import { TokenService } from '../_services/token.service';
-import { ButtonDirective, Button } from 'primeng/button';
+import { Button, ButtonDirective } from 'primeng/button';
 import { UserService } from '../_services/user.service';
 import { IconProfileComponent } from '../share/icon-profile/icon-profile.component';
 

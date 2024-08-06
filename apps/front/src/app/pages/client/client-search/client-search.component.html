@@ -10,12 +10,13 @@
           </p-autoComplete>
         </div>
       </div> -->
-  <h1 (click)="onSelectionChange(1)">רשימת לקוחות</h1>
+  <!-- <h1 (click)="onSelectionChange(1)">רשימת לקוחות</h1> -->
 
-  <button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" pButton type="button" label="מיין לפי" class="p-button-text p-button-raised p-button-rounded"></button>
-  <button *ngIf="isSelected == 2" (click)="onSelectionChange(1)" pButton type="button" label="ללא מיון" class="p-button-text p-button-raised p-button-rounded"></button>
-  <button routerLink="/clientTypes" routerLinkActive="active" pButton type="button" label="סוגי לקוח" class="p-button-text p-button-raised p-button-rounded"></button>
-  <button (click)="addNewClient()" pButton type="button" label="הוספת לקוח חדש" class="p-button-text p-button-raised p-button-rounded"></button>
+  <button routerLink="/favoritesClientsList" routerLinkActive="active" pButton type="button" label="לקוחות מועדפים" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" pButton type="button" label="מיין לפי" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="isSelected == 2" (click)="onSelectionChange(1)" pButton type="button" label="ללא מיון" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button routerLink="/clientTypes" routerLinkActive="active" pButton type="button" label="סוגי לקוח" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button (click)="addNewClient()" pButton type="button" label="הוספת לקוח חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
   <app-import-client></app-import-client>
 
 
@@ -28,19 +29,21 @@
     </p-footer>
   </p-confirmDialog>
 
-
-  <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים"
-    (click)="$event.stopPropagation(); addFavoritesClient()"></button>
-  <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה"
-    class="p-button-danger" (click)=" $event.stopPropagation(); showConfirmationDelete()"></button>
+  <button *ngIf="this.choosedClients.length > 0" (click)="addFavoritesClient()" icon="pi pi-star" pButton type="button" label="להוספה למועדפים" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="this.choosedClients.length > 0" (click)="showConfirmationDelete()" icon="pi pi-trash" pButton type="button" label="מחיקה" class= "p-button-danger p-button-text p-button-raised p-button-rounded"></button>
+   
+  <!--<button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים"
+    (click)="$event.stopPropagation(); addFavoritesClient()"></button> -->
+  <!-- <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה"
+    class= p-button-danger" (click)=" $event.stopPropagation(); showConfirmationDelete()"></button> -->
 
   <p-table dir="rtl" [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients">
 
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th>
-          <button *ngIf="isChoosedAllClient" (click)="removeAllClients()" pButton type="button" label="הסר הכל" class="p-button-text p-button-raised p-button-rounded"></button>
-          <button *ngIf="!isChoosedAllClient" (click)="$event.stopPropagation(); chooseAllClients()" pButton type="button" label="בחר הכל" class="p-button-text p-button-raised p-button-rounded"></button>
+          <button *ngIf="isChoosedAllClient" (click)="removeAllClients()" pButton type="button" label="הסר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
+          <button *ngIf="!isChoosedAllClient" (click)="$event.stopPropagation(); chooseAllClients()" pButton type="button" label="בחר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
         </th>
         <th></th>
         <th></th>
@@ -98,7 +101,8 @@
         <td>
           <i [style.color]="isFavoriteClient(client) ? 'yellow' : '#000'"
             [ngClass]="'isFavoriteClient(client)' ? 'pi pi-star-fill' : ''" class="pi pi-star"
-            (click)="$event.stopPropagation(); isFavoriteClient(client)?removeFromFavorite(client):addToFavorite(client)"></i>
+            (click)="$event.stopPropagation(); isFavoriteClient(client)?removeFromFavorite(client):
+            addToFavorite(client)"></i>
         </td>
         <td><i class="pi pi-tag" [style.color]="client.tag?.color || '#000'"></i></td>
         <td>

@@ -7,7 +7,9 @@ import { TokenService } from '../../../_services/token.service';
 import { ButtonModule } from 'primeng/button';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-client',
@@ -86,14 +88,16 @@ export class AddClientComponent implements OnInit {
   };
   isWorkData: boolean = false;
   form: FormGroup;
-  editingClient: Client | null = null;
+  editingClient: Client | null = null; 
+  get VATFileNumber() { return this.form.get('VATFileNumber'); }
+
 
   constructor(
     private formBuilder: FormBuilder,
     private clientService: ClientService,
     private tokenService: TokenService,
-    private router: Router
-  ) { }
+    private router: Router, // הוספתי את Router
+  ) {}
 
   ngOnInit() {
     this.contactForm = this.formBuilder.group({
@@ -144,15 +148,20 @@ export class AddClientComponent implements OnInit {
       isPreferWhatsapp: [false]
     });
 
-    if (history.state.client) {
-      this.editingClient = history.state.client
+  
+    
+
+    if(history.state.client){
+      this.editingClient= history.state.client
       this.populateForm(this.editingClient)
+    }
+    else{
+      this.populateForm(this.newClient);
     }
 
     this.onCHangeIsWorkData();
   }
 
-  get VATFileNumber() { return this.form.get('VATFileNumber'); }
 
   onCHangeIsWorkData(): void {
     this.isWorkData = this.contactForm.get('isWorkData')?.value;
@@ -189,28 +198,45 @@ export class AddClientComponent implements OnInit {
   }
 
   sent() {
-
+    if(this.contactForm.valid) {
     if (this.editingClient) {
       const updatedClient = { ...this.editingClient, ...this.contactForm.value };
       updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
       updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-      this.clientService.updateClient(updatedClient).subscribe(response => {
-        alert('לקוח עודכן בהצלחה');
-        this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
-        this.close.emit();
-      });
-    }
-    else {
-      this.savedData = this.contactForm.value;
-      this.newClient = { ...this.newClient, ...this.savedData };
-      this.newClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-      this.clientService.createClient(this.newClient.client).subscribe(response => {
-        if (response) {
-          alert('לקוח נוצר בהצלחה');
+  
+      this.clientService.updateClient(updatedClient).subscribe(
+        response => {
+          if (response?._id) {
+            console.log('Client updated successfully:', response);
+            Swal.fire('Success', 'לקוח עודכן בהצלחה', 'success');
+            this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
+          } else {
+            Swal.fire('Error', 'Invalid client', 'error');
+          }
+          this.close.emit();
+        },
+        error => {
+          console.error('Error updating client:', error);
+          Swal.fire('Error', `Failed to update client: ${error.message}`, 'error');
         }
-        this.close.emit();
-      });
+      );
     }
+     else {
+  
+      this.clientService.createClient(this.newClient).subscribe(
+        response => {
+          if (response) {
+            Swal.fire('Success', 'לקוח נוצר בהצלחה', 'success');
+          }
+          this.close.emit();
+        },
+        error => {
+          console.error('Error creating client:', error);
+          Swal.fire('Error', `Failed to create client: ${error.message}`, 'error');
+        }
+      );
+    }
+  }
   }
 
   onClose() {

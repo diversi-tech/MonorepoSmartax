@@ -10,12 +10,13 @@ import { User } from '../../../_models/user.module';
 import { UserService } from '../../../_services/user.service';
 import { Router } from '@angular/router';
 import { EventEmitter, Output } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
   selector: 'app-add-billing',
   standalone: true,
-  imports: [CommonModule, FormsModule, DropdownModule],
+  imports: [CommonModule, FormsModule, DropdownModule, ButtonModule],
   templateUrl: './addBilling.component.html',
   styleUrl: './addBilling.component.css',
 })

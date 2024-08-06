@@ -22,7 +22,7 @@ import { UserService } from '../_services/user.service';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { ButtonDirective, Button } from 'primeng/button';
+import { Button, ButtonDirective } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';

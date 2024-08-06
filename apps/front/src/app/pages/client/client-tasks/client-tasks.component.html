@@ -1,8 +1,8 @@
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
   <p-footer>
-    <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+    <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text"
       (click)="cancelDelete()"></button>
-    <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+    <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text"
       (click)="confirmDelete()"></button>
   </p-footer>
 </p-confirmDialog>
@@ -10,7 +10,6 @@
 
 <!-- Filter Form -->
 <p-sidebar [(visible)]="display" position="left" style="width: 800px; max-width: 100vw;">
-
   <div *ngIf="showFilter" style="margin-top: 10px">
     <div class="filter-panel">
       <div class="filter-container">
@@ -62,7 +61,7 @@
           </p-multiSelect>
         </div>
 
-        <p-button label="Apply Filter" (click)="applyFilter()" class="apply-filter-button"></p-button>
+        <button pButton label="Apply Filter" (click)="applyFilter()" class="apply-filter-button"></button>
       </div>
     </div>
   </div>
@@ -77,14 +76,14 @@
 <div class="p-grid">
   <div class="p-col-4" style="text-align: right; align-items: right">
     <div class="content-container" style="display: flex; flex-direction: column">
-      <p-button class="buttons" (click)="createTask()" id="addBtn" type="button" icon="pi pi-plus"
-        label="Add Task"></p-button>
+      <button pButton class= "p-button-text p-button-raised p-button-rounded" (click)="createTask()" type="button" icon="pi pi-plus"
+        label="הוספת משימה"></button>
 
-      <!-- <p-button class="buttons" type="text" (click)="display = true" (click)="toggleFilter()" icon="pi pi-filter"
-        label="Filter"></p-button> -->
+        <!-- <button pButton  class="buttons" type="text" (click)="display = true" (click)="toggleFilter()" icon="pi pi-filter"
+        label="Filter"></button > -->
 
-      <input *ngIf="tasks.length != 0" class="buttons" id="float-input" pInputText type="text" placeholder="Search Task" (change)="searchTask()"
-        [(ngModel)]="searchTerm" />
+        <input *ngIf="tasks.length != 0" class="buttons" id="float-input" pInputText type="text"
+          placeholder="Search Task" (change)="searchTask()" [(ngModel)]="searchTerm" />
     </div>
   </div>
 
@@ -95,7 +94,6 @@
       <div>
         <div *ngIf="filteredTasks.length == 0">
           <div *ngFor="let status of statuses">
-            <tr [value]="condition ? 'value1' : 'value2'"></tr>
             <p-panel *ngIf="categorizeTasks(status).length != 0" header="{{ status.name }}">
               <p-table *ngIf="categorizeTasks(status).length != 0"
                 [value]="categorizeTasks(status).length != 0 ? categorizeTasks(status) : filteredTasks ">

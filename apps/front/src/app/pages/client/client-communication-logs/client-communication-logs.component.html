@@ -1,4 +1,4 @@
-<h3>שיחות</h3>
+<button pButton label="להוספת שיחה" (click)="displayDialog = true" class= "p-button-text p-button-raised p-button-rounded"></button>
 <p-table [value]="communications" [tableStyle]="{'min-width': '80rem'}">
   <ng-template pTemplate="header" let-columns>
     <tr>
@@ -28,8 +28,6 @@
     </tr>
   </ng-template>
 </p-table>
-
-<p-button label="להוספת שיחה" (click)="displayDialog = true"></p-button>
 
 <p-confirmDialog header='עריכת שיחה' key="edit">
   <p-footer>

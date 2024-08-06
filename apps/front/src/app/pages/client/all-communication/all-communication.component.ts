@@ -5,7 +5,6 @@ import { UserService } from '../../../_services/user.service';
 import { ConfirmationService, PrimeTemplate, SelectItem } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { NgFor, NgIf, DatePipe, NgClass } from '@angular/common';
-import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { callTopicSchema } from '../../../_models/callTopic.module'
 import { CallTopicService } from "../../../_services/callTopic.service"
@@ -15,6 +14,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-client-communication-logs',
@@ -37,6 +38,7 @@ import { AddClientComponent } from '../add-client/add-client.component';
     RouterOutlet,
     NgClass,
     ConfirmDialogModule,
+    InputTextModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

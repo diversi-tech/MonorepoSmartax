@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { StepField } from '../../../_models/stepField.module';
 import { StepperModule } from 'primeng/stepper';
 import { Client } from '../../../../../../../server/src/Models/client.model';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { TaxRefundsService } from '../../../_services/taxRefunds.service';
+import { Status } from '../../../_models/status.module';
+import { StatusService } from '../../../_services/status.service';
 
 @Component({
   selector: 'app-tax-refunds-steps',
@@ -21,9 +23,10 @@ import { TaxRefundsService } from '../../../_services/taxRefunds.service';
 })
 
 export class TaxRefundsStepsComponent {
-
-  constructor(private taxRefundsService: TaxRefundsService) { }
-
+  constructor(private taxRefundsService: TaxRefundsService,
+    private location: Location,
+    private statusService: StatusService,
+  ) { }
   tasksStep: StepField[] = [];
   responseData: any;
   allSteps: StepField[] = [];
@@ -33,10 +36,19 @@ export class TaxRefundsStepsComponent {
   client: Client;
   stepNumbers: number[] = [];
 
+  statusList:Status[]=[];
   ngOnInit() {
     this.responseData = history.state.data;
     this.client = history.state.client;
     this.allSteps = this.responseData.stepsList;
+    this.statusService.getAllStatuses().subscribe({
+      next: (data) => {
+        this.statusList = data;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
     this.groupSteps();
   }
 
@@ -77,6 +89,24 @@ export class TaxRefundsStepsComponent {
       this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
     }
   }
+  determineStatus(): Status {
+    const stepsList = this.responseData.stepsList;
+
+    const allCompleted = stepsList.every(step => step.isCompleted);
+    const someCompleted = stepsList.some(step => step.isCompleted);
+
+    if (allCompleted) {
+      return this.statusList.find(s => s.name == 'COMPLETE') || null;
+      ;
+    } else if (someCompleted) {
+      return this.statusList.find(s => s.name == 'IN PROGRESS') || null;
+    } else {
+      return this.statusList.find(s => s.name == 'TO DO') || null;
+    }
+  }
+  getStatusObject(statusName: string): Status | null {
+    return this.statusList.find(s => s.name === statusName) || null;
+  }
   async submitChanges() {
     for (const taskId in this.changes) {
       const taskIndex = this.responseData.stepsList.findIndex(
@@ -86,6 +116,13 @@ export class TaxRefundsStepsComponent {
         this.responseData.stepsList[taskIndex].isCompleted =
           this.changes[taskId];
       }
+    }
+    const status = this.determineStatus();
+    if (status) {
+      this.responseData.status = status;
+    } else {
+      console.error('Status not found');
+      return;
     }
     try {
       const response = await this.taxRefundsService.updateTaxRefunds(
@@ -98,5 +135,10 @@ export class TaxRefundsStepsComponent {
     } catch (error) {
       console.log(error);
     }
+    
   }
+  goBack() {
+    this.location.back();
+  }
+
 }

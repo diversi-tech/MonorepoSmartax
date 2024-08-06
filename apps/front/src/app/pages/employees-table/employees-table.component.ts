@@ -5,7 +5,7 @@ import { Role } from '../../_models/role.module';
 import { RoleServiceService } from '../../_services/role-service.service';
 import { ConfirmationService, MessageService, Footer, PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
-import { ButtonDirective, Button } from 'primeng/button';
+import { Button, ButtonDirective } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { NgClass, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
