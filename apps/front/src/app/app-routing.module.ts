@@ -276,6 +276,7 @@ export const routes: Routes = [
       { path: 'clientTypeTag', component: ClientTypeTagComponent },
       { path: 'clientField', component: ClientFieldComponent },
       { path: 'createYearlyReport', component: CreateYearlyReportComponent },
+      { path: 'createYearlyReport', component: CreateYearlyReportComponent },
       { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent },
       { path: 'steps', component: YearlyReportStepsComponent },
       { path: 'stepsFS', component: FinancialStatementStepsComponent },

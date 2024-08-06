@@ -20,9 +20,13 @@
   <ng-template pTemplate="body" let-task>
     <tr (click)="selectTaxRefunds(task)" [ngClass]="{ 'highlight': currentTaxRefunds === task }">
       <td >
-        <button *ngIf="currentTaxRefunds === task" pButton
+           <button *ngIf="currentTaxRefunds === task" pButton 
           class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
-          (click)="goToSteps(task)"></button>
+          style="cursor: pointer; margin-left: 5px;"
+          pTooltip="עריכת שלבי הדוח"
+          tooltipPosition="bottom"
+          (click)="goToSteps(task)">
+         </button>
       </td>
       <td class="{{task.status[0].color}}">{{task.status[0].name}}</td>
       <td>{{task.entityType}}</td>
@@ -33,7 +37,7 @@
       <td>{{ task.date | date : 'dd/MM/yyyy' }}</td>
       <td>{{ task.year }}</td>
         <td *ngIf="currentRoute==='allClientTaxRefunds'">{{getClientName(task.idClient)?.firstName }} {{getClientName(task.idClient)?.lastName }}</td>
-        <app-icon-profile
+        <app-icon-profile  *ngIf="currentRoute==='allClientTaxRefunds'"
             [userName]="getClientName(task.idClient)?.firstName  &&  getClientName(task.idClient)?.lastName"
             style="width: 50px;"></app-icon-profile>
 

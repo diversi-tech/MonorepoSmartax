@@ -28,12 +28,16 @@ export class EditMonthlyReportComponent implements OnInit {
   newStepValue: string = '';
   newStepType: string = '';
   newStepContent: string ='';
+  uniqueSelectedSteps:string[] =[];
+  currentStepField: stepFieldMonth;
   constructor(private stepFieldMonthService: stepFieldMonthService) { }
 
   ngOnInit(): void {
     this.stepFieldMonthService.getAllstepFieldMonth().subscribe(
     (types) => {
       this.allStepTypes = types.map(type => type.type);
+      this.uniqueSelectedSteps = this.allStepTypes.filter((value, index, self) => self.indexOf(value) === index);
+
     },
 
     (error) =>{
@@ -44,7 +48,7 @@ export class EditMonthlyReportComponent implements OnInit {
       (stepFields) => {
         this.allStepFields = stepFields
         // filter(x => x.type === "החזרי מס");
-        // this.filteredStepFields = [...this.allStepFields];
+         this.filteredStepFields = [...this.allStepFields];
         console.log('all', this.allStepFields)
       },
       (error) => {
@@ -53,11 +57,21 @@ export class EditMonthlyReportComponent implements OnInit {
     );
   }
 
-  // filterByDescription(description: string): void {
-  //   this.filteredStepFields = this.allStepFields.filter(step =>
-  //     step.value.toLowerCase().includes(description.toLowerCase())
-  //   );
-  // }
+  filterByDescription(description: string): void {
+debugger
+    this.filteredStepFields = this.allStepFields.filter(step =>
+      step.value.toLowerCase().includes(description.toLowerCase())
+    );
+  }
+filterByType(type: string): void {
+  if (type) {
+    this.filteredStepFields = this.allStepFields.filter(step =>
+      step.type === type
+    );
+  } else {
+    this.filteredStepFields = [...this.allStepFields];
+  }
+}
 
   showAddDialog(): void {
     this.displayAddDialog = true;
@@ -71,9 +85,12 @@ export class EditMonthlyReportComponent implements OnInit {
   }
 
   addStep(): void {
+    if(this.newStepContent === 'false' )
+      this.newStepContent ="לא בוצע"
+else{this.newStepContent = ''}
     const newStep = {
       value: this.newStepValue,
-      content: this.newStepContent,
+      content:this.newStepContent,
       type: this.newStepType,
     };
 
@@ -130,6 +147,10 @@ export class EditMonthlyReportComponent implements OnInit {
         console.error('Error deleting step', error);
       }
     );
+  }
+
+  selectStepField(stepField: stepFieldMonth) {
+    this.currentStepField = stepField;
   }
 }
 

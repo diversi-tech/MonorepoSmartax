@@ -6,7 +6,7 @@ import { NgFor, NgIf, DatePipe, NgClass } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { TokenService } from '../../../_services/token.service';
 import { CommunicationService } from '../../../_services/communicaton.service';
-import { ClientAddCommunicationComponent } from "../client-add-communication/client-add-communication.component";
+import { ClientAddCommunicationComponent } from '../client-add-communication/client-add-communication.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, SelectItem } from 'primeng/api';
 import { UserService } from '../../../_services/user.service';

@@ -34,7 +34,10 @@
         <tr (click)="selectYearlyReport(yearlyReport)"
             [ngClass]="{ 'highlight': currentYearlyReport === yearlyReport }">
             <td><button *ngIf="currentYearlyReport === yearlyReport" pButton
-                    class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+                class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+                style="cursor: pointer; margin-left: 5px;"
+                pTooltip="עריכת שלבי הדוח"
+                tooltipPosition="bottom"
                     (click)="goToSteps(yearlyReport)"></button>
             </td>
             <td class="{{yearlyReport.status.color}}">{{yearlyReport.status.name}}</td>

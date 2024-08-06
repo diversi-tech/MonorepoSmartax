@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { StepsModule } from 'primeng/steps';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../../_services/client.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-tax-refunds',
@@ -22,6 +23,7 @@ import { ClientService } from '../../../_services/client.service';
     StepperModule,
     StepsModule,
     TableModule,
+    TooltipModule
   ],
   templateUrl: './tax-refunds.component.html',
   styleUrl: './tax-refunds.component.css',
@@ -120,11 +122,7 @@ export class TaxRefundsComponent {
   createReprtTag(): void {
       this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client } });
   }
-  goToUpdate(report: TaxRefunds) {
-    if (report) {
-      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/taxRefunds/createTaxRefunds'], { state: { client: this.client, report: report } });
-    }
-  }
+  
 
   selectTaxRefunds(taxRefunds: TaxRefunds) {
     this.currentTaxRefunds = taxRefunds;

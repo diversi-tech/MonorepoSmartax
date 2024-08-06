@@ -116,10 +116,7 @@ export class ClientCreateTaxRefunds implements OnInit {
     })
     this.userId = this.tokenService.getCurrentDetail('_id');
     this.client = history.state.client;
-    this.reportToUpdate = history.state.report || null;
-    console.log('client', this.client);
-    console.log('user', this.userId);
-    console.log('reportToUpdate', this.reportToUpdate);
+    this.reportToUpdate = history.state.responseData || null;
   }
 
   showModalDialog() {
@@ -138,7 +135,6 @@ export class ClientCreateTaxRefunds implements OnInit {
       price: ['', Validators.required],
       paymentAmountPaid: ['', Validators.required],
       balanceDue: ['', Validators.required],
-      // status: ['', Validators.required],
     });
     if (this.reportToUpdate) {
       this.taxRefundsForm.patchValue({
@@ -159,7 +155,6 @@ export class ClientCreateTaxRefunds implements OnInit {
     if (this.taxRefundsForm.valid) {
       const taxRefunds = this.taxRefundsForm.value;
       taxRefunds.yearReport=this.thisSubject
-      // const status =  this.determineStatus();
 
       if (this.reportToUpdate) {
         const status =  this.determineStatus();
@@ -168,14 +163,11 @@ export class ClientCreateTaxRefunds implements OnInit {
         this.createTaxRefunds(taxRefunds);
       }
     }
-    this.hideModalDialog(); //
-    // this.location.back();
-
+    this.hideModalDialog(); 
   }
 
   determineStatus(): Status {
     const stepsList = this.reportToUpdate ? this.reportToUpdate.stepsList : [];
-
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
 
