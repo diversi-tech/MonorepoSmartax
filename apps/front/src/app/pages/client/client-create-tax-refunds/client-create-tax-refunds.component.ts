@@ -61,8 +61,7 @@ export class ClientCreateTaxRefunds implements OnInit {
   client: any | undefined = undefined;
   formSubmitted = false;
   newYear: Year={
-    yearNum: "",
-    _id: ''
+    yearNum: ""
   }
   typeOptions: any[] = [
     { label: 'פיצול לעצמאי', value: 'עצמאי' },
@@ -278,6 +277,7 @@ export class ClientCreateTaxRefunds implements OnInit {
       this.newYear.yearNum=this.thisSubject2
       this.yearService.createYear(this.newYear).subscribe(response => {
         this.yearList.push(response); 
+        if(response)
         alert( response.yearNum +" "+"נוסף בהצלחה") 
       });
     }

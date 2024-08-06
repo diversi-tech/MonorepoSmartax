@@ -11,7 +11,9 @@
    margin: auto;
    margin-top: 20px;
 }
-
+.i{
+  direction: rtl;
+}
 
 
 
