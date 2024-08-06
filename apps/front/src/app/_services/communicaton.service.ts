@@ -45,7 +45,7 @@ export class CommunicationService {
     return this.http
       .post<Communication>(
         `${this.apiUrl}/create`,
-        communication,
+       { communication,},
         this.httpOptions
       )
       .pipe(catchError(this.handleError<Communication>('createCommunication')));
