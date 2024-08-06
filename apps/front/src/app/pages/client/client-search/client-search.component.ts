@@ -99,6 +99,7 @@ export class ClientSearchComponent implements OnInit {
       return nameB.localeCompare(nameA, 'he'); // מיון לפי ת' עד א'
     });
   }
+
   loadAllClients(): void {
     this.clientService.getAllClients().subscribe((clients) => {
       this.clients = clients;
@@ -106,7 +107,6 @@ export class ClientSearchComponent implements OnInit {
 
     });
   }
-
 
   selectClient(event: AutoCompleteSelectEvent): void {
     const client = event.value as Client;
@@ -211,7 +211,8 @@ export class ClientSearchComponent implements OnInit {
   }
 
   addFavoritesClient() {
-    this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)).map(c => c._id));
+    this.user.favoritesClient.push(...this.choosedClients
+      .filter(c => !this.isFavoriteClient(c)).map(c => c._id));
     this.updateFavorite();
     console.log(this.user.favoritesClient, 'after add favorite');
   }
