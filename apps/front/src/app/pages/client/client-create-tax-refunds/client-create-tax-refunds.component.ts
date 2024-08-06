@@ -25,6 +25,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { TaxRefundsService } from '../../../_services/taxRefunds.service';
 import { TaxRefunds } from '../../../_models/taxRefunds.module';
+import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
 
 
 @Component({
@@ -44,7 +45,8 @@ import { TaxRefunds } from '../../../_models/taxRefunds.module';
       AutoCompleteModule,
       PrimeTemplate,
       TableModule,
-      RouterOutlet
+      RouterOutlet,
+      IconProfileComponent
   ],
   templateUrl: './client-create-tax-refunds.component.html',
   styleUrl: './client-create-tax-refunds.component.css',
@@ -69,7 +71,7 @@ export class ClientCreateTaxRefunds implements OnInit {
   ];
   Year2:any[]=[{yearNum:"לא נמצא"}];
   employeName: string;
-  reportToUpdate: YearlyReport | null = null;
+  reportToUpdate: TaxRefunds | null = null;
   yearList: Year[];
   yearList2: Year[];
   statusList: Status[] = [];
@@ -139,7 +141,7 @@ export class ClientCreateTaxRefunds implements OnInit {
     if (this.reportToUpdate) {
       this.taxRefundsForm.patchValue({
         type: this.reportToUpdate.entityType,
-        year: this.reportToUpdate.yearReport,
+        year: this.reportToUpdate.year,
         price: this.reportToUpdate.price,
         paymentAmountPaid: this.reportToUpdate.paymentAmountPaid,
         balanceDue: this.reportToUpdate.balanceDue,
@@ -227,7 +229,7 @@ export class ClientCreateTaxRefunds implements OnInit {
     };
 
     this.taxRefundsService
-      .updateTaxRefunds(this.reportToUpdate._id, updatedReport)
+      .updateTaxRefunds(this.reportToUpdate.idClient, updatedReport)
       .then(
         (response) => {
           console.log(response);
