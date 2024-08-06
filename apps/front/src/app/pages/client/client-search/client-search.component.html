@@ -70,7 +70,7 @@
             (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
             [minLength]="1" placeholder="חיפוש שם או שם חברה" field="name" [dropdown]="true" [forceSelection]="false">
             <ng-template let-client pTemplate="item">
-              שם - {{ client.firstName+" "+client.lastName }} | שם חברה - {{ client.companyName }}
+              שם - {{ client.firstName+" "+client.lastName }} 
             </ng-template>
           </p-autoComplete>
         </div>

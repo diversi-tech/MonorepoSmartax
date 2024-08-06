@@ -1,36 +1,31 @@
-<p-button label="שמור שינויים" (onClick)="update()" />
-<p-button *ngIf="currentRoute==='monthlyReport'" (onClick)="showDialog()" label="חדש" />
-<p-dialog header="יצירת דוח חדש" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-    <div class="flex align-items-center gap-3 mb-3">
-        <p-dropdown
-        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="years"
-        [(ngModel)]="createdYear"
-        placeholder="בחירת שנה"
-          [editable]="true"
-           optionLabel="yearNum"
-           ></p-dropdown>
-    </div>
-    <div class="flex align-items-center gap-3 mb-5">
-        <p-dropdown
-        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="months"
-        [(ngModel)]="createdMonth"
-        placeholder="בחירת חודש"
-          [editable]="true"
-           ></p-dropdown>
-    </div>
-    <div class="flex justify-content-end gap-2">
-        <p-button label="ביטול" severity="secondary" (onClick)="visible = false" />
-        <p-button label="שמור" (onClick)="visible = false;onSubmit()" />
-    </div>
-</p-dialog>
-<div >
+
+<p-button (click)="createReprtTag()" label="יצירת דוח חודשי חדש" />
+<router-outlet></router-outlet>
+
+
+<!-- <div >
     <p-dropdown [options]="years"
      [(ngModel)]="selectedYear"
      placeholder="בחירת שנה"
        [editable]="true"
         optionLabel="yearNum"
         (onChange)="changeDate()"  />
-</div>
+</div> -->
+<div class="p-field p-mb-3" dir="rtl">
+    <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2"
+      (completeMethod)="filterByyear($event.query)" [minLength]="1"
+      placeholder="בחירת שנה"  field="yearNum" [dropdown]="true" (onSelect)="select($event)"
+      [style]="{width: '27%'}" required  (onChange)="changeDate()"  [forceSelection]="false" >
+      <ng-template let-yearname pTemplate="item" >
+        <div   class="p-d-flex p-ai-center" >
+          שנת  {{ yearname.yearNum}}
+          <ng-container *ngIf="is" >
+            <button type="button" pButton class= "p-button-text p-button-raised p-button-rounded" (click)="add()">רוצה להוסיף שנה </button>
+          </ng-container>
+        </div>
+      </ng-template>
+    </p-autoComplete>
+  </div>
 <div >
     <p-dropdown [options]="months"
      [(ngModel)]="selectedMonth"

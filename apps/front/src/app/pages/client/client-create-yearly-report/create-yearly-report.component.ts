@@ -58,8 +58,7 @@ export class CreateYearlyReportComponent implements OnInit {
   client: any | undefined = undefined;
   formSubmitted = false;
   newYear: Year = {
-    yearNum: "",
-    _id: ''
+    yearNum: ""
   }
   typeOptions: any[] = [
     { label: 'פיצול לעצמאי', value: 'עצמאי' },
