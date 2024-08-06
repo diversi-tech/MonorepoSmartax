@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
-    // apiUrl: 'https://monoreposmartax-n13o.onrender.com',
-    apiUrl: 'http://localhost:8080',
-    apiUrlapigatway:'http://localhost:3002/api'
+    apiUrl: 'https://monoreposmartax-n13o.onrender.com',
+    // apiUrl: 'http://localhost:8080',
+    apiUrlapigatway:'https://api-gateway-m7cv.onrender.com/api'
   };
   

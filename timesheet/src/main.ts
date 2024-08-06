@@ -30,7 +30,7 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(TimesheetModule, {
     transport: Transport.TCP,
     options: {
-      host: 'localhost',
+      host: 'https://monoreposmartax-timesheet.onrender.com/api',
       port: 3001,
     },
   });

@@ -1,6 +1,4 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
-
 import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
 // import { FullCalendarModule } from '@fullcalendar/angular';
@@ -55,27 +53,10 @@ import { httpInterceptorProviders } from './app/_helpers/http.interceptor';
 bootstrapApplication(AppComponent, {
     providers: [
         importProvidersFrom(AutoCompleteModule, FormsModule, ChipModule, DropdownModule, AppRoutingModule, FormsModule, ReactiveFormsModule, CardModule, PanelModule, ButtonModule, ReactiveFormsModule, InputTextareaModule, TableModule, TagModule, RatingModule, MenuModule, DialogModule, AvatarModule, SidebarModule, MultiSelectModule, BadgeModule, MenuModule, RippleModule, ListboxModule, CalendarModule, ConfirmDialogModule, ChipsModule, InputGroupAddonModule, InputGroupModule, MessagesModule, BrowserModule
-        // Message ,
-        ,CheckboxModule, 
-        // OrderListModule,
-        RadioButtonModule, DividerModule, EditorModule, SelectButtonModule, FileUploadModule, ButtonModule, BadgeModule, ProgressBarModule, ToastModule, CommonModule, ColorPickerModule, DropdownModule, TabMenuModule),
-        // provideClientHydration(),
-        // {
-        //     provide: 'SocialAuthServiceConfig',
-        //     useValue: {
-        //         autoLogin: false,
-        //         providers: [
-        //             {
-        //                 id: GoogleLoginProvider.PROVIDER_ID,
-        //                 provider: new GoogleLoginProvider("450626878965-7r8nl14gj5eh5h4lfb1qs2d4kfkvq15l.apps.googleusercontent.com")
-        //             },
-        //         ],
-        //         callback: 'initGoogleOneTap',
-        //         onError: (err: any) => {
-        //             console.error(err);
-        //         }
-        //     } as SocialAuthServiceConfig,
-        // },
+            // Message ,
+            , CheckboxModule,
+            // OrderListModule,
+            RadioButtonModule, DividerModule, EditorModule, SelectButtonModule, FileUploadModule, ButtonModule, BadgeModule, ProgressBarModule, ToastModule, CommonModule, ColorPickerModule, DropdownModule, TabMenuModule),
         httpInterceptorProviders,
         CommunicationService,
         ClientService,
@@ -89,6 +70,5 @@ bootstrapApplication(AppComponent, {
         provideHttpClient(withInterceptorsFromDi())
     ]
 })
-  .catch(err => console.error(err));
-  //
-  
+    .catch(err => console.error(err));
+//
