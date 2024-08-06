@@ -1,6 +1,8 @@
 
 # Step 1: Installing the dependencies and building the NestJS code
 FROM node:18-alpine AS builder
+# Install Python and other dependencies for node-gyp
+RUN apk add --no-cache python3 make g++
 
 WORKDIR /app
 
