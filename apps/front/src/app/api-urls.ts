@@ -2,6 +2,7 @@
 import { environment } from '../environments/environment';
 
 export const API_URL = environment.apiUrl;
+export const API_URL_APIGATEWAY = environment.apiUrlapigatway;
 // https://monoreposmartax-n13o.onrender.com/
 export const AUTH_ENDPOINT = `${API_URL}/auth`;
 export const USER_ENDPOINT = `${API_URL}/users`;
@@ -39,5 +40,5 @@ export const COMMUNICATIONS = `${API_URL}/communications`;
 export const FIELD = `${API_URL}/field`;
 export const PRIORITY = `${API_URL}/Priority`;
 export const STEP_FIELD = `${API_URL}/step-field`;
-export const WORK_LOGS = `${API_URL}/worklogs`;
+export const WORK_LOGS = `${API_URL_APIGATEWAY}/worklogs`;
 export const YEARS = `${API_URL}/years`;
