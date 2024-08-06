@@ -11,7 +11,7 @@ import { equals } from 'class-validator';
 import { hashPasswordService } from 'server/src/services/hash-password';
 import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 
-
+//
 @ApiTags('users')
 @Controller('users')
 // @UseFilters(HttpErrorFilter)
