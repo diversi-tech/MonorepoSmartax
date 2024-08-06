@@ -58,14 +58,12 @@ export class PopAppComponent implements OnInit {
 
   visible: boolean = true;
   show = true
-
-
   create = false
-  constructor(private route: ActivatedRoute ,private router:Router) { }
+
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
-
     if (this.id == 'create') {
       this.id == null
       this.create = true
@@ -73,7 +71,6 @@ export class PopAppComponent implements OnInit {
     else {
       this.create = false
     }
-
     this.route.queryParams.subscribe(params => {
       this.parent = params['parent'];
     });
@@ -86,7 +83,5 @@ export class PopAppComponent implements OnInit {
   onDialogClose() {
     this.visible = false;
     this.router.navigate([`/taskSpe/${this.parent}`]);
-    
   }
-
 }

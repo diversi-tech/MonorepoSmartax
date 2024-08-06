@@ -27,7 +27,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 export class FavoritesClientsListComponent implements OnInit {
 
   user: User;
-  favoriteClients: Client[]=[];
+  favoriteClients: Client[] = [];
   currentClient: Client | null = null;
 
 
@@ -106,21 +106,21 @@ export class FavoritesClientsListComponent implements OnInit {
   }
 
   deleteClient(): void {
-      this.clientService.deleteClient(this.currentClient._id).subscribe({
-        next: () => {
-          window.location.reload();
-        },
-        error: (err) => console.error('Error deleting client: ', err),
-      });
+    this.clientService.deleteClient(this.currentClient._id).subscribe({
+      next: () => {
+        window.location.reload();
+      },
+      error: (err) => console.error('Error deleting client: ', err),
+    });
   }
 
   cancelDelete(): void {
     this.confirmationService.close();
   }
 
-  editClient(){
+  editClient() {
     this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
-}
+  }
   selectCurrentClient(client: Client) {
     this.currentClient = client;
   }

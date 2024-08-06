@@ -201,6 +201,9 @@ import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.mod
     { name: FinancialStatement.name, schema: FinancialStatementModel },
     { name: MonthlyReport.name, schema: MonthlyReportModel },
   ]),
+  MongooseModule.forFeature([
+    { name: StepFieldMonth.name, schema: stepFieldMonthModel },
+  ]),
     JwtModule,
   ScheduleModule.forRoot(),
 

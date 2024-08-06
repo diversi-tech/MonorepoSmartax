@@ -208,7 +208,6 @@ export class TaskManagementComponent implements OnInit {
       ).map((task) => ({ taskName: task.taskName }));
   }
 
-
   searchTags(event: any): void {
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
       this.tagSuggestions = tags.filter((tag) =>
@@ -241,42 +240,6 @@ export class TaskManagementComponent implements OnInit {
         this.filteredTasks.push(task);
     });
   }
-
-  // sort
-  // בקומפוננטה שלך
-  // sortTasks(field: string, list: Task[], reverse: boolean) {
-  //   // debugger
-  //   console.log(this.filteredTasks);
-
-  //   list.sort((a, b) => {
-  //     // כאן אתה יכול להוסיף לוגיקה למיון על פי השדה שנבחר
-  //     if (field === 'taskName') {
-  //       if (reverse) {
-  //         return b.taskName.localeCompare(a.taskName);
-  //       }
-  //       return a.taskName.localeCompare(b.taskName); // מיון לפי שם המשימה
-  //     }
-  //     if (field === 'assignedTo') {
-  //       if (reverse) {
-  //         return b.assignedTo.length - a.assignedTo.length;
-  //       }
-  //       return a.assignedTo.length - b.assignedTo.length; 
-  //     }
-  //     if (field === 'dueDate') {
-  //       if (reverse) {
-  //         return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate();
-  //       }
-  //       return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate(); // מיון לפי תאריך יעד
-  //     }
-  //     if (field === 'tags') {
-  //       if (reverse) {
-  //         return b.tags.length - a.tags.length;
-  //       }
-  //       return a.tags.length - b.tags.length; // מיון לפי מספר התגיות של המשימה
-  //     }
-  //     return 0; // במקרה שלא נמצא שדה תואם
-  //   });
-  // }
 
   sortTasks(field: string, list: Task[], reverse: boolean) {
     list.sort((a, b) => {

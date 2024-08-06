@@ -27,6 +27,7 @@ export class TaxRefundsStepsComponent {
     private location: Location,
     private statusService: StatusService,
   ) { }
+
   tasksStep: StepField[] = [];
   responseData: any;
   allSteps: StepField[] = [];
@@ -35,8 +36,8 @@ export class TaxRefundsStepsComponent {
   changes: { [key: string]: boolean } = {};
   client: Client;
   stepNumbers: number[] = [];
+  statusList: Status[] = [];
 
-  statusList:Status[]=[];
   ngOnInit() {
     this.responseData = history.state.data;
     this.client = history.state.client;
@@ -73,6 +74,7 @@ export class TaxRefundsStepsComponent {
   isStepComplete(stepNumber: number): boolean {
     return this.getStepByNumber(stepNumber).every((task) => task.isCompleted == true);
   }
+
   isStepBeginned(stepNumber: number): boolean {
     return (
       this.getStepByNumber(stepNumber).some((task) => task.isCompleted) &&
@@ -91,10 +93,8 @@ export class TaxRefundsStepsComponent {
   }
   determineStatus(): Status {
     const stepsList = this.responseData.stepsList;
-
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
-
     if (allCompleted) {
       return this.statusList.find(s => s.name == 'COMPLETE') || null;
       ;
@@ -135,10 +135,9 @@ export class TaxRefundsStepsComponent {
     } catch (error) {
       console.log(error);
     }
-    
+
   }
   goBack() {
     this.location.back();
   }
-
 }

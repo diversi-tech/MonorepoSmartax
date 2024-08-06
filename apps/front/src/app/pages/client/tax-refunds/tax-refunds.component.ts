@@ -26,6 +26,7 @@ import { ClientService } from '../../../_services/client.service';
   templateUrl: './tax-refunds.component.html',
   styleUrl: './tax-refunds.component.css',
 })
+
 export class TaxRefundsComponent {
   constructor(
     private taxRefundsService: TaxRefundsService,
@@ -74,6 +75,7 @@ export class TaxRefundsComponent {
       }
     );
   }
+
   getTaxRefundsForClient(): void {
     
     const clientId = this.client._id;
@@ -93,7 +95,6 @@ export class TaxRefundsComponent {
    goToSteps(task: any) {  
     if(this,this.currentRoute === 'allClientTaxRefunds'){
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps'], { state: { data: task, client: this.getClientName(task.idClient) } });
-
     }
     else{
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });

@@ -13,7 +13,9 @@ export class TaxRefundsService {
 
   constructor(
     @InjectModel('TaxRefunds') private readonly TaxRefundsModel: Model<TaxRefunds>,
-    @InjectModel('StepField') private readonly stepFieldModel: Model<StepField>
+    @InjectModel('StepField') private readonly stepFieldModel: Model<StepField>,
+    @InjectModel('Status') private readonly statusModel: Model<Status>,
+
   ) { }
 
     async createTaxRefunds(createTaxRefundsDto: CreateTaxRefundsDto): Promise<TaxRefunds> {

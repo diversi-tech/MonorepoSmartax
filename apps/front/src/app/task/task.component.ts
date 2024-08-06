@@ -364,10 +364,7 @@ export class TaskComponent implements OnInit {
       notes: 'Task Notes',
       dueTime: this.rangeDates[1]
     };
-
-
     const createEventPromise = this.googleTask.createSimpleTask(taskDetails);
-
     // After creating event, save the meeting
     createEventPromise
       .then(() => {
@@ -436,13 +433,11 @@ export class TaskComponent implements OnInit {
             alert("ok")
             alert(data)
             window.location.reload()
-            console.log(data);
             // Task updated
             if (this.eventId) this.updateTask();
             if (this.taskId) this.closeModal.emit();
           },
           error: (err) => {
-            console.log(err);
             alert("העדכון נכשל")
           },
         });
@@ -457,13 +452,11 @@ export class TaskComponent implements OnInit {
       dueDate: this.rangeDates[1],
       id: this.eventId
     };
-
     this.googleTask.updateGoogleTask(taskDetails);
   }
 
 
   cancel() {
-    //return to last page
     window.history.back();
   }
   //
@@ -475,7 +468,7 @@ export class TaskComponent implements OnInit {
       }
     }
   }
-  //
+  
   createTag() {
     this.showTags = !this.showTags;
     if (this.buttonText && this.selectedColor) {
@@ -543,11 +536,9 @@ export class TaskComponent implements OnInit {
   selectedList: string | undefined
   groupedLists: SelectItemGroup[] = []
   newListName: string | null
-
   selectPlaceholder = 'בחר רשימה'
 
   addNewList() {
-    debugger
     this.newList = false;
     if (this.newListName) {
       let l: CheckList = { name: this.newListName, items: [] }
@@ -571,7 +562,6 @@ export class TaskComponent implements OnInit {
 
   // create new list
   createList(i: any) {
-    debugger
     this.selectedList = i.value
     if (this.selectedList && this.selectedList != "new") {
       this.checkListServise.getCheckLists(this.selectedList).subscribe({
@@ -642,12 +632,12 @@ export class TaskComponent implements OnInit {
   onContentChange(content: string) {
     this.htmlContent = content;
   }
+
   @ViewChild(EditorComponent) editorComponent!: EditorComponent;
 
   updateEditorContent(newContent: string) {
     this.editorComponent.initialContent = newContent;
   }
-
   try() {
     console.log(this.activeItem);
   }
@@ -655,6 +645,7 @@ export class TaskComponent implements OnInit {
   onActiveItemChange(event: MenuItem) {
     this.activeItem = event;
   }
+
   // google task
   subscribeToEventData() {
     alert('se1');

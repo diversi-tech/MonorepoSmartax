@@ -180,7 +180,7 @@ export const routes: Routes = [
           icon: icons.reports,
         },
       },
-      ,
+    ,
       {
         path: 'allClientMonthlyReport',
         component: MonthlyReportComponent,
@@ -212,6 +212,7 @@ export const routes: Routes = [
         },
       },]
   },
+  //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
   { path: 'clientSearch', component: ClientSearchComponent, data: { authType: 6, forToolbar: true, label: 'לקוחות', icon: icons.clients } },
   { path: 'favoritesClientsList', component: FavoritesClientsListComponent, data: { authType: 6, forToolbar: false, label: 'לקוחות מועדפים', icon: icons.favorite } },
   { path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 6, forToolbar: false, label: 'ניהול לקוחות', icon: '' } },
@@ -321,7 +322,6 @@ export const routes: Routes = [
       { path: 'createYearlyReport', component: CreateYearlyReportComponent },
     ]
   },
-];
   {
     path: 'stepsFS', component: FinancialStatementComponent,
     children: [

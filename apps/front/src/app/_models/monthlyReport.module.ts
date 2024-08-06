@@ -6,6 +6,5 @@ export interface MonthlyReport {
   idEmploye: string;
   reportDate: Date;
   monthlyReportFields: stepFieldMonth[];
-  status: Status;
-
+  status: Status[];
 }

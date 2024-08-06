@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../_services/user.service';
-import { StorageService } from '../../_services/storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TokenService } from '../../_services/token.service';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
