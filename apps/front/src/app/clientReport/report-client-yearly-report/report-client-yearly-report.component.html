@@ -33,23 +33,28 @@
     </ng-template>
     <ng-template pTemplate="body" let-yearlyReport>
         <tr (click)="selectYearlyReport(yearlyReport)"
-        [ngClass]="{ 'highlight': currentYearlyReport === yearlyReport }">
-        <td><button *ngIf="currentYearlyReport === yearlyReport" pButton
-                class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
-                (click)="goToSteps(yearlyReport.idClient,yearlyReport)"></button>
-        </td>
-        <td class="{{yearlyReport.status?.color}}">{{yearlyReport.status?.name}}</td>
-        <td>{{yearlyReport.entityType}}</td>
-        <td>{{getEmployeName(yearlyReport.idEmploye)?.userName }}</td>
-        <td>{{ yearlyReport.balanceDue }}</td>
-        <td>{{ yearlyReport.paymentAmountPaid }}</td>
-        <td>{{ yearlyReport.price }}</td>
-        <td>{{ yearlyReport.dateTime | date:'dd/MM/yyyy' }}</td>
-        <td>{{ yearlyReport.yearReport }}</td>
-        <td>{{ getClientName(yearlyReport.idClient) }} </td>
-        <app-icon-profile
-        [userName]="getClientName(yearlyReport.idClient)"
-        style="width: 50px;"></app-icon-profile>
-    </tr>
+            [ngClass]="{ 'highlight': currentYearlyReport === yearlyReport }">
+            <td><button *ngIf="currentYearlyReport === yearlyReport" pButton
+                    class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+                    style="cursor: pointer; margin-left: 5px;"
+                    pTooltip="עריכת שלבי הדוח"
+                    tooltipPosition="bottom"
+
+                    (click)="goToSteps(getClientName(yearlyReport.idUser), yearlyReport)"></button>
+            </td>
+            <td class="{{yearlyReport.status?.color}}">{{yearlyReport.status?.name}}</td>
+            <td>{{yearlyReport.entityType}}</td>
+            <td>{{getEmployeName(yearlyReport.idEmploye)?.userName }}</td>
+            <td>{{ yearlyReport.balanceDue }}</td>
+            <td>{{ yearlyReport.paymentAmountPaid }}</td>
+            <td>{{ yearlyReport.price }}</td>
+            <td>{{ yearlyReport.dateTime | date:'dd/MM/yyyy' }}</td>
+            <td>{{ yearlyReport.yearReport }}</td>
+            <td>{{getClientName(yearlyReport.idUser)?.firstName }} {{getClientName(yearlyReport.idUser)?.lastName }}</td>
+            <app-icon-profile
+                [userName]="getClientName(yearlyReport.idUser)?.firstName  &&  getClientName(yearlyReport.idUser)?.lastName"
+                style="width: 50px;"></app-icon-profile>
+
+        </tr>
     </ng-template>
 </p-table>

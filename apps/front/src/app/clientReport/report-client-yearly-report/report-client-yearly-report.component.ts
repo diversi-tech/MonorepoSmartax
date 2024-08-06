@@ -12,11 +12,11 @@ import { IconProfileComponent } from '../../share/icon-profile/icon-profile.comp
 import { Location } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterOutlet } from '@angular/router';
-
+import { TooltipModule } from 'primeng/tooltip';
 @Component({
   selector: 'app-report-client-yearly-report',
   standalone: true,
-  imports: [CommonModule, ButtonModule, RouterOutlet, TableModule, IconProfileComponent,InputTextModule],
+  imports: [CommonModule, ButtonModule, RouterOutlet, TableModule, IconProfileComponent,InputTextModule,TooltipModule],
   templateUrl: './report-client-yearly-report.component.html',
   styleUrls: ['./report-client-yearly-report.component.css'],
 })
