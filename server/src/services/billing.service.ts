@@ -6,6 +6,7 @@ import { Billing } from '../Models/billing.model';
 
 @Injectable()
 export class BillingsService {
+  billingIfRreturn:UpdateBillingDto;
   constructor(@InjectModel('Billing') private readonly BillingModel: Model<Billing>) { }
 
   async createBilling(createBillingDto: CreateBillingDto): Promise<Billing> {
@@ -61,8 +62,15 @@ export class BillingsService {
     }
   }
   async updateBillingStatus(id: string, status: boolean): Promise<Billing> {
+    console.log("start change billing status in billing service front ");
     const billing = await this.BillingModel.findById(id).exec();
-    billing.ifRreturn=status;
+    console.log("billing found in billing service ");
+    billing.ifRreturn = status
+    
+
+    // this.updateBilling(id, this.billingIfRreturn);   
+     console.log("billing updated in billing service ", billing);
+
     return billing.save();
   }
 

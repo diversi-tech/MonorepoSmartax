@@ -29,7 +29,7 @@ export class ClientService {
           return throwError(() => new Error('תעודת זהות כבר קיימת.'));
         } else {
           return this.http.post<Client>(`${this.apiUrl}`, client, this.httpOptions)
-          
+
             .pipe(
               catchError(this.handleError<Client>('updateClient'))
             );
@@ -67,7 +67,7 @@ export class ClientService {
       })
     );
   }
-  
+
   fetchSensitiveDataForClient(clientId: string): Observable<CreateSensitiveDataDto[]> {
     return this.searchClient(clientId).pipe(
       switchMap((client) => {
@@ -114,7 +114,7 @@ export class ClientService {
       catchError(() => of(false)) // Handle error and return false in case of an error
     );
   }
-  
-  
+
+
 }
 

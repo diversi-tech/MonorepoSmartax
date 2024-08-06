@@ -92,6 +92,8 @@ import { AddMorePaymentDetailsComponent } from './pages/client/addMorePaymentDet
 import { ClientCreateFinancialStatementComponent } from './pages/client/client-create-financialStatement/client-create-financial-statement.component';
 import { FinancialStatementStepsComponent } from './pages/client/client-financial-statement-steps/financial-statement-steps.component';
 import { CreateMonthlyReportComponent } from './pages/client/client-create-monthly-report/create-monthly-report.component';
+import { ClientCreateTaxRefunds } from './pages/client/client-create-tax-refunds/client-create-tax-refunds.component';
+import { EditMonthlyReportComponent } from './pages/Manager/edit-monthly-report/edit-monthly-report.component';
 // import * as path from 'path';
 // import * as path from 'path';
 
@@ -399,10 +401,8 @@ export const routes: Routes = [
       { path: 'clientTypeTag', component: ClientTypeTagComponent },
       { path: 'clientField', component: ClientFieldComponent },
       { path: 'createYearlyReport', component: CreateYearlyReportComponent },
-      {
-        path: 'createFinancialStatement',
-        component: ClientCreateFinancialStatementComponent,
-      },
+      { path: 'createYearlyReport', component: CreateYearlyReportComponent },
+      { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent },
       { path: 'steps', component: YearlyReportStepsComponent },
       { path: 'stepsFS', component: FinancialStatementStepsComponent },
       {
@@ -441,6 +441,7 @@ export const routes: Routes = [
       { path: 'taxrefundsteps', component: TaxRefundsStepsComponent },
       { path: 'monthlyReport', component: MonthlyReportComponent },
       { path: 'createMonthlyReport', component: CreateMonthlyReportComponent },
+      { path: 'createTaxRefunds', component: ClientCreateTaxRefunds },
       { path: 'financialStatement', component: FinancialStatementComponent },
       { path: 'sensitiveDetails', component: SensitiveDetailsComponent },
     ],
@@ -495,12 +496,11 @@ export const routes: Routes = [
     component: ManagerNavbarComponent,
     data: { authType: 3, forToolbar: true, icon: icons.manager, label: 'מנהל' },
     children: [
-      {
-        path: 'editClientYearlyReport',
-        component: EditClientYearlyReportComponent,
-      },
+      { path: 'editClientYearlyReport', component: EditClientYearlyReportComponent },
       { path: 'editTaxRefuned', component: EditClientTaxRefunedComponent },
-    ],
+      { path: 'editMonthlyReport', component: EditMonthlyReportComponent }
+
+    ]
   },
   { path: 'steps', component: YearlyReportStepsComponent },
   { path: 'stepsFS', component: FinancialStatementStepsComponent },
@@ -511,12 +511,7 @@ export const routes: Routes = [
   },
   { path: 'popup/:id', component: PopAppComponent },
 
-  {
-    path: 'clientTypes',
-    component: ClientTypeComponent,
-    canActivate: [AuthGuard],
-    data: { authType: 3, forToolbar: false, icon: '' },
-  },
+  , { path: 'clientTypes', component: ClientTypeComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: false, icon: '' } },
   // { path: 'fieldMamagement', component: FieldManagementComponent, data: { authType: 3, forToolbar: true, label: 'ניהול שדות', icon: '' } },
   // {
   //   path: 'manager', component: ManagerNavbarComponent, data: { authType: 3, forToolbar: true, icon: icons.manager, label: "מנהל" },
@@ -525,11 +520,8 @@ export const routes: Routes = [
   //     { path: 'editTaxRefuned', component: EditClientTaxRefunedComponent }
   //   ]
   // },
-  { path: 'createYearlyReport', component: CreateYearlyReportComponent },
-  {
-    path: 'createFinancialStatement',
-    component: ClientCreateFinancialStatementComponent,
-  },
+  { path: 'createYearlyReport', component: CreateYearlyReportComponent, },
+  { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent, },
   { path: 'popup/create', component: PopAppComponent },
   {
     path: 'steps',

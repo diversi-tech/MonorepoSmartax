@@ -89,4 +89,15 @@ export class PaymentComponent implements OnInit {
       }
     );
   }
+  stopPaymentDetails() {
+    this.paymentService.stopPaymentDetails(this.thisPayment._id, this.thisPayment.morePaymentDetails[0]._id).subscribe(
+      (s) => {
+        console.log(s);
+        this.handle();
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
 }

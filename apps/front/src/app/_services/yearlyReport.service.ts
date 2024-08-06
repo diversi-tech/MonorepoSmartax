@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { YearlyReport } from '../_models/yearlyReport.module';
 import { USER_ENDPOINT, YEARLYREPORT } from '../api-urls';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { Console } from 'console';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,9 +21,11 @@ export class YearlyReportService {
 
   // Create a new yearly report
   createYearlyReport(yearlyReport: YearlyReport): Observable<YearlyReport> {
-    return this.http
-      .post<YearlyReport>(`${this.apiUrl}/create`, yearlyReport)
-      .pipe(catchError(this.handleError<YearlyReport>('createYearlyReport')));
+    console.log('createYearlyReportSEvucec', yearlyReport);
+    return this.http.post<YearlyReport>(`${this.apiUrl}/create`, yearlyReport)
+      .pipe(
+        catchError(this.handleError<YearlyReport>('createYearlyReport'))
+      );
   }
 
   // Get all yearly reports
@@ -46,33 +49,43 @@ export class YearlyReportService {
     );
   }
 
+
+
+
   // Update an existing yearly report
-  async updateYearlyReport(
-    id: string,
-    yearlyReport: YearlyReport
-  ): Promise<YearlyReport> {
-    try {
-      const response = await this.http
-        .post<YearlyReport>(`${this.apiUrl}/update/${id}`, yearlyReport)
-        .toPromise();
-      return response;
-    } catch (error) {
-      this.handleError<YearlyReport>('updateYearlyReport', error);
-      throw error; // Re-throw the error if needed
-    }
+  updateYearlyReport(id: string, yearlyReport: YearlyReport): Observable<YearlyReport> {
+    console.log('updateYearlyReportSEvucec', yearlyReport);
+    return this.http.post<YearlyReport>(`${this.apiUrl}/update/${id}`, yearlyReport)
+      .pipe(
+        catchError(this.handleError<YearlyReport>('updateYearlyReport'))
+      );
   }
+
+  // createYearlyReport(yearlyReport: YearlyReport): Observable<YearlyReport> {
+  //   console.log('createYearlyReportSEvucec', yearlyReport);
+  //     return this.http.post<YearlyReport>(`${this.apiUrl}/create`, yearlyReport)
+  //       .pipe(
+  //         catchError(this.handleError<YearlyReport>('createYearlyReport'))
+  //       );
+  //   }
+
+
 
   // Delete a yearly report by ID
   deleteYearlyReport(id: string): Observable<boolean> {
-    return this.http
-      .delete<boolean>(`${this.apiUrl}`, { body: { id } })
-      .pipe(catchError(this.handleError<boolean>('deleteYearlyReport', false)));
+    return this.http.delete<boolean>(`${this.apiUrl}`, { body: { id } })
+      .pipe(
+        catchError(this.handleError<boolean>('deleteYearlyReport', false))
+      );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(`${operation} failed: ${error.message}`); // Log error message to console
-      return of(result as T); // Return default result to keep the app running
+      // Return the error message or a default error message
+      return throwError(error.error?.message || 'An error occurred');
     };
   }
+
+
 }

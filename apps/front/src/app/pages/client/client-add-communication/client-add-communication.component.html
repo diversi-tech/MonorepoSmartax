@@ -4,6 +4,12 @@
     <div class="card">
       <div class="p-grid p-align-center p-justify-center">
         <form (ngSubmit)="createCommunication()" #createForm="ngForm" class="form-background p-p-3">
+          <div *ngIf="currentRoute === 'allCommunication'" class="p-field p-mb-3">
+            <label for="data" class="form-label">לקוח</label>
+            <p-dropdown [options]="clients" [(ngModel)]="selectedClient" name="client" optionLabel="firstName"
+            [style]="{width: '100%'}" appendTo="body" required>
+          </p-dropdown>
+          </div>
           <div class="p-field p-mb-3">
             <label for="date" class="form-label">תאריך</label>
             <input type="date" pInputText id="date" [(ngModel)]="formattedDate" name="date" required
