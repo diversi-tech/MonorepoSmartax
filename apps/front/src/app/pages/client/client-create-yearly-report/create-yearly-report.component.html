@@ -18,19 +18,13 @@
         This field is required.
       </div>
     </div>
-    <div class="form-group">
-
+   
     <div class="p-field p-mb-3">
-      <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2" 
-    <div class="p-field p-mb-3" dir="rtl">
+      <div  class="p-field p-mb-3" dir="rtl">
       <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2"
         (completeMethod)="filterByyear($event.query)" [minLength]="1"
         placeholder="בחירת שנה" field="yearNum" [dropdown]="true" (onSelect)="select($event)"
         [style]="{width: '80%'}" class="form-control-2" required>
-        <ng-template let-yearname pTemplate="item" class="template">
-          <div class="p-d-flex p-ai-center">
-        placeholder="בחירת שנה"  field="yearNum" [dropdown]="true" (onSelect)="select($event)"
-        [style]="{width: '100%'}" required  >
         <ng-template let-yearname pTemplate="item" >
           <div   class="p-d-flex p-ai-center" >
             שנת  {{ yearname.yearNum}}
