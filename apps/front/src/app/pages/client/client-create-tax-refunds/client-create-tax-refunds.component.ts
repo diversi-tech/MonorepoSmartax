@@ -23,11 +23,13 @@ import { StatusService } from '../../../_services/status.service';
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
-import Swal from 'sweetalert2';
+import { TaxRefundsService } from '../../../_services/taxRefunds.service';
+import { TaxRefunds } from '../../../_models/taxRefunds.module';
+import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
 
 
 @Component({
-  selector: 'app-create-yearly-report',
+  selector: 'app-client-create-tax-refunds',
   standalone: true,
   imports: [
     FormsModule,
@@ -40,24 +42,25 @@ import Swal from 'sweetalert2';
     ReactiveFormsModule,
     DialogModule,
     InputNumberModule,
-    AutoCompleteModule,
-    PrimeTemplate,
-    TableModule,
-    RouterOutlet
+      AutoCompleteModule,
+      PrimeTemplate,
+      TableModule,
+      RouterOutlet,
+      IconProfileComponent
   ],
-  templateUrl: './create-yearly-report.component.html',
-  styleUrl: './create-yearly-report.component.css',
+  templateUrl: './client-create-tax-refunds.component.html',
+  styleUrl: './client-create-tax-refunds.component.css',
 })
 @Injectable({
   providedIn: 'root', // Ensure it's provided in root or a specific module
 })
-export class CreateYearlyReportComponent implements OnInit {
+export class ClientCreateTaxRefunds implements OnInit {
   displayModal: boolean = false;
-  yearlyReportForm: FormGroup;
+  taxRefundsForm: FormGroup;
   userId: string; // Assuming the client ID is passed via the state
   client: any | undefined = undefined;
   formSubmitted = false;
-  newYear: Year = {
+  newYear: Year={
     yearNum: "",
     _id: ''
   }
@@ -66,26 +69,26 @@ export class CreateYearlyReportComponent implements OnInit {
     { label: 'עמותה', value: 'עמותה' },
     { label: 'חברה', value: 'חברה' },
   ];
-  Year2: any[] = [{ yearNum: "לא נמצא" }];
+  Year2:any[]=[{yearNum:"לא נמצא"}];
   employeName: string;
-  reportToUpdate: YearlyReport | null = null;
+  reportToUpdate: TaxRefunds | null = null;
   yearList: Year[];
   yearList2: Year[];
   statusList: Status[] = [];
-  selectedyear: Year | null = null;
-  thisSubject2 = "";
-  is: boolean = false;
-  thisSubject = "";
+  selectedyear: Year| null = null;
+  thisSubject2="";
+  is: boolean=false;
+  thisSubject="";
   constructor(
     private fb: FormBuilder,
     private stepFieldsService: stepFieldService,
-    private yearlyReportService: YearlyReportService,
+    private taxRefundsService: TaxRefundsService,
     private yearService: YearService,
     private tokenService: TokenService,
     private router: Router,
     private route: ActivatedRoute,// Inject ActivatedRoute
     private location: Location,
-    private statusService: StatusService,
+    private statusService: StatusService ,
 
   ) {
     this.loadData();
@@ -115,11 +118,12 @@ export class CreateYearlyReportComponent implements OnInit {
     })
     this.userId = this.tokenService.getCurrentDetail('_id');
     this.client = history.state.client;
-    this.reportToUpdate = history.state.report || null;
+    this.reportToUpdate = history.state.responseData || null;
   }
 
   showModalDialog() {
     this.displayModal = true;
+
   }
 
   hideModalDialog() {
@@ -128,16 +132,16 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.yearlyReportForm = this.fb.group({
+    this.taxRefundsForm = this.fb.group({
       type: ['', Validators.required],
       price: ['', Validators.required],
       paymentAmountPaid: ['', Validators.required],
       balanceDue: ['', Validators.required],
     });
     if (this.reportToUpdate) {
-      this.yearlyReportForm.patchValue({
+      this.taxRefundsForm.patchValue({
         type: this.reportToUpdate.entityType,
-        year: this.reportToUpdate.yearReport,
+        year: this.reportToUpdate.year,
         price: this.reportToUpdate.price,
         paymentAmountPaid: this.reportToUpdate.paymentAmountPaid,
         balanceDue: this.reportToUpdate.balanceDue,
@@ -148,26 +152,24 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   onSubmit() {
-
+   
     this.formSubmitted = true;
-    if (this.yearlyReportForm.valid) {
-      const yearlyReport = this.yearlyReportForm.value;
-      yearlyReport.yearReport = this.thisSubject
+    if (this.taxRefundsForm.valid) {
+      const taxRefunds = this.taxRefundsForm.value;
+      taxRefunds.yearReport=this.thisSubject
 
       if (this.reportToUpdate) {
-        const status = this.determineStatus();
-        this.updateYearlyReport(yearlyReport, status);
+        const status =  this.determineStatus();
+        this.updateTaxRefunds(taxRefunds,status);
       } else {
-        this.createYearlyReport(yearlyReport);
+        this.createTaxRefunds(taxRefunds);
       }
     }
-    this.hideModalDialog(); //
-
+    this.hideModalDialog(); 
   }
 
   determineStatus(): Status {
     const stepsList = this.reportToUpdate ? this.reportToUpdate.stepsList : [];
-
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
 
@@ -180,126 +182,103 @@ export class CreateYearlyReportComponent implements OnInit {
     }
   }
 
-  createYearlyReport(yearlyReport: any) {
-
-    console.log('yearlyReport', yearlyReport);
-    yearlyReport.status = this.statusList.find(s => s.name == 'TO DO') || null;
-
-    const yearly: YearlyReport = {
+  createTaxRefunds(taxRefunds:any) {
+    
+    console.log('taxRefunds', taxRefunds);
+    taxRefunds.status = this.statusList.find(s => s.name == 'TO DO') || null;
+    const tax: TaxRefunds = {
       idClient: this.client._id,
-      idEmploye: this.userId,
-      yearReport: yearlyReport.yearReport,
-      dateTime: new Date(),
-      price: yearlyReport.price,
-      paymentAmountPaid: yearlyReport.paymentAmountPaid,
-      balanceDue: yearlyReport.balanceDue,
-      stepsList: null,
-      entityType: yearlyReport.type,
-      status: yearlyReport.status,
       assignee: [this.userId],
-
+      idEmploye: this.userId,
+      year:taxRefunds.yearReport,
+      date: new Date(),
+      price: taxRefunds.price,
+      paymentAmountPaid: taxRefunds.paymentAmountPaid,
+      balanceDue: taxRefunds.balanceDue,
+      stepsList: null,
+      entityType: taxRefunds.type,
+      status: taxRefunds.status,
     };
-    this.yearlyReportService.createYearlyReport(yearly).subscribe(
+
+    this.taxRefundsService.createTaxRefunds(tax).subscribe(
       (response) => {
-        if (response) {
-          console.log("response", response);
-          Swal.fire('Success', "הדוח נוסף בהצלחה", "success");
-          this.router.navigate(
-            ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
-            {
-              state: { data: response, client: this.client },
-            }
-          );
-        }
+        console.log("response", response);
+        this.router.navigate(
+          ['/clientSearch/clientManagement/clientNavbar/taxRefunds'],
+          {
+            state: { data: response, client: this.client },
+
+          });
       },
       (error) => {
-        console.error('Error occurred:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error || 'Something went wrong!',
-        });
+        console.log(error);
       }
     );
   }
 
-  updateYearlyReport(yearlyReport: any, status: any) {
-    console.log("updateYearlyReport", yearlyReport)
-    const updatedReport: YearlyReport = {
+  updateTaxRefunds(taxRefund: any, status:any) {
+    const updatedReport: TaxRefunds = {
       ...this.reportToUpdate,
-      yearReport: yearlyReport.yearReport,
-      price: yearlyReport.price,
-      paymentAmountPaid: yearlyReport.paymentAmountPaid,
-      balanceDue: yearlyReport.balanceDue,
-      entityType: yearlyReport.type,
+      year: taxRefund.yearNUm,
+      price: taxRefund.price,
+      paymentAmountPaid: taxRefund.paymentAmountPaid,
+      balanceDue: taxRefund.balanceDue,
+      entityType: taxRefund.type,
       status: status,
-
+      date: new Date(),
     };
-    updatedReport.assignee.push(this.userId);
-    updatedReport.idEmploye = this.userId;
-    this.yearlyReportService
-      .updateYearlyReport(this.reportToUpdate._id, updatedReport)
-      .subscribe(
+
+    this.taxRefundsService
+      .updateTaxRefunds(this.reportToUpdate.idClient, updatedReport)
+      .then(
         (response) => {
-          if (response) {
-            console.log("response", response);
-            Swal.fire('Success', "הדוח עודכן בהצלחה", "success");
-            this.router.navigate(
-              ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
-              {
-                state: { data: response, client: this.client },
-              }
-            );
-          }
+          console.log(response);
+          if (response)
+            this.location.back();
+
         },
         (error) => {
-          console.error('Error occurred:', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: error || 'Something went wrong!',
-          });
+          console.log(error);
         }
       );
   }
   goBack(): void {
     this.location.back();
   }
-
   filterByyear(value: string): void {
-    console.log(this.yearList2, '2')
+   console.log(this.yearList2,'2')
     if (value != "") {
-      this.is = false
+      this.is=false
       const query = value.toLowerCase();
-      this.yearList2 = this.yearList.filter(year =>
+      this.yearList2 = this.yearList.filter(year => 
         year.yearNum.toLowerCase().includes(query.toLowerCase())
       );
-      if (this.yearList2.length == 0) {
-        this.yearList2 = this.Year2
-        this.thisSubject2 = value
-        this.is = true;
-      }
+      if(this.yearList2.length==0)
+        {
+          this.yearList2=this.Year2
+          this.thisSubject2=value
+          this.is=true; 
+        }
     }
-    else {
-      this.is = false
-      console.log(this.yearList, '1')
+    else
+    {
+      this.is=false
+      console.log(this.yearList,'1')
       this.yearList2 = this.yearList;
     }
     this.selectedyear = null;
-
+    
   }
-
-  select(event: AutoCompleteSelectEvent): void {
-    const year = event.value as Year;
-    this.thisSubject = year.yearNum
-  }
-
-  add() {
-    this.newYear.yearNum = this.thisSubject2
-    this.yearService.createYear(this.newYear).subscribe(response => {
-      this.yearList.push(response);
-      Swal.fire('Success', ' שנה נוספה בהצלחה', 'success');
-
-    });
-  }
+  select(event:  AutoCompleteSelectEvent): void {
+      const year = event.value as Year;
+      this.thisSubject=year.yearNum
+    }
+    add(){
+      alert(this.thisSubject2)
+      this.newYear.yearNum=this.thisSubject2
+      this.yearService.createYear(this.newYear).subscribe(response => {
+        this.yearList.push(response); 
+        alert( response.yearNum +" "+"נוסף בהצלחה") 
+      });
+    }
 }
