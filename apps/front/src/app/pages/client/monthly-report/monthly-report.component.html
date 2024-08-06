@@ -54,13 +54,69 @@
         </ng-template>
         <ng-template pTemplate="body" let-fieldBymonth>
             <th><div class="text-center">{{fieldBymonth.value}}</div>
-                <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" value="{{fieldBymonth.content}}" />
-                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" />
+                <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" [(ngModel)]="fieldBymonth.content" />
+                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" (change)="fieldBymonth.content === 'לא בוצע'?fieldBymonth.content = 'בוצע':fieldBymonth.content = 'לא בוצע'"/>
             </th>
         </ng-template>
 </p-table>
 
 
+
+
+
+    <!-- <form [formGroup]="yearlyReportForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <p-dropdown id="year" formControlName="year"
+          [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="years"
+          [(ngModel)]="selectedYear"
+          placeholder="בחירת שנה"
+            [editable]="true"
+             optionLabel="yearNum"
+             ></p-dropdown>
+         <div *ngIf="yearlyReportForm.get('type').invalid && yearlyReportForm.get('type').touched" class="error">
+          This field is required.
+        </div> -->
+      <!-- </div> -->
+  
+      <!-- <div class="form-group"> -->
+        
+        <!-- <div *ngIf="yearlyReportForm.get('year').invalid && yearlyReportForm.get('year').touched" class="error">
+          This field is required.
+        </div> -->
+      <!-- </div> -->
+  
+      
+  
+      <!-- <div class="form-group">
+        <label for="price">מחיר:</label>
+        <input type="number" id="price" formControlName="price" class="form-control" placeholder="מחיר">
+        <div *ngIf="yearlyReportForm.get('price').invalid && yearlyReportForm.get('price').touched" class="error">
+          This field is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="paymentAmountPaid">סכום ששולם:</label>
+        <input type="number" id="paymentAmountPaid" formControlName="paymentAmountPaid" class="form-control"
+          placeholder="סכום ששולם">
+        <div *ngIf="yearlyReportForm.get('paymentAmountPaid').invalid && yearlyReportForm.get('paymentAmountPaid').touched"
+          class="error">
+          This field is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="balanceDue">יתרה לתשלום:</label>
+        <input type="number" id="balanceDue" formControlName="balanceDue" class="form-control" placeholder="יתרה לתשלום">
+        <div *ngIf="yearlyReportForm.get('balanceDue').invalid && yearlyReportForm.get('balanceDue').touched" class="error">
+          This field is required.
+        </div>
+      </div>
+   
+      <button type="submit" pButton label="אישור" class="custom-button"></button>
+    </form>
+  </div> -->
+  
 
 
 

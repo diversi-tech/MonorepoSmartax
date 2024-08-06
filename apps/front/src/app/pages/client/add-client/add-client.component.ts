@@ -264,8 +264,8 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
         }
       );
     }
-  }
-  }
+   }
+   }
 
   onClose() {
     this.close.emit();

@@ -98,26 +98,36 @@ export class PaymentService {
 
   }
   updateBillingStatus(paymentId: string, billingId: string, status: boolean): Observable<Billing> {
-    console.log("updateBillingStatus in service front ", paymentId, billingId, status);
-    const body = { paymentId, billingId, status };
-    return this.http.put<Billing>(`${this.apiUrl}/updateBillingStatus`, body);
-  }
-  addMorePaymentDetails(paymentId: string,
+    try {
+      console.log("updateBillingStatus in service front ", paymentId, billingId, status);
+      const body = { paymentId, billingId, status };
+      console.log("body: ", body);
+
+      return this.http.post<Billing>(`${this.apiUrl}/updateBillingStatus`, body);
+    } catch (err) {
+      console.log(err);
+
+    }
+  } addMorePaymentDetails(paymentId: string,
     sumForMonth: number,
     maxHours: number,
     frequancy: Frequency,
     dateFinish: Date,
     description: string): Observable<Payment> {
-      const newMorePaymentDetails = {
-        "sumForMonth": sumForMonth,
-        "maxHours": maxHours,
-        "frequency": frequancy,
-        "dateStart": new Date,
-        "dateFinish": dateFinish,
-        "description": description
-      }
-      return this.http.post<Payment>(`${this.apiUrl}/${paymentId}/morePaymentDetails`, newMorePaymentDetails);
+    const newMorePaymentDetails = {
+      "sumForMonth": sumForMonth,
+      "maxHours": maxHours,
+      "frequency": frequancy,
+      "dateStart": new Date,
+      "dateFinish": dateFinish,
+      "description": description
+    }
+    return this.http.post<Payment>(`${this.apiUrl}/${paymentId}/morePaymentDetails`, newMorePaymentDetails);
 
+  }
+  stopPaymentDetails(paymentId: string, paymentDetailsId: string): Observable<Payment> {
+    const body = { paymentId, paymentDetailsId };
+    return this.http.post<Payment>(`${this.apiUrl}/stopPaymentDetails`, body);
   }
 
 }
