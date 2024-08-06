@@ -13,7 +13,7 @@ async function bootstrap() {
   // Enable CORS
   app.enableCors({
     // origin: '', // Allow requests from this origin
-    origin:[process.env.PATH_FRONT,'http://localhost:4200'] ,
+    origin:['https://monoreposmartax-fronted.onrender.com','http://localhost:4200'] ,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
