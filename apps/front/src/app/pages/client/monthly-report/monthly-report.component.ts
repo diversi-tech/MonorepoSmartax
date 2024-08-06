@@ -1,7 +1,7 @@
 import { Component, Inject, numberAttribute } from '@angular/core';
 import { Injectable, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -14,6 +14,13 @@ import { YearService } from '../../../_services/year.service';
 import { Year } from '../../../_models/year.module';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
+import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import { StepperModule } from 'primeng/stepper';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputOtpModule } from 'primeng/inputotp';
+import { DialogModule } from 'primeng/dialog';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { PrimeTemplate } from 'primeng/api';
 
 @Component({
   selector: 'app-monthly-report',
@@ -25,7 +32,13 @@ import { Router } from '@angular/router';
     TableModule,
     ButtonModule,
     TreeTableModule,
-    RouterOutlet
+    RouterOutlet,
+    StepperModule,
+    CheckboxModule,
+    InputOtpModule,
+    ReactiveFormsModule,
+    InputNumberModule,
+    AutoCompleteModule,
   ],
   templateUrl: './monthly-report.component.html',
   styleUrl: './monthly-report.component.css',
@@ -34,35 +47,15 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class MonthlyReportComponent implements OnInit {
-
-
-  constructor(private monthlyReportService: MonthlyReportService,
-    private yearService: YearService,
-    private route: ActivatedRoute, private router: Router
-  ) {
-    this.currentRoute = this.route.snapshot.url.join('/');
-    console.log('Current route path:', this.currentRoute);
+  newYear: Year = {
+    yearNum: ""
   }
-  ngOnInit(): void {
-    this.client = history.state.client;
-    this.yearService.getAllYear().subscribe({
-      next: (data) => {
-        this.years = data;
-
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    },
-    );
-    if (this.currentRoute === "allClientMonthlyReport") {
-      this.getMonthlyReports();
-    }
-    else{
-    this.getMonthlyReportsForClient();
-    }
-    // this.getStepByType('מעם');
-  }
+  Year2: any[] = [{ yearNum: "לא נמצא" }];
+  selectedyear: Year | null = null;
+  thisSubject2 = "";
+  is: boolean = false;
+  thisSubject = "";
+  yearList2: Year[];
   years: Year[] = [];
   selectedYear: Year;
   months: string[] = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
@@ -80,6 +73,34 @@ export class MonthlyReportComponent implements OnInit {
   currentRoute: string;
 
   fieldBymonths: stepFieldMonth[] = [];
+  constructor(private monthlyReportService: MonthlyReportService,
+    private yearService: YearService,
+    private route: ActivatedRoute, private router: Router
+  ) {
+    this.currentRoute = this.route.snapshot.url.join('/');
+    console.log('Current route path:', this.currentRoute);
+  }
+  ngOnInit(): void {
+    this.client = history.state.client;
+    this.yearService.getAllYear().subscribe({
+      next: (data) => {
+        this.years = data;
+        this.yearList2=data;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    },
+    );
+    if (this.currentRoute === "allClientMonthlyReport") {
+      this.getMonthlyReports();
+    }
+    else{
+    this.getMonthlyReportsForClient();
+    }
+    // this.getStepByType('מעם');
+  }
+  
 
 
   getMonthlyReportsForClient(): void {
@@ -118,7 +139,7 @@ export class MonthlyReportComponent implements OnInit {
   }
   changeDate() {
     debugger
-    console.log(this.selectedMonth, this.selectedYear);
+    console.log(this.selectedMonth, this.thisSubject);
     if (this.currentRoute === "allClientMonthlyReport") {
       this.myReport = this.allMonthlyReports.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear.yearNum));
     }
@@ -134,5 +155,49 @@ console.log(this.myReport, "myReport");
   createReprtTag(): void {
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createMonthlyReport'], { state: { client: this.client } });
 
+  }
+  filterByyear(value: string): void {
+    console.log(this.yearList2, '2')
+    if (value != "") {
+      this.is = false
+      const query = value.toLowerCase();
+      this.yearList2 = this.years.filter(year =>
+        year.yearNum.toLowerCase().includes(query.toLowerCase())
+      );
+      if (this.yearList2.length == 0) {
+        this.yearList2 = this.Year2
+        this.thisSubject2 = value
+        this.is = true;
+      }
+    }
+    else {
+      this.is = false
+      console.log(this.years, '1')
+      this.yearList2 = this.years;
+    }
+    this.selectedyear = null;
+
+  }
+
+  select(event: AutoCompleteSelectEvent): void {
+    const year = event.value as Year;
+    this.thisSubject = year.yearNum
+  }
+
+  add() {
+    alert(this.thisSubject2)
+    this.newYear.yearNum = this.thisSubject2
+    this.yearService.createYear(this.newYear).subscribe(
+      response => {
+        if (response) {
+          this.years.push(response);
+          alert(response.yearNum + " נוסף בהצלחה");
+        }
+      },
+      error => {
+        console.error('שגיאה ביצירת שנה:', error);
+        alert('לא ניתן להוסיף שנה. שגיאה בקישור לשרת.');
+      }
+    );
   }
 }

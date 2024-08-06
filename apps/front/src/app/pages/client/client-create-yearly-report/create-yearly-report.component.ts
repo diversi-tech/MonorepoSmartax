@@ -57,8 +57,7 @@ export class CreateYearlyReportComponent implements OnInit {
   client: any | undefined = undefined;
   formSubmitted = false;
   newYear: Year = {
-    yearNum: "",
-    _id: ''
+    yearNum: ""
   }
   typeOptions: any[] = [
     { label: 'פיצול לעצמאי', value: 'עצמאי' },
@@ -283,9 +282,17 @@ export class CreateYearlyReportComponent implements OnInit {
   add() {
     alert(this.thisSubject2)
     this.newYear.yearNum = this.thisSubject2
-    this.yearService.createYear(this.newYear).subscribe(response => {
-      this.yearList.push(response);
-      alert(response.yearNum + " " + "נוסף בהצלחה")
-    });
+    this.yearService.createYear(this.newYear).subscribe(
+      response => {
+        if (response) {
+          this.yearList.push(response);
+          alert(response.yearNum + " נוסף בהצלחה");
+        }
+      },
+      error => {
+        console.error('שגיאה ביצירת שנה:', error);
+        alert('לא ניתן להוסיף שנה. שגיאה בקישור לשרת.');
+      }
+    );
   }
 }

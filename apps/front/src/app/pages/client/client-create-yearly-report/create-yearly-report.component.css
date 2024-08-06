@@ -12,7 +12,9 @@
    margin-top: 20px;
 
 }
-
+.i{
+  direction: rtl;
+}
 
 .icon-container {
   font-size: 24px;

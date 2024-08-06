@@ -19,6 +19,7 @@ import { InputOtpModule } from 'primeng/inputotp';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { UserService } from '../../../_services/user.service';
+import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-client-create-financial-statement',
@@ -33,7 +34,9 @@ import { UserService } from '../../../_services/user.service';
     InputOtpModule,
     ReactiveFormsModule,
     DialogModule,
-    InputNumberModule],
+    InputNumberModule,
+    AutoCompleteModule,
+  ],
   templateUrl: './client-create-financial-statement.component.html',
   styleUrl: './client-create-financial-statement.component.css',
 })
@@ -45,6 +48,12 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
   allEmploye: User[];
   formSubmitted = false;
   yearList: Year[];
+  yearList2: Year[];
+  selectedyear: Year | null = null;
+  thisSubject2 = "";
+  is: boolean = false;
+  thisSubject = "";
+  Year2: any[] = [{ yearNum: "לא נמצא" }];
   typeOptions: any[] = [
     { label: 'פיצול לעצמאי', value: 'עצמאי' },
     { label: 'עמותה', value: 'עמותה' },
@@ -53,7 +62,9 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
   employeName: string;
   statementToUpdate: FinancialStatement | null = null;
   statusList: Status[] = [];
-
+  newYear: Year = {
+    yearNum: ""
+  }
   constructor(
     private fb: FormBuilder,
     private stepFieldsService: stepFieldService,
@@ -75,6 +86,7 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
       next: (data) => {
         console.log(data);
         this.yearList = data;
+        this.yearList2=data
       },
       error: (error) => {
         console.log(error);
@@ -232,5 +244,49 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
   }
   goBack(): void {
     this.location.back();
+  }
+  filterByyear(value: string): void {
+    console.log(this.yearList2, '2')
+    if (value != "") {
+      this.is = false
+      const query = value.toLowerCase();
+      this.yearList2 = this.yearList.filter(year =>
+        year.yearNum.toLowerCase().includes(query.toLowerCase())
+      );
+      if (this.yearList2.length == 0) {
+        this.yearList2 = this.Year2
+        this.thisSubject2 = value
+        this.is = true;
+      }
+    }
+    else {
+      this.is = false
+      console.log(this.yearList, '1')
+      this.yearList2 = this.yearList;
+    }
+    this.selectedyear = null;
+
+  }
+
+  select(event: AutoCompleteSelectEvent): void {
+    const year = event.value as Year;
+    this.thisSubject = year.yearNum
+  }
+
+  add() {
+    alert(this.thisSubject2)
+    this.newYear.yearNum = this.thisSubject2
+    this.yearService.createYear(this.newYear).subscribe(
+      response => {
+        if (response) {
+          this.yearList.push(response);
+          alert(response.yearNum + " נוסף בהצלחה");
+        }
+      },
+      error => {
+        console.error('שגיאה ביצירת שנה:', error);
+        alert('לא ניתן להוסיף שנה. שגיאה בקישור לשרת.');
+      }
+    );
   }
 }
