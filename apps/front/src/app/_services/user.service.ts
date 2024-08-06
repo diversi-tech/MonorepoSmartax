@@ -54,7 +54,7 @@ export class UserService {
     };
     console.log(user);
 
-    return this.http.post(this.apiUrl + '/update', user, httpOptions);
+    return this.http.post(this.apiUrl + '/update', {user}, httpOptions);
   }
 
   getPublicContent(): Observable<any> {
