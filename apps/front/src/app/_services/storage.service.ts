@@ -10,6 +10,7 @@ export class StorageService {
 
   clean(): void {
     window.sessionStorage.clear();
+    alert(window.sessionStorage.getItem(USER_KEY));
   }
 
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Request, HttpStatus, Post, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Request, HttpStatus, Post, UseFilters, UseGuards, Delete } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
 import { User } from 'server/src/Models/user.model';
@@ -50,10 +50,10 @@ export class AuthController {
     }
   }
 
-  @Post('signout')
+  @Delete('signout')
   @ApiResponse({ status: 200, description: 'signout success' })
-  @ApiBearerAuth()
   async signout(@Request() req) {
+    
     return new HttpException('signout success', HttpStatus.OK);
   }
 

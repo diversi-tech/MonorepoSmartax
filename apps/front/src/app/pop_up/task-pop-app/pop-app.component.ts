@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ComponentFactory, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule, DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import {  ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+
 import { TaskComponent } from '../../task/task.component';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -16,6 +18,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { IconProfileComponent } from '../../share/icon-profile/icon-profile.component';
 import { Button, ButtonDirective } from 'primeng/button';
+import { EventInput } from '@fullcalendar/core';
 
 @Component({
   selector: 'app-pop-app',
@@ -52,13 +55,16 @@ export class PopAppComponent implements OnInit {
    @Input() parent: string | null = null;
  
   visible: boolean = true;
+  @Output() showPopup = new EventEmitter<boolean>();
   show = true
 
 
   create = false
-  constructor(private route: ActivatedRoute ,private router:Router) { }
+  constructor(private route: ActivatedRoute ,private router:Router, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
+    this.showDialog()
+
     this.id = this.route.snapshot.paramMap.get('id')!;
 
     if (this.id == 'create') {
@@ -72,15 +78,52 @@ export class PopAppComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.parent = params['parent'];
     });
+
+    
   }
 
+  eventsPromise: Promise<EventInput[]> = Promise.resolve([]);
+  eventsTasksPromise: Promise<EventInput[]> = Promise.resolve([]);
+
+  modal: boolean = false;
+  selectedEvent: EventInput | null = null;
+  @ViewChild('modalContent', { read: ViewContainerRef }) modalContent: ViewContainerRef | undefined;
+
+
+  hideDialog() {
+    this.modal = false;
+    this.loadEvents();
+  }
+  loadEvents() {
+    this.eventsPromise = new Promise(resolve => {
+
+    })
+  }
   showDialog() {
-    this.visible = true;
+    this.modal = true;
+
+    if (this.modalContent) {
+      this.modalContent.clear();
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TaskComponent);
+      const componentRef = this.modalContent.createComponent(componentFactory);
+      componentRef.instance.parent = this.parent;
+      componentRef.instance.taskId = this.id;
+      componentRef.instance.closeModal.subscribe(() => {
+        this.hideDialog()
+      });
+    }
+    else{
+    }
+    // this.visible = true;
+
   }
 
   onDialogClose() {
     this.visible = false;
-    this.router.navigate([`/taskSpe/${this.parent}`]);
+    window.history.back();
+    
+    // this.showPopup.emit(false)
+    // this.router.navigate([`/taskSpe/${this.parent}`]);
     
   }
 

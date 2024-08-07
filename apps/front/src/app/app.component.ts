@@ -88,8 +88,8 @@ export class AppComponent {
       this.authService.logout().subscribe(
         (status: number) => {
           console.log('Logout successful. Status:', status);
-          this.storageService.clean();
           this.router.navigate(["/login"]);
+
         },
         (error: any) => {
           console.error('Logout failed. Error:', error);

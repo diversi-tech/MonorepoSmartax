@@ -19,7 +19,8 @@ export class ClientController {
     // @UseGuards(AuthGuard, RoleGuard(3))
     @Get()
     async getAllClients(): Promise<Client[]> {
-        return await this.clientService.getAllClients();
+        const clients:Client[] =  await this.clientService.getAllClients();
+        return clients
     }
     // @UseGuards(AuthGuard, RoleGuard(3))
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })

@@ -54,6 +54,7 @@ import { Router, RouterLink } from '@angular/router';
     ButtonModule,
   ],
 })
+
 export class TaskManagementComponent implements OnInit {
   statuses: Status[] = [];
 
@@ -161,6 +162,7 @@ export class TaskManagementComponent implements OnInit {
       },
     });
   }
+
   confirmDelete(): void {
     this.deleteTask();
   }
@@ -225,16 +227,17 @@ export class TaskManagementComponent implements OnInit {
   }
 
   applyFilter() {
+    this.filteredTasks = [];
     this.tasks.forEach((task) => {
+
       this.filterFirstStatus = false;
       const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
-      const clientMatch = !this.filter.client || ((task.client &&task.client.firstName&&task.client.lastName)&&
-        ((task.client.firstName === this.filter.client.firstName) && (task.client.lastName === this.filter.client.lastName)));
+      const clientMatch = !this.filter.client || (task.client &&task.client == this.filter.client._id)
 
 
       let userMatch = !this.filter.user
-      // task.assignedTo.forEach(user => { user?.userName!.includes(this.filter!.user!.userName!) ? userMatch = true : false });
+      task.assignedTo.forEach(user => { user?._id==this.filter!.user!._id ? userMatch = true : false });
 
       const taskNameMatch = !this.filter.task || task.taskName?.toLowerCase()!.includes(this.filter.task.taskName.trim().toLowerCase());
       let tagsMatch = true;
@@ -251,42 +254,6 @@ export class TaskManagementComponent implements OnInit {
         this.filteredTasks.push(task);
     });
   }
-
-  // sort
-  // בקומפוננטה שלך
-  // sortTasks(field: string, list: Task[], reverse: boolean) {
-  //   // debugger
-  //   console.log(this.filteredTasks);
-
-  //   list.sort((a, b) => {
-  //     // כאן אתה יכול להוסיף לוגיקה למיון על פי השדה שנבחר
-  //     if (field === 'taskName') {
-  //       if (reverse) {
-  //         return b.taskName.localeCompare(a.taskName);
-  //       }
-  //       return a.taskName.localeCompare(b.taskName); // מיון לפי שם המשימה
-  //     }
-  //     if (field === 'assignedTo') {
-  //       if (reverse) {
-  //         return b.assignedTo.length - a.assignedTo.length;
-  //       }
-  //       return a.assignedTo.length - b.assignedTo.length; 
-  //     }
-  //     if (field === 'dueDate') {
-  //       if (reverse) {
-  //         return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate();
-  //       }
-  //       return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate(); // מיון לפי תאריך יעד
-  //     }
-  //     if (field === 'tags') {
-  //       if (reverse) {
-  //         return b.tags.length - a.tags.length;
-  //       }
-  //       return a.tags.length - b.tags.length; // מיון לפי מספר התגיות של המשימה
-  //     }
-  //     return 0; // במקרה שלא נמצא שדה תואם
-  //   });
-  // }
 
   sortTasks(field: string, list: Task[], reverse: boolean) {
     list.sort((a, b) => {
