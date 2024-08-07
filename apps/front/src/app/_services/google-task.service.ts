@@ -86,6 +86,7 @@ export class GoogleTaskService {
       })
       .then(() => {
         this.gapiInited = true;
+        console.log('GAPI client reinitialized');
       });
   }
 

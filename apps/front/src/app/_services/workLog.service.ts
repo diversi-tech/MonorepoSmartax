@@ -10,26 +10,27 @@ import { User } from '../../../../../server/src/Models/user.model';
   providedIn: 'root',
 })
 export class WorkLogService {
+  // private apiUrl = WORK_LOGS;
+
   private apiUrl = WORK_LOGS;
   private userApiUrl = USER_ENDPOINT;
 
 
   constructor(private http: HttpClient) {}
 
-
-  getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
-    let url = this.apiUrl;
-    if (employeeId) {
-      console.log('etty');
-
-      url += `/findByEmployeeId/${employeeId}`;
-    }
-    url += '/findAll';
-    return this.http
-      .get<{ data: WorkLog[] }>(url)
-      .pipe(map((response) => response.data));
+getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
+  let url = this.apiUrl;
+  if (employeeId) {    
+    url += `/findByEmployeeId/${employeeId}`;
   }
+  url += '/findAll';
+  return this.http.get<{ data: WorkLog[] }>(url).pipe(
+    map(response => response.data)
+  );
+}
 
+
+ 
   createWorkLog(workLog: WorkLog): Observable<WorkLog> {
     let url = `${this.apiUrl}/create`;
     return this.http

@@ -15,6 +15,7 @@ import {
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DialogModule } from 'primeng/dialog';
+import { PopupNotificationComponent } from "./popUp-socket/popUp-socket.component";
 import { PopupNotificationComponent } from './popUp-socket/popUp-socket.component';
 // import { WebSocketService } from './_services/webSocket.service';
 import { CheckListItemComponent } from './check-list-item/check-list-item.component';
@@ -26,6 +27,14 @@ import { User } from './_models/user.module';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
+
+// import { RouterTestingModule } from '@angular/router/testing';
+// import { TestBed } from '@angular/core/testing';
+// describe('AppComponent', () => {
+//   beforeEach(() => TestBed.configureTestingModule({
+//     imports: [RouterTestingModule],
+//     declarations: [AppComponent]
+//   }));
 
 @Component({
   selector: 'app-root',
@@ -47,6 +56,7 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     DividerModule,
     TooltipModule,
+  ],
     PopupNotificationComponent
   ],
 })
@@ -146,6 +156,9 @@ export class AppComponent {
           alert('ארעה שגיאה בתהליך היציאה, אנא נסה שנית');
         }     
       );
+    } catch (err) {
+      console.error('Logout failed. Error:', err);
+      alert('ארעה שגיאה בתהליך היציאה, אנא נסה שנית');
     } 
    
       

@@ -555,7 +555,7 @@ export class TaskComponent implements OnInit {
           },
         });
       }
-    window.history.back();
+    // window.history.back();
   }
 
   updateTask() {
@@ -568,6 +568,7 @@ export class TaskComponent implements OnInit {
     this.googleTask.updateGoogleTask(taskDetails);
   }
 
+  //
 
   cancel() {
     window.history.back();
@@ -581,6 +582,7 @@ export class TaskComponent implements OnInit {
       }
     }
   }
+  
 
   //
   // createTag() {
@@ -622,6 +624,7 @@ export class TaskComponent implements OnInit {
         .createTag({ color: this.color, text: this.value })
         .subscribe({
           next: (dataTag) => {
+            this.selectedTags.push({
             // this.selectedTags.push({
             //   color: dataTag.color,
             //   text: dataTag.text,
@@ -699,6 +702,11 @@ export class TaskComponent implements OnInit {
 
   //checkList
   newList: boolean = false;
+  selectedList: string | undefined;
+  groupedLists: SelectItemGroup[] = [];
+  newListName: string | null;
+
+  selectPlaceholder = 'בחר רשימה';
   selectedList: string | undefined
   groupedLists: SelectItemGroup[] = []
   newListName: string | null
@@ -722,12 +730,15 @@ export class TaskComponent implements OnInit {
       })
     }
     else {
+      alert("יש להזין שם")
       alert('יש להזין שם');
     }
   }
 
   // create new list
   createList(i: any) {
+    this.selectedList = i.value
+    if (this.selectedList && this.selectedList != "new") {
     this.selectedList = i.value
     if (this.selectedList && this.selectedList != "new") {
       this.selectedList = i.value;
@@ -762,6 +773,12 @@ export class TaskComponent implements OnInit {
         next: (newList) => {
           let prev = this.checkList.findIndex(c => c._id === newList._id)
           this.checkList[prev] = newList
+        },
+        error: (err) => {
+          console.log(err);
+          alert('העדכון נכשל, אנא נסה שנית');
+          let prev = this.checkList.findIndex(c => c._id === newList._id)
+          this.checkList[prev] = newList
           console.log(newList);
         },
         error: (err) => {
@@ -783,6 +800,10 @@ export class TaskComponent implements OnInit {
       this.checkListServise.deleteCheckList(_id).subscribe({
         next: (data) => { },
         error: (err) => {
+          this.currentTask.checkList.push(a[0])//delete from current-task.checklist
+          this.checkList.push(b[0])//delete from checklist
+          this.groupedLists[1].items.push(c[0])
+          alert("המחיקה נכשלה, אנא נסה שנית")
           this.currentTask.checkList.push(a[0])//delete from current-task.checklist
           this.checkList.push(b[0])//delete from checklist
           this.groupedLists[1].items.push(c[0])

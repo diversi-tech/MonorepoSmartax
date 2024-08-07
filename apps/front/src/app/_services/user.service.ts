@@ -132,6 +132,11 @@ export class UserService {
       "email": email,
       "favoritesClient":favoritesClient
     }
+    return this.http.post(
+      this.apiUrl + "/update",
+      user,
+      httpOptions
+    );
     return this.http
       .post<User>(`${this.apiUrl}/update`, { user }, this.httpOptions)
       .pipe(catchError(this.handleError<User>('update')));
@@ -170,6 +175,9 @@ export class UserService {
   }
 
   deleteUser(id: string) {
+    console.log('delete user in service');
+
+    return this.http.delete<any>(this.apiUrl + '/delete?id=' + id);
     return this.http.delete<any>(this.apiUrl + '/delete?id=' + id)
   }
 

@@ -193,7 +193,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Docs } from '../Models/doc.model';
 import { Model } from 'mongoose';
 import { ValidationException } from '../common/exceptions/validation.exception';
-import { Client, ClientModel } from '../Models/client.model';
+import { Client ,ClientModel } from '../Models/client.model';
 import { ClientController } from '../controller/clients/clients.controller';
 import { ClientService } from './client.service';
 import { DocType, docTypeModel } from '../Models/docType.model';
@@ -223,6 +223,7 @@ export class GoogleDriveService {
       keys.private_key,
       ['https://www.googleapis.com/auth/drive']
     );
+
     this.drive = google.drive({ version: 'v3', auth: this.auth });
   }
 

@@ -47,6 +47,7 @@ import { Button, ButtonDirective } from 'primeng/button';
     NgClass,
     ToastModule,
     DatePipe,
+    TaskComponent,
     TaskComponent
   ],
   templateUrl: './pop-app.component.html',
@@ -54,7 +55,15 @@ import { Button, ButtonDirective } from 'primeng/button';
 })
 
 export class PopAppComponent implements OnInit {
+  id: string | null;
+  @Input() parent: string | null = null;
 
+  visible: boolean = true;
+  show = true
+
+
+  create = false;
+  constructor(private route: ActivatedRoute, private location: Location,private router: Router) {}
   id: string | null
   @Input() parent: string | null = null;
   visible: boolean = true;
@@ -66,6 +75,14 @@ export class PopAppComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.id == 'create') {
+      this.id == null
+      this.create = true
+    }
+    else {
+      this.create = false
+    }
+
+    this.route.queryParams.subscribe((params) => {
       this.id == null
       this.create = true
     }
@@ -82,6 +99,11 @@ export class PopAppComponent implements OnInit {
 
   showDialog() {
     this.visible = true;
+  }
+
+  onHide() {
+    console.log('The dialog has been closed.');
+    this.location.back();
   }
 
   onDialogClose() {

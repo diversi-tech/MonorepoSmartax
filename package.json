@@ -9,6 +9,8 @@
     "start": "npx serve -s dist/apps/front -l $PORT",
     "start:server": "node dist/server/main.js",
     "build:server": "npx nx build server --prod",
+    "build:api-gateway": "npx nx build api-gateway --prod",
+    "start:api-gateway": "node dist/api-gateway/main.js",
     "build:timesheet": "npx nx build timesheet --prod",
     "start:timesheet": "node dist/timesheet/main.js",
     "test:e2e": "nx test server-e2e --verbose",

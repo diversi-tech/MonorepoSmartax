@@ -70,16 +70,10 @@ export class ClientService {
 
   fetchSensitiveDataForClient(clientId: string): Observable<CreateSensitiveDataDto[]> {
     return this.searchClient(clientId).pipe(
-      switchMap((client) => {
-        if (
-          client &&
-          client.encryptedPasswords &&
-          client.encryptedPasswords.length > 0
-        ) {
-          const sensitiveDataRequests = client.encryptedPasswords.map((id) =>
-            this.http.get<CreateSensitiveDataDto>(
-              `${this.sensitiveDataUrl}/${id}`
-            )
+      switchMap(client => {
+        if (client && client.encryptedPasswords && client.encryptedPasswords.length > 0) {
+          const sensitiveDataRequests = client.encryptedPasswords.map(id =>
+            this.http.get<CreateSensitiveDataDto>(`${this.sensitiveDataUrl}/${id}`)
           );
           return forkJoin(sensitiveDataRequests);
         } else {

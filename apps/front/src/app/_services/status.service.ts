@@ -34,6 +34,9 @@ export class StatusService {
 
   // Delete a Status by ID
   deleteStatus(id: string): Observable<boolean> {
+    return this.http
+      .delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
+      .pipe(catchError(this.handleError<boolean>('deleteStatus', false)));
     return this.http.delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
       .pipe(
         catchError(this.handleError<boolean>('deleteStatus', false))

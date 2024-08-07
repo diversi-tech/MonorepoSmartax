@@ -10,8 +10,9 @@ import { StepField } from '../_models/stepField.module';
   providedIn: 'root',
 })
 export class stepFieldService {
+  // private apiUrl = CLIENT_ENDPOINT; // Base URL for the Client API
+  private apiUrl = STEP_FIELD; // Base URL for the Client API
 
-  private apiUrl = 'http://localhost:8080/step-field'; // Base URL for the Client API
   // private apiUrl = CLIENT_ENDPOINT; // Base URL for the Client API
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }), // Define headers for HTTP requests

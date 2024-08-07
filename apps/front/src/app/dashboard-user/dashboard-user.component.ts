@@ -403,7 +403,7 @@ export class DashboardUserComponent implements OnInit {
   chartPie() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-
+    // get data from function
     const timeData = this.getTotalTimeByTaskId();
     const taskIds = Object.keys(timeData);
 
@@ -444,6 +444,7 @@ export class DashboardUserComponent implements OnInit {
     };
   }
 
+  // get all month
   getMonthsUntilCurrent() {
     const months = [
       'January',

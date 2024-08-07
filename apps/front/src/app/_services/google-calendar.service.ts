@@ -269,9 +269,10 @@ export class GoogleAuthService {
         this.eventDataSubject.next({ eventId: event.id, conferenceLink });
         // שמירת ה-eventId
         eventDetails.eventId = event.id;
-        // שידור ה-eventId והקישור המעודכן
         this.eventDataSubject.next({ eventId: event.id, conferenceLink });
       });
+    } catch (error) {
+      console.error('Error creating event:', error);
     } catch (error) {
       console.error("Error creat  ing event:", error);
       console.error('Error creating event:', error);
