@@ -5,7 +5,7 @@
         <!-- Existing profile icon -->
         {{ client?.firstName }} {{ client?.lastName }}
 
-        <app-icon-profile [userName]="client?.firstName && client?.lastName" style="width: 50px;">
+        <app-icon-profile [userName]="client?.firstName +' '+ client?.lastName" style="width: 50px;">
         </app-icon-profile>
 
     </div>
@@ -20,7 +20,7 @@
         <!-- <i class="pi pi-thumbtack pin-icon" ></i> -->
         {{ client?.firstName }} {{ client?.lastName }}
 
-        <app-icon-profile [userName]="client?.firstName && client?.lastName">
+        <app-icon-profile [userName]="client?.firstName +' '+ client?.lastName">
         </app-icon-profile>
 
     </div>

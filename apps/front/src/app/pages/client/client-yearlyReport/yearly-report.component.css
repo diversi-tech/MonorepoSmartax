@@ -22,3 +22,9 @@ input.ng-touched.ng-invalid, .custom-dropdown.ng-touched.ng-invalid {
 .sort{
   margin: 0;
 }
+.myInput{
+  width: 110%;
+  height: 40px;
+  padding: 10px;
+  text-align: right;
+}

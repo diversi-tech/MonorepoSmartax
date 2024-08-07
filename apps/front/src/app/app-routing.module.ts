@@ -208,6 +208,7 @@ export const routes: Routes = [
           forToolbar: false,
           label: 'דוחות שנתיים',
           icon: icons.reports,
+
         },
       },
       {
@@ -361,6 +362,7 @@ export const routes: Routes = [
       { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent },
     ]
   },
+{path: 'clientReport/allClientYearrlyReport/createYearlyReport', component: CreateYearlyReportComponent}
 ]
   ;
 

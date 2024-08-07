@@ -15,6 +15,9 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class YearlyReportService {
+  close() {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     private http: HttpClient,) { }
 
@@ -52,9 +55,7 @@ export class YearlyReportService {
   updateYearlyReport(id: string, yearlyReport: YearlyReport): Observable<YearlyReport> {
     console.log('updateYearlyReportSEvucec', yearlyReport);
     return this.http.post<YearlyReport>(`${this.apiUrl}/update/${id}`, yearlyReport)
-      .pipe(
-        catchError(this.handleError<YearlyReport>('updateYearlyReport'))
-      );
+     
   }
 
   // createYearlyReport(yearlyReport: YearlyReport): Observable<YearlyReport> {
@@ -69,7 +70,7 @@ export class YearlyReportService {
 
   // Delete a yearly report by ID
   deleteYearlyReport(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}`, { body: { id } })
+    return this.http.delete<boolean>(`${this.apiUrl}/delete/${id}`)
       .pipe(
         catchError(this.handleError<boolean>('deleteYearlyReport', false))
       );

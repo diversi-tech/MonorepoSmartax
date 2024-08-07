@@ -78,7 +78,7 @@
                         (click)="update(stepField)" class="pi pi-check p-button-outlined p-button-rounded p-button-info mr-2">
                     </button>
                     <button *ngIf="!editing && currentStepField === stepField" pButton pRipple type="button" pCancelEditableRow
-                        (click)="delete(stepField._id)" class="pi pi-trash p-button-outlined p-button-rounded p-button-danger">
+                        (click)="showDeleteConfirmation(stepField._id)" class="pi pi-trash p-button-outlined p-button-rounded p-button-danger">
                     </button>
                     <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow
                         class="pi pi-times p-button-outlined p-button-rounded p-button-danger">

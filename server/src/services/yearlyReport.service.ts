@@ -54,10 +54,13 @@ export class YearlyReportService {
       // בדוק אם כבר קיים דוח שנתי עם אותו `idClient` ו-`yearReport`
       const existingYearlyReport = await this.YearlyReportModel.findOne({
         idClient: updateYearlyReportDto.idClient,
-        yearReport: updateYearlyReportDto.yearReport
-      }).exec();
+        yearReport: updateYearlyReportDto.yearReport,
+        _id: { $ne: id} // בדיקה שה-_id שונה מזה של הדוח הנוכחי
 
-      if (existingYearlyReport) {
+      }).exec();
+      //  console.log('existingYearlyReport', existingYearlyReport._id);
+       console.log('updateYearlyReportDto', id);
+      if (existingYearlyReport)  {
         throw new HttpException('A yearly report with the same client ID and year already exists.', HttpStatus.BAD_REQUEST);
       }
       const updatedYearlyReport = await this.YearlyReportModel.findByIdAndUpdate(

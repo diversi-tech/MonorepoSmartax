@@ -32,6 +32,9 @@ export class EditClientYearlyReportComponent implements OnInit {
   constructor(private stepFieldService: stepFieldService) { }
 
   ngOnInit(): void {
+    this.getAlStepField();
+  }
+  getAlStepField(): void{
     this.stepFieldService.getAllStepField().subscribe(
       (stepFields) => {
         this.allStepFields = stepFields.filter(x => x.type === "yearly-report");
@@ -41,6 +44,7 @@ export class EditClientYearlyReportComponent implements OnInit {
         console.error('Error', error);
       }
     );
+
   }
 
   filterByDescription(description: string): void {
@@ -141,6 +145,23 @@ export class EditClientYearlyReportComponent implements OnInit {
   selectStepField(stepField: StepField) {
     this.currentStepField = stepField;
   }
-
+  showDeleteConfirmation(id: string) {
+    Swal.fire({
+      title: 'האם אתה בטוח?',
+      text: 'לא ניתן לבטל את הפעולה לאחר שהיא התבצעה.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'כן, מחק זאת!',
+      cancelButtonText: 'ביטול',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // כאן תוכל לקרוא לפונקציה למחיקה
+        this.delete(id);
+      }
+    });
+    this.getAlStepField();
+  }
   
 }
