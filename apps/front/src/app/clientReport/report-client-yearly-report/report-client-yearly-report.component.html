@@ -6,7 +6,7 @@
     <button pButton  *ngIf="is == 2" (click)="filterToDoWithBalanceDue()" label="TO DO סנן לפי סכום ששלום ו" class= "p-button-text p-button-raised p-button-rounded"></button>
     <button pButton  *ngIf="is != 2" (click)="canelFilter()" label="ללא סינון" class= "p-button-text p-button-raised p-button-rounded"></button>
 
-    <p-table [value]="isSelected != 1 && isSelected != 0 ?filterallYearlyReport :allYearlyReport " [tableStyle]="{ 'width': '68em' }">
+    <p-table [value]="isSelected != 1 && isSelected != 0 ?filterallYearlyReport :allYearlyReport " [tableStyle]="{ 'width': '68em', 'margin-left': '10%' }">
         <ng-template pTemplate="header">
         <tr>
             <th></th>
@@ -37,6 +37,7 @@
                     <input *ngIf="isSelected == 2" type="text" pInputText placeholder="חיפוש לפי שם לקוח" (input)="filterByClient($event.target.value)" class="myInput" />
                 </div>
             </th>
+            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-yearlyReport>
