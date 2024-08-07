@@ -7,6 +7,7 @@ import { NgClass } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,9 @@ import { ButtonModule } from 'primeng/button';
     ButtonModule
   ]
 })
+
 export class RegisterComponent implements OnInit {
+  
   allRolies: Role[] = [];
   type: string = "";
   form: any = {

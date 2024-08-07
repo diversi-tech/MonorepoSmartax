@@ -5,7 +5,7 @@ import { CreateBillingDto } from "server/src/Models/dto/billing.dto";
 import { CreatePaymentDto, UpdatePaymentDto } from "server/src/Models/dto/payment.dto";
 import { CreatePaymentDetailsDto } from "server/src/Models/dto/paymentDetails.dto";
 import { Payment } from "server/src/Models/payment.model";
-import { PaymentService } from "server/src/services/payment.service";
+import { PaymentService } from "../../services/payment.service";
 
 @ApiTags('Payment')
 @Controller('Payment')
