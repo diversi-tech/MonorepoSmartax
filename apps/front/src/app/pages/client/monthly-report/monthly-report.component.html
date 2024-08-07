@@ -1,6 +1,7 @@
 
-<p-button label="שמור שינויים" (onClick)="update()" />
-<p-button *ngIf="currentRoute==='monthlyReport'" (onClick)="showDialog()" label="חדש" />
+<button pButton label="שמור שינויים" (click)="update()" class= "p-button-text p-button-raised p-button-rounded"></button>
+<button pButton *ngIf="currentRoute==='monthlyReport'" (click)="showDialog()" label="חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
+
 <p-dialog header="יצירת דוח חדש" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
     <div class="flex align-items-center gap-3 mb-3">
      <div class="p-field p-mb-3" dir="rtl">
@@ -28,8 +29,8 @@
            ></p-dropdown>
     </div>
     <div class="flex justify-content-end gap-2">
-        <p-button label="ביטול" severity="secondary" (onClick)="visible = false" />
-        <p-button label="שמור" (onClick)="visible = false;onSubmit()" />
+        <button pButton label="ביטול" severity="secondary" (onClick)="visible = false" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <button pButton label="שמור" (onClick)="visible = false;onSubmit()" class= "p-button-text p-button-raised p-button-rounded"></button>
     </div>
 </p-dialog>
 <div class="p-field p-mb-3" dir="rtl">
