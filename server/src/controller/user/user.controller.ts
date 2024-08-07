@@ -1,6 +1,24 @@
-
-import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, UseFilters, Request } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiQuery, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+  Get,
+  Delete,
+  Put,
+  Query,
+  UseFilters,
+  Request,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBody,
+  ApiQuery,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { UserService } from '../../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../../Models/dto/user.dto';
 import { User } from 'server/src/Models/user.model';
@@ -16,16 +34,22 @@ import { hashPasswordService } from '../../services/hash-password';
 @Controller('users')
 // @UseFilters(HttpErrorFilter)
 export class UserController {
-
-  constructor(private readonly userService: UserService, private jwtToken: TokenService, private hashService: hashPasswordService) { }
+  constructor(
+    private readonly userService: UserService,
+    private jwtToken: TokenService,
+    private hashService: hashPasswordService
+  ) {}
 
   @Put('create')
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
   async create(@Body() createUserDto: CreateUserDto): Promise<any> {
+    console.log('Received createUserDto:', createUserDto); // הוסף לוג כדי לראות מה נשלח
 
     try {
-      createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
+      createUserDto.passwordHash = await this.hashService.hashPassword(
+        createUserDto.passwordHash
+      );
 
       const user = await this.userService.createUser(createUserDto);
 
@@ -37,11 +61,10 @@ export class UserController {
       // }
 
       return;
-
     } catch (error) {
       throw new HttpException(
         'Failed to create user',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
   }
@@ -56,18 +79,21 @@ export class UserController {
     } catch (error) {
       throw new HttpException(
         'Failed to fetch users',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
   }
 
   @Get('findOne')
   @ApiOperation({ summary: 'Get a user by ID' })
-  @ApiQuery({ name: 'id', required: true, description: 'The ID of the user to find' })
+  @ApiQuery({
+    name: 'id',
+    required: true,
+    description: 'The ID of the user to find',
+  })
   @ApiResponse({ status: 200, description: 'Return the user.' })
   @ApiResponse({ status: 404, description: 'User not found.' })
   async findOne(@Query('id') id: string): Promise<User> {
-
     try {
       const user = await this.userService.findOne(id);
       if (!user) {
@@ -77,18 +103,21 @@ export class UserController {
     } catch (error) {
       throw new HttpException(
         'Failed to fetch user',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
   }
 
   @Get('findByEmail')
   @ApiOperation({ summary: 'Get a user by email' })
-  @ApiQuery({ name: 'email', required: true, description: 'The email of the user to find' })
+  @ApiQuery({
+    name: 'email',
+    required: true,
+    description: 'The email of the user to find',
+  })
   @ApiResponse({ status: 200, description: 'Return the user.' })
   @ApiResponse({ status: 404, description: 'User not found.' })
   async findByEmail(@Query('email') email: string): Promise<User> {
-
     try {
       const user = await this.userService.findByEmail(email);
       if (!user) {
@@ -96,7 +125,10 @@ export class UserController {
       }
       return user;
     } catch (error) {
-      throw new HttpException('Failed to fetch user', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Failed to fetch user',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 
@@ -107,27 +139,33 @@ export class UserController {
     try {
       console.log(updateUserDto);
       console.log(updateUserDto.id);
-      
-      const updatedUser = await this.userService.updateUser(updateUserDto.id, updateUserDto);
+
+      const updatedUser = await this.userService.updateUser(
+        updateUserDto.id,
+        updateUserDto
+      );
       if (!updatedUser) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
       return updatedUser;
     } catch (error) {
       console.log(error);
-      
+
       throw new HttpException(
         error.message,
-        error.status?error.status:HttpStatus.INTERNAL_SERVER_ERROR
+        error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
   }
 
   @Delete('delete')
   @ApiOperation({ summary: 'Delete a user by ID' })
-  @ApiQuery({ name: 'id', required: true, description: 'The ID of the user to find' })
+  @ApiQuery({
+    name: 'id',
+    required: true,
+    description: 'The ID of the user to find',
+  })
   async delete(@Query('id') id: string): Promise<User> {
-
     try {
       const deletedUser = await this.userService.deleteUser(id);
       if (!deletedUser) {
@@ -137,11 +175,10 @@ export class UserController {
     } catch (error) {
       throw new HttpException(
         'Failed to delete user',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
   }
-
 
   @Put('ChangePassword')
   @ApiOperation({ summary: 'Update new password' })
@@ -152,8 +189,11 @@ export class UserController {
     description: 'Object containing the new password',
     type: String,
   })
-  async ChangePassword(@Body() body: { newPassword: string, emailFront: string }, @Request() req) {
-    const user = await this.userService.findByEmail(body.emailFront)
+  async ChangePassword(
+    @Body() body: { newPassword: string; emailFront: string },
+    @Request() req
+  ) {
+    const user = await this.userService.findByEmail(body.emailFront);
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
@@ -164,21 +204,18 @@ export class UserController {
       email: user.email,
       passwordHash: await newPasswordHash,
       role: user.role,
-      favoritesClient: user.favoritesClient
+      favoritesClient: user.favoritesClient,
     };
-    await this.userService.updateUser(user.id, userDto)
+    await this.userService.updateUser(user.id, userDto);
 
     try {
       return {
         status: HttpStatus.OK,
         message: 'Password changed successfully',
-        userId: user.id
+        userId: user.id,
       };
-    }
-    catch (error) {
+    } catch (error) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
   }
-
 }
-

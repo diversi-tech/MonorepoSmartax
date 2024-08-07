@@ -1,25 +1,25 @@
 /* סגנון עבור פגישות */
 .fc-event-meeting {
-    background-color: #007bff; /* צבע רקע עבור פגישות */
-    border-color: #007bff; /* צבע גבול עבור פגישות */
-  }
-  
-  /* סגנון עבור משימות */
-  .fc-event-task {
-    background-color: #28a745; /* צבע רקע עבור משימות */
-    border-color: #28a745; /* צבע גבול עבור משימות */
-  }
+  background-color: #007bff; /* צבע רקע עבור פגישות */
+  border-color: #007bff; /* צבע גבול עבור פגישות */
+}
 
-  .gap-2{
-    margin-top: 20px;
-    padding: 30px;
-  }
-  .taskBtn{
-    margin-left: 40px;
-  }
+/* סגנון עבור משימות */
+.fc-event-task {
+  background-color: #28a745; /* צבע רקע עבור משימות */
+  border-color: #28a745; /* צבע גבול עבור משימות */
+}
 
-  .calender{
-    direction: rtl;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* צל תחתון */
-  }
+.gap-2{
+  margin-top: 20px;
+  padding: 30px;
+}
+.taskBtn{
+  margin-left: 40px;
+}
+
+.calender{
+  direction: rtl;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* צל תחתון */
+}

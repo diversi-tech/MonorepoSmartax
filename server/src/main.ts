@@ -16,6 +16,7 @@ async function bootstrap() {
     origin:['https://monoreposmartax-fronted.onrender.com','http://localhost:4200'] ,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
+    allowedHeaders: 'Authorization, Content-Type',
   });
 
   // Global pipes for validation
