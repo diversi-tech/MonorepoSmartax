@@ -1,237 +1,361 @@
-
-import { Component, Inject, numberAttribute } from '@angular/core';
-import { Injectable, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import { Component, OnInit } from '@angular/core';
 import { MonthlyReportService } from '../../../_services/monthlyReport.service';
+import { YearService } from '../../../_services/year.service';
+import { TokenService } from '../../../_services/token.service';
 import { MonthlyReport } from '../../../_models/monthlyReport.module';
 import { Client } from '../../../../../../../server/src/Models/client.model';
-import { TreeTableModule } from 'primeng/treetable';
 import { stepFieldMonth } from '../../../_models/stepFieldMonth.module';
-import { YearService } from '../../../_services/year.service';
 import { Year } from '../../../_models/year.module';
-import { ActivatedRoute } from '@angular/router';
-import { Router,RouterOutlet } from '@angular/router';
-import { DialogModule } from 'primeng/dialog';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputOtpModule } from 'primeng/inputotp';
-import { Status } from '../../../_models/status.module';
-import { TokenService } from '../../../_services/token.service';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { User } from '../../../../../../../server/src/Models/user.model';
-import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
-import Swal from 'sweetalert2';
+import { DropdownModule } from 'primeng/dropdown';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+
 @Component({
   selector: 'app-monthly-report',
+  templateUrl: './monthly-report.component.html',
+  styleUrls: ['./monthly-report.component.css'],
   standalone: true,
   imports: [
     CommonModule,
-    DropdownModule,
     FormsModule,
-    TableModule,
     ButtonModule,
-    TreeTableModule,
     RouterOutlet,
     DropdownModule,
-    CommonModule,
-    ButtonModule,
-    InputOtpModule,
-    AutoCompleteModule,
     ReactiveFormsModule,
     DialogModule,
-    InputNumberModule
   ],
-  templateUrl: './monthly-report.component.html',
-  styleUrl: './monthly-report.component.css',
-})
-@Injectable({
-  providedIn: 'root',
 })
 export class MonthlyReportComponent implements OnInit {
-
-
-  constructor(private monthlyReportService: MonthlyReportService,
+  user: User;
+  years: Year[] = [];
+  selectedYear: Year;
+  createdYear: Year;
+  months: string[] = [
+    '01',
+    '02',
+    '03',
+    '04',
+    '05',
+    '06',
+    '07',
+    '08',
+    '09',
+    '10',
+    '11',
+    '12',
+  ];
+  selectedMonth: any;
+  createdMonth: any;
+  allMonthlyReports: MonthlyReport[] | undefined;
+  myReport: MonthlyReport[] | undefined;
+  types: string[] = [];
+  organizedData: any = {};
+  changes: any = {};
+  visible: boolean = false;
+  exist: boolean = false;
+  report: MonthlyReport;
+  currentRoute: string;
+  client: Client;
+  constructor(
+    private monthlyReportService: MonthlyReportService,
     private yearService: YearService,
-    private tokenService:TokenService,
-    private route: ActivatedRoute,private router: Router,
+    private tokenService: TokenService,
+    private route: ActivatedRoute
   ) {
     this.currentRoute = this.route.snapshot.url.join('/');
     console.log('Current route path:', this.currentRoute);
   }
+
   ngOnInit(): void {
     this.client = history.state.client;
-    this.user=this.tokenService.getCurrentDetail('_id');
+    const date = new Date();
+    this.user = this.tokenService.getCurrentDetail('_id');
     this.yearService.getAllYear().subscribe({
       next: (data) => {
-        this.yearList = data;
-        this.yearList2=data
+        this.years = data;
+        this.selectedYear = this.years.find(
+          (y) => y.yearNum === date.getFullYear().toString()
+        );
+        if (!this.selectedYear) {
+          this.yearService
+          .createYear({yearNum: date.getFullYear().toString() })
+          .subscribe({
+            next: (data) => {
+              this.years.push(data);
+              this.selectedYear = this.years.find(
+                (y) => y.yearNum === date.getFullYear().toString()
+              );
+            },
+            error: (error) => {
+              console.log(error);
+            },
+          });
+        }
+        this.createdYear = this.selectedYear;
+        this.selectedMonth = date.getMonth() + 1;
+        this.createdMonth = this.selectedMonth;
+        if (this.currentRoute === 'allClientMonthlyReport') {
+          this.getMonthlyReports();          
+        } else {
+          this.getMonthlyReportsForClient();
+          if (this.client.reports === 'מדווח חודשי') {
+            if (
+              !this.allMonthlyReports.find(
+                (r) =>
+                  r.reportDate.getFullYear().toString() ===
+                    this.selectedYear.yearNum &&
+                  r.reportDate.getMonth().toString() === this.selectedMonth
+              )
+            )
+              this.createMonthlyReport();
+          }
+          if (this.client.reports === 'דו חודשי') {
+            if (
+              !this.allMonthlyReports.find(
+                (r) =>
+                  r.reportDate.getFullYear().toString() ===
+                    this.selectedYear.yearNum &&
+                  r.reportDate.getMonth().toString() === this.selectedMonth
+              ) &&
+              !this.allMonthlyReports.find(
+                (r) =>
+                  r.reportDate.getFullYear().toString() ===
+                    this.selectedYear.yearNum &&
+                  (r.reportDate.getMonth() - 1).toString() ===
+                    this.selectedMonth
+              )
+            ) {
+              this.createMonthlyReport();
+            }
+          }
+        }
       },
       error: (error) => {
         console.log(error);
       },
-    },
-    );
-    if (this.currentRoute === "allClientMonthlyReport") {
-      this.getMonthlyReports();
-    }
-    else{
-      this.getMonthlyReportsForClient();
-    }
+    });
   }
-  user:User;
-  yearList: Year[] = [];
-  selectedYear: Year;
-  yearList2: Year[];
-  selectedyear: Year | null = null;
-  thisSubject2 = "";
-  is: boolean = false;
-  thisSubject = "";
-  Year2: any[] = [{ yearNum: "לא נמצא" }];
-  createdYear: Year;
-  months: string[] = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-  selectedMonth: any;
-  createdMonth: any;
-  allMonthlyReportsClient: MonthlyReport[] | undefined;
-  client: Client;
-  clientId: string;
-  allMonthlyReports: MonthlyReport[] | undefined;
-  myReport: MonthlyReport| undefined;
-  y: boolean = false;
-  types: string[] = [];
-  steps: any[];
-  allFields: stepFieldMonth[];
-  fieldByType: { [key: string]: stepFieldMonth[] } = {};
-  currentRoute: string;
-  create:boolean=false;
-  fieldBymonths: stepFieldMonth[];
-  visible: boolean = false;
-  statuses: Status[] = [];
-  newYear: Year = {
-    yearNum: ""
-  }
+
   showDialog() {
     this.visible = true;
-  }
-  filterByyear(value: string): void {
-    console.log(this.yearList2, '2')
-    if (value != "") {
-      this.is = false
-      const query = value.toLowerCase();
-      this.yearList2 = this.yearList.filter(year =>
-        year.yearNum.toLowerCase().includes(query.toLowerCase())
-      );
-      if (this.yearList2.length == 0) {
-        this.yearList2 = this.Year2
-        this.thisSubject2 = value
-        this.is = true;
-      }
-    }
-    else {
-      this.is = false
-      console.log(this.yearList, '1')
-      this.yearList2 = this.yearList;
-    }
-    this.selectedyear = null;
-
+    this.exist=false;
   }
 
-  select(event: AutoCompleteSelectEvent): void {
-    const year = event.value as Year;
-    this.thisSubject = year.yearNum
-  }
-
-  add() {
-    alert(this.thisSubject2)
-    this.newYear.yearNum = this.thisSubject2
-    this.yearService.createYear(this.newYear).subscribe(
-      response => {
-        if (response) {
-          this.yearList.push(response);
-          Swal.fire('Success', ' שנה נוספה בהצלחה', 'success');
-        }
-      },
-      error => {
-        console.error('שגיאה ביצירת שנה:', error);
-        alert('לא ניתן להוסיף שנה. שגיאה בקישור לשרת.');
-      }
-    );
-  }
   getMonthlyReportsForClient(): void {
     const clientId = String(this.client._id);
     this.monthlyReportService.getMonthlyReportForClient(clientId).subscribe({
       next: (reports: any) => {
-        this.allMonthlyReportsClient = reports;
-        console.log(this.allMonthlyReportsClient);
-        
-        // console.log(Number(this.selectedYear.yearNum), Number(this.selectedMonth), "year, month");
-        // this.myReport = this.allMonthlyReportsClient.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(this.selectedMonth) && new Date(m.reportDate).getFullYear() === Number(this.selectedYear))[0];
-        
+        this.allMonthlyReports = reports;
+        console.log(this.allMonthlyReports);
+        this.changeDate();
       },
       error: (error) => {
         console.error('Error fetching monthly reports for client', error);
-      }
+      },
     });
   }
+
   getMonthlyReports(): void {
-    this.monthlyReportService.getAllMonthlyReport().subscribe(
-      (reports) => {
+    this.monthlyReportService.getAllMonthlyReport().subscribe({
+      next: (reports: any) => {
         this.allMonthlyReports = reports;
+        console.log(this.allMonthlyReports);
+        this.changeDate();
       },
-      (error) => {
-        console.error('Error fetching yearly reports for client', error);
-      }
-    );
+      error: (error) => {
+        console.error('Error fetching monthly reports for clients', error);
+      },
+    });
   }
 
-  getStepByType(type: string): void {
-    this.steps = this.allMonthlyReports.map((r) =>
-      r.monthlyReportFields.filter((r) => r.type === type)
-  );
-  console.log(this.steps, 'steps');
-  }
   changeDate() {
-    if (this.currentRoute === "allClientMonthlyReport") {
-      this.myReport = this.getREportByMonth(this.allMonthlyReports,this.selectedYear,this.selectedMonth);
-    }
-    else {
-      this.myReport = this.getREportByMonth(this.allMonthlyReportsClient,this.selectedYear,this.selectedMonth)[0];
-  
-}
-if (this.myReport) {
-  this.fieldBymonths = this.myReport.monthlyReportFields;
-    }
-    else {
-      this.fieldBymonths = [];
+    this.myReport = this.getReportByMonth(
+      this.allMonthlyReports,
+      this.selectedYear,
+      this.selectedMonth
+    );
+    if (this.myReport) {
+      this.monthlyReportService.getAllTypes().subscribe((types) => {
+        this.types = types;
+      });
+      this.organizedData = this.myReport.reduce((acc, report) => {
+        Object.keys(report.monthlyReportFields).forEach((type) => {
+          if (!acc[type]) {
+            acc[type] = {};
+          }
+          if (!acc[type][report.idUser]) {
+            acc[type][report.idUser] = {};
+          }
+          report.monthlyReportFields[type].forEach((step) => {
+            acc[type][report.idUser][step.value] = step.content;
+          });
+        });
+        return acc;
+      }, {});
     }
   }
-  getREportByMonth(data: any,year:Year,month:string){
-return data.filter(m => new Date(m.reportDate).getMonth() + 1 === Number(month) && new Date(m.reportDate).getFullYear() === Number(year.yearNum));
+
+  getReportByMonth(data: any, year: Year, month: string) {
+    console.log(data);
+    
+    return data.filter(
+      (m) =>
+        new Date(m.reportDate).getMonth() + 1 === Number(month) &&
+        new Date(m.reportDate).getFullYear() === Number(year.yearNum)
+    );
   }
-  onSubmit(){
-    if(!this.getREportByMonth(this.allMonthlyReports,this.createdYear,this.createdMonth)){
-      this.monthlyReportService.createMonthlyReport({reportDate:new Date(`${this.createdYear.yearNum}-${this.createdMonth}-01`), idUser:this.client._id,idEmploye:this.user, monthlyReportFields:[],status:[]})
-        .subscribe({
-          next: (data) => {
-            console.log('Monthly report created successfully', data);
-            this.allMonthlyReportsClient.push(data);
-            this.selectedYear=this.createdYear;
-            this.selectedMonth=this.createdMonth;
-            this.changeDate();
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        },
-        );;
+  onSubmit() {
+    if (
+      !this.allMonthlyReports.find(
+        (r) =>
+          r.reportDate.getFullYear().toString() === this.selectedYear.yearNum &&
+          r.reportDate.getMonth().toString() === this.selectedMonth
+      )
+    ){
+      this.createMonthlyReport();
     }
     else{
-      alert("Monthly report already exist");
-    }
-    }
-    update(){
-      this.myReport.monthlyReportFields=this.fieldBymonths
-      this.monthlyReportService.updateMonthlyReport(this.myReport._id, this.myReport)
+      this.exist=!this.exist
     }
   }
+  createMonthlyReport() {
+    this.monthlyReportService
+      .createMonthlyReport({
+        reportDate: new Date(
+          `${this.createdYear.yearNum}-${this.createdMonth}-01`
+        ),
+        idUser: this.client._id,
+        idEmploye: this.user,
+        monthlyReportFields: [],
+        status: [],
+      })
+      .subscribe({
+        next: (data) => {
+          console.log('Monthly report created successfully', data);
+          this.allMonthlyReports.push(data);
+          this.selectedYear = this.createdYear;
+          this.selectedMonth = this.createdMonth;
+          this.changeDate();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
+  saveChanges(type: string) {
+    if (Object.keys(this.changes).length === 0) {
+      return;
+    }
+
+    const reportToUpdate = this.myReport.find(
+      (report) =>
+        report.monthlyReportFields[type] &&
+        report.monthlyReportFields[type].length > 0
+    );
+
+    if (!reportToUpdate) {
+      console.error('No report found for the type:', type);
+      return;
+    }
+
+    const updatedSteps = { ...reportToUpdate.monthlyReportFields };
+    console.log(updatedSteps);
+
+    Object.keys(this.changes[type]).forEach((clientId) => {
+      Object.keys(this.changes[type][clientId]).forEach((value) => {
+        const stepIndex = updatedSteps[type].findIndex(
+          (step) => step.value === value
+        );
+
+        if (stepIndex !== -1) {
+          updatedSteps[type][stepIndex].content =
+            this.changes[type][clientId][value];
+        } else {
+          updatedSteps[type].push({
+            clientId,
+            value,
+            content: this.changes[type][clientId][value],
+          });
+        }
+      });
+    });
+
+    const updatedReport = {
+      ...reportToUpdate,
+      monthlyReportFields: updatedSteps,
+    };
+
+    this.monthlyReportService
+      .updateMonthlyReport(reportToUpdate._id, updatedReport)
+      .subscribe({
+        next: (response) => {
+          console.log('Report updated successfully:', response);
+          this.changes[type] = {}; // Reset changes for this type after successful update
+        },
+        error: (error) => {
+          console.error('Error updating report:', error);
+        },
+      });
+  }
+
+  updateValue(clientId: string, type: string, value: string, newValue: string) {
+    if (!this.changes[type]) {
+      this.changes[type] = {};
+    }
+    if (!this.changes[type][clientId]) {
+      this.changes[type][clientId] = {};
+    }
+    this.changes[type][clientId][value] = newValue;
+  }
+
+  getClients(reportData: any) {
+    return Object.keys(reportData).map((clientId) => ({
+      clientId,
+      values: reportData[clientId],
+    }));
+  }
+
+  handleCheckboxChange(
+    type: string,
+    clientId: string,
+    value: string,
+    event: any
+  ) {
+    const newValue = event.target.checked ? 'בוצע' : 'לא בוצע';
+    this.updateValue(clientId, type, value, newValue);
+  }
+
+  handleInputChange(type: string, clientId: string, value: string, event: any) {
+    const newValue = event.target.value;
+    this.updateValue(clientId, type, value, newValue);
+  }
+
+  getClientData(type: string, clientId: string, value: string) {
+    return this.organizedData[type] && this.organizedData[type][clientId]
+      ? this.organizedData[type][clientId][value]
+      : '';
+  }
+
+  getClientsForType(type: string): string[] {
+    if (!this.organizedData[type]) return [];
+    return Object.keys(this.organizedData[type]);
+  }
+
+  getValuesForType(type: string): string[] {
+    const values = new Set<string>();
+    const clients = this.getClientsForType(type);
+
+    clients.forEach((clientId) => {
+      Object.keys(this.organizedData[type][clientId] || {}).forEach((value) =>
+        values.add(value)
+      );
+    });
+
+    return Array.from(values);
+  }
+}

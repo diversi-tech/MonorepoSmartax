@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { stepFieldModel } from './stepField.model';
-import { StepFieldMonth } from './stepFieldMonth.model';
+import { StepFieldMonth, stepFieldMonthModel } from './stepFieldMonth.model';
 import { Status } from './status.model';
 
 @Schema()
@@ -16,8 +16,8 @@ export class MonthlyReport extends Document {
     @Prop()
     reportDate: Date;
 
-    @Prop([StepFieldMonth])
-    monthlyReportFields: StepFieldMonth[];
+    @Prop({type: Map, of: [{ type: stepFieldMonthModel }] })
+    monthlyReportFields: Map<string, Types.Array<StepFieldMonth>>;
     
     @Prop()
     status: Status[];
