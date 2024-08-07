@@ -45,16 +45,18 @@ export class UserService {
     favoritesClient: Client[]
   ) {
     const user = {
-      id: id,
-      userName: userName,
-      passwordHash: passwordHash,
-      role: role,
-      email: email,
-      favoritesClient: favoritesClient,
-    };
-    console.log(user);
-
-    return this.http.post(this.apiUrl + '/update', user, httpOptions);
+      "id": id,
+      "userName": userName,
+      "passwordHash": passwordHash,
+      "role": role,
+      "email": email,
+      "favoritesClient":favoritesClient
+    }
+    return this.http.post(
+      this.apiUrl + "/update",
+      user,
+      httpOptions
+    );
   }
 
   getPublicContent(): Observable<any> {

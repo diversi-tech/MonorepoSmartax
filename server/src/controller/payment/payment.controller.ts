@@ -5,7 +5,7 @@ import { CreateBillingDto } from "server/src/Models/dto/billing.dto";
 import { CreatePaymentDto, UpdatePaymentDto } from "server/src/Models/dto/payment.dto";
 import { CreatePaymentDetailsDto } from "server/src/Models/dto/paymentDetails.dto";
 import { Payment } from "server/src/Models/payment.model";
-import { PaymentService } from "server/src/services/payment.service";
+import { PaymentService } from "../../services/payment.service";
 
 @ApiTags('Payment')
 @Controller('Payment')
@@ -20,10 +20,8 @@ export class PaymentController {
       return await this.PaymentService.createPayment(createClientDto)
     } catch (err) {
       console.log(err);
-
     } finally {
       console.log("הבקשה נקלטה בהצלחה");
-
     }
   }
 
@@ -38,7 +36,6 @@ export class PaymentController {
       return await this.PaymentService.getPaymentById(id);
     } catch (err) {
       console.log(err);
-
     }
   }
 
@@ -49,8 +46,6 @@ export class PaymentController {
   }
   @Put()
   async updatePayment(@Body() updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
-    console.log('start update in controller');
-
     return await this.PaymentService.updatePayment(updatePaymentDto);
   }
   @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
@@ -66,13 +61,10 @@ export class PaymentController {
   ): Promise<Payment> {
     try {
       return await this.PaymentService.addBillingToPayment(paymentId, createBillingDto);
-
     } catch (err) {
       console.log(err);
-
     } finally {
       console.log("v");
-
     }
   }
 
@@ -104,8 +96,6 @@ export class PaymentController {
     @Body(new ValidationPipe()) body: { paymentId: string,billingId: string,status: boolean }
      
   ): Promise<Payment> {
-    console.log("start change billing status in controller front ", body.paymentId, body.billingId, body.status);
-    
     return await this.PaymentService.updateBillingStatus(body.paymentId,body.billingId,body.status);
 
   }

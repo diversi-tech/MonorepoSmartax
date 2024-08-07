@@ -27,7 +27,6 @@ export class TokenService {
       return null; // Return null if the token is not available
     }
     const payload = this.decodeToken(tokenData.access_token);
-
     return payload ? payload[detail] : null;
   }
 

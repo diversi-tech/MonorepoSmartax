@@ -2,7 +2,6 @@ import { Injectable, NgZone, Inject, PLATFORM_ID } from '@angular/core';
 import Swal from 'sweetalert2';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-// import { env } from 'process';
 
 declare var gapi: any;
 declare var google: any;
@@ -32,7 +31,6 @@ export class GoogleAuthService {
     }
   }
 
-  // Subject להעברת המידע לקומפוננטות
   private eventDataSubject = new BehaviorSubject<any>(null);
   public eventData$ = this.eventDataSubject.asObservable();
 
@@ -85,6 +83,7 @@ export class GoogleAuthService {
         this.gapiInited = true;
       });
   }
+
   createGoogleEvent(eventDetails: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (!this.gapiInited || !this.gisInited) {
@@ -114,13 +113,13 @@ export class GoogleAuthService {
         } else {
           this.tokenClient.requestAccessToken({ prompt: '' });
         }
-        console.log('Token request initiated');
       } catch (error) {
         console.error('Error requesting access token', error);
         reject(error);
       }
     });
   }
+
   private async scheduleEvent(eventDetails: any) {
     // Ensure event details have startTime and endTime
     if (!eventDetails.startTime || !eventDetails.endTime) {
@@ -129,7 +128,6 @@ export class GoogleAuthService {
     }
 
     const attendees = eventDetails.emails.map((email: string) => ({ email }));
-
     const event = {
       summary: eventDetails.nameT,
       location: '',
@@ -190,9 +188,7 @@ export class GoogleAuthService {
           showConfirmButton: false,
           timer: 3000,
         });
-        // save-eventId
         eventDetails.eventId = event.id;
-        // send-eventId & link
         this.eventDataSubject.next({ eventId: event.id, conferenceLink });
       });
     } catch (error) {
@@ -222,7 +218,6 @@ export class GoogleAuthService {
     } catch (error) {
       console.error('Error requesting access token', error);
     }
-    console.log('Token request initiated');
   }
 
   private async modifyEvent(eventDetails: any) {
@@ -334,7 +329,6 @@ export class GoogleAuthService {
         } else {
           this.tokenClient.requestAccessToken({ prompt: '' });
         }
-        console.log('Token request initiated');
       } catch (error) {
         console.error('Error requesting access token', error);
         reject(error);

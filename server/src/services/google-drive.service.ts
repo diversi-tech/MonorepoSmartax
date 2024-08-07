@@ -193,13 +193,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Docs } from '../Models/doc.model';
 import { Model } from 'mongoose';
 import { ValidationException } from '../common/exceptions/validation.exception';
-import { Client ,ClientModel } from '../Models/client.model';
+import { Client, ClientModel } from '../Models/client.model';
 import { ClientController } from '../controller/clients/clients.controller';
 import { ClientService } from './client.service';
 import { DocType, docTypeModel } from '../Models/docType.model';
 import { DocTypeService } from './docTypes.service';
 
 @Injectable()
+export class GoogleDriveService {
 export class GoogleDriveService {
   private drive;
   private auth: JWT;
@@ -223,12 +224,14 @@ export class GoogleDriveService {
       keys.private_key,
       ['https://www.googleapis.com/auth/drive']
     );
-
     this.drive = google.drive({ version: 'v3', auth: this.auth });
   }
 
   async uploadFile(file: Express.Multer.File, clientId: string, docType: string): Promise<any> {
     try {
+      const client = await this.clientService.searchClient(clientId);
+      const clientfolderId = await this.getOrCreateFolder(client.firstName, this.rootFolderId);
+      const folderId = await this.getOrCreateFolder(docType, clientfolderId);
       const client = await this.clientService.searchClient(clientId);
       const clientfolderId = await this.getOrCreateFolder(client.firstName, this.rootFolderId);
       const folderId = await this.getOrCreateFolder(docType, clientfolderId);
@@ -244,6 +247,9 @@ export class GoogleDriveService {
       });
       fs.unlinkSync(file.path);
       const createdDoc = new this.docModel({
+        _id: response.data.id,
+        name: response.data.name,
+        viewLink: await this.generateViewLink(response.data.id),
         _id: response.data.id,
         name: response.data.name,
         viewLink: await this.generateViewLink(response.data.id),
@@ -272,6 +278,8 @@ export class GoogleDriveService {
       throw new Error('Failed to generate view link');
     }
   }
+
+  private async getOrCreateFolder(folderName: string, parentFolderId: string): Promise<string> {
 
   private async getOrCreateFolder(folderName: string, parentFolderId: string): Promise<string> {
     const query = `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and '${parentFolderId}' in parents`;
@@ -311,7 +319,19 @@ export class GoogleDriveService {
         fileId: fileId,
         fields: 'mimeType, name',
       });
+  async getFile(fileId: string): Promise<any> {
+    try {
+      const fileResponse = await this.drive.files.get({
+        fileId: fileId,
+        fields: 'mimeType, name',
+      });
 
+      const fileStream = await this.drive.files.get({
+        fileId: fileId,
+        alt: 'media',
+      }, {
+        responseType: 'stream'
+      });
       const fileStream = await this.drive.files.get({
         fileId: fileId,
         alt: 'media',

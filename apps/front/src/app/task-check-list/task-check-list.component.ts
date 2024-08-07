@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
 import { CheckList } from '../_models/checkList.model';
 import { CheckListItem } from '../_models/checkListItem.model';
@@ -7,7 +7,6 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckListItemComponent } from '../check-list-item/check-list-item.component';
 import { CheckListService } from '../_services/checkList.service';
-import { CheckListItemService } from '../_services/checkListItem.service';
 import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
@@ -16,10 +15,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-task-check-list',
   standalone: true,
-  imports: [CommonModule, NgFor, NgIf, NgClass, DividerModule, PanelModule, CardModule, CheckListItemComponent, CheckboxModule, ReactiveFormsModule, FormsModule, ButtonModule, InputTextModule],
+  imports: [
+    CommonModule,
+    NgFor,
+    NgIf,
+    NgClass,
+    DividerModule,
+    PanelModule,
+    CardModule,
+    CheckListItemComponent,
+    CheckboxModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ButtonModule,
+    InputTextModule
+  ],
   templateUrl: './task-check-list.component.html',
   styleUrls: ['./task-check-list.component.css'],
 })
+
 export class TaskCheckListComponent implements OnInit {
 
   // formGroup: FormGroup;
@@ -55,7 +69,6 @@ export class TaskCheckListComponent implements OnInit {
   }
 
   updateItem(item: CheckListItem | null): void {
-    // this.editNameInput = true
     this.editNewItem = false
     let res1: any | null
     let copy: any | null
@@ -69,19 +82,12 @@ export class TaskCheckListComponent implements OnInit {
         }
         else {
           alert("ארעה שגיאה, אנא נסה שוב")
-          // this.checkList.items.push(item);
-          // res2 = this.checkListService.updateCheckList(this.checkList);
         }
       } catch (err) {
-        console.log(err);
         if (!res1) {
           let prev = this.checkList.items.find(item => item._id === item._id)
           prev = copy
         }
-        // if (!res2) {
-        //   this.checkList.items.pop()
-        // }
-        // alert("העדכון נכשל, אנא נסה שוב")
       }
     }
     else {
@@ -100,13 +106,11 @@ export class TaskCheckListComponent implements OnInit {
         else {
           this.editNewItem = false;
         }
-
       }
       else {
         this.editNewItem = false
       }
     } catch (err) {
-      console.log(err);
       alert("ארעה שגיאה בתהליך המחיקה, אנא נסה שוב")
     }
   }
@@ -150,5 +154,4 @@ export class TaskCheckListComponent implements OnInit {
       alert("ההוספה נכשלה, אנא נסה שוב");
     }
   }
-
 }

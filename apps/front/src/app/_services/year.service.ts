@@ -30,9 +30,10 @@ export class YearService {
 
   // Delete a yearly report by ID
   deleteYear(id: string): Observable<boolean> {
-    return this.http
-      .delete<boolean>(`${this.apiUrl}`, { body: { id } })
-      .pipe(catchError(this.handleError<boolean>('deleteYear', false)));
+    return this.http.delete<boolean>(`${this.apiUrl}`, { body: { id } })
+      .pipe(
+        catchError(this.handleError<boolean>('deleteYear', false))
+      );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

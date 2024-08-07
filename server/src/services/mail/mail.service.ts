@@ -28,6 +28,7 @@ export class MailService {
 
   async sendMail(body: any) {
     const { to, email } = body;
+    // Create a random password from numbers only and 4 characters long
     const validPassword = this.generatePassword(4);
     const mailOptions = {
       from: process.env.EMAIL,

@@ -9,7 +9,7 @@ import { CheckList } from './checkList.model';
 
 @Schema()
 export class Task extends Document {
-    @Prop() 
+    @Prop()
     parent: string;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Client' })
@@ -44,7 +44,7 @@ export class Task extends Document {
     @Prop()
     images: string[];
 
-    @Prop()
+    @Prop() 
     subTasks: string[];
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CheckList' }] })

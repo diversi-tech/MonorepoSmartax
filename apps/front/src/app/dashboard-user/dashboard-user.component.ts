@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Client } from '../_models/client.module';
 import { Meet } from '../_models/meet.module';
@@ -41,6 +41,7 @@ import { DialogModule } from 'primeng/dialog';
   templateUrl: './dashboard-user.component.html',
   styleUrl: './dashboard-user.component.css',
 })
+
 export class DashboardUserComponent implements OnInit {
   basicData: any;
 
@@ -63,7 +64,7 @@ export class DashboardUserComponent implements OnInit {
   clients: Client[] = [];
 
   statuses: Status[] = [];
-  //
+
   complete: Task[] = [];
   inProgress: Task[] = [];
   todo: Task[] = [];
@@ -109,9 +110,7 @@ export class DashboardUserComponent implements OnInit {
   getAllTasks() {
     this.taskService.getAllTasks().subscribe((data: any) => {
       this.tasks = data;
-      console.log(data);
       this.getNameById();
-
       this.myTask();
       this.filterTasks();
       this.chartTasks();
@@ -120,21 +119,18 @@ export class DashboardUserComponent implements OnInit {
   getStatuses() {
     this.statusService.getAllStatuses().subscribe((data: any) => {
       this.statuses = data;
-      console.log(data);
     });
   }
 
   getAllUsers() {
     this.userService.getAllUsers().subscribe((data: any) => {
       this.users = data;
-      console.log(data);
     });
   }
 
   getAllMeets() {
     this.meetService.getAllMeetings().subscribe((data: any) => {
       this.meets = data;
-      console.log(data);
       this.myMeet();
       this.todayMeet();
     });
@@ -143,16 +139,13 @@ export class DashboardUserComponent implements OnInit {
   getAllClients() {
     this.clientService.getAllClients().subscribe((data: any) => {
       this.clients = data;
-      console.log(data);
     });
   }
 
   getAllTimer() {
     this.timerService.getAllTimer().subscribe((data: any) => {
       this.timers = data;
-      console.log(data);
       this.getTotalTimeByTaskId();
-      // this.chartPie();
     });
   }
 
@@ -173,7 +166,6 @@ export class DashboardUserComponent implements OnInit {
     this.myTasks = this.tasks.filter((task) =>
       task.assignedTo.some((assignee) => assignee._id === this.employeeId)
     );
-    console.log(this.employeeId);
   }
 
   myMeet() {
@@ -184,33 +176,25 @@ export class DashboardUserComponent implements OnInit {
 
   uniqueClient() {
     const uniqueClientIds = new Set<string>();
-    console.log('countUniqueClientIds', this.myTasks);
-
     this.myTasks.forEach((task) => {
       uniqueClientIds.add(String(task.client));
     });
-
     return uniqueClientIds;
   }
 
   myClient() {
     const uniqueClientIds = new Set<string>();
-    console.log('countUniqueClientIds', this.myTasks);
-
     this.myTasks.forEach((task) => {
       uniqueClientIds.add(String(task.client));
     });
-
     return this.uniqueClient().size;
   }
-  // פונקציה שמחזירה את הזמן הכולל בכל taskId עבור userId מסוים
+
   getTotalTimeByTaskId() {
-    // סינון האובייקטים לפי userId מסוים
     const filteredTasks = this.timers.filter(
       (t) => t.userId === this.employeeId
     );
 
-    // קיבוץ האובייקטים לפי taskId וסכימת הזמן הכולל
     const result = filteredTasks.reduce((acc, task) => {
       const { taskId, hours, minutes, seconds } = task;
       if (!acc[taskId]) {
@@ -220,7 +204,6 @@ export class DashboardUserComponent implements OnInit {
       acc[taskId].minutes += minutes;
       acc[taskId].seconds += seconds;
 
-      // חישוב התוספת של השניות לדקות והדקות לשעות אם יש צורך
       if (acc[taskId].seconds >= 60) {
         acc[taskId].minutes += Math.floor(acc[taskId].seconds / 60);
         acc[taskId].seconds %= 60;
@@ -232,9 +215,7 @@ export class DashboardUserComponent implements OnInit {
 
       return acc;
     }, {});
-    console.log(result);
     this.myTimeByTask = result;
-    // this.chartPie();
     return result;
   }
 
@@ -321,14 +302,6 @@ export class DashboardUserComponent implements OnInit {
     this.data = {
       labels: months,
       datasets: [
-        // {
-        //     label: 'Dataset 1',
-        //     fill: false,
-        //     borderColor: documentStyle.getPropertyValue('--blue-500'),
-        //     yAxisID: 'y',
-        //     tension: 0.4,
-        //     data: [65, 59, 80, 81, 56, 55, 10]
-        // },
         {
           label: 'סך חודשי',
           fill: false,
@@ -393,10 +366,9 @@ export class DashboardUserComponent implements OnInit {
     return `rgb(${r}, ${g}, ${b})`;
   }
   generatePastelColor(): string {
-    // הפקת ערכים אקראיים של צבעים, עם נטייה ליצירת צבעים בהירים יותר
-    const r = Math.floor(Math.random() * 128) + 127; // טווח של 127-255
-    const g = Math.floor(Math.random() * 128) + 127; // טווח של 127-255
-    const b = Math.floor(Math.random() * 128) + 127; // טווח של 127-255
+    const r = Math.floor(Math.random() * 128) + 127;
+    const g = Math.floor(Math.random() * 128) + 127;
+    const b = Math.floor(Math.random() * 128) + 127;
     return `rgb(${r}, ${g}, ${b})`;
   }
 
@@ -425,10 +397,7 @@ export class DashboardUserComponent implements OnInit {
       map[task._id] = task.taskName;
       return map;
     }, {} as Record<string, string>);
-    console.log('Task ID to Name Map:', this.taskName);
     this.chartPie();
-
-    // console.log('Task ID to Name Map:', taskIdToNameMap);
   }
 
   chartPie() {
@@ -437,7 +406,6 @@ export class DashboardUserComponent implements OnInit {
     // get data from function
     const timeData = this.getTotalTimeByTaskId();
     const taskIds = Object.keys(timeData);
-    console.log(taskIds);
 
     const taskIdToNameMap = this.taskName;
     const labels = taskIds.map(
@@ -447,6 +415,7 @@ export class DashboardUserComponent implements OnInit {
       const { hours, minutes, seconds } = timeData[taskId];
       return hours + minutes / 60 + seconds / 3600;
     });
+
     const backgroundColors = labels.map(() => this.generatePastelColor());
     const hoverBackgroundColors = backgroundColors.map((color) =>
       this.generateLighterColor(color, 0.2)
@@ -492,7 +461,7 @@ export class DashboardUserComponent implements OnInit {
       'December',
     ];
     const now = new Date();
-    const currentMonth = now.getMonth(); // החודש הנוכחי (0-11)
+    const currentMonth = now.getMonth();
 
     return months.slice(0, currentMonth + 1);
   }
@@ -627,10 +596,7 @@ export class DashboardUserComponent implements OnInit {
       );
       return acc;
     }, {});
-
     this.groupedWorkLogs = Object.values(grouped);
-    console.log(this.groupedWorkLogs);
-    //
     this.bestUsers();
   }
 
@@ -639,16 +605,6 @@ export class DashboardUserComponent implements OnInit {
       (a, b) => b.totalHoursWorked - a.totalHoursWorked
     );
     this.bestUser = this.groupedWorkLogs.slice(0, 3);
-    // let v1=0
-    // let v2=0
-    // let v3=0
-    // this.groupedWorkLogs.sort((a, b) => b.totalHoursWorked - a.totalHoursWorked);
-    // for (let i = 0; i < 3; i++) {
-    //   v1 = this.groupedWorkLogs[i].totalHoursWorked;
-
-    // }
-    console.log(this.bestUser);
-
     this.valueUser1 = [
       {
         label: 'שעות עבודה',
@@ -677,7 +633,7 @@ export class DashboardUserComponent implements OnInit {
   showEmojis: boolean = false;
   display: boolean = false;
   emojis: string[] = ['😊', '😂', '😍', '😢', '😠'];
-  selectedE:string;
+  selectedE: string;
   show: boolean = false;
   toggleEmojis() {
     this.showEmojis = !this.showEmojis;
@@ -685,10 +641,9 @@ export class DashboardUserComponent implements OnInit {
   }
 
   selectEmoji(emoji: string) {
-    this.selectedE = emoji; 
+    this.selectedE = emoji;
     this.display = true;
     this.showEmojis = false;
     this.show = false; // Hide emojis after selection
   }
-  
 }

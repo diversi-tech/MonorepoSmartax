@@ -32,7 +32,6 @@ import { Button, ButtonDirective } from 'primeng/button';
     ConfirmDialogModule,
     RouterLink,
     RouterOutlet,
-    // TaskComponent,
     DialogModule,
     Footer,
     ButtonDirective,
@@ -59,6 +58,7 @@ import { Button, ButtonDirective } from 'primeng/button';
   templateUrl: './pop-app.component.html',
   styleUrl: './pop-app.component.css',
 })
+
 export class PopAppComponent implements OnInit {
   id: string | null;
   @Input() parent: string | null = null;
@@ -68,16 +68,15 @@ export class PopAppComponent implements OnInit {
 
 
   create = false;
-  constructor(private route: ActivatedRoute, private location: Location) {}
+  constructor(private route: ActivatedRoute, private location: Location,private router: Router) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
-
     if (this.id == 'create') {
       this.id == null
-      this.create=true
+      this.create = true
     }
-    else{
+    else {
       this.create = false
     }
 
@@ -93,5 +92,9 @@ export class PopAppComponent implements OnInit {
   onHide() {
     console.log('The dialog has been closed.');
     this.location.back();
+  }
+  onDialogClose() {
+    this.visible = false;
+    this.router.navigate([`/taskSpe/${this.parent}`]);
   }
 }
