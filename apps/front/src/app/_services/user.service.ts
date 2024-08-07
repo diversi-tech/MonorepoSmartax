@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { HashPasswordService } from './hash-password.service';
 import { RoleServiceService } from './role-service.service';
 import { Role } from '../_models/role.module';
-import { USER_ENDPOINT , USER_ENDPOINT2} from '../api-urls';
+import { USER_ENDPOINT, USER_ENDPOINT2 } from '../api-urls';
 import { Client } from '../_models/client.module';
+import { User } from '../_models/user.module';
 
 const API_URL = USER_ENDPOINT2;
 const httpOptions = {
@@ -26,19 +27,30 @@ export class UserService {
 
   private apiUrl = USER_ENDPOINT;
 
-  register(username: string, email: string, role: Role): Observable<any> {
+  register(username: string, email: string, role: Role): Observable<User> {
     const passwordHash = this.hashService.encryptPassword('Aa123456');
-    const newUser = {
+    const newUser: User = {
       userName: username,
       passwordHash: passwordHash,
-      role: role,
+      role: role._id,
       email: email,
     };
-    return this.http.put(this.apiUrl + '/create',{body: newUser}, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    });
+    // return this.http
+    //   .post<User>(
+    //     `${this.apiUrl}/update`,
+    //     { id, ...communication },
+    //     this.httpOptions
+    //   )
+    //   .pipe(catchError(this.handleError<User>('updateCommunication')));
+    return this.http.put<User>(
+      this.apiUrl + '/create',
+      { body: newUser },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      }
+    );
     // return this.http.put(this.apiUrl + '/create', newUser, httpOptions);
   }
   update(
@@ -59,7 +71,7 @@ export class UserService {
     };
     console.log(user);
 
-    return this.http.post(this.apiUrl + '/update', {user}, httpOptions);
+    return this.http.post(this.apiUrl + '/update', { user }, httpOptions);
   }
 
   getPublicContent(): Observable<any> {
