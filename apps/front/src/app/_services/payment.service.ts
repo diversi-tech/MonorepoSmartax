@@ -35,7 +35,6 @@ export class PaymentService {
   }
 
   createPayment(mainPaymentDetails, totalPayment, paymentMethod): Observable<Payment> {
-
     const newPayment = {
       "mainPaymentDetails": mainPaymentDetails,
       "morePaymentDetails": [],
@@ -63,28 +62,20 @@ export class PaymentService {
       "paymentHistory": paymentHistory,
       "billingHistory": billingHistory
     }
-
-    console.log(payment);
-
     return this.http.post(this.apiUrl + "/update", payment);
   }
 
   addBilling(_id: string, date: Date, amount: number, paymentMethod: PaymentMethod, assignedTo: User) {
-    console.log('start addBilling');
-
     const newBilling = {
       "date": date,
       "amount": amount,
       "paymentMethod": paymentMethod,
       "assignedTo": assignedTo
     }
-    console.log(newBilling);
 
     return this.http.post(this.apiUrl + "/" + _id + "/billing", newBilling)
   }
   changeMainPayment(_id: string, sumForMonth: number, maxHours: number, frequency: Frequency, description: string) {
-    console.log("start change");
-
     const newPaymentDetails = {
       "sumForMonth": sumForMonth,
       "maxHours": maxHours,
@@ -92,22 +83,17 @@ export class PaymentService {
       "dateStart": new Date,
       "description": description
     }
-    console.log("newPaymentDetails: ", newPaymentDetails);
     return this.http.put(this.apiUrl + '/' + _id + '/paymentDetails', newPaymentDetails)
-
-
   }
+
   updateBillingStatus(paymentId: string, billingId: string, status: boolean): Observable<Billing> {
     try {
-      console.log("updateBillingStatus in service front ", paymentId, billingId, status);
       const body = { paymentId, billingId, status };
-      console.log("body: ", body);
-
       return this.http.post<Billing>(`${this.apiUrl}/updateBillingStatus`, body);
     } catch (err) {
       console.log(err);
-
     }
+
   } addMorePaymentDetails(paymentId: string,
     sumForMonth: number,
     maxHours: number,
@@ -129,5 +115,4 @@ export class PaymentService {
     const body = { paymentId, paymentDetailsId };
     return this.http.post<Payment>(`${this.apiUrl}/stopPaymentDetails`, body);
   }
-
 }

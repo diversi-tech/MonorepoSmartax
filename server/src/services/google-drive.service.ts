@@ -7,18 +7,23 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Docs } from '../Models/doc.model';
 import { Model } from 'mongoose';
 import { ValidationException } from '../common/exceptions/validation.exception';
-import { Client ,ClientModel } from '../Models/client.model';
+import { Client, ClientModel } from '../Models/client.model';
 import { ClientController } from '../controller/clients/clients.controller';
 import { ClientService } from './client.service';
 import { DocType, docTypeModel } from '../Models/docType.model';
 import { DocTypeService } from './docTypes.service';
 
 @Injectable()
-export class GoogleDriveService{
+export class GoogleDriveService {
   private drive;
   private auth: JWT;
   private readonly rootFolderId: string = '1iJFMZKQfhdWCTcW6taWqMZ19M9dpKabp';
-  constructor(@InjectModel('Docs') private readonly docModel: Model<Docs>,private readonly clientService: ClientService,private readonly docTypeService: DocTypeService) {
+  constructor(
+    @InjectModel('Docs') private readonly docModel: Model<Docs>,
+    private readonly clientService: ClientService,
+    private readonly docTypeService: DocTypeService
+  ) {
+
     const keyPath = path.join('service-account.json');
     const keys = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
 
@@ -28,14 +33,13 @@ export class GoogleDriveService{
       keys.private_key,
       ['https://www.googleapis.com/auth/drive']
     );
-
     this.drive = google.drive({ version: 'v3', auth: this.auth });
   }
-  async uploadFile(file: Express.Multer.File, clientId: string, docType:string): Promise<any> {
+  async uploadFile(file: Express.Multer.File, clientId: string, docType: string): Promise<any> {
     try {
-      const client=await this.clientService.searchClient(clientId);
-      const clientfolderId = await this.getOrCreateFolder(client.firstName,this.rootFolderId);
-      const folderId = await this.getOrCreateFolder(docType,clientfolderId);
+      const client = await this.clientService.searchClient(clientId);
+      const clientfolderId = await this.getOrCreateFolder(client.firstName, this.rootFolderId);
+      const folderId = await this.getOrCreateFolder(docType, clientfolderId);
       const response = await this.drive.files.create({
         requestBody: {
           name: Buffer.from(file.originalname, 'latin1').toString('utf8'),
@@ -48,15 +52,16 @@ export class GoogleDriveService{
       });
       fs.unlinkSync(file.path);
       const createdDoc = new this.docModel({
-        _id:response.data.id,
-        name:response.data.name,
-        viewLink:await this.generateViewLink(response.data.id),
+        _id: response.data.id,
+        name: response.data.name,
+        viewLink: await this.generateViewLink(response.data.id),
         client,
-        status:"uploaded",
-        date:Date.now(),
-        DocType:await this.docTypeService.getDocTypeByName(docType)});
-       await createdDoc.save();  
-      return { fileId: createdDoc._id,viewLink:createdDoc.viewLink }
+        status: "uploaded",
+        date: Date.now(),
+        DocType: await this.docTypeService.getDocTypeByName(docType)
+      });
+      await createdDoc.save();
+      return { fileId: createdDoc._id, viewLink: createdDoc.viewLink }
     } catch (error) {
       console.error('Error uploading file:', error.response ? error.response.data : error.message);
       throw new Error('Failed to upload file');
@@ -74,7 +79,8 @@ export class GoogleDriveService{
       throw new Error('Failed to generate view link');
     }
   }
-  private async getOrCreateFolder(folderName: string,parentFolderId:string): Promise<string> {
+
+  private async getOrCreateFolder(folderName: string, parentFolderId: string): Promise<string> {
     const query = `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and '${parentFolderId}' in parents`;
 
     try {
@@ -106,30 +112,30 @@ export class GoogleDriveService{
     }
   }
 
-async getFile(fileId: string): Promise<any> {
-  try {
-    const fileResponse = await this.drive.files.get({
-      fileId: fileId,
-      fields: 'mimeType, name',
-    });
+  async getFile(fileId: string): Promise<any> {
+    try {
+      const fileResponse = await this.drive.files.get({
+        fileId: fileId,
+        fields: 'mimeType, name',
+      });
 
-    const fileStream = await this.drive.files.get({
-      fileId: fileId,
-      alt: 'media',
-    }, {
-      responseType: 'stream'
-    });
+      const fileStream = await this.drive.files.get({
+        fileId: fileId,
+        alt: 'media',
+      }, {
+        responseType: 'stream'
+      });
 
-    return {
-      stream: fileStream.data,
-      mimeType: fileResponse.data.mimeType,
-      name: fileResponse.data.name,
-    };
-  } catch (error) {
-    console.error('Error fetching file:', error.response ? error.response.data : error.message);
-    throw new Error('Failed to fetch file');
+      return {
+        stream: fileStream.data,
+        mimeType: fileResponse.data.mimeType,
+        name: fileResponse.data.name,
+      };
+    } catch (error) {
+      console.error('Error fetching file:', error.response ? error.response.data : error.message);
+      throw new Error('Failed to fetch file');
+    }
   }
-}
 
   async getFileDown(fileId: string): Promise<Buffer> {
     try {
@@ -143,19 +149,19 @@ async getFile(fileId: string): Promise<any> {
       throw new Error('Failed to download file');
     }
   }
-   async getLink(clientId:string, fileName:string){
-    const file=await this.docModel.findOne({client:clientId,name:fileName}).select('viewLink -_id').lean().exec();
+  async getLink(clientId: string, fileName: string) {
+    const file = await this.docModel.findOne({ client: clientId, name: fileName }).select('viewLink -_id').lean().exec();
     if (!file) {
       throw new ValidationException('file not found');
     }
-   return file
+    return file
   }
-  async getAllFiles(clientId:string){
-    const file=await this.docModel.find({client:clientId}).exec();
+  async getAllFiles(clientId: string) {
+    const file = await this.docModel.find({ client: clientId }).exec();
     if (!file) {
       throw new ValidationException('there is no files for this client');
     }
-   return file
+    return file
   }
   async setFilePermissions(fileId: string, userEmail: string): Promise<void> {
     try {
@@ -175,8 +181,7 @@ async getFile(fileId: string): Promise<any> {
   async deleteFile(fileId: string): Promise<void> {
     try {
       await this.drive.files.delete({ fileId });
-      await this.docModel.deleteOne({_id:fileId});
-      console.log(`File with ID ${fileId} deleted successfully.`);
+      await this.docModel.deleteOne({ _id: fileId });
     } catch (error) {
       console.error('Error deleting file:', error.response ? error.response.data : error.message);
       throw new Error('Failed to delete file');

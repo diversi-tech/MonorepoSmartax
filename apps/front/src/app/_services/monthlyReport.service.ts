@@ -19,7 +19,7 @@ export class MonthlyReportService {
  
   private apiUrl = MONTHLY_REPORT;
 
-  createMonthlyReport(monthlyReport: MonthlyReport): Observable<MonthlyReport> {
+  createMonthlyReport(monthlyReport: any): Observable<MonthlyReport> {
     return this.http.post<MonthlyReport>(`${this.apiUrl}/create`, monthlyReport)
       .pipe(
         catchError(this.handleError<MonthlyReport>('createMonthlyReport'))

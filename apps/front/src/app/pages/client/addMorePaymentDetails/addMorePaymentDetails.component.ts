@@ -7,7 +7,7 @@ import { FrequencyService } from '../../../_services/frequency.service';
 import { PaymentService } from '../../../_services/payment.service';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
-import { EventEmitter,Output} from '@angular/core';
+import { EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-add-more-payment-details',
@@ -34,17 +34,15 @@ export class AddMorePaymentDetailsComponent implements OnInit {
     this.paymentService.getPayment(history.state.client.payment).subscribe(
       s => {
         this.thisPayment = s,
-          console.log(this.thisPayment);
-        this.frequancyService.getAllFrequencys().subscribe(
-          suc => {
-            this.allFrequaccies = suc;
-          },
-          err => console.log(err)
-        )
+          this.frequancyService.getAllFrequencys().subscribe(
+            suc => {
+              this.allFrequaccies = suc;
+            },
+            err => console.log(err)
+          )
       },
       f => {
-        console.log(f),
-          console.log('נפל בחיפוש החשבונית');
+        console.log('נפל בחיפוש החשבונית');
       }
     )
   }
@@ -56,16 +54,10 @@ export class AddMorePaymentDetailsComponent implements OnInit {
       this.paymentDetails.frequancy,
       this.paymentDetails.dateFinish,
       this.paymentDetails.description).subscribe(data => {
-        console.log(data);
-        console.log("finished");
-        
         this.submitEvent.emit();
       }),
       error => {
         console.log(error);
       }
   }
-
-  
-
 }
