@@ -27,6 +27,48 @@ export class UserService {
 
   private apiUrl = USER_ENDPOINT;
 
+  // register(username: string, email: string, role: Role): Observable<User> {
+  //   const passwordHash = this.hashService.encryptPassword('Aa123456');
+  //   // const newUser: User = {
+  //   //   userName: username,
+  //   //   passwordHash: passwordHash,
+  //   //   role: role._id,
+  //   //   email: email,
+  //   // };
+  //   // return this.http.put<User>(
+  //   //   this.apiUrl + '/create',
+  //   //   { newUser },
+  //   //   {
+  //   //     headers: new HttpHeaders({
+  //   //       'Content-Type': 'application/json',
+  //   //     }),
+  //   //   }
+  //   // );
+  //   const newUser = {
+  //     newUser: {
+  //       userName: username,
+  //       passwordHash: passwordHash,
+  //       role: role._id,
+  //       email: email,
+  //     },
+  //   };
+
+  //  return this.http
+  //     .put<User>('https://monoreposmartax-n13o.onrender.com/users/create', newUser, 
+  //       httpOptions,
+  //     )
+  //     .subscribe(
+  //       (response) => {
+  //         console.log('Response:', response);
+  //       },
+  //       (error) => {
+  //         console.error('Error:', error);
+  //       }
+  //     );
+
+  //   // return this.http.put(this.apiUrl + '/create', newUser, httpOptions);
+  // }
+
   register(username: string, email: string, role: Role): Observable<User> {
     const passwordHash = this.hashService.encryptPassword('Aa123456');
     const newUser: User = {
@@ -35,24 +77,20 @@ export class UserService {
       role: role._id,
       email: email,
     };
-    // return this.http
-    //   .post<User>(
-    //     `${this.apiUrl}/update`,
-    //     { id, ...communication },
-    //     this.httpOptions
-    //   )
-    //   .pipe(catchError(this.handleError<User>('updateCommunication')));
+  
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+  
     return this.http.put<User>(
-      this.apiUrl + '/create',
-      { newUser },
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      }
+      'https://monoreposmartax-n13o.onrender.com/users/create',
+      newUser,
+      httpOptions
     );
-    // return this.http.put(this.apiUrl + '/create', newUser, httpOptions);
   }
+  
   update(
     id: string,
     userName: string,
