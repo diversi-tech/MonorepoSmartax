@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { HashPasswordService } from './hash-password.service';
 import { RoleServiceService } from './role-service.service';
 import { Role } from '../_models/role.module';
@@ -75,25 +75,24 @@ export class UserService {
 
   register(username: string, email: string, role: Role): Observable<User> {
     const passwordHash = this.hashService.encryptPassword('Aa123456');
-    const newUser: User = {
+    const newUser = {
       userName: username,
       passwordHash: passwordHash,
       role: role._id,
-      email: email,
+      email: email
     };
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
-
-    return this.http.put<User>(
-      'https://monoreposmartax-n13o.onrender.com/users/create',
-      newUser,
-      httpOptions
-    );
+  
+    return this.http
+      .put<User>('https://monoreposmartax-n13o.onrender.com/users/create', newUser, this.httpOptions)
+      .pipe(
+        tap(response => console.log('Response:', response)),
+        catchError(error => {
+          console.error('Error:', error);
+          return throwError(error);
+        })
+      );
   }
+  
 
   // update(
   //   id: string,
