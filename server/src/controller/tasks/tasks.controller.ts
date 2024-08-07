@@ -46,9 +46,9 @@ export class TasksController {
       return newTask;
     } catch (error) {
       console.log(error);
-      throw new HttpException(
-        error.message!, error.status!
-      );
+      const status = error.status || HttpStatus.INTERNAL_SERVER_ERROR;
+      const message = error.message || 'An unexpected error occurred';
+      throw new HttpException(message, status);
     }
   }
 

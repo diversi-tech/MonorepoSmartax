@@ -601,7 +601,7 @@ export class TaskComponent implements OnInit {
           },
         });
       }
-    window.history.back();
+    // window.history.back();
   }
 
   updateTask() {

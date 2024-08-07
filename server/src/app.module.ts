@@ -333,8 +333,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   // app.use(cors())
   app.enableCors({
-    // origin: 'http://localhost:4200',
-    origin: process.env.PATH_FRONT,
+    origin: ['http://localhost:4200'],
+    // origin: process.env.PATH_FRONT,
     credentials: true,
   });
   // קבע את הנתיב לתיקיית התמונות הציבורית

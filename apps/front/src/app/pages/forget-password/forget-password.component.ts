@@ -58,8 +58,7 @@ export class ForgotPasswordComponent {
   }
 
   onSubmit() {
-    const email = this.userEmail; // Retrieve the entered email from the variable
-    // Example action: Call your service to send the email
+    const email = this.userEmail;
     this.forgotService.forgotPassword(email).subscribe(
       (response) => {
         // Success Message
@@ -77,7 +76,6 @@ export class ForgotPasswordComponent {
         this.response = response;
       },
       (error) => {
-        // Failure Message
         Swal.fire({
           icon: 'error',
           title: 'Error!',
