@@ -44,7 +44,7 @@ export class UserService {
     //   .pipe(catchError(this.handleError<User>('updateCommunication')));
     return this.http.put<User>(
       this.apiUrl + '/create',
-      { body: newUser },
+      { newUser },
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
