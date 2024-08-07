@@ -200,15 +200,10 @@ export class TaskComponent implements OnInit {
     if (clientIdsString) {
       this.clientIdsParam = clientIdsString.split(',');
     }
-    console.log(this.clientIdsParam); // הדפסה לנתונים לבדיקה
-
     this.clientIdsParam.forEach(clientId => {
       this.clientService.searchClient(clientId).subscribe({
         next: (client: Client) => {
           this.selectedClients.push(client);
-          console.log('Loaded Client:', client);
-          console.log(this.selectedClients);
-          
         },
         error: (err) => {
           console.error('Error loading client:', err);

@@ -228,7 +228,7 @@ export class TaskManagementComponent implements OnInit {
     this.tasks.forEach((task) => {
       this.filterFirstStatus = false;
 
-      const deadlineMatch = !this.filter.deadline || new Date(task.dueDate) <= new Date(this.filter.deadline);
+      const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
       const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
 
@@ -244,11 +244,11 @@ export class TaskManagementComponent implements OnInit {
           );
         });
       }
-
       if (deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch)
         this.filteredTasks.push(task);
     });
   }
+
 
   // sort
   // בקומפוננטה שלך
@@ -310,8 +310,8 @@ export class TaskManagementComponent implements OnInit {
     });
   }
 
-  selectCurrentTask(task: Task) {
-    // debugger
-    this.currentTask = task;
-  }
+selectCurrentTask(task: Task) {
+  debugger
+  this.currentTask = task;
+}
 }
