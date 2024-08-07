@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { YearlyReport } from '../_models/yearlyReport.module';
-import { USER_ENDPOINT, YEARLYREPORT } from '../api-urls';
+import { YEARLYREPORT } from '../api-urls';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
-import { Console } from 'console';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,13 +14,13 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class YearlyReportService {
+  
   constructor(private http: HttpClient) {}
 
   private apiUrl = YEARLYREPORT;
 
   // Create a new yearly report
   createYearlyReport(yearlyReport: YearlyReport): Observable<YearlyReport> {
-    console.log('createYearlyReportSEvucec', yearlyReport);
     return this.http.post<YearlyReport>(`${this.apiUrl}/create`, yearlyReport)
       .pipe(
         catchError(this.handleError<YearlyReport>('createYearlyReport'))
@@ -49,9 +48,6 @@ export class YearlyReportService {
     );
   }
 
-
-
-
   // Update an existing yearly report
   updateYearlyReport(id: string, yearlyReport: YearlyReport): Observable<YearlyReport> {
     console.log('updateYearlyReportSEvucec', yearlyReport);
@@ -60,16 +56,6 @@ export class YearlyReportService {
         catchError(this.handleError<YearlyReport>('updateYearlyReport'))
       );
   }
-
-  // createYearlyReport(yearlyReport: YearlyReport): Observable<YearlyReport> {
-  //   console.log('createYearlyReportSEvucec', yearlyReport);
-  //     return this.http.post<YearlyReport>(`${this.apiUrl}/create`, yearlyReport)
-  //       .pipe(
-  //         catchError(this.handleError<YearlyReport>('createYearlyReport'))
-  //       );
-  //   }
-
-
 
   // Delete a yearly report by ID
   deleteYearlyReport(id: string): Observable<boolean> {
@@ -86,6 +72,4 @@ export class YearlyReportService {
       return throwError(error.error?.message || 'An error occurred');
     };
   }
-
-
 }

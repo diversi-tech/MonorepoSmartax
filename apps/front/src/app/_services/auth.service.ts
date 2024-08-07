@@ -4,7 +4,7 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { HashPasswordService } from '../_services/hash-password.service';
 import { AUTH_ENDPOINT } from '../api-urls';
 import { Role } from '../_models/role.module';
-import jwt_decode from 'jwt-decode'; // Correct import statement
+import jwt_decode from 'jwt-decode';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -74,7 +74,6 @@ export class AuthService {
   }
 
   initGoogleAuth() {
-    console.log("Initializing Google Auth");
     try {
       if (window.google && window.google.accounts) {
         window.google.accounts.id.initialize({

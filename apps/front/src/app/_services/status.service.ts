@@ -7,14 +7,16 @@ import { Status } from '../_models/status.module';
 @Injectable({
   providedIn: 'root',
 })
+
 export class StatusService {
+
   private apiUrl = STATUS_ENDPOINT;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }), // Define headers for HTTP requests
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Search for a Client by ID
   searchStatus(id: string): Observable<Status[]> {
@@ -32,9 +34,10 @@ export class StatusService {
 
   // Delete a Status by ID
   deleteStatus(id: string): Observable<boolean> {
-    return this.http
-      .delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
-      .pipe(catchError(this.handleError<boolean>('deleteStatus', false)));
+    return this.http.delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
+      .pipe(
+        catchError(this.handleError<boolean>('deleteStatus', false))
+      );
   }
   // Create a new Status
   createStatus(status: Status): Observable<Status> {

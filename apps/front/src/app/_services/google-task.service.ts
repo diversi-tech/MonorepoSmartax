@@ -31,7 +31,6 @@ export class GoogleTaskService {
     }
   }
 
-  // Subject להעברת המידע לקומפוננטות
   private eventDataSubject = new BehaviorSubject<any>(null);
   public eventData$ = this.eventDataSubject.asObservable();
 
@@ -63,7 +62,6 @@ export class GoogleTaskService {
       discoveryDocs: [this.DISCOVERY_DOC],
     });
     this.gapiInited = true;
-    console.log('GAPI client initialized');
   }
 
   private gisLoaded() {
@@ -75,11 +73,9 @@ export class GoogleTaskService {
           console.error('Error during token request', tokenResponse.error);
           throw tokenResponse;
         }
-        console.log('Token received');
       },
     });
     this.gisInited = true;
-    console.log('GIS client initialized');
   }
 
   private reinitializeGapi() {
@@ -90,7 +86,6 @@ export class GoogleTaskService {
       })
       .then(() => {
         this.gapiInited = true;
-        console.log('GAPI client reinitialized');
       });
   }
 
@@ -191,7 +186,6 @@ export class GoogleTaskService {
         console.error('Error requesting access token', error);
         reject(error);
       }
-      console.log('Token request initiated');
     });
   }
 
@@ -264,6 +258,7 @@ export class GoogleTaskService {
           // שמור את task.id לשימוש מאוחר יותר
           console.log(task.id);
 
+          this.eventDataSubject.next({ eventId: task.id });
           resolve();
         });
       } catch (error) {
@@ -272,6 +267,8 @@ export class GoogleTaskService {
       }
     });
   }
+
+
 
   // updateTask()
   public updateGoogleTask(taskDetails: any) {
@@ -287,7 +284,6 @@ export class GoogleTaskService {
         throw resp;
       }
 
-      // שלוף את taskId מהמערכת שלך או מהמאגר נתונים
       const taskId = 'UjRFV3AxSXZ1aW40dDFHTg';
       if (!taskId) {
         console.error('Task ID not found');
@@ -306,7 +302,6 @@ export class GoogleTaskService {
     } catch (error) {
       console.error('Error requesting access token', error);
     }
-    console.log('Token request initiated');
   }
 
   private async modifyTask(taskDetails: any) {
@@ -314,7 +309,7 @@ export class GoogleTaskService {
       id: taskDetails.taskId,
       title: taskDetails.title,
       notes: taskDetails.notes,
-      due: taskDetails.dueDate, //? taskDetails.dueDate.toISOString() : null,
+      due: taskDetails.dueDate,
     };
 
     try {
@@ -334,7 +329,6 @@ export class GoogleTaskService {
           timer: 3000,
         });
 
-        console.log('Task updated:', task);
       });
     } catch (error) {
       console.error('Error updating task:', error);
@@ -376,7 +370,6 @@ export class GoogleTaskService {
         console.error('Error requesting access token', error);
         reject(error);
       }
-      console.log('Token request initiated');
     });
   }
 
@@ -395,8 +388,6 @@ export class GoogleTaskService {
           showConfirmButton: false,
           timer: 3000,
         });
-
-        console.log('Task deleted:', taskId);
       });
     } catch (error) {
       console.error('Error deleting task:', error);

@@ -23,7 +23,6 @@ import { TokenService } from '../../services/jwt.service';
 import { TaskService } from '../../services/task.service';
 import { UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import * as fs from 'fs';
 import * as path from 'path';
 
 @ApiTags('tasks')
@@ -31,10 +30,8 @@ import * as path from 'path';
 @Controller('tasks')
 export class TasksController {
   constructor(
-    private readonly taskService: TaskService,
-    private jwtToken: TokenService,
-    private hashService: hashPasswordService
-  ) {}
+    private readonly taskService: TaskService
+  ) { }
 
   @Post('create')
   @ApiOperation({ summary: 'Create a new task' })
@@ -79,18 +76,18 @@ export class TasksController {
   @Post('by-client')
   @ApiOperation({ summary: 'Get communications by Client ID' })
   @ApiBody({
-      schema: {
-          type: 'object',
-          properties: {
-              clientId: {
-                  type: 'string',
-                  example: '123456789'
-              }
-          }
+    schema: {
+      type: 'object',
+      properties: {
+        clientId: {
+          type: 'string',
+          example: '123456789'
+        }
       }
+    }
   })
   async getTasksByClientId(@Body() body: { clientId: string }): Promise<Task[]> {
-      return this.taskService.getTasksByClientId(body.clientId);
+    return this.taskService.getTasksByClientId(body.clientId);
   }
 
 
@@ -135,19 +132,5 @@ export class TasksController {
       '../../../uploads',
       image.originalname
     );
-    console.log(destinationPath);
-
-    // fs.writeFileSync(destinationPath, image.buffer);
-    console.log(`התמונה נשמרה ב: ${destinationPath}`);
   }
-
-  // @Get(':filename')
-  // async getImage(@Param('filename') filename: string, @Res() res: Response) {
-  //   const imagePath = path.join(__dirname, '../../../uploads', filename);
-  //   if (fs.existsSync(imagePath)) {
-  //     res.sendFile(imagePath);
-  //   } else {
-  //     res.status(404).send('Image not found');
-  //   }
-  // }
 }

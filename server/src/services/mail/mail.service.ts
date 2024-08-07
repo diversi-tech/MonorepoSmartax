@@ -28,29 +28,27 @@ export class MailService {
 
   async sendMail(body: any) {
     const { to, email } = body;
-
     // Create a random password from numbers only and 4 characters long
     const validPassword = this.generatePassword(4);
+    const fileContent = fs.readFileSync(
+      '../MonorepoSmartax/server/src/services/mail/mail.service.ts',
+      'utf8'
+    );
 
     // const fileContent = fs.readFileSync(
     //   '../MonorepoSmartax/server/src/services/mail/mail.service.ts',
     //   'utf8'
     // );
 
-    // הוספת הסיסמה האקראית למייל
     const mailOptions = {
       from: process.env.EMAIL,
       to: to,
       subject: 'Forgot Password ❓- Smartax',
       text: `Password to verify email address. Your password is: ${validPassword}`,
-      // html:m
     };
 
     try {
       const info = await this.transporter.sendMail(mailOptions);
-      console.log('Email sent: ' + info.response);
-
-      // החזרת הסיסמה בתגובה של הפונקציה
       return { success: true, password: validPassword, email: to };
     } catch (error) {
       console.error('Error sending email:', error);

@@ -31,6 +31,7 @@ import { User } from '../../../../../../server/src/Models/user.model';
   ],
   providers: [MessageService]
 })
+
 export class WorkLogComponent implements OnInit {
   workLogs: WorkLog[] = [];
   groupedWorkLogs: any[] = [];
@@ -54,10 +55,9 @@ export class WorkLogComponent implements OnInit {
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('_id');
     this.userRole = this.tokenService.getCurrentDetail('role').level;
-    console.log(this.userRole);
-    
   }
   ngOnInit() {
+    this.getWorkLogs();
     this.getUsers();
   }
   getUsers() {
@@ -116,6 +116,7 @@ export class WorkLogComponent implements OnInit {
       acc[key].totalHoursWorked += log.timeEntries.reduce((sum, entry) => sum + (entry.hoursWorked || 0), 0);
       return acc;
     }, {});
+    this.groupedWorkLogs = Object.values(grouped);
 
     this.groupedWorkLogs = Object.values(grouped).map((group: any) => ({
       ...group,
@@ -130,7 +131,7 @@ export class WorkLogComponent implements OnInit {
       return;
     }
 
-    const today = new Date().toLocaleDateString('en-CA'); // תאריך של היום בפורמט 'yyyy-MM-dd'
+    const today = new Date().toLocaleDateString('en-CA')
     const existingWorkLog = this.workLogs.find(log => log.employeeId == this.employeeId && new Date(log.date).toLocaleDateString('en-CA') === today);
 
     if (existingWorkLog) {
@@ -243,6 +244,7 @@ export class WorkLogComponent implements OnInit {
       }
     );
   }
+
   createWorkLog(workLog: WorkLog) {
     this.workLogService.createWorkLog(workLog).subscribe(
       response => {
@@ -333,5 +335,4 @@ export class WorkLogComponent implements OnInit {
   selectCurrentLog(log: TimeEntry) {
     this.currentLog = log;
   }
-
 }

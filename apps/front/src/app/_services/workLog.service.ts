@@ -16,6 +16,7 @@ export class WorkLogService {
 
   constructor(private http: HttpClient) {}
 
+
   getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
     let url = this.apiUrl;
     if (employeeId) {

@@ -1,7 +1,6 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
-// import { FullCalendarModule } from '@fullcalendar/angular';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { CommonModule } from '@angular/common';
@@ -37,7 +36,7 @@ import { CardModule } from 'primeng/card';
 import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app/app-routing.module';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { BrowserModule, bootstrapApplication, provideClientHydration } from '@angular/platform-browser';
+import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { DropdownModule } from 'primeng/dropdown';
 import { ChipModule } from 'primeng/chip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,7 +46,6 @@ import { TagService } from './app/_services/tag.service';
 import { ClientService } from './app/_services/client.service';
 import { CommunicationService } from './app/_services/communicaton.service';
 import { httpInterceptorProviders } from './app/_helpers/http.interceptor';
-// import { GoogleLoginProvider, SocialAuthServiceConfig } from 'angularx-social-login';
 
 
 bootstrapApplication(AppComponent, {

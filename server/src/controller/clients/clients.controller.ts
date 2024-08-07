@@ -13,7 +13,10 @@ import { RoleGuard } from '../../guards/role.guard';
 @UseFilters(HttpExceptionFilter)
 export class ClientController {
 
-    constructor(private readonly clientService: ClientService) { }
+    constructor(
+        private readonly clientService: ClientService
+    ) { }
+
     // @UseGuards(AuthGuard, RoleGuard(3))
     
     // @UseGuards(AuthGuard, RoleGuard(3))

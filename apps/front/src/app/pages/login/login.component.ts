@@ -21,6 +21,12 @@ declare global {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
+  imports: [
+    FormsModule, 
+    NgClass, 
+    NgIf, 
+    RouterOutlet
+  ]
   imports: [FormsModule, NgClass, NgIf, RouterOutlet,ForgotPasswordComponent],
 })
 export class LoginComponent implements OnInit {
@@ -46,9 +52,11 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
+      this.role = this.tokenService.getCurrentDetail("role").name;
       this.role = this.tokenService.getCurrentDetail('role').name;
       console.log(this.role);
     }
+    this.authService.setCredentialResponseHandler(this.handleCredentialResponse.bind(this));
 
     this.authService.setCredentialResponseHandler(
       this.handleCredentialResponse.bind(this)
@@ -60,7 +68,6 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     const { email, password } = this.form;
-
     this.authService.login(email, password).subscribe({
       next: (data) => {
         if (data) {

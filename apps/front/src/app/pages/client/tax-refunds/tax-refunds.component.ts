@@ -28,6 +28,7 @@ import { TooltipModule } from 'primeng/tooltip';
   templateUrl: './tax-refunds.component.html',
   styleUrl: './tax-refunds.component.css',
 })
+
 export class TaxRefundsComponent {
   constructor(
     private taxRefundsService: TaxRefundsService,
@@ -38,7 +39,7 @@ export class TaxRefundsComponent {
 
   ) {
     this.currentRoute = this.route.snapshot.url.join('/');
-    console.log('Current route path:', this.currentRoute);
+
   }
   client: Client;
   allTaxRefunds: TaxRefunds[] | null;
@@ -56,10 +57,7 @@ export class TaxRefundsComponent {
     else {
       this.getTaxRefundsForClient();
     }
-    console.log('report after', this.allTaxRefunds);
-    debugger
     this.userService.getAllUsers().subscribe(
-
       (Employes) => {
         this.allEmploye = Employes;
       },
@@ -72,20 +70,19 @@ export class TaxRefundsComponent {
     this.taxRefundsService.getAllTaxRefunds().subscribe(
       (reports) => {
         this.allTaxRefunds = reports;
-        console.log('report', this.allTaxRefunds);
       },
       (error) => {
         console.error('Error fetching tax refunds', error);
       }
     );
   }
+
   getTaxRefundsForClient(): void {
-    debugger
+
     const clientId = this.client._id;
     this.taxRefundsService.getTaxRefundsForClient(clientId).subscribe(
       (reports) => {
         this.allTaxRefunds = reports;
-        console.log('report', this.allTaxRefunds);
       },
       (error) => {
         console.error('Error fetching yearly reports for client', error);
@@ -97,14 +94,11 @@ export class TaxRefundsComponent {
   }
 
   goToSteps(task: any) {
-    debugger
     if (this, this.currentRoute === 'allClientTaxRefunds') {
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps'], { state: { data: task, client: this.getClientName(task.idClient) } });
-
     }
     else {
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });
-
     }
   }
   getAllClients(): void {
@@ -114,15 +108,11 @@ export class TaxRefundsComponent {
     );
   }
   getClientName(idClient: string): Client | undefined {
-    debugger
-    console.log(this.allClients.find((x) => x._id === idClient), 'client');
-
     return this.allClients.find((x) => x._id === idClient);
   }
   createReprtTag(): void {
-      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client } });
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client } });
   }
-  
 
   selectTaxRefunds(taxRefunds: TaxRefunds) {
     this.currentTaxRefunds = taxRefunds;

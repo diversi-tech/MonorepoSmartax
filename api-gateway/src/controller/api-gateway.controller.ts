@@ -1,18 +1,7 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Param,
-  Inject,
-  Get,
-  Put,
-  Delete,
-  Query,
-  Res,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Post, Body, Param, Inject, Get, Put, Delete, Res, HttpStatus } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Response } from 'express'; // ייבוא Response מ-express
+import { Response } from 'express';
+
 @Controller('api')
 export class ApiGatewayController {
   constructor(
@@ -24,9 +13,6 @@ export class ApiGatewayController {
     switch (service) {
       case 'worklogs':
         return this.workLogService;
-      // case 'otherService':
-      // return this.otherService;
-      // הוסף כאן שירותים נוספים לפי הצורך
       default:
         throw new Error('Unknown service');
     }
@@ -39,11 +25,7 @@ export class ApiGatewayController {
     @Param('id') id?: string
   ) {
     const client = this.getClientProxy(service);
-    console.log('handleRequestGet called with:', { service, cmd, id });
-
     const requestPayload = id ? { employeeId: id } : {};
-    console.log('Request Payload:', requestPayload);
-
     return client.send({ cmd }, requestPayload).toPromise();
   }
 
@@ -56,6 +38,7 @@ export class ApiGatewayController {
     const client = this.getClientProxy(service);
     return client.send({ cmd }, data).toPromise();
   }
+
 
   @Get(':service/export/:month/:year')
   async exportWorkLogs(
@@ -79,7 +62,6 @@ export class ApiGatewayController {
         throw new Error('Buffer is undefined');
       }
       const buffer = Buffer.from(result.data);
-      console.log('Buffer received:', buffer);
       res.set({
         'Content-Type':
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -118,7 +100,6 @@ export class ApiGatewayController {
         throw new Error('Buffer is undefined');
       }
       const buffer = Buffer.from(result.data);
-      console.log('Buffer received:', buffer);
       res.set({
         'Content-Type':
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -154,6 +135,19 @@ export class ApiGatewayController {
     return client.send({ cmd }, { id }).toPromise();
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import { Controller, Post, Put, Param, Body, Get, Query, Res, HttpStatus } from '@nestjs/common';
 // import { HttpService } from '@nestjs/axios';

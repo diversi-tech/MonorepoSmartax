@@ -1,3 +1,4 @@
+
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { StorageService } from './_services/storage.service';
@@ -13,7 +14,6 @@ import {
 } from '@angular/router';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { LoginComponent } from './pages/login/login.component';
-import { TaskReportComponent } from './task-report/task-report.component';
 import { DialogModule } from 'primeng/dialog';
 import { PopupNotificationComponent } from './popUp-socket/popUp-socket.component';
 // import { WebSocketService } from './_services/webSocket.service';
@@ -26,14 +26,6 @@ import { User } from './_models/user.module';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
-
-// import { RouterTestingModule } from '@angular/router/testing';
-// import { TestBed } from '@angular/core/testing';
-// describe('AppComponent', () => {
-//   beforeEach(() => TestBed.configureTestingModule({
-//     imports: [RouterTestingModule],
-//     declarations: [AppComponent]
-//   }));
 
 @Component({
   selector: 'app-root',
@@ -55,16 +47,16 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     DividerModule,
     TooltipModule,
+    PopupNotificationComponent
   ],
 })
+
 export class AppComponent {
   isLoggedIn = false;
   showAdminBoard = false;
   showModeratorBoard = false;
   username?: string;
-
   eventBusSub?: Subscription;
-
   toolbarItems: any[] = [];
   //
   items: MenuItem[] | undefined;
@@ -84,10 +76,10 @@ export class AppComponent {
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('_id');
   }
+  
 
   ngOnInit(): void {
     this.isLoggedIn = this.storageService.isLoggedIn();
-
     if (this.isLoggedIn) {
       const user = this.tokenService.getToken();
       const currentRole = this.tokenService.getCurrentDetail('role');
@@ -95,7 +87,6 @@ export class AppComponent {
         currentRole.level
       );
     }
-
     this.eventBusSub = this.eventBusService.on('logout', () => {
       this.logout();
     });
@@ -140,6 +131,7 @@ export class AppComponent {
   //   console.log('showNotification called with:', task);
   //   this.cdr.detectChanges();  // Force change detection
   // }
+  
   logout(): void {
     try {
       this.authService.logout().subscribe(
@@ -154,9 +146,12 @@ export class AppComponent {
           alert('ארעה שגיאה בתהליך היציאה, אנא נסה שנית');
         }     
       );
-    } catch (err) {
-      console.error('Logout failed. Error:', err);
-      alert('ארעה שגיאה בתהליך היציאה, אנא נסה שנית');
+    } 
+   
+      
+
+    catch (err) {
+      alert("ארעה שגיאה בתהליך היציאה, אנא נסה שנית")
     }
   }
 

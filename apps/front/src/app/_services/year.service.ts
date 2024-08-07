@@ -15,6 +15,12 @@ export class YearService {
 
   // Create a new yearly report
   createYear(year: Year): Observable<any> {
+    return this.http.post<Year>("http://localhost:8080/years", year)
+      .pipe(
+        catchError(this.handleError<YearlyReport>('createYear'))
+      );
+  // Create a new yearly report
+  createYear(year: Year): Observable<any> {
     return this.http
       .post<Year>(this.apiUrl, year)
       .pipe(catchError(this.handleError<YearlyReport>('createYear')));
@@ -22,6 +28,10 @@ export class YearService {
 
   // Get all yearly reports
   getAllYear(): Observable<Year[]> {
+    return this.http.get<Year[]>('http://localhost:8080/years/all')
+      .pipe(
+        catchError(this.handleError<Year[]>('getAllYearlyReports', []))
+      );
     console.log('se');
     return this.http
       .get<Year[]>(`${YEARS}/all`)
@@ -29,7 +39,12 @@ export class YearService {
   }
 
   // Delete a yearly report by ID
+  // Delete a yearly report by ID
   deleteYear(id: string): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.apiUrl}`, { body: { id } })
+      .pipe(
+        catchError(this.handleError<boolean>('deleteYear', false))
+      );
     return this.http
       .delete<boolean>(`${this.apiUrl}`, { body: { id } })
       .pipe(catchError(this.handleError<boolean>('deleteYear', false)));

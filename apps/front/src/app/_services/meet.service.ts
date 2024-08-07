@@ -8,11 +8,13 @@ import { MEET_ENDPOINT } from '../api-urls';
   providedIn: 'root',
 })
 export class MeetService {
+  url: string = MEET_ENDPOINT
   url: string = MEET_ENDPOINT;
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
+  constructor(private http: HttpClient) { }
   constructor(private http: HttpClient) {}
 
   // getRoleById(id: string): Observable<Role> {
@@ -20,13 +22,20 @@ export class MeetService {
   // }
 
   getAllMeetings(): Observable<Meet[]> {
+    return this.http.get<Meet[]>(`${this.url}`)
+
     return this.http.get<Meet[]>(`${this.url}`);
   }
+  getMeetById(meetId: string): Observable<Meet> {
+    const body = { id: meetId }
+    return this.http.post<Meet>(`${this.url}/searchMeet`, body)
   getMeetById(meetId: string): Observable<Meet> {
     const body = { id: meetId };
     return this.http.post<Meet>(`${this.url}/searchMeet`, body);
   }
   createMeet(meet: Meet): Observable<Meet> {
+    var e = this.http.put<Meet>(this.url, meet)
+    return e
     debugger;
     var e = this.http.put<Meet>(this.url, meet);
     debugger;
@@ -34,6 +43,8 @@ export class MeetService {
   }
 
   updateMeet(id: string, meet: Meet): Observable<Meet> {
+    var e = this.http.post<Meet>(`${this.url}`, { id, ...meet }, this.httpOptions)
+    return e
     debugger;
     var e = this.http.post<Meet>(
       `${this.url}`,
@@ -42,8 +53,4 @@ export class MeetService {
     );
     return e;
   }
-
-  // deleteRole(id: string): Observable<boolean> {
-  //   return this.http.delete<boolean>(`${this.url}`, { ...this.httpOptions, body: { id } })
-  // }
 }

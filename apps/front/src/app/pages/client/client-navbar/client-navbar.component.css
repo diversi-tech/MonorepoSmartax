@@ -8,12 +8,6 @@ body {
 
 .wrapper {
   display: flex;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.aba {
-  display: flex;
   flex-direction: row;
 }
 
@@ -32,8 +26,8 @@ body {
   flex: 1;
   margin-right: 20px;
   /* נותן רווח קטן מהצד הימני של המסך */
-  width: 60px;
-  height: 30px;
+  /* width: 100px;
+  height: 30px; */
 }
 
 .profile {

@@ -2,7 +2,6 @@ import { Injectable, NgZone, Inject, PLATFORM_ID } from '@angular/core';
 import Swal from 'sweetalert2';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-// import { env } from 'process';
 
 declare var gapi: any;
 declare var google: any;
@@ -31,6 +30,7 @@ export class GoogleAuthService {
       this.loadGis();
     }
   }
+
 
   // Subject להעברת המידע לקומפוננטות
   private eventDataSubject = new BehaviorSubject<any>(null);
@@ -86,30 +86,6 @@ export class GoogleAuthService {
       });
   }
 
-  // public createGoogleEvent(eventDetails: any) {
-  //   if (!this.gapiInited || !this.gisInited) {
-  //     console.error("GAPI or GIS not initialized");
-  //     this.reinitializeGapi();
-  //     return;
-  //   }
-  //   this.tokenClient.callback = async (resp: any) => {
-  //     if (resp.error !== undefined) {
-  //       console.error("Error during token request", resp.error);
-  //       throw resp;
-  //     }
-  //     await this.scheduleEvent(eventDetails);
-  //   };
-  //   try {
-  //     if (gapi.client.getToken() === null) {
-  //       this.tokenClient.requestAccessToken({ prompt: "consent" });
-  //     } else {
-  //       this.tokenClient.requestAccessToken({ prompt: "" });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error requesting access token", error);
-  //   }
-  //   console.log('Token request initiated');
-  // }
   createGoogleEvent(eventDetails: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (!this.gapiInited || !this.gisInited) {
@@ -118,6 +94,7 @@ export class GoogleAuthService {
         reject(new Error('GAPI or GIS not initialized'));
         return;
       }
+
 
       this.tokenClient.callback = async (resp: any) => {
         if (resp.error !== undefined) {
@@ -133,13 +110,13 @@ export class GoogleAuthService {
         }
       };
 
+
       try {
         if (gapi.client.getToken() === null) {
           this.tokenClient.requestAccessToken({ prompt: 'consent' });
         } else {
           this.tokenClient.requestAccessToken({ prompt: '' });
         }
-        console.log('Token request initiated');
       } catch (error) {
         console.error('Error requesting access token', error);
         reject(error);
@@ -223,6 +200,7 @@ export class GoogleAuthService {
       return;
     }
 
+
     const attendees = eventDetails.emails.map((email: string) => ({ email }));
 
     const event = {
@@ -255,12 +233,14 @@ export class GoogleAuthService {
       },
     };
 
+
     try {
       const request = gapi.client.calendar.events.insert({
         calendarId: 'primary',
         resource: event,
         conferenceDataVersion: 1,
       });
+
 
       request.execute((event: any) => {
         let conferenceLink = '';
@@ -285,12 +265,15 @@ export class GoogleAuthService {
           showConfirmButton: false,
           timer: 3000,
         });
+        eventDetails.eventId = event.id;
+        this.eventDataSubject.next({ eventId: event.id, conferenceLink });
         // שמירת ה-eventId
         eventDetails.eventId = event.id;
         // שידור ה-eventId והקישור המעודכן
         this.eventDataSubject.next({ eventId: event.id, conferenceLink });
       });
     } catch (error) {
+      console.error("Error creat  ing event:", error);
       console.error('Error creating event:', error);
     }
   }
@@ -317,8 +300,8 @@ export class GoogleAuthService {
     } catch (error) {
       console.error('Error requesting access token', error);
     }
-    console.log('Token request initiated');
   }
+
 
   private async modifyEvent(eventDetails: any) {
     // Ensure event details have eventId, startTime, and endTime
@@ -330,6 +313,7 @@ export class GoogleAuthService {
       console.error('Missing event details: eventId, startTime, or endTime');
       return;
     }
+
 
     const event = {
       summary: eventDetails.nameT,
@@ -361,6 +345,7 @@ export class GoogleAuthService {
       },
     };
 
+
     try {
       const request = gapi.client.calendar.events.update({
         calendarId: 'primary',
@@ -368,6 +353,7 @@ export class GoogleAuthService {
         resource: event,
         conferenceDataVersion: 1,
       });
+
 
       request.execute((event: any) => {
         let conferenceLink = '';
@@ -429,7 +415,6 @@ export class GoogleAuthService {
         } else {
           this.tokenClient.requestAccessToken({ prompt: '' });
         }
-        console.log('Token request initiated');
       } catch (error) {
         console.error('Error requesting access token', error);
         reject(error);
@@ -459,5 +444,6 @@ export class GoogleAuthService {
       console.error('Error deleting event:', error);
       throw error;
     }
+  }
   }
 }
