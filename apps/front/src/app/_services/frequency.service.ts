@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Frequency } from '../_models/frequency.module'; // Update the path according to the location of your model
+import { Frequency } from '../_models/frequency.module';
 
 import { Observable, catchError, of } from 'rxjs';
 import { FREQUENCY_ENDPOINT } from '../api-urls';
