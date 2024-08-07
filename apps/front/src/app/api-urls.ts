@@ -43,3 +43,4 @@ export const PRIORITY = `${API_URL}/Priority`;
 export const STEP_FIELD = `${API_URL}/step-field`;
 export const WORK_LOGS = `${API_URL_APIGATEWAY}/worklogs`;
 export const YEARS = `${API_URL}/years`;
+export const STEP_FIELD_MONTH = `${API_URL}/step-field-month`;

@@ -1,153 +1,63 @@
-
-<button pButton label="שמור שינויים" (click)="update()" class= "p-button-text p-button-raised p-button-rounded"></button>
-<button pButton *ngIf="currentRoute==='monthlyReport'" (click)="showDialog()" label="חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
-
+<p-button *ngIf="currentRoute === 'monthlyReport'" (onClick)="showDialog()" label="חדש" />
 <p-dialog header="יצירת דוח חדש" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
     <div class="flex align-items-center gap-3 mb-3">
-     <div class="p-field p-mb-3" dir="rtl">
-    <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2"
-      (completeMethod)="filterByyear($event.query)" [minLength]="1"
-      placeholder="בחירת שנה"  field="yearNum" [dropdown]="true" (onSelect)="select($event)"
-      [style]="{width: '27%'}" required  (onChange)="changeDate()"  [forceSelection]="false" >
-      <ng-template let-yearname pTemplate="item" >
-        <div   class="p-d-flex p-ai-center" >
-          שנת  {{ yearname.yearNum}}
-          <ng-container *ngIf="is" >
-            <button type="button" pButton class= "p-button-text p-button-raised p-button-rounded" (click)="add()">רוצה להוסיף שנה </button>
-          </ng-container>
-        </div>
-      </ng-template>
-    </p-autoComplete>
-     </div>
+        <p-dropdown
+            [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown"
+            [options]="years" [(ngModel)]="createdYear" placeholder="בחירת שנה"
+            [editable]="true" optionLabel="yearNum">
+        </p-dropdown>
     </div>
     <div class="flex align-items-center gap-3 mb-5">
         <p-dropdown
-        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="months"
-        [(ngModel)]="createdMonth"
-        placeholder="בחירת חודש"
-          [editable]="true"
-           ></p-dropdown>
+            [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown"
+            [options]="months" [(ngModel)]="createdMonth" placeholder="בחירת חודש"
+            [editable]="true">
+        </p-dropdown>
     </div>
+    <div *ngIf="exist">קיים דו"ח לחודש זה</div>
     <div class="flex justify-content-end gap-2">
-        <button pButton label="ביטול" severity="secondary" (onClick)="visible = false" class= "p-button-text p-button-raised p-button-rounded"></button>
-        <button pButton label="שמור" (onClick)="visible = false;onSubmit()" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <p-button label="ביטול" severity="secondary" (onClick)="visible = false" />
+        <p-button label="שמור" (onClick)="onSubmit()" />
+      </div>
+    </p-dialog>
+    <div>
+      <p-dropdown [options]="years" [(ngModel)]="selectedYear" placeholder="בחירת שנה" [editable]="true" optionLabel="yearNum" (onChange)="changeDate()"></p-dropdown>
     </div>
-</p-dialog>
-<div class="p-field p-mb-3" dir="rtl">
-    <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2"
-      (completeMethod)="filterByyear($event.query)" [minLength]="1"
-      placeholder="בחירת שנה"  field="yearNum" [dropdown]="true" (onSelect)="select($event)"
-      [style]="{width: '27%'}" required  (onChange)="changeDate()"  [forceSelection]="false" >
-      <ng-template let-yearname pTemplate="item" >
-        <div   class="p-d-flex p-ai-center" >
-          שנת  {{ yearname.yearNum}}
-          <ng-container *ngIf="is" >
-            <button type="button" pButton class= "p-button-text p-button-raised p-button-rounded" (click)="add()">רוצה להוסיף שנה </button>
-          </ng-container>
-        </div>
-      </ng-template>
-    </p-autoComplete>
-  </div>
-<div >
-<div >
-    <p-dropdown [options]="months"
-     [(ngModel)]="selectedMonth"
-     placeholder="בחירת חודש"
-       [editable]="true"
-        (onChange)="changeDate()" />
-</div>
-
-
-
-
- <p-table
- [value]="fieldBymonths" 
-  sortField="type"
-    sortMode="single" 
-    dataKey="type" 
-    rowGroupMode="subheader" 
-    groupRowsBy="type" 
-    [tableStyle]="{'min-width': '70rem'}">
-        <ng-template pTemplate="groupheader" let-fieldBymonth let-rowIndex="rowIndex" let-expanded="expanded">
-            <tr>
-                <td colspan="5">
-                    <h4 class="font-bold ml-2">{{fieldBymonth.type}}</h4>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-fieldBymonth>
-            <th><div class="text-center">{{fieldBymonth.value}}</div>
-                <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" [(ngModel)]="fieldBymonth.content" />
-                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" (change)="fieldBymonth.content === 'לא בוצע'?fieldBymonth.content = 'בוצע':fieldBymonth.content = 'לא בוצע'"/>
-            </th>
-        </ng-template>
-</p-table>
-
-
-
-
-
-    <!-- <form [formGroup]="yearlyReportForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <p-dropdown id="year" formControlName="year"
-          [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="years"
-          [(ngModel)]="selectedYear"
-          placeholder="בחירת שנה"
-            [editable]="true"
-             optionLabel="yearNum"
-             ></p-dropdown>
-         <div *ngIf="yearlyReportForm.get('type').invalid && yearlyReportForm.get('type').touched" class="error">
-          This field is required.
-        </div> -->
-      <!-- </div> -->
-  
-      <!-- <div class="form-group"> -->
-        
-        <!-- <div *ngIf="yearlyReportForm.get('year').invalid && yearlyReportForm.get('year').touched" class="error">
-          This field is required.
-        </div> -->
-      <!-- </div> -->
-  
-      
-  
-      <!-- <div class="form-group">
-        <label for="price">מחיר:</label>
-        <input type="number" id="price" formControlName="price" class="form-control" placeholder="מחיר">
-        <div *ngIf="yearlyReportForm.get('price').invalid && yearlyReportForm.get('price').touched" class="error">
-          This field is required.
-        </div>
+    <div>
+      <p-dropdown [options]="months" [(ngModel)]="selectedMonth" placeholder="בחירת חודש" [editable]="true" (onChange)="changeDate()"></p-dropdown>
+    </div>
+    
+    <div *ngFor="let type of types">
+      <div class="table-header">
+        <h3>{{ type }}</h3>
       </div>
-  
-      <div class="form-group">
-        <label for="paymentAmountPaid">סכום ששולם:</label>
-        <input type="number" id="paymentAmountPaid" formControlName="paymentAmountPaid" class="form-control"
-          placeholder="סכום ששולם">
-        <div *ngIf="yearlyReportForm.get('paymentAmountPaid').invalid && yearlyReportForm.get('paymentAmountPaid').touched"
-          class="error">
-          This field is required.
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="balanceDue">יתרה לתשלום:</label>
-        <input type="number" id="balanceDue" formControlName="balanceDue" class="form-control" placeholder="יתרה לתשלום">
-        <div *ngIf="yearlyReportForm.get('balanceDue').invalid && yearlyReportForm.get('balanceDue').touched" class="error">
-          This field is required.
-        </div>
-      </div>
-   
-      <button type="submit" pButton label="אישור" class="custom-button"></button>
-    </form>
-  </div> -->
-  
-
-<!-- <div >
-    <p-dropdown [options]="years"
-     [(ngModel)]="selectedYear"
-     placeholder="בחירת שנה"
-       [editable]="true"
-        optionLabel="yearNum"
-        (onChange)="changeDate()"  />
-</div> -->
-
-  
+            <table dir="rtl">
+        <thead>
+          <tr>
+            <th *ngIf="currentRoute === 'allClientMonthlyReport'">שם לקוח</th>
+            <th *ngFor="let value of getValuesForType(type)">{{ value }}</th>
+            <th *ngIf="currentRoute === 'monthlyReport'"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let clientId of getClientsForType(type)">
+            <td *ngIf="currentRoute === 'allClientMonthlyReport'">{{ clientId }}</td>
+            <td *ngFor="let value of getValuesForType(type)">
+              <ng-container *ngIf="getClientData(type, clientId, value) === 'בוצע'">
+                <input type="checkbox" class="p-checkbox" (change)="handleCheckboxChange(type, clientId, value, $event)" [checked]="true">
+              </ng-container>
+              <ng-container *ngIf="getClientData(type, clientId, value) === 'לא בוצע'">
+                <input type="checkbox" class="p-checkbox" (change)="handleCheckboxChange(type, clientId, value, $event)" [checked]="false">
+              </ng-container>
+              <ng-container *ngIf="getClientData(type, clientId, value) !== 'בוצע' && getClientData(type, clientId, value) !== 'לא בוצע'">
+                <input type="text" pInputText [value]="getClientData(type, clientId, value)" (input)="handleInputChange(type, clientId, value, $event)">
+              </ng-container>
+            </td>
+            <td *ngIf="currentRoute === 'monthlyReport'"><button (click)="saveChanges(type)">שמור שינויים</button>
+           </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+ 
