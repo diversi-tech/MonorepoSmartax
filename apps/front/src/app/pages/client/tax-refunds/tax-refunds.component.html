@@ -1,4 +1,4 @@
-<p-button *ngIf="currentRoute==='taxRefunds'" (click)="createReprtTag()" label="יצירת דוח  חדש" />
+<button pButton *ngIf="currentRoute==='taxRefunds'" (click)="createReprtTag()" label="יצירת דוח  חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
 
 <p-table [value]="allTaxRefunds" [tableStyle]="{ 'max-width': '50rem' }">
   <ng-template pTemplate="header">

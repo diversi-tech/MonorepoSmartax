@@ -4,7 +4,7 @@ body {
     background-color: chartreuse;
 }
 #app {
-    margin-top: 13rem;
+    margin-top: 10rem;
 }
 :host {
     text-align: right;
