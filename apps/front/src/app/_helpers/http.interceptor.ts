@@ -4,7 +4,6 @@
 // import { StorageService } from '../_services/storage.service';
 import { TokenService } from '../_services/token.service';
 
-
 // @Injectable()
 // export class AuthAndCredentialsInterceptor implements HttpInterceptor {
 
@@ -13,7 +12,7 @@ import { TokenService } from '../_services/token.service';
 
 //     const token = this.tokenService.getToken()?.access_token;
 //     if (token) {
-      
+
 //       req = req.clone({
 //         setHeaders: {
 //           Authorization: `Bearer ${token}`
@@ -34,26 +33,35 @@ import { TokenService } from '../_services/token.service';
 // ];
 
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpInterceptor,
+  HttpHandler,
+  HttpRequest,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthAndCredentialsInterceptor implements HttpInterceptor {
-
   constructor(private tokenService: TokenService) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     const token = this.tokenService.getToken()?.access_token;
     if (token) {
       req = req.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       });
     }
 
     req = req.clone({
-      withCredentials: true
+      withCredentials: true,
     });
 
     console.log('Intercepted request:', req); // לוג של הבקשה המנוטרלת
@@ -63,5 +71,9 @@ export class AuthAndCredentialsInterceptor implements HttpInterceptor {
 }
 
 export const httpInterceptorProviders = [
-  { provide: HTTP_INTERCEPTORS, useClass: AuthAndCredentialsInterceptor, multi: true },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthAndCredentialsInterceptor,
+    multi: true,
+  },
 ];
