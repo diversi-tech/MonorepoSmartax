@@ -11,10 +11,13 @@ import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { UserService } from '../../../_services/user.service';
 import { User } from '../../../_models/user.module';
-import { Router, RouterOutlet } from '@angular/router';
+import { NgZone } from '@angular/core';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
+import Swal from 'sweetalert2';
+import { ClientService } from '../../../_services/client.service';
 
 @Component({
   selector: 'app-yearly-report',
@@ -46,11 +49,12 @@ export class YearlyReportComponent implements OnInit {
   employeName: any | undefined;
   allEmploye: User[]
   currentYearlyReport: YearlyReport;
-
+  curentRoute: string = "";
   isSelected: number = 5;
   selectedStatus: string = "";
   filterstatus: string = "";
-  is: number = 2
+  is:number =2
+  allClient: Client[] | null;
 
   constructor(
     private stepFieldsService: stepFieldService,
@@ -58,12 +62,14 @@ export class YearlyReportComponent implements OnInit {
     private router: Router,
     private tokenService: TokenService,
     private userService: UserService,
+    private route: ActivatedRoute,// Inject ActivatedRoute
+    private clientService: ClientService,
+
 
   ) { }
 
   ngOnInit(): void {
-    this.client = history.state.client;
-    this.getYearlyReportsForClient();
+
     this.userService.getAllUsers().subscribe(
       (Employes) => {
         this.allEmploye = Employes;
@@ -72,8 +78,14 @@ export class YearlyReportComponent implements OnInit {
         console.error('Error ', error);
       }
     )
+    this.curentRoute = this.route.snapshot.url.join('/');
+    console.log(this.curentRoute)
+    this.getYearlyReportsForClient();
+    
+
   }
-  onSelectionChange(a: any) {
+  
+  onSelectionChange(a : any) {
     this.isSelected = Number(a);
     this.filterallYearlyReport = this.allYearlyReport
 
@@ -98,10 +110,15 @@ export class YearlyReportComponent implements OnInit {
     } else {
       this.filterallYearlyReport = this.allYearlyReport;
     }
-  }
+}
+  //get or getAllYearlyReports() or getYearlyReportsForClient acording to the router
+ 
+  
 
+  //get all yearly reports for the specific client
   getYearlyReportsForClient(): void {
-    const clientId = this.client._id // Assuming the client ID is passed via the state
+    this.client = history.state.client;
+    const clientId =this.client._id // Assuming the client ID is passed via the state
     this.yearlyReportService.getYearlyReportsForClient(clientId).subscribe(
       (reports) => {
         this.allYearlyReport = reports;
@@ -112,6 +129,8 @@ export class YearlyReportComponent implements OnInit {
       }
     );
   }
+
+ 
 
   createReprtTag(): void {
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createYearlyReport'], { state: { client: this.client } });
@@ -135,7 +154,33 @@ export class YearlyReportComponent implements OnInit {
     this.currentYearlyReport = yearlyReport;
   }
 
-  getClientName(name: string): string {
-    return this.client.firstName + " " + this.client.lastName;
+  getClientName(id: string): string {
+    return this.client?.firstName + " " + this.client?.lastName;
+  }
+
+  showDeleteConfirmation(id:string): void {
+    Swal.fire({
+      title: '?האם אתה בטוח',
+      text: '.לא ניתן לבטל את הפעולה לאחר שהיא התבצעה',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '!כן, מחק זאת',
+      cancelButtonText: 'ביטול',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.delete(id);
+      }
+    });
+  }
+
+  delete(id: string){
+    this.yearlyReportService.deleteYearlyReport(id).subscribe((response) => {
+      console.log('Yearly report deleted successfully',response);
+      this.allYearlyReport = this.allYearlyReport.filter(c => c._id !== id);
+    });
+  this.selectYearlyReport = null;
+  
   }
 }
