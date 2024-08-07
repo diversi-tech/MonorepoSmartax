@@ -65,6 +65,7 @@ export class UserController {
 
       return;
 
+      
     } catch (error) {
       throw new HttpException(
         'Failed to create user',
