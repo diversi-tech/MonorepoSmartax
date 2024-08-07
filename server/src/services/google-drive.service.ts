@@ -273,6 +273,7 @@ export class GoogleDriveService {
     }
   }
 
+
   private async getOrCreateFolder(folderName: string, parentFolderId: string): Promise<string> {
     const query = `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and '${parentFolderId}' in parents`;
 
@@ -311,7 +312,6 @@ export class GoogleDriveService {
         fileId: fileId,
         fields: 'mimeType, name',
       });
-
       const fileStream = await this.drive.files.get({
         fileId: fileId,
         alt: 'media',

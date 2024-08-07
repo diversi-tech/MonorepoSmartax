@@ -1,13 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  CommonModule,
-  DatePipe,
-  Location,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgStyle,
-} from '@angular/common';
+import { DatePipe, Location, CommonModule, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+
 import { TaskComponent } from '../../task/task.component';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -32,6 +25,7 @@ import { Button, ButtonDirective } from 'primeng/button';
     ConfirmDialogModule,
     RouterLink,
     RouterOutlet,
+    // TaskComponent,
     DialogModule,
     Footer,
     ButtonDirective,
@@ -54,6 +48,7 @@ import { Button, ButtonDirective } from 'primeng/button';
     ToastModule,
     DatePipe,
     TaskComponent,
+    TaskComponent
   ],
   templateUrl: './pop-app.component.html',
   styleUrl: './pop-app.component.css',
@@ -65,11 +60,9 @@ export class PopAppComponent implements OnInit {
 
   visible: boolean = true;
   show = true
-
-
   create = false;
   constructor(private route: ActivatedRoute, private location: Location,private router: Router) {}
-
+  
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.id == 'create') {
@@ -89,12 +82,13 @@ export class PopAppComponent implements OnInit {
     this.visible = true;
   }
 
-  onHide() {
-    console.log('The dialog has been closed.');
-    this.location.back();
-  }
   onDialogClose() {
     this.visible = false;
     this.router.navigate([`/taskSpe/${this.parent}`]);
+    this.show = true;
+  }
+  onHide() {
+    console.log('The dialog has been closed.');
+    this.location.back();
   }
 }

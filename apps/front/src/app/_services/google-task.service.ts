@@ -190,6 +190,43 @@ export class GoogleTaskService {
     });
   }
 
+  //   private async addTask(taskDetails: any) {
+  //     const task = {
+  //       title: taskDetails.title,
+  //       notes: taskDetails.notes,
+  //       due: taskDetails.dueTime,
+  //     };
+
+  //     try {
+  //       const request = gapi.client.tasks.tasks.insert({
+  //         tasklist: '@default',
+  //         resource: task,
+  //       });
+
+  //       request.execute((task: any) => {
+  //         Swal.fire({
+  //           position: 'top-end',
+  //           icon: 'success',
+  //           title: 'המשימה נוצרה בהצלחה',
+  //           html: `<a href="${task.selfLink}" target="_blank" autofocus>צפה במשימה</a>`,
+  //           showConfirmButton: false,
+  //           timer: 3000,
+  //         });
+
+  //         console.log('Task created:', task);
+
+  //          // שידור ה-eventId והקישור המעודכן
+  //        this.eventDataSubject.next({ eventId: task.id});
+
+  //         // שמור את task.id לשימוש מאוחר יותר
+  //         console.log(task.id);
+  //         task.id;
+  //       });
+  //     } catch (error) {
+  //       console.error('Error creating task:', error);
+  //     }
+  //   }
+
   private addTask(taskDetails: any): Promise<void> {
     return new Promise((resolve, reject) => {
       const task = {
@@ -222,6 +259,7 @@ export class GoogleTaskService {
           // שמור את task.id לשימוש מאוחר יותר
           console.log(task.id);
 
+          this.eventDataSubject.next({ eventId: task.id });
           resolve();
         });
       } catch (error) {
@@ -230,6 +268,7 @@ export class GoogleTaskService {
       }
     });
   }
+
 
 
   // updateTask()

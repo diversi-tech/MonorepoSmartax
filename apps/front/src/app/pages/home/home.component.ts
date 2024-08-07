@@ -56,6 +56,11 @@ export class HomeComponent implements OnInit {
 
   items: MenuItem[];
 
+  cards = [
+    { title: 'נקודות עניין', description: 'תיאור של נקודות עניין' },
+    { title: 'אטרקציות', description: 'תיאור של אטרקציות' },
+    { title: 'צימרים', description: 'תיאור של צימרים' },
+  ];
 
 
   // constructor() {

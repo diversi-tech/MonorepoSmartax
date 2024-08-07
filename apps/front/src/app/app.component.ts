@@ -1,3 +1,4 @@
+
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { StorageService } from './_services/storage.service';
@@ -15,6 +16,7 @@ import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DialogModule } from 'primeng/dialog';
 import { PopupNotificationComponent } from "./popUp-socket/popUp-socket.component";
+// import { WebSocketService } from './_services/webSocket.service';
 import { CheckListItemComponent } from './check-list-item/check-list-item.component';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuItemContent, MenuModule } from 'primeng/menu';
@@ -81,6 +83,7 @@ export class AppComponent {
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('_id');
   }
+  
 
   ngOnInit(): void {
     this.isLoggedIn = this.storageService.isLoggedIn();
@@ -135,6 +138,7 @@ export class AppComponent {
   //   console.log('showNotification called with:', task);
   //   this.cdr.detectChanges();  // Force change detection
   // }
+  
   logout(): void {
     try {
       this.authService.logout().subscribe(
@@ -152,7 +156,7 @@ export class AppComponent {
     } catch (err) {
       console.error('Logout failed. Error:', err);
       alert('ארעה שגיאה בתהליך היציאה, אנא נסה שנית');
-    }
+    } 
   }
 
   options(label: string) {

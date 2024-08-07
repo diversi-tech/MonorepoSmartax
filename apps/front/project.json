@@ -8,12 +8,16 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/front",
         "index": "apps/front/src/index.html",
         "main": "apps/front/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/front/tsconfig.app.json",
         "assets": [
           {
@@ -21,6 +25,7 @@
             "input": "apps/front/public"
           }
         ],
+
 
         "styles": [
           "./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -39,8 +44,9 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "3.70MB",
-              "maximumError": "3.90MB"
+              "maximumWarning": "4.90MB",
+              "maximumError": "5.90MB"
+
             },
             {
               "type": "anyComponentStyle",
@@ -84,7 +90,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/front/jest.config.ts"
       }

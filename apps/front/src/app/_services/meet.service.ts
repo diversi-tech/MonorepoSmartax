@@ -15,8 +15,12 @@ export class MeetService {
 
   constructor(private http: HttpClient) { }
 
+  // getRoleById(id: string): Observable<Role> {
+  //   return this.http.post<Role>(`${this.url}/searchClient`, { id }, this.httpOptions)
+  // }
+
   getAllMeetings(): Observable<Meet[]> {
-    return this.http.get<Meet[]>(`${this.url}`);
+    return this.http.get<Meet[]>(`${this.url}`)
   }
   getMeetById(meetId: string): Observable<Meet> {
     const body = { id: meetId }

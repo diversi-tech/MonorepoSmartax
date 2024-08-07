@@ -1,16 +1,5 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Param,
-  Inject,
-  Get,
-  Put,
-  Delete,
-  Query,
-  Res,
-  HttpStatus,
-} from '@nestjs/common';
+
+import { Controller, Post, Body, Param, Inject, Get, Put, Delete, Res, HttpStatus } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Response } from 'express';
 
@@ -50,6 +39,7 @@ export class ApiGatewayController {
     const client = this.getClientProxy(service);
     return client.send({ cmd }, data).toPromise();
   }
+
 
 
   @Get(':service/export/:month/:year')
@@ -147,6 +137,19 @@ export class ApiGatewayController {
     return client.send({ cmd }, { id }).toPromise();
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import { Controller, Post, Put, Param, Body, Get, Query, Res, HttpStatus } from '@nestjs/common';
 // import { HttpService } from '@nestjs/axios';

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Client } from '../_models/client.module';
+import { CLIENT_ENDPOINT } from '../api-urls';
 import { STEP_FIELD } from '../api-urls';
 import { StepField } from '../_models/stepField.module';
 @Injectable({
@@ -11,6 +12,8 @@ import { StepField } from '../_models/stepField.module';
 export class stepFieldService {
   // private apiUrl = CLIENT_ENDPOINT; // Base URL for the Client API
   private apiUrl = STEP_FIELD; // Base URL for the Client API
+
+  // private apiUrl = CLIENT_ENDPOINT; // Base URL for the Client API
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }), // Define headers for HTTP requests
   };
@@ -51,6 +54,10 @@ export class stepFieldService {
 
   // Delete a StepField by ID
   deleteStepField(id: string): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/delete`, { id }, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<boolean>('deleteStepField', false))
+      );
     console.log('server id', id);
     return this.http
       .post<boolean>(`${this.apiUrl}/delete`, { id }, this.httpOptions)

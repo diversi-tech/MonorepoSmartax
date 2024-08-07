@@ -3,14 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { WorkLog } from '../_models/workLog.model';
 import { UpdateTimeEntryDto } from '../../../../../timesheet/src/dto/workLog.dto';
-import { WORK_LOGS } from '../api-urls';
+import { WORK_LOGS , USER_ENDPOINT} from '../api-urls';
+import { User } from '../../../../../server/src/Models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorkLogService {
   // private apiUrl = WORK_LOGS;
-  private apiUrl = 'https://api-gateway-m7cv.onrender.com';
+
+  private apiUrl = WORK_LOGS;
+  private userApiUrl = USER_ENDPOINT;
 
 
   constructor(private http: HttpClient) {}
@@ -27,6 +30,7 @@ getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
 }
 
 
+ 
   createWorkLog(workLog: WorkLog): Observable<WorkLog> {
     let url = `${this.apiUrl}/create`;
     return this.http
@@ -72,5 +76,13 @@ getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
     return this.http
       .get<{ data: WorkLog[] }>(url)
       .pipe(map((response) => response.data));
+  }
+ 
+  getUserById(userId:string): Observable<any>{
+    console.log("gggggggg");
+    return this.http.get(this.userApiUrl+`/findOne?id=${userId}`)
+  }
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.userApiUrl}/findAll`);
   }
 }

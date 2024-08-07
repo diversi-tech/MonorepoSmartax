@@ -31,6 +31,8 @@ export class GoogleAuthService {
     }
   }
 
+
+  // Subject להעברת המידע לקומפוננטות
   private eventDataSubject = new BehaviorSubject<any>(null);
   public eventData$ = this.eventDataSubject.asObservable();
 
@@ -93,6 +95,7 @@ export class GoogleAuthService {
         return;
       }
 
+
       this.tokenClient.callback = async (resp: any) => {
         if (resp.error !== undefined) {
           console.error('Error during token request', resp.error);
@@ -107,6 +110,7 @@ export class GoogleAuthService {
         }
       };
 
+
       try {
         if (gapi.client.getToken() === null) {
           this.tokenClient.requestAccessToken({ prompt: 'consent' });
@@ -120,6 +124,75 @@ export class GoogleAuthService {
     });
   }
 
+  // private async scheduleEvent(eventDetails: any) {
+  //   // Ensure event details have startTime and endTime
+  //   if (!eventDetails.startTime || !eventDetails.endTime) {
+  //     console.error('Missing event details: startTime or endTime');
+  //     return;
+  //   }
+
+  //   const event = {
+  //     summary: eventDetails.nameT,
+  //     location: "",
+  //     description: eventDetails.description,
+  //     start: {
+  //       dateTime: eventDetails.startTime,
+  //       timeZone: "Asia/Jerusalem",
+  //     },
+  //     end: {
+  //       dateTime: eventDetails.endTime,
+  //       timeZone: "Asia/Jerusalem",
+  //     },
+  //     attendees: [{ email: eventDetails.email }],
+  //     reminders: {
+  //       useDefault: false,
+  //       overrides: [
+  //         { method: "email", minutes: 24 * 60 },
+  //         { method: "popup", minutes: 10 },
+  //       ],
+  //     },
+  //     conferenceData: {
+  //       createRequest: {
+  //         requestId: Math.random().toString(36).substring(2),
+  //         conferenceSolutionKey: {
+  //           type: "hangoutsMeet"
+  //         }
+  //       }
+  //     }
+  //   };
+
+  //   try {
+  //     const request = gapi.client.calendar.events.insert({
+  //       calendarId: "primary",
+  //       resource: event,
+  //       conferenceDataVersion: 1
+  //     });
+
+  //     request.execute((event: any) => {
+  //       let conferenceLink = '';
+  //       if (event.conferenceData && event.conferenceData.entryPoints && event.conferenceData.entryPoints.length > 0) {
+  //         conferenceLink = event.conferenceData.entryPoints[0].uri;
+  //       }
+  //       Swal.fire({
+  //         position: "top-end",
+  //         icon: "success",
+  //         title: "המשימה נשמרה",
+  //         html: `
+  //           לצפיה בלוח המשימות
+  //           <a href="${event.htmlLink}" target="_blank" autofocus>לחץ כאן</a>
+  //           <br>
+  //           לפגישה ב-Google Meet
+  //           <a href="${conferenceLink}" target="_blank" autofocus>לחץ כאן</a>
+  //         `,
+  //         showConfirmButton: false,
+  //         timer: 3000
+  //       });
+  //     });
+  //   } catch (error) {
+  //     console.error("Error creating event:", error);
+  //   }
+  // }
+
   private async scheduleEvent(eventDetails: any) {
     // Ensure event details have startTime and endTime
     if (!eventDetails.startTime || !eventDetails.endTime) {
@@ -127,7 +200,9 @@ export class GoogleAuthService {
       return;
     }
 
+
     const attendees = eventDetails.emails.map((email: string) => ({ email }));
+
     const event = {
       summary: eventDetails.nameT,
       location: '',
@@ -158,12 +233,14 @@ export class GoogleAuthService {
       },
     };
 
+
     try {
       const request = gapi.client.calendar.events.insert({
         calendarId: 'primary',
         resource: event,
         conferenceDataVersion: 1,
       });
+
 
       request.execute((event: any) => {
         let conferenceLink = '';
@@ -190,10 +267,13 @@ export class GoogleAuthService {
         });
         eventDetails.eventId = event.id;
         this.eventDataSubject.next({ eventId: event.id, conferenceLink });
+        // שמירת ה-eventId
+        eventDetails.eventId = event.id;
+        this.eventDataSubject.next({ eventId: event.id, conferenceLink });
       });
     } catch (error) {
       console.error('Error creating event:', error);
-    }
+    } 
   }
 
   public updateGoogleEvent(eventDetails: any) {
@@ -220,6 +300,7 @@ export class GoogleAuthService {
     }
   }
 
+
   private async modifyEvent(eventDetails: any) {
     // Ensure event details have eventId, startTime, and endTime
     if (
@@ -230,6 +311,7 @@ export class GoogleAuthService {
       console.error('Missing event details: eventId, startTime, or endTime');
       return;
     }
+
 
     const event = {
       summary: eventDetails.nameT,
@@ -261,6 +343,7 @@ export class GoogleAuthService {
       },
     };
 
+
     try {
       const request = gapi.client.calendar.events.update({
         calendarId: 'primary',
@@ -268,6 +351,7 @@ export class GoogleAuthService {
         resource: event,
         conferenceDataVersion: 1,
       });
+
 
       request.execute((event: any) => {
         let conferenceLink = '';
@@ -360,3 +444,4 @@ export class GoogleAuthService {
     }
   }
 }
+
