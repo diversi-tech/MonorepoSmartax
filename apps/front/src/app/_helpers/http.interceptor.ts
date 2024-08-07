@@ -53,7 +53,7 @@ export class AuthAndCredentialsInterceptor implements HttpInterceptor {
     }
 
     req = req.clone({
-      // withCredentials: true
+      withCredentials: true
     });
 
     console.log('Intercepted request:', req); // לוג של הבקשה המנוטרלת
