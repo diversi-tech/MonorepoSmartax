@@ -1,23 +1,24 @@
 <router-outlet></router-outlet>
 
 <br><br>
-<button pButton (click)="createStatement()" label="יצירת הצהרת הון חדשה" class= "p-button-text p-button-raised p-button-rounded"></button>
+<button *ngIf="this.currentRoute != 'allClientFinancialStatement'" pButton (click)="createStatement()" label="יצירת הצהרת הון חדשה" class= "p-button-text p-button-raised p-button-rounded"></button>
 
 <p-table [value]="allFinancialStatement">
     <ng-template pTemplate="header">
         <tr>
             <th></th>
             <th>סטטוס</th>
-            <th>ישות</th>
             <th>עובד מטפל</th>
             <th>יתרה לתשלום</th>
             <th>סכום ששולם</th>
-            <th>מחיר</th>
-            
+            <th pSortableColumn="price" class="sort">
+                מחיר <p-sortIcon field="price" />
+            </th>
             <th>תאריך יצירה</th>
             <th pSortableColumn="yearReport" class="sort">
                 :שנה <p-sortIcon field="yearReport" />
             </th>
+            <th *ngIf="this.currentRoute === 'allClientFinancialStatement'">שם לקוח</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-financialStatement>
@@ -25,7 +26,7 @@
 
             <td><button *ngIf="currentFinancialStatement === financialStatement" pButton
                 class="pi pi-pencil p-button-outlined p-button-lg p-button-rounded p-button-info"
-                (click)="goToSteps()"></button>
+                (click)="goToSteps(currentFinancialStatement)"></button>
             </td>
             <td class="{{financialStatement.status.color}}">{{ financialStatement.status.name }}</td>
             <td>{{ financialStatement.entityType }}</td>
