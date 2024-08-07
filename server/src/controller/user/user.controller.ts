@@ -1,5 +1,5 @@
 
-import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, Request } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, Request, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { UserService } from '../../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../../Models/dto/user.dto';
@@ -7,8 +7,11 @@ import { User } from 'server/src/Models/user.model';
 import { TokenService } from 'server/src/services/jwt.service';
 import { hashPasswordService } from 'server/src/services/hash-password';
 import { ValidationException } from 'server/src/common/exceptions/validation.exception';
+import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
+import { RoleGuard } from 'server/src/guards/role.guard';
+import { AuthGuard } from 'server/src/guards/auth.guard';
 
-
+@UseFilters(HttpErrorFilter)
 @ApiTags('users')
 @Controller('users')
 export class UserController {
@@ -26,7 +29,7 @@ export class UserController {
     try {
       createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
       const user = await this.userService.createUser(createUserDto);
-      return;
+      return  user;
     } catch (error) {
       throw new HttpException(
         'Failed to create user',
@@ -88,23 +91,38 @@ export class UserController {
     }
   }
 
+  // @Post('update')
+  // @ApiOperation({ summary: 'Update a user by ID' })
+  // @ApiBody({ type: UpdateUserDto })
+  // async update(@Body() updateUserDto: UpdateUserDto): Promise<User> {
+  //   try {
+  //     const updatedUser = await this.userService.updateUser(updateUserDto.id, updateUserDto);
+  //     if (!updatedUser) {
+  //       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+  //     }
+  //     return updatedUser;
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new HttpException(
+  //       error.message,
+  //       error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
+  //     );
+  //   }
+  // }
+
+
+  @UseGuards(AuthGuard, RoleGuard(3))
   @Post('update')
   @ApiOperation({ summary: 'Update a user by ID' })
   @ApiBody({ type: UpdateUserDto })
-  async update(@Body() updateUserDto: UpdateUserDto): Promise<User> {
-    try {
-      const updatedUser = await this.userService.updateUser(updateUserDto.id, updateUserDto);
-      if (!updatedUser) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      }
-      return updatedUser;
-    } catch (error) {
-      console.log(error);
-      throw new HttpException(
-        error.message,
-        error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
-      );
-    }
+  async update(
+    @Body('id') id: string,
+    @Body() updateUserDto: UpdateUserDto
+  ): Promise<User> {
+    return this.userService.updateUser(
+      id,
+      updateUserDto
+    );
   }
 
   @Delete('delete')
