@@ -52,6 +52,8 @@ export class TasksController {
   async findAll(): Promise<Task[]> {
     try {
       const tasks = await this.taskService.findAll();
+      console.log(tasks);
+      
       return tasks;
     } catch (error) {
       throw new HttpException(

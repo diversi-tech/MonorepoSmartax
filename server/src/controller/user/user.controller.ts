@@ -44,6 +44,8 @@ export class UserController {
   async findAll(): Promise<User[]> {
     try {
       const users = await this.userService.findAll();
+      console.log(users);
+      
       return users;
     } catch (error) {
       throw new HttpException(
