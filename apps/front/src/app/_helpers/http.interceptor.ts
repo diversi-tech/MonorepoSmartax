@@ -2,7 +2,7 @@
 // import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 // import { Observable } from 'rxjs';
 // import { StorageService } from '../_services/storage.service';
-// import { TokenService } from '../_services/token.service';
+import { TokenService } from '../_services/token.service';
 
 
 // @Injectable()
@@ -36,7 +36,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TokenService } from '../_services/token.service';
 
 @Injectable()
 export class AuthAndCredentialsInterceptor implements HttpInterceptor {
@@ -44,23 +43,22 @@ export class AuthAndCredentialsInterceptor implements HttpInterceptor {
   constructor(private tokenService: TokenService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     const token = this.tokenService.getToken()?.access_token;
-    let clonedReq = req;
-
     if (token) {
-      clonedReq = req.clone({
+      req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
         }
       });
     }
 
-    clonedReq = clonedReq.clone({
+    req = req.clone({
       withCredentials: true
     });
 
-    return next.handle(clonedReq);
+    console.log('Intercepted request:', req); // לוג של הבקשה המנוטרלת
+
+    return next.handle(req);
   }
 }
 
