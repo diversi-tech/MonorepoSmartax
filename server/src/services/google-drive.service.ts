@@ -201,7 +201,6 @@ import { DocTypeService } from './docTypes.service';
 
 @Injectable()
 export class GoogleDriveService {
-export class GoogleDriveService {
   private drive;
   private auth: JWT;
   private readonly rootFolderId: string = '1iJFMZKQfhdWCTcW6taWqMZ19M9dpKabp';
@@ -232,9 +231,6 @@ export class GoogleDriveService {
       const client = await this.clientService.searchClient(clientId);
       const clientfolderId = await this.getOrCreateFolder(client.firstName, this.rootFolderId);
       const folderId = await this.getOrCreateFolder(docType, clientfolderId);
-      const client = await this.clientService.searchClient(clientId);
-      const clientfolderId = await this.getOrCreateFolder(client.firstName, this.rootFolderId);
-      const folderId = await this.getOrCreateFolder(docType, clientfolderId);
       const response = await this.drive.files.create({
         requestBody: {
           name: Buffer.from(file.originalname, 'latin1').toString('utf8'),
@@ -247,9 +243,6 @@ export class GoogleDriveService {
       });
       fs.unlinkSync(file.path);
       const createdDoc = new this.docModel({
-        _id: response.data.id,
-        name: response.data.name,
-        viewLink: await this.generateViewLink(response.data.id),
         _id: response.data.id,
         name: response.data.name,
         viewLink: await this.generateViewLink(response.data.id),
@@ -279,7 +272,6 @@ export class GoogleDriveService {
     }
   }
 
-  private async getOrCreateFolder(folderName: string, parentFolderId: string): Promise<string> {
 
   private async getOrCreateFolder(folderName: string, parentFolderId: string): Promise<string> {
     const query = `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and '${parentFolderId}' in parents`;
@@ -318,19 +310,6 @@ export class GoogleDriveService {
       const fileResponse = await this.drive.files.get({
         fileId: fileId,
         fields: 'mimeType, name',
-      });
-  async getFile(fileId: string): Promise<any> {
-    try {
-      const fileResponse = await this.drive.files.get({
-        fileId: fileId,
-        fields: 'mimeType, name',
-      });
-
-      const fileStream = await this.drive.files.get({
-        fileId: fileId,
-        alt: 'media',
-      }, {
-        responseType: 'stream'
       });
       const fileStream = await this.drive.files.get({
         fileId: fileId,
