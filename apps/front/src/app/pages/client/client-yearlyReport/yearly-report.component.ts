@@ -2,9 +2,7 @@ import { Component, Injectable, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StepperModule } from 'primeng/stepper';
 import { stepFieldService } from '../../../_services/step_field.service';
-import { StepField } from '../../../_models/stepField.module';
 import { CheckboxModule } from 'primeng/checkbox';
-import { Observable } from 'rxjs';
 import { YearlyReport } from '../../../_models/yearlyReport.module';
 import { YearlyReportService } from '../../../_services/yearlyReport.service';
 import { Button, ButtonModule } from 'primeng/button';
@@ -24,7 +22,18 @@ import { ClientService } from '../../../_services/client.service';
 @Component({
   selector: 'app-yearly-report',
   standalone: true,
-  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule,FormsModule,TooltipModule, IconProfileComponent],
+  imports: [
+    CommonModule, 
+    StepperModule, 
+    CheckboxModule, 
+    Button, 
+    RouterOutlet, 
+    TableModule, 
+    ButtonModule,
+    FormsModule,
+    TooltipModule, 
+    IconProfileComponent
+  ],
   templateUrl: './yearly-report.component.html',
   styleUrl: './yearly-report.component.css',
 })
@@ -35,19 +44,20 @@ import { ClientService } from '../../../_services/client.service';
 export class YearlyReportComponent implements OnInit {
   steps: any[];
   allYearlyReport: YearlyReport[] | null;
-  filterallYearlyReport: YearlyReport[] ;
+  filterallYearlyReport: YearlyReport[];
   client: Client;
   employeName: any | undefined;
   allEmploye: User[]
   currentYearlyReport: YearlyReport;
   curentRoute: string = "";
   isSelected: number = 5;
-  selectedStatus:string="";
+  selectedStatus: string = "";
   filterstatus: string = "";
   is:number =2
   allClient: Client[] | null;
 
-  constructor(private stepFieldsService: stepFieldService,
+  constructor(
+    private stepFieldsService: stepFieldService,
     private yearlyReportService: YearlyReportService,
     private router: Router,
     private tokenService: TokenService,
@@ -77,28 +87,28 @@ export class YearlyReportComponent implements OnInit {
   
   onSelectionChange(a : any) {
     this.isSelected = Number(a);
-    this.filterallYearlyReport=this.allYearlyReport
-    
+    this.filterallYearlyReport = this.allYearlyReport
+
   }
   filterToDoWithBalanceDue(): void {
-    this.is=4
+    this.is = 4
     this.filterallYearlyReport = this.allYearlyReport.filter(report =>
-     ( report.status.name === "TO DO" && report.paymentAmountPaid > 0)
+      (report.status.name === "TO DO" && report.paymentAmountPaid > 0)
     );
-}
-filterToDoWithBalanceDue2(): void {
-  this.is=2
-  this.filterallYearlyReport = this.allYearlyReport
-}
-  filterByStatus(event: Event): void { 
+  }
+  filterToDoWithBalanceDue2(): void {
+    this.is = 2
+    this.filterallYearlyReport = this.allYearlyReport
+  }
+  filterByStatus(event: Event): void {
     this.filterallYearlyReport = this.allYearlyReport;
     this.filterstatus = (event.target as HTMLSelectElement).value;
     if (this.filterstatus === "TO DO" || this.filterstatus === "IN PROGRESS") {
-        this.filterallYearlyReport = this.allYearlyReport.filter(report => 
-            report.status.name === this.filterstatus
-        );
+      this.filterallYearlyReport = this.allYearlyReport.filter(report =>
+        report.status.name === this.filterstatus
+      );
     } else {
-        this.filterallYearlyReport = this.allYearlyReport;
+      this.filterallYearlyReport = this.allYearlyReport;
     }
 }
   //get or getAllYearlyReports() or getYearlyReportsForClient acording to the router
@@ -112,8 +122,7 @@ filterToDoWithBalanceDue2(): void {
     this.yearlyReportService.getYearlyReportsForClient(clientId).subscribe(
       (reports) => {
         this.allYearlyReport = reports;
-        this.filterallYearlyReport=reports
-        console.log("report", this.allYearlyReport)
+        this.filterallYearlyReport = reports
       },
       (error) => {
         console.error('Error fetching yearly reports for client', error);
@@ -125,7 +134,7 @@ filterToDoWithBalanceDue2(): void {
 
   createReprtTag(): void {
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createYearlyReport'], { state: { client: this.client } });
-}
+  }
 
   goToSteps(task: any) {
     this.router.navigate(['clientSearch/clientManagement/clientNavbar/steps', this.router], { state: { data: task, client: this.client } });

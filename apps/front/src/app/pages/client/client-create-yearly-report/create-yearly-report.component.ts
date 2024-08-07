@@ -18,7 +18,6 @@ import {
 } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { DialogModule } from 'primeng/dialog';
 import { Location } from '@angular/common';
@@ -41,6 +40,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { ChipsModule } from 'primeng/chips';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ClientService } from '../../../_services/client.service';
+import { Client } from '../../../_models/client.module';
 
 @Component({
   selector: 'app-create-yearly-report',
@@ -79,7 +79,9 @@ import { ClientService } from '../../../_services/client.service';
 @Injectable({
   providedIn: 'root', // Ensure it's provided in root or a specific module
 })
+
 export class CreateYearlyReportComponent implements OnInit {
+
   displayModal: boolean = false;
   yearlyReportForm: FormGroup;
   userId: string; // Assuming the client ID is passed via the state
@@ -129,7 +131,6 @@ export class CreateYearlyReportComponent implements OnInit {
   loadData() {
     this.yearService.getAllYear().subscribe({
       next: (data) => {
-        console.log(data);
         this.yearList = data;
         this.yearList2 = data;
       },
@@ -312,6 +313,7 @@ export class CreateYearlyReportComponent implements OnInit {
         }
       );
   }
+
   goBack(): void {
     this.location.back();
   }

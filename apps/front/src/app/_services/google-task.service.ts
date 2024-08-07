@@ -31,7 +31,6 @@ export class GoogleTaskService {
     }
   }
 
-  // Subject להעברת המידע לקומפוננטות
   private eventDataSubject = new BehaviorSubject<any>(null);
   public eventData$ = this.eventDataSubject.asObservable();
 
@@ -63,7 +62,6 @@ export class GoogleTaskService {
       discoveryDocs: [this.DISCOVERY_DOC],
     });
     this.gapiInited = true;
-    console.log('GAPI client initialized');
   }
 
   private gisLoaded() {
@@ -75,11 +73,9 @@ export class GoogleTaskService {
           console.error('Error during token request', tokenResponse.error);
           throw tokenResponse;
         }
-        console.log('Token received');
       },
     });
     this.gisInited = true;
-    console.log('GIS client initialized');
   }
 
   private reinitializeGapi() {
@@ -94,71 +90,71 @@ export class GoogleTaskService {
       });
   }
 
-//   public createSimpleTask(taskDetails: any) {
-//     if (!this.gapiInited || !this.gisInited) {
-//       console.error('GAPI or GIS not initialized');
-//       this.reinitializeGapi();
-//       return;
-//     }
+  //   public createSimpleTask(taskDetails: any) {
+  //     if (!this.gapiInited || !this.gisInited) {
+  //       console.error('GAPI or GIS not initialized');
+  //       this.reinitializeGapi();
+  //       return;
+  //     }
 
-//     this.tokenClient.callback = async (resp: any) => {
-//       if (resp.error !== undefined) {
-//         console.error('Error during token request', resp.error);
-//         throw resp;
-//       }
-//       await this.addTask(taskDetails);
-//     };
+  //     this.tokenClient.callback = async (resp: any) => {
+  //       if (resp.error !== undefined) {
+  //         console.error('Error during token request', resp.error);
+  //         throw resp;
+  //       }
+  //       await this.addTask(taskDetails);
+  //     };
 
-//     try {
-//       if (gapi.client.getToken() === null) {
-//         this.tokenClient.requestAccessToken({ prompt: 'consent' });
-//       } else {
-//         this.tokenClient.requestAccessToken({ prompt: '' });
-//       }
-//     } catch (error) {
-//       console.error('Error requesting access token', error);
-//     }
-//     console.log('Token request initiated');
-//   }
-// 2
-// public createSimpleTask(taskDetails: any): Promise<void> {
-//     return new Promise((resolve, reject) => {
-//       if (!this.gapiInited || !this.gisInited) {
-//         console.error('GAPI or GIS not initialized');
-//         this.reinitializeGapi();
-//         reject('GAPI or GIS not initialized');
-//         return;
-//       }
-  
-//       this.tokenClient.callback = async (resp: any) => {
-//         if (resp.error !== undefined) {
-//           console.error('Error during token request', resp.error);
-//           reject(resp.error);
-//           return;
-//         }
-//         try {
-//           await this.addTask(taskDetails);
-//           resolve();
-//         } catch (error) {
-//           reject(error);
-//         }
-//       };
-  
-//       try {
-//         if (gapi.client.getToken() === null) {
-//           this.tokenClient.requestAccessToken({ prompt: 'consent' });
-//         } else {
-//           this.tokenClient.requestAccessToken({ prompt: '' });
-//         }
-//       } catch (error) {
-//         console.error('Error requesting access token', error);
-//         reject(error);
-//       }
-//       console.log('Token request initiated');
-//     });
-//   }
-// 3
-public createSimpleTask(taskDetails: any): Promise<void> {
+  //     try {
+  //       if (gapi.client.getToken() === null) {
+  //         this.tokenClient.requestAccessToken({ prompt: 'consent' });
+  //       } else {
+  //         this.tokenClient.requestAccessToken({ prompt: '' });
+  //       }
+  //     } catch (error) {
+  //       console.error('Error requesting access token', error);
+  //     }
+  //     console.log('Token request initiated');
+  //   }
+  // 2
+  // public createSimpleTask(taskDetails: any): Promise<void> {
+  //     return new Promise((resolve, reject) => {
+  //       if (!this.gapiInited || !this.gisInited) {
+  //         console.error('GAPI or GIS not initialized');
+  //         this.reinitializeGapi();
+  //         reject('GAPI or GIS not initialized');
+  //         return;
+  //       }
+
+  //       this.tokenClient.callback = async (resp: any) => {
+  //         if (resp.error !== undefined) {
+  //           console.error('Error during token request', resp.error);
+  //           reject(resp.error);
+  //           return;
+  //         }
+  //         try {
+  //           await this.addTask(taskDetails);
+  //           resolve();
+  //         } catch (error) {
+  //           reject(error);
+  //         }
+  //       };
+
+  //       try {
+  //         if (gapi.client.getToken() === null) {
+  //           this.tokenClient.requestAccessToken({ prompt: 'consent' });
+  //         } else {
+  //           this.tokenClient.requestAccessToken({ prompt: '' });
+  //         }
+  //       } catch (error) {
+  //         console.error('Error requesting access token', error);
+  //         reject(error);
+  //       }
+  //       console.log('Token request initiated');
+  //     });
+  //   }
+  // 3
+  public createSimpleTask(taskDetails: any): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this.gapiInited || !this.gisInited) {
         console.error('GAPI or GIS not initialized');
@@ -166,7 +162,7 @@ public createSimpleTask(taskDetails: any): Promise<void> {
         reject('GAPI or GIS not initialized');
         return;
       }
-  
+
       this.tokenClient.callback = async (resp: any) => {
         if (resp.error !== undefined) {
           console.error('Error during token request', resp.error);
@@ -180,7 +176,7 @@ public createSimpleTask(taskDetails: any): Promise<void> {
           reject(error);
         }
       };
-  
+
       try {
         if (gapi.client.getToken() === null) {
           this.tokenClient.requestAccessToken({ prompt: 'consent' });
@@ -191,63 +187,23 @@ public createSimpleTask(taskDetails: any): Promise<void> {
         console.error('Error requesting access token', error);
         reject(error);
       }
-      console.log('Token request initiated');
     });
   }
-  
-  
 
-//   private async addTask(taskDetails: any) {
-//     const task = {
-//       title: taskDetails.title,
-//       notes: taskDetails.notes,
-//       due: taskDetails.dueTime,
-//     };
-
-//     try {
-//       const request = gapi.client.tasks.tasks.insert({
-//         tasklist: '@default',
-//         resource: task,
-//       });
-
-//       request.execute((task: any) => {
-//         Swal.fire({
-//           position: 'top-end',
-//           icon: 'success',
-//           title: 'המשימה נוצרה בהצלחה',
-//           html: `<a href="${task.selfLink}" target="_blank" autofocus>צפה במשימה</a>`,
-//           showConfirmButton: false,
-//           timer: 3000,
-//         });
-
-//         console.log('Task created:', task);
-
-//          // שידור ה-eventId והקישור המעודכן
-//        this.eventDataSubject.next({ eventId: task.id});
-
-//         // שמור את task.id לשימוש מאוחר יותר
-//         console.log(task.id);
-//         task.id;
-//       });
-//     } catch (error) {
-//       console.error('Error creating task:', error);
-//     }
-//   }
-
-private addTask(taskDetails: any): Promise<void> {
+  private addTask(taskDetails: any): Promise<void> {
     return new Promise((resolve, reject) => {
       const task = {
         title: taskDetails.title,
         notes: taskDetails.notes,
         due: taskDetails.dueTime,
       };
-  
+
       try {
         const request = gapi.client.tasks.tasks.insert({
           tasklist: '@default',
           resource: task,
         });
-  
+
         request.execute((task: any) => {
           Swal.fire({
             position: 'top-end',
@@ -257,15 +213,15 @@ private addTask(taskDetails: any): Promise<void> {
             showConfirmButton: false,
             timer: 3000,
           });
-  
+
           console.log('Task created:', task);
-  
+
           // שידור ה-eventId והקישור המעודכן
           this.eventDataSubject.next({ eventId: task.id });
-  
+
           // שמור את task.id לשימוש מאוחר יותר
           console.log(task.id);
-  
+
           resolve();
         });
       } catch (error) {
@@ -274,7 +230,7 @@ private addTask(taskDetails: any): Promise<void> {
       }
     });
   }
-  
+
 
   // updateTask()
   public updateGoogleTask(taskDetails: any) {
@@ -290,7 +246,6 @@ private addTask(taskDetails: any): Promise<void> {
         throw resp;
       }
 
-      // שלוף את taskId מהמערכת שלך או מהמאגר נתונים
       const taskId = 'UjRFV3AxSXZ1aW40dDFHTg';
       if (!taskId) {
         console.error('Task ID not found');
@@ -309,7 +264,6 @@ private addTask(taskDetails: any): Promise<void> {
     } catch (error) {
       console.error('Error requesting access token', error);
     }
-    console.log('Token request initiated');
   }
 
   private async modifyTask(taskDetails: any) {
@@ -317,7 +271,7 @@ private addTask(taskDetails: any): Promise<void> {
       id: taskDetails.taskId,
       title: taskDetails.title,
       notes: taskDetails.notes,
-      due: taskDetails.dueDate, //? taskDetails.dueDate.toISOString() : null,
+      due: taskDetails.dueDate,
     };
 
     try {
@@ -337,15 +291,14 @@ private addTask(taskDetails: any): Promise<void> {
           timer: 3000,
         });
 
-        console.log('Task updated:', task);
       });
     } catch (error) {
       console.error('Error updating task:', error);
     }
   }
 
-//   delete
-public deleteGoogleTask(taskId: string): Promise<void> {
+  //   delete
+  public deleteGoogleTask(taskId: string): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this.gapiInited || !this.gisInited) {
         console.error('GAPI or GIS not initialized');
@@ -353,14 +306,14 @@ public deleteGoogleTask(taskId: string): Promise<void> {
         reject('GAPI or GIS not initialized');
         return;
       }
-  
+
       this.tokenClient.callback = async (resp: any) => {
         if (resp.error !== undefined) {
           console.error('Error during token request', resp.error);
           reject(resp.error);
           return;
         }
-  
+
         try {
           await this.removeTask(taskId);
           resolve();
@@ -368,7 +321,7 @@ public deleteGoogleTask(taskId: string): Promise<void> {
           reject(error);
         }
       };
-  
+
       try {
         if (gapi.client.getToken() === null) {
           this.tokenClient.requestAccessToken({ prompt: 'consent' });
@@ -379,7 +332,6 @@ public deleteGoogleTask(taskId: string): Promise<void> {
         console.error('Error requesting access token', error);
         reject(error);
       }
-      console.log('Token request initiated');
     });
   }
 
@@ -398,8 +350,6 @@ public deleteGoogleTask(taskId: string): Promise<void> {
           showConfirmButton: false,
           timer: 3000,
         });
-
-        console.log('Task deleted:', taskId);
       });
     } catch (error) {
       console.error('Error deleting task:', error);

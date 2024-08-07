@@ -41,7 +41,7 @@ export class YearlyReportStepsComponent implements OnInit {
   responseData: any;
   allStep: StepField[] = [];
   stepsByNumber: { [key: number]: StepField[] } = {};
-  activeStep = 0; // מתחיל בשלב הראשון
+  activeStep = 0;
   changes: { [key: string]: boolean } = {};
   client: Client;
   activeIndex: number = 0;
@@ -50,13 +50,12 @@ export class YearlyReportStepsComponent implements OnInit {
   statusList: Status[] = []; // List to hold statuses
 
 
-  constructor(private yearlyReportService: YearlyReportService,
+  constructor(
+    private yearlyReportService: YearlyReportService,
     private router: Router,
     private location: Location,
     private statusService: StatusService
-  ) {
-
-  };
+  ) { };
 
 
   ngOnInit() {
@@ -75,7 +74,6 @@ export class YearlyReportStepsComponent implements OnInit {
   }
 
   groupSteps() {
-    // console.log("task",history.state.task)
     this.allStep.forEach((step) => {
       const stepNumber = step.stepNumber; // Assuming stepNumber is the property you want to group by
       if (!this.stepsByNumber[stepNumber]) {
@@ -88,9 +86,6 @@ export class YearlyReportStepsComponent implements OnInit {
   getStepNumbers() {
     return Object.keys(this.stepsByNumber).map(Number);
   }
-
-
-
 
   async update(task: StepField) {
     const taskId = task._id;
@@ -119,8 +114,6 @@ export class YearlyReportStepsComponent implements OnInit {
   }
 
   async submitChanges() {
-    console.log("Submitting changes:", this.changes);
-
     for (const taskId in this.changes) {
       const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
       if (taskIndex !== -1) {
@@ -128,7 +121,6 @@ export class YearlyReportStepsComponent implements OnInit {
       }
     }
     const status = this.determineStatus();
-
     if (status) {
       this.responseData.status = status;
     } else {
@@ -152,7 +144,6 @@ export class YearlyReportStepsComponent implements OnInit {
     }
   }
 
-
   goToUpdate() {
     this.router.navigate(['/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
   
@@ -164,6 +155,7 @@ export class YearlyReportStepsComponent implements OnInit {
   isStepComplete(stepNumber: number): boolean {
     return this.getStepByNumber(stepNumber).every((task) => task.isCompleted == true);
   }
+  
   isStepBeginned(stepNumber: number): boolean {
     return (
       this.getStepByNumber(stepNumber).some((task) => task.isCompleted) &&
@@ -172,11 +164,6 @@ export class YearlyReportStepsComponent implements OnInit {
   }
 
   getStepByNumber(stepNumber: number) {
-    console.log("getStepByNumber")
     return this.stepsByNumber[stepNumber] || [];
   }
-
-
-
-
 }

@@ -14,25 +14,22 @@ import { UserService } from "server/src/services/user.service";
 @Controller('checkList')
 @UseFilters(HttpErrorFilter)
 export class CheckListController {
-  constructor(private checkListService: CheckListService) { }
+
+  constructor(
+    private checkListService: CheckListService
+  ) { }
 
   @Post()
   async create(@Body() createCheckListDto: CreateCheckListDto): Promise<CheckList> {
-    try{
-      console.log(createCheckListDto);
+    try {
       createCheckListDto.items!.forEach(element => {
         console.log(element);
-        
       })
-      
       return this.checkListService.create(createCheckListDto);
-    }catch(err){
+    } catch (err) {
       console.log(err);
-      
     }
-  
-  
-    }
+  }
 
   @Get()
   async findAll(): Promise<CheckList[]> {
@@ -65,9 +62,6 @@ export class CheckListController {
     }
     catch (err) {
       console.log(err);
-
     }
   }
-
-
 }

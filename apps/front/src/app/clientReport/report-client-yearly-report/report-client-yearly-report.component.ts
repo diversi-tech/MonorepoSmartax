@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
   templateUrl: './report-client-yearly-report.component.html',
   styleUrls: ['./report-client-yearly-report.component.css'],
 })
+
 export class ReportClientYearlyReportComponent implements OnInit {
   allYearlyReport: YearlyReport[] = [];
   client: Client | null = null;
@@ -31,10 +32,10 @@ export class ReportClientYearlyReportComponent implements OnInit {
   sortedReports: YearlyReport[] = [];
   currentYearlyReport: YearlyReport;
   isSelected: number = 5;
-  selectedStatus:string="";
+  selectedStatus: string = "";
   filterstatus: string = "";
-  is:number =2
-  filterallYearlyReport: YearlyReport[] ;
+  is: number = 2
+  filterallYearlyReport: YearlyReport[];
 
 
   constructor(
@@ -43,7 +44,7 @@ export class ReportClientYearlyReportComponent implements OnInit {
     private employeService: UserService,
     private clientService: ClientService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllYearlyReport();
@@ -87,7 +88,7 @@ export class ReportClientYearlyReportComponent implements OnInit {
 
   getClientName(idClient: string): string | undefined {
     const client = this.allClient.find((x) => x._id === idClient);
-    return client?.firstName +' '+client?.lastName;
+    return client?.firstName + ' ' + client?.lastName;
   }
 
   getClient(idClient: string): Client | undefined {
@@ -118,8 +119,8 @@ export class ReportClientYearlyReportComponent implements OnInit {
   }
   sortReportsByClientName(): void {
     this.sortedReports = [...this.allYearlyReport].sort((a, b) => {
-       const clientNameA = this.getClientName(a.idClient) || '';
-       const clientNameB = this.getClientName(b.idClient)|| '';
+      const clientNameA = this.getClientName(a.idClient) || '';
+      const clientNameB = this.getClientName(b.idClient) || '';
       return clientNameA.localeCompare(clientNameB);
     });
   }

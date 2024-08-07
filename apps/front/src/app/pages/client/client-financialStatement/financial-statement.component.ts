@@ -28,6 +28,8 @@ export class FinancialStatementComponent implements OnInit {
   allClient: Client[] = [];
   currentRoute: string;
   sortedStatement: FinancialStatement[] = [];
+  currentFinancialStatement: FinancialStatement;
+
 
   constructor(
     private financialStatementService: FinancialStatementService,
@@ -80,19 +82,23 @@ export class FinancialStatementComponent implements OnInit {
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createFinancialStatement'], { state: { client: this.client } });
   }
 
-  goToSteps(task: any) {
+  goToSteps(currentFinancialStatement: any) {
     if (this, this.currentRoute === 'allClientFinancialStatement') {
-      this.router.navigate(['clientSearch/clientManagement/clientNavbar/stepsFS'], { state: { data: task, client: this.getClientName(task.client) } });
+      this.router.navigate(['clientSearch/clientManagement/clientNavbar/stepsFS'], { state: { data: currentFinancialStatement, client: this.getClientName(currentFinancialStatement.client) } });
     }
     else {
-      this.router.navigate(['clientSearch/clientManagement/clientNavbar/stepsFS', this.router], { state: { data: task, client: this.client } });
+      this.router.navigate(['clientSearch/clientManagement/clientNavbar/stepsFS', this.router], { state: { data: currentFinancialStatement, client: this.client } });
     }
   }
 
-  goToUpdate(statement: FinancialStatement) {
-    if (statement) {
-      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/financialStatement/createFinancialStatement'], { state: { client: this.client, report: statement } });
-    }
+  // goToUpdate(statement: FinancialStatement) {
+  //   if (statement) {
+  //     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/financialStatement/createFinancialStatement'], { state: { client: this.client, report: statement } });
+  //   }
+  // }
+  
+  selectFinancialStatement(financialStatement: FinancialStatement) {
+    this.currentFinancialStatement = financialStatement;
   }
   getClientName(idClient: string): string | undefined {
     debugger

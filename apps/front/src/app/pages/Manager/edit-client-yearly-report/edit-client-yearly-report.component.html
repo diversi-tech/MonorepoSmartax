@@ -1,21 +1,21 @@
 <p-toast></p-toast>
 <br><br>
 
-
 <!-- כפתור הוספה -->
 <div class="mb-3">
-    <button pButton pRipple type="button" label="הוספת רשומה חדשה" icon="pi pi-plus" (click)="showAddDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
+    <button pButton pRipple type="button" label="הוספת רשומה חדשה" icon="pi pi-plus" (click)="showAddDialog()"
+        class="p-button-text p-button-raised p-button-rounded"></button>
 </div>
 
 <!-- דיאלוג הוספה -->
 <p-dialog header="Add New Step" [(visible)]="displayAddDialog" modal="modal" [style]="{'width': '300px','height': '1000px'}">
     <div class="p-fluid">
         <div class="p-field">
-            <label for="value">Value</label>
+            <label for="value">פירוט</label>
             <input id="value" type="text" pInputText [(ngModel)]="newStepValue" />
         </div>
         <div class="p-field">
-            <label for="stepNumber">Step Number</label>
+            <label for="stepNumber">מספר שלב</label>
             <p-dropdown id="stepNumber" [options]="numberOptions" [(ngModel)]="newStepStepNumber"
             placeholder="Select a step number">
         </p-dropdown>
@@ -23,8 +23,8 @@
     </div>
     <br><br><br>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" label="Add" (click)="addStep()" class= "p-button-text p-button-raised p-button-rounded"></button>
-        <button type="button" pButton icon="pi pi-times" label="Cancel" (click)="hideAddDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <button type="button" pButton icon="pi pi-check" label="הוספה" (click)="addStep()"></button>
+        <button type="button" pButton icon="pi pi-times" label="ביטול" (click)="hideAddDialog()"></button>
     </p-footer>
 </p-dialog>
 
@@ -74,8 +74,8 @@
                     <button *ngIf="!editing && currentStepField === stepField" pButton pRipple type="button"
                         pInitEditableRow class="pi pi-pencil p-button-outlined p-button-rounded p-button-info">
                     </button>
-                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow
-                        (click)="update(stepField)" class="pi pi-check p-button-outlined p-button-rounded p-button-info mr-2">
+                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow (click)="update(stepField)"
+                        class="pi pi-check p-button-outlined p-button-rounded p-button-info mr-2">
                     </button>
                     <button *ngIf="!editing && currentStepField === stepField" pButton pRipple type="button" pCancelEditableRow
                         (click)="showDeleteConfirmation(stepField._id)" class="pi pi-trash p-button-outlined p-button-rounded p-button-danger">

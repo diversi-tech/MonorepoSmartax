@@ -35,6 +35,7 @@ import { Router } from '@angular/router';
     NgTemplateOutlet,
   ],
 })
+
 export class ClientTasksComponent implements OnInit {
 
   statuses: Status[] = [];
@@ -91,56 +92,43 @@ export class ClientTasksComponent implements OnInit {
     });
     this.statusService.getAllStatuses().subscribe((data) => {
       this.statuses = data;
-      console.log(this.statuses);
     });
   }
 
 
-editTask(){
-  debugger
-  this.router.navigate(['/taskSpe', this.currentTask._id]);
-}
+  editTask() {
+    this.router.navigate(['/taskSpe', this.currentTask._id]);
+  }
 
-createTask(){
-  this.router.navigate(['/taskSpe', 'create']);
-}
+  createTask() {
+    this.router.navigate(['/taskSpe', 'create']);
+  }
 
 
   getTasks(): void {
-    debugger
-    console.log(this.client._id)
     this.taskService.getTasksByClientId(this.client._id).subscribe(
       (data) => {
-        console.log(data);
         this.tasks = data;
-        console.log("gettasks", this.tasks);
       },
       (error) => {
         console.log('Failed to fetch users:', error);
       })
-    //   this.filteredTasks = this.tasks;
   }
 
 
   categorizeTasks(status: Status): Task[] {
-    console.log(status.name)
-    console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
-      console.log('Task status:', task.status); // הדפסת המצב של המשימה
       return task.status && task.status.name === status.name;
     });
   }
 
   searchTask(): void {
-    console.log(typeof this.searchTerm);
-
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
     } else {
       this.filteredTasks = this.tasks.filter((task) =>
         task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
-      console.log('filter: ', this.filteredTasks);
     }
   }
 
@@ -150,12 +138,9 @@ createTask(){
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log('delete start');
         this.deleteTask();
       },
       reject: () => {
-        console.log('cancel start');
-        // Add the code to close the pop-up here
       },
     });
   }
@@ -181,7 +166,6 @@ createTask(){
   }
 
   toggleFilter(): void {
-    debugger
     this.showFilter = true;
   }
 
@@ -206,8 +190,7 @@ createTask(){
     this.taskSuggestions = this.tasks
       .filter((task) =>
         task.taskName.toLowerCase().includes(query.toLowerCase())
-      )
-      .map((task) => ({ taskName: task.taskName }));
+      ).map((task) => ({ taskName: task.taskName }));
   }
 
   searchTags(event: any): void {
@@ -215,7 +198,6 @@ createTask(){
       this.tagSuggestions = tags.filter((tag) =>
         tag['text'].toLowerCase().includes(event.query.toLowerCase())
       );
-      // this.filter.tags = tags;
     });
   }
 
@@ -238,49 +220,11 @@ createTask(){
           );
         });
       }
-
-      console.log(deadlineMatch, clientMatch, userMatch, taskNameMatch, tagsMatch);
-
       return (
         deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
       );
     });
   }
-  // sort
-  // בקומפוננטה שלך
-  // sortTasks(field: string, list: Task[], reverse: boolean) {
-  //   // debugger
-  //   console.log(this.filteredTasks);
-
-  //   list.sort((a, b) => {
-  //     // כאן אתה יכול להוסיף לוגיקה למיון על פי השדה שנבחר
-  //     if (field === 'taskName') {
-  //       if (reverse) {
-  //         return b.taskName.localeCompare(a.taskName);
-  //       }
-  //       return a.taskName.localeCompare(b.taskName); // מיון לפי שם המשימה
-  //     }
-  //     if (field === 'assignedTo') {
-  //       if (reverse) {
-  //         return b.assignedTo.length - a.assignedTo.length;
-  //       }
-  //       return a.assignedTo.length - b.assignedTo.length; 
-  //     }
-  //     if (field === 'dueDate') {
-  //       if (reverse) {
-  //         return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate();
-  //       }
-  //       return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate(); // מיון לפי תאריך יעד
-  //     }
-  //     if (field === 'tags') {
-  //       if (reverse) {
-  //         return b.tags.length - a.tags.length;
-  //       }
-  //       return a.tags.length - b.tags.length; // מיון לפי מספר התגיות של המשימה
-  //     }
-  //     return 0; // במקרה שלא נמצא שדה תואם
-  //   });
-  // }
 
   sortTasks(field: string, list: Task[], reverse: boolean) {
     list.sort((a, b) => {
@@ -307,7 +251,6 @@ createTask(){
   }
 
   selectCurrentTask(task: Task) {
-    debugger
     this.currentTask = task;
   }
 }

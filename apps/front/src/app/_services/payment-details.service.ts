@@ -6,35 +6,41 @@ import { Observable } from 'rxjs';
 import { Frequency } from '../_models/frequency.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PaymentDetailsService {
-
   private apiUrl = PAYMENT_DETAILS_ENDPOINT;
 
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  createPaymentDetails(sumForMonth, maxHours, frequency, dateStart, dateFinish, description): Observable<PaymentDetails> {
+  createPaymentDetails(
+    sumForMonth,
+    maxHours,
+    frequency,
+    dateStart,
+    dateFinish,
+    description
+  ): Observable<PaymentDetails> {
     const newPaymentDetails = {
-      "sumForMonth": sumForMonth,
-      "maxHours": maxHours,
-      "frequency": frequency,
-      "dateStart": dateStart,
-      "dateFinish": dateFinish,
-      "description": description
-    }
+      sumForMonth: sumForMonth,
+      maxHours: maxHours,
+      frequency: frequency,
+      dateStart: dateStart,
+      dateFinish: dateFinish,
+      description: description,
+    };
     return this.http.post<PaymentDetails>(this.apiUrl, newPaymentDetails);
   }
 
-
-  update(_id: string,
+  update(
+    _id: string,
     sumForMonth: number,
     maxHours: number,
     frequency: Frequency,
     dateStart: Date,
     dateFinish: Date,
-    description: string) {
+    description: string
+  ) {
     const paymentDetails = {
       "_id": _id,
       "sumForMonth": sumForMonth,
@@ -44,10 +50,6 @@ export class PaymentDetailsService {
       "dateFinish": dateFinish,
       "description": description
     }
-    console.log(paymentDetails);
-
     return this.http.post(this.apiUrl + "/update", paymentDetails);
   }
-
-
 }
