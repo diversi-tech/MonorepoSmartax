@@ -1,27 +1,45 @@
-<p-button class="fixed-button" label="ייצוא לאקסל" icon="pi pi-file-excel" (click)="exportToExcel()"></p-button>
+<button pButton class= "p-button-text p-button-raised p-button-rounded" label="ייצוא לאקסל" icon="pi pi-file-excel" (click)="exportToExcel()"></button >
 
 <div *ngFor="let tableName of tablesNames">
-    <div class="card" style="max-width: 50rem">
-      <p-panel [toggleable]="true" [collapsed]="true">
-        <ng-template pTemplate="header">
-          <!-- כותרת הפנל -->
-          <span>{{ tableName }}</span>
-        </ng-template>
-  
-        <ng-template pTemplate="content">
-          <!-- תוכן הפנל -->
-          <p>:עמודות הטבלה</p>
-          <div *ngFor="let fieldName of getFieldNames(tableName)" class="checkbox-container">
-            <label class="label" for="{{ tableName }}-{{ fieldName }}">{{ fieldName }}</label>
-            <p-checkbox 
-            name="{{ tableName }}-{{ fieldName }}" 
-            [(ngModel)]="selectedValues[tableName][fieldName]" 
-              
-              binary="true">
+  <div class="card" style="max-width: 50rem">
+    <p-panel [toggleable]="true" [collapsed]="true">
+      <ng-template pTemplate="header">
+        <span>{{ tableName }}</span>
+      </ng-template>
+
+      <ng-template pTemplate="content">
+        <p>:עמודות הטבלה</p>
+        <div *ngFor="let fieldName of getFieldNames(tableName)" class="checkbox-container">
+          <label class="label" for="{{ tableName }}-{{ fieldName }}">{{ fieldName }}
+            <p-checkbox name="{{ tableName }}-{{ fieldName }}" binary="true"
+              (onChange)="checkType(tableName, fieldName, $event)">
             </p-checkbox>
-            
-          </div>
-        </ng-template>
-      </p-panel>
-    </div>
+
+            <!-- child table -->
+            <div *ngIf="isShowTable==true && currentTable==tableName && currentField==fieldName">
+              <div *ngFor="let childFieldName  of openFields" class="chidTable">
+                <label class="label" for="{{ childFieldName  }}">{{ childFieldName }}
+                  <p-checkbox name="{{ childFieldName  }}" binary="true"
+                    (onChange)="childType(tableName, fieldName, childFieldName, $event)"></p-checkbox>
+
+
+
+                  <div *ngIf="isShowTable2==true && currentTable==tableName && currentField==fieldName && childName==childFieldName">
+                    <div *ngFor="let child  of openFields2" class="chidTable">
+                      <label class="label" for="{{ child  }}">{{ child }}
+                        <p-checkbox name="{{ child  }}" binary="true"
+                        (onChange)="thirdTable(tableName,fieldName,childFieldName,child,$event)"></p-checkbox>
+                      </label>
+                    </div>
+                  </div>
+
+
+                </label>
+              </div>
+            </div>
+          </label>
+        </div>
+      </ng-template>
+    </p-panel>
   </div>
+</div>

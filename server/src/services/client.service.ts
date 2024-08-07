@@ -21,6 +21,10 @@ export class ClientService {
   //     googleId});
   async createClient(createClientDto: CreateClientDto): Promise<Client> {
     try {
+      const existingClient = await this.clientModel.findOne({ tz: createClientDto.tz }).exec();
+    if (existingClient) {
+      throw new Error('Client with this ID already exists.');
+    }
       const highestClientID = await this.getHighestClientID();
       const newClientID = (parseInt(highestClientID, 10) + 1).toString();
 
@@ -118,6 +122,11 @@ export class ClientService {
     updateClientDto: UpdateClientDto
   ): Promise<Client> {
     try {
+
+      const existingClient = await this.clientModel.findOne({ tz: updateClientDto.tz }).exec();
+      if (existingClient) {
+        throw new Error('Client with this ID already exists.');
+      }
       const updatedClient = await this.clientModel
         .findByIdAndUpdate(id, updateClientDto, { new: true })
         .exec();

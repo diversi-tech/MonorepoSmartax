@@ -31,7 +31,7 @@ export class Client extends Document {
   @Prop()
   contactPersonName: string;
 
-  @Prop()
+  @Prop({unique: true})
   tz: string;
 
   @Prop()

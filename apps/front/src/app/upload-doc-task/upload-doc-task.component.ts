@@ -1,14 +1,10 @@
 import { Component,EventEmitter,Input,OnInit, Output } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { FileUploadModule } from 'primeng/fileupload';
-// import { TableModule } from 'primeng/table';
-// import { CommonModule } from '@angular/common';
-// import { PrimeTemplate } from 'primeng/api';
 import { DocumentService } from '../_services/document.service';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { DocType } from '../_models/docType.module';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-upload-doc-task',
   standalone:true,
@@ -26,7 +22,7 @@ import { DocType } from '../_models/docType.module';
 })
 export class UploadDocTaskComponent implements OnInit{
 
-  constructor(private documentService:DocumentService, private sanitizer: DomSanitizer) {}
+  constructor(private documentService:DocumentService) {}
 
   @Input() idClient: string | undefined ;
   @Output() responseReceived = new EventEmitter<any>();

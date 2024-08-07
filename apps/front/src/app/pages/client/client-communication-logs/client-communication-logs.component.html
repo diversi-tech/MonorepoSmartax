@@ -1,4 +1,4 @@
-<h3>שיחות</h3>
+<button pButton label="להוספת שיחה" (click)="displayDialog = true" class= "p-button-text p-button-raised p-button-rounded"></button>
 <p-table [value]="communications" [tableStyle]="{'min-width': '80rem'}">
   <ng-template pTemplate="header" let-columns>
     <tr>
@@ -29,8 +29,6 @@
   </ng-template>
 </p-table>
 
-<p-button label="להוספת שיחה" (click)="displayDialog = true"></p-button>
-
 <p-confirmDialog header='עריכת שיחה' key="edit">
   <p-footer>
     <div *ngIf="selectedCommunication" class="p-grid">
@@ -60,7 +58,7 @@
           <p-dropdown [options]="users" [(ngModel)]="selectedCommunication.assignedTo" name="editAssignedTo"
             optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
         </div>
-        <button type="submit" class="p-button">Update Communication</button>
+        <button type="submit" class= "p-button">Update Communication</button>
       </form>
     </div>
   </p-footer>
@@ -68,9 +66,9 @@
 
 <p-confirmDialog header="Confirmation" key="delete">
   <p-footer>
-    <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+    <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text"
       (click)="cancelDelete()"></button>
-    <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+    <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text"
       (click)="confirmDelete()"></button>
   </p-footer>
 </p-confirmDialog>

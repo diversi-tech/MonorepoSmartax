@@ -14,16 +14,16 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
-import { Router, RouterLink } from '@angular/router';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { IconProfileComponent } from '../../share/icon-profile/icon-profile.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { NgIf, NgFor, NgStyle, NgClass, DatePipe } from '@angular/common';
 import { SidebarModule } from 'primeng/sidebar';
-import { ButtonDirective, Button } from 'primeng/button';
+import { Button, ButtonDirective, ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-task-management',
   templateUrl: './task-management.component.html',
@@ -51,6 +51,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     NgClass,
     ToastModule,
     DatePipe,
+    ButtonModule,
   ],
 })
 export class TaskManagementComponent implements OnInit {
@@ -106,14 +107,14 @@ export class TaskManagementComponent implements OnInit {
     });
     this.statusService.getAllStatuses().subscribe((data) => {
       this.statuses = data;
-      console.log(this.statuses);
+      // console.log(this.statuses);
     });
   }
 
   getTasks(): void {
     this.taskService.getAllTasks().subscribe((allTasks: Task[]) => {
       this.tasks = allTasks;
-      console.log(this.tasks);
+      // console.log(this.tasks);
     });
   }
 
@@ -129,15 +130,18 @@ export class TaskManagementComponent implements OnInit {
   searchTask(): void {
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
+      alert("לחיפוש משימה אנא הקלידו את שם המשימה")
     } else {
+      this.filteredTasks = [];
       this.searchTerm.trim()
       this.searchTerm.toLowerCase()
       this.tasks.forEach(t => {
         if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
           this.filteredTasks.push(t);
-        else {
-        }
       });
+      if(this.filteredTasks.length == 0){
+        alert("לא נמצאות משימות בשם זה")
+      }
     }
   }
 
@@ -204,9 +208,10 @@ export class TaskManagementComponent implements OnInit {
 
   searchTasks(event: any): void {
     const query = event.query.toLowerCase();
-    this.taskSuggestions = this.tasks.filter((task) =>
-      task.taskName.toLowerCase().includes(query)
-    )
+    this.taskSuggestions = this.tasks!
+      .filter((task) =>
+        (task.taskName?.toLowerCase())?.includes(query.toLowerCase())
+      )
       .map((task) => ({ taskName: task.taskName }));
   }
 
@@ -220,18 +225,18 @@ export class TaskManagementComponent implements OnInit {
   }
 
   applyFilter() {
-    this.filteredTasks = this.tasks.filter((task) => {
+    this.tasks.forEach((task) => {
       this.filterFirstStatus = false;
 
       const deadlineMatch = !this.filter.deadline || new Date(task.dueDate) <= new Date(this.filter.deadline);
 
       const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
 
-      const userMatch = !this.filter.user || (task.assignedTo && task.assignedTo[0].userName && task.assignedTo[0].userName.includes(this.filter.user.userName));
+      const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
 
-      const taskNameMatch = !this.filter.task || (task.taskName && task.taskName.includes(this.filter.task.taskName));
-
+      const taskNameMatch = !this.filter.task || task.taskName!.toLowerCase()!.includes(this.filter.task.taskName.trim().toLowerCase());
       let tagsMatch = true;
+
       if (this.filter.tags && this.filter.tags.length > 0) {
         tagsMatch = this.filter.tags.every((filterTag) => {
           return task.tags.some((taskTag) =>
@@ -240,17 +245,8 @@ export class TaskManagementComponent implements OnInit {
         });
       }
 
-      console.log(
-        deadlineMatch,
-        clientMatch,
-        userMatch,
-        taskNameMatch,
-        tagsMatch
-      );
-
-      return (
-        deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
-      );
+      if (deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch)
+        this.filteredTasks.push(task);
     });
   }
 

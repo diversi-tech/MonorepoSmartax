@@ -1,16 +1,11 @@
-.rtl-table {
-    direction: rtl;
-    text-align: right;
-  }
-  
-  .rtl-table th, .rtl-table td {
-    text-align: right;
-  }
-  
-  .highlight {
-    background-color: #edecec;
-  }
+@import '../../../styles.css';
 
-  .p-button-rounded {
-    border-radius: 20%;
-  }
+.rtl-table {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl-table th,
+.rtl-table td {
+  text-align: right;
+}

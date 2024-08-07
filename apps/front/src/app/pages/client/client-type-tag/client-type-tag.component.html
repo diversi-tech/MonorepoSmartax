@@ -24,7 +24,7 @@
       </p-inputGroup>
     </ng-template>
   </p-carousel>
-  <p-button (click)="addClientType()">הוספת תגית</p-button>
+  <button pButton  (click)="addClientType()">הוספת תגית</button >
 
 </div> -->
 <p-dialog
@@ -59,14 +59,14 @@
   <!-- buttons -->
   <div style="margin-left: 100px">
     <p-inputGroup class="w-full md:w-30rem flex-container">
-      <p-button
+      <button pButton 
         (click)="showClientTypesList = !showClientTypesList"
         [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
         icon="pi pi-tag"
         [outlined]="true"
         severity="secondary"
       >
-      </p-button>
+      </button >
       <!--  -->
       <button
       *ngFor="let ct of thisClient.clientTypes; let i = index"
