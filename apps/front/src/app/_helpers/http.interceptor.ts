@@ -51,22 +51,26 @@ export class AuthAndCredentialsInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = this.tokenService.getToken()?.access_token;
+    let headers = {};
+
     if (token) {
-      req = req.clone({
-        setHeaders: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      headers['Authorization'] = `Bearer ${token}`;
     }
 
-    req = req.clone({
+    if (req.body) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    const clonedReq = req.clone({
+      setHeaders: headers,
       withCredentials: true,
     });
 
-    console.log('Intercepted request:', req); // לוג של הבקשה המנוטרלת
+    console.log('Intercepted request method:', req.method); // הדפס את סוג הבקשה
+    console.log('Intercepted request headers:', clonedReq.headers); // הדפס את ה-Headers
+    console.log('Intercepted request body:', req.body); // הדפס את ה-body של הבקשה
 
-    return next.handle(req);
+    return next.handle(clonedReq);
   }
 }
 
