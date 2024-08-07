@@ -65,8 +65,6 @@ export class UserService {
     if (!updatedUser) {
       throw new ValidationException('User not found');
     }
-
-
     return updatedUser;
   }
 
