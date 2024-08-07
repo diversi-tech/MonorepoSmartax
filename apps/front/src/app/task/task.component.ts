@@ -114,7 +114,7 @@ interface payment{
 })
 
 export class TaskComponent implements OnInit {
-  payments: payment[]=[{name:'hhh'},{name:'bbbb'}]
+  payments: payment[]=[{name:'מענקי קורונה'},{name:'דוחות חודשיים'}]
   selectedpayment:string
   users: User[] = [];
   clients: Client[] = [];
