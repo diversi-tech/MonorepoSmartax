@@ -45,11 +45,6 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
   allEmploye: User[];
   formSubmitted = false;
   yearList: Year[];
-  typeOptions: any[] = [
-    { label: 'פיצול לעצמאי', value: 'עצמאי' },
-    { label: 'עמותה', value: 'עמותה' },
-    { label: 'חברה', value: 'חברה' },
-  ];
   employeName: string;
   statementToUpdate: FinancialStatement | null = null;
   statusList: Status[] = [];
@@ -105,7 +100,7 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
 
   ngOnInit(): void {
     this.financialStatementForm = this.fb.group({
-      type: ['', Validators.required],
+      // type: ['', Validators.required],
       year: ['', Validators.required],
       price: ['', Validators.required],
       paymentAmountPaid: ['', Validators.required],
@@ -138,6 +133,7 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
   }
 
   onSubmit() {
+    debugger
     this.formSubmitted = true;
     if (this.financialStatementForm.valid) {
       const financialStatement = this.financialStatementForm.value;
@@ -152,7 +148,7 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
     }
     this.hideModalDialog(); //
     // this.location.back();
-
+    debugger
   }
 
   determineStatus(): Status {
