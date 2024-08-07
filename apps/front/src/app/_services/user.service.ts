@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 import { HashPasswordService } from './hash-password.service';
 import { RoleServiceService } from './role-service.service';
 import { Role } from '../_models/role.module';
-import { USER_ENDPOINT } from '../api-urls';
+import { USER_ENDPOINT , USER_ENDPOINT2} from '../api-urls';
 import { Client } from '../_models/client.module';
 
-const API_URL = 'http://localhost:8080/api/test/';
+const API_URL = USER_ENDPOINT2;
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
@@ -58,19 +58,19 @@ export class UserService {
   }
 
   getPublicContent(): Observable<any> {
-    return this.http.get(API_URL + 'all', { responseType: 'text' });
+    return this.http.get(this.apiUrl + 'all', { responseType: 'text' });
   }
 
   getUserBoard(): Observable<any> {
-    return this.http.get(API_URL + 'user', { responseType: 'text' });
+    return this.http.get(this.apiUrl + 'user', { responseType: 'text' });
   }
 
   getModeratorBoard(): Observable<any> {
-    return this.http.get(API_URL + 'mod', { responseType: 'text' });
+    return this.http.get(this.apiUrl + 'mod', { responseType: 'text' });
   }
 
   getAdminBoard(): Observable<any> {
-    return this.http.get(API_URL + 'admin', { responseType: 'text' });
+    return this.http.get(this.apiUrl + 'admin', { responseType: 'text' });
   }
 
   getAllUsers(): Observable<any> {
