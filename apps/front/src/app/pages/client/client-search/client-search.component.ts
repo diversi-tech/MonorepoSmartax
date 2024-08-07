@@ -201,7 +201,8 @@ export class ClientSearchComponent implements OnInit {
   }
 
   addFavoritesClient() {
-    this.user.favoritesClient.push(...this.choosedClients.filter(c => !this.isFavoriteClient(c)).map(c => c._id));
+    this.user.favoritesClient.push(...this.choosedClients
+      .filter(c => !this.isFavoriteClient(c)).map(c => c._id));
     this.updateFavorite();
   }
 

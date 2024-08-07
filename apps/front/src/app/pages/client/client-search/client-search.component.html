@@ -20,20 +20,20 @@
     </p-footer>
   </p-confirmDialog>
 
-  <button *ngIf="this.choosedClients.length > 0" (click)="addFavoritesClient()" icon="pi pi-star" pButton type="button"
-    label="להוספה למועדפים" class="p-button-text p-button-raised p-button-rounded"></button>
-  <button *ngIf="this.choosedClients.length > 0" (click)="showConfirmationDelete()" icon="pi pi-trash" pButton
-    type="button" label="מחיקה" class="p-button-danger p-button-text p-button-raised p-button-rounded"></button>
-
+  <button *ngIf="this.choosedClients.length > 0" (click)="addFavoritesClient()" icon="pi pi-star"
+     pButton type="button" label="להוספה למועדפים" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="this.choosedClients.length > 0" (click)="showConfirmationDelete()" icon="pi pi-trash"
+     pButton type="button" label="מחיקה" class= "p-button-danger p-button-text p-button-raised p-button-rounded"></button>
+   
   <p-table dir="rtl" [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients">
 
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th>
-          <button *ngIf="isChoosedAllClient" (click)="removeAllClients()" pButton type="button" label="הסר הכל"
-            class="p-button-text p-button-raised p-button-rounded"></button>
-          <button *ngIf="!isChoosedAllClient" (click)="$event.stopPropagation(); chooseAllClients()" pButton
-            type="button" label="בחר הכל" class="p-button-text p-button-raised p-button-rounded"></button>
+          <button *ngIf="isChoosedAllClient" (click)="removeAllClients()" pButton type="button"
+           label="הסר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
+          <button *ngIf="!isChoosedAllClient" (click)="$event.stopPropagation(); chooseAllClients()"
+           pButton type="button" label="בחר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
         </th>
         <th></th>
         <th></th>
