@@ -5,19 +5,18 @@ import { Observable } from 'rxjs';
 import { MEET_ENDPOINT } from '../api-urls';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MeetService {
-  url: string = MEET_ENDPOINT
+  url: string = MEET_ENDPOINT;
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   constructor(private http: HttpClient) { }
 
   getAllMeetings(): Observable<Meet[]> {
-    return this.http.get<Meet[]>(`${this.url}`)
-
+    return this.http.get<Meet[]>(`${this.url}`);
   }
   getMeetById(meetId: string): Observable<Meet> {
     const body = { id: meetId }

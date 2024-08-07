@@ -12,7 +12,7 @@ export class SocketService {
   taskConfirmed$ = this.taskConfirmedSource.asObservable();
 
   constructor() {
-    this.socket = io('http://localhost:3000'); // Replace with your server URL
+    this.socket = io('https://monoreposmartax.onrender.com');
 
     this.socket.on('connect', () => {
       console.log('מחובר לשרת WebSocket');

@@ -86,9 +86,74 @@ export class GoogleTaskService {
       })
       .then(() => {
         this.gapiInited = true;
+        console.log('GAPI client reinitialized');
       });
   }
 
+  //   public createSimpleTask(taskDetails: any) {
+  //     if (!this.gapiInited || !this.gisInited) {
+  //       console.error('GAPI or GIS not initialized');
+  //       this.reinitializeGapi();
+  //       return;
+  //     }
+
+  //     this.tokenClient.callback = async (resp: any) => {
+  //       if (resp.error !== undefined) {
+  //         console.error('Error during token request', resp.error);
+  //         throw resp;
+  //       }
+  //       await this.addTask(taskDetails);
+  //     };
+
+  //     try {
+  //       if (gapi.client.getToken() === null) {
+  //         this.tokenClient.requestAccessToken({ prompt: 'consent' });
+  //       } else {
+  //         this.tokenClient.requestAccessToken({ prompt: '' });
+  //       }
+  //     } catch (error) {
+  //       console.error('Error requesting access token', error);
+  //     }
+  //     console.log('Token request initiated');
+  //   }
+  // 2
+  // public createSimpleTask(taskDetails: any): Promise<void> {
+  //     return new Promise((resolve, reject) => {
+  //       if (!this.gapiInited || !this.gisInited) {
+  //         console.error('GAPI or GIS not initialized');
+  //         this.reinitializeGapi();
+  //         reject('GAPI or GIS not initialized');
+  //         return;
+  //       }
+
+  //       this.tokenClient.callback = async (resp: any) => {
+  //         if (resp.error !== undefined) {
+  //           console.error('Error during token request', resp.error);
+  //           reject(resp.error);
+  //           return;
+  //         }
+  //         try {
+  //           await this.addTask(taskDetails);
+  //           resolve();
+  //         } catch (error) {
+  //           reject(error);
+  //         }
+  //       };
+
+  //       try {
+  //         if (gapi.client.getToken() === null) {
+  //           this.tokenClient.requestAccessToken({ prompt: 'consent' });
+  //         } else {
+  //           this.tokenClient.requestAccessToken({ prompt: '' });
+  //         }
+  //       } catch (error) {
+  //         console.error('Error requesting access token', error);
+  //         reject(error);
+  //       }
+  //       console.log('Token request initiated');
+  //     });
+  //   }
+  // 3
   public createSimpleTask(taskDetails: any): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this.gapiInited || !this.gisInited) {
@@ -148,7 +213,15 @@ export class GoogleTaskService {
             showConfirmButton: false,
             timer: 3000,
           });
+
+          console.log('Task created:', task);
+
+          // שידור ה-eventId והקישור המעודכן
           this.eventDataSubject.next({ eventId: task.id });
+
+          // שמור את task.id לשימוש מאוחר יותר
+          console.log(task.id);
+
           resolve();
         });
       } catch (error) {

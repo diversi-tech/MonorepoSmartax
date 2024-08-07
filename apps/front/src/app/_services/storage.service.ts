@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 const USER_KEY = 'auth-user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService {
   constructor() {}
@@ -11,8 +11,6 @@ export class StorageService {
   clean(): void {
     window.sessionStorage.clear();
   }
-
-
 
   public isLoggedIn(): boolean {
     const user = window.sessionStorage.getItem(USER_KEY);

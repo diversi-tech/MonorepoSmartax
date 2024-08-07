@@ -99,19 +99,57 @@ import { EditMonthlyReportComponent } from './pages/Manager/edit-monthly-report/
 
 //
 export const routes: Routes = [
-  { path: 'home', component: HomeComponent, data: { authType: 10, forToolbar: false, label: 'בית', icon: icons.home } },
-  { path: 'login', component: LoginComponent, data: { authType: 10, forToolbar: false, label: 'התחברות', icon: '' } },
-  { path: 'register/:type', component: RegisterComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: false, label: 'הוספת עובד', icon: icons.register } },
-  // { path: 'user', component: BoardUserComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'עובד', icon: icons.user } }, 
-  { path: 'mod', component: BoardModeratorComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' } },
+  {
+    path: 'home',
+    component: HomeComponent,
+    data: { authType: 10, forToolbar: false, label: 'בית', icon: icons.home },
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: { authType: 10, forToolbar: false, label: 'התחברות', icon: '' },
+  },
+  {
+    path: 'register/:type',
+    component: RegisterComponent,
+    canActivate: [AuthGuard],
+    data: {
+      authType: 3,
+      forToolbar: false,
+      label: 'הוספת עובד',
+      icon: icons.register,
+    },
+  },
+  // { path: 'user', component: BoardUserComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'עובד', icon: icons.user } },
+  {
+    path: 'mod',
+    component: BoardModeratorComponent,
+    canActivate: [AuthGuard],
+    data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' },
+  },
   // { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'מנהל', icon: icons.admin } },
-  { path: 'tasks', component: TaskManagementComponent, children: [{ path: 'task-in-list', component: TaskInListComponent }], canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'משימות', icon: icons.tasks } },
-  { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
+  {
+    path: 'tasks',
+    component: TaskManagementComponent,
+    children: [{ path: 'task-in-list', component: TaskInListComponent }],
+    canActivate: [AuthGuard],
+    data: { authType: 6, forToolbar: true, label: 'משימות', icon: icons.tasks },
+  },
+  { path: 'taskSpe/:id', component: TaskComponent }, //, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
   // { path: 'taskRpe', component: TaskRepeatableListComponent },
 
-  { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'שכחתי סיסמה', icon: '' } },
+  {
+    path: 'forget-password',
+    component: ForgotPasswordComponent,
+    data: { authType: 6, forToolbar: false, label: 'שכחתי סיסמה', icon: '' },
+  },
   { path: 'restartPassword/:email', component: RestartPasswordComponent },
-  { path: 'meet', component: MeetComponent, canActivate: [AuthGuard], data: { authType: 6 } },
+  {
+    path: 'meet',
+    component: MeetComponent,
+    canActivate: [AuthGuard],
+    data: { authType: 6 },
+  },
   {
     path: 'calendar',
     component: CalendarComponent,
@@ -123,9 +161,28 @@ export const routes: Routes = [
       icon: icons.calendar,
     },
   },
-  { path: 'table', component: TableComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'יצוא לאקסל', icon: icons.export, }, },
   {
-    path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'דוחות', icon: icons.reports, list: true, },
+    path: 'table',
+    component: TableComponent,
+    canActivate: [AuthGuard],
+    data: {
+      authType: 3,
+      forToolbar: true,
+      label: 'יצוא לאקסל',
+      icon: icons.export,
+    },
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      authType: 3,
+      forToolbar: true,
+      label: 'דוחות',
+      icon: icons.reports,
+      list: true,
+    },
     children: [
       // { path: '', redirectTo: 'task-report', pathMatch: 'full' },
       {
@@ -148,6 +205,17 @@ export const routes: Routes = [
           icon: icons.reports,
         },
       },
+      {
+        path: 'workLogComponent',
+        component: WorkLogComponent,
+        canActivate: [AuthGuard],
+        data: {
+          authType: 6,
+          forToolbar: true,
+          label: 'דוח שעות',
+          icon: icons.clock,
+        },
+      },
     ],
   },
 
@@ -162,18 +230,17 @@ export const routes: Routes = [
       icon: icons.employees,
     },
   },
-  {
-    path: 'createPayment',
-    component: CreatePaymentComponent,
-    canActivate: [AuthGuard],
-    data: {
-      authType: 6,
-      forToolbar: true,
-      label: 'יצירת תשלום',
-      icon: icons.employees,
-    },
-  },
-
+  // {
+  //   path: 'createPayment',
+  //   component: CreatePaymentComponent,
+  //   canActivate: [AuthGuard],
+  //   data: {
+  //     authType: 6,
+  //     forToolbar: true,
+  //     label: 'יצירת תשלום',
+  //     icon: icons.employees,
+  //   },
+  // },
 
   {
     path: '',
@@ -201,8 +268,8 @@ export const routes: Routes = [
       icon: icons.reports,
       list: true,
     },
-    children:
-      [{
+    children: [
+      {
         path: 'allClientYearrlyReport',
         component: ReportClientYearlyReportComponent,
         data: {
@@ -229,7 +296,7 @@ export const routes: Routes = [
           authType: 6,
           forToolbar: false,
           label: 'החזרי מס/ שבח',
-          icon: icons.reports
+          icon: icons.reports,
         },
       },
       {
@@ -242,33 +309,91 @@ export const routes: Routes = [
           icon: icons.reports,
         },
       },
-      ],
-
+    ],
   },
   //{ path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 3, forToolbar: true, label: 'Client Management', icon: icons.clients }, children: [ { path: 'clientProfile', component: ClientProfileComponent }, { path: 'clientNavbar', component: ClientNavbarComponent, children: [ { path: 'uploadDoc', component: ClientUploadDocComponent }, { path: 'taskManagement', component: TaskManagementComponent }, { path: 'billings', component: BillingsComponent } ] } ] }
-  { path: 'clientSearch', component: ClientSearchComponent, data: { authType: 6, forToolbar: true, label: 'לקוחות', icon: icons.clients } },
-  { path: 'favoritesClientsList', component: FavoritesClientsListComponent, data: { authType: 6, forToolbar: false, label: 'לקוחות מועדפים', icon: icons.favorite } },
-  { path: 'clientSearch/clientManagement', component: ClientManagementComponent, data: { authType: 6, forToolbar: false, label: 'ניהול לקוחות', icon: '' } },
+  {
+    path: 'clientSearch',
+    // component: ClientSearchComponent,
+    data: {
+      authType: 6,
+      forToolbar: true,
+      label: 'לקוחות',
+      icon: icons.clients,
+      list: true,
+    },
+    children:[
+      {
+        path: 'fieldMamagement',
+        component: FieldManagementComponent,
+        data: { authType: 3, forToolbar: true, label: 'ניהול שדות', icon: '' },
+      },
+      {
+        path:'clientSearch',
+        component: ClientSearchComponent,
+        data: { authType: 3, forToolbar: true, label: ' טבלת לקוחות', icon: '' },
+      },
+      {
+        path: 'createPayment',
+        component: CreatePaymentComponent,
+        canActivate: [AuthGuard],
+        data: {
+          authType: 6,
+          forToolbar: true,
+          label: 'יצירת תשלום',
+          icon: icons.employees,
+        },
+      },
+    ]
+  },
+  {
+    path: 'favoritesClientsList',
+    component: FavoritesClientsListComponent,
+    data: {
+      authType: 6,
+      forToolbar: false,
+      label: 'לקוחות מועדפים',
+      icon: icons.favorite,
+    },
+  },
+  {
+    path: 'clientSearch/clientManagement',
+    component: ClientManagementComponent,
+    data: { authType: 6, forToolbar: false, label: 'ניהול לקוחות', icon: '' },
+  },
 
-  { path: 'clientProfile', component: ClientProfileComponent, data: { authType: 6, forToolbar: false, label: 'פרופיל לקוח', icon: '' } },
+  {
+    path: 'clientProfile',
+    component: ClientProfileComponent,
+    data: { authType: 6, forToolbar: false, label: 'פרופיל לקוח', icon: '' },
+  },
   {
     path: 'clientSearch/clientManagement/clientNavbar',
     component: ClientNavbarComponent,
     data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' },
     children: [
-      { path: 'clientCommunicationLogs', component: ClientCommunicationLogsComponent, },
-      { path: 'clientUploadDoc', component: ClientUploadDocComponent },
-      { path: 'clientTasks', component: ClientTasksComponent, },
       {
-        path: 'payments', component: PaymentComponent,
+        path: 'clientCommunicationLogs',
+        component: ClientCommunicationLogsComponent,
+      },
+      { path: 'clientUploadDoc', component: ClientUploadDocComponent },
+      { path: 'clientTasks', component: ClientTasksComponent },
+      {
+        path: 'payments',
+        component: PaymentComponent,
         children: [
           { path: 'billingHistory', component: BillingHistoryComponent },
-          { path: 'paymentDetailsHistory', component: PaymentDetailsHistoryComponent },
+          {
+            path: 'paymentDetailsHistory',
+            component: PaymentDetailsHistoryComponent,
+          },
           { path: 'addBilling', component: AddBillingComponent },
           { path: 'changeMainPayment', component: ChangeMainPaymentComponent },
-          { path: 'addMorePaymentDetails', component: AddMorePaymentDetailsComponent }
-
-        ]
+          {
+            path: 'addMorePaymentDetails',
+            component: AddMorePaymentDetailsComponent,
+          },
+        ],
       },
       { path: 'clientBillings', component: ClientBillingsComponent },
       { path: 'clientTypeTab', component: ClientTypeTabComponent },
@@ -276,47 +401,76 @@ export const routes: Routes = [
       { path: 'clientTypeTag', component: ClientTypeTagComponent },
       { path: 'clientField', component: ClientFieldComponent },
       { path: 'createYearlyReport', component: CreateYearlyReportComponent },
-      { path: 'createYearlyReport', component: CreateYearlyReportComponent },
       { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent },
       { path: 'steps', component: YearlyReportStepsComponent },
       { path: 'stepsFS', component: FinancialStatementStepsComponent },
       {
-        path: 'yearlyReport', component: YearlyReportComponent,
+        path: 'yearlyReport',
+        component: YearlyReportComponent,
         children: [
           {
-            path: 'steps', component: YearlyReportStepsComponent,
+            path: 'steps',
+            component: YearlyReportStepsComponent,
             children: [
-              { path: 'createYearlyReport', component: CreateYearlyReportComponent },
-            ]
+              {
+                path: 'createYearlyReport',
+                component: CreateYearlyReportComponent,
+              },
+            ],
           },
         ],
       },
       {
-        path: 'financialStatement', component: FinancialStatementComponent,
+        path: 'financialStatement',
+        component: FinancialStatementComponent,
         children: [
           {
-            path: 'stepsFS', component: FinancialStatementStepsComponent,
+            path: 'stepsFS',
+            component: FinancialStatementStepsComponent,
             children: [
-              { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent },
-            ]
+              {
+                path: 'createFinancialStatement',
+                component: ClientCreateFinancialStatementComponent,
+              },
+            ],
           },
         ],
       },
-      { path: 'taxRefunds', component: TaxRefundsComponent, },
+      { path: 'taxRefunds', component: TaxRefundsComponent },
       { path: 'taxrefundsteps', component: TaxRefundsStepsComponent },
       { path: 'monthlyReport', component: MonthlyReportComponent },
       { path: 'createMonthlyReport', component: CreateMonthlyReportComponent },
       { path: 'createTaxRefunds', component: ClientCreateTaxRefunds },
       { path: 'financialStatement', component: FinancialStatementComponent },
-      { path: 'sensitiveDetails', component: SensitiveDetailsComponent }
+      { path: 'sensitiveDetails', component: SensitiveDetailsComponent },
     ],
   },
   // { path: 'monthlyReport',component: MonthlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
   // { path: 'yearlyReport',component: YearlyReportComponent, data:{ authType: 10, forToolbar: false, label: 'Mod', icon: '' }},
-  { path: 'allCommunication', component: AllCommunicationComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'כלל השיחות', icon: icons.communications } },
-  { path: 'clientAddCommunication', component: ClientAddCommunicationComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, icon: '' } },
-  { path: 'sensitiveDetails', component: SensitiveDetailsComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, icon: '' } },
-  { path: 'workLogComponent', component: WorkLogComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'דוח שעות', icon: icons.clock } },
+  {
+    path: 'allCommunication',
+    component: AllCommunicationComponent,
+    canActivate: [AuthGuard],
+    data: {
+      authType: 3,
+      forToolbar: true,
+      label: 'כלל השיחות',
+      icon: icons.communications,
+    },
+  },
+  {
+    path: 'clientAddCommunication',
+    component: ClientAddCommunicationComponent,
+    canActivate: [AuthGuard],
+    data: { authType: 6, forToolbar: false, icon: '' },
+  },
+  {
+    path: 'sensitiveDetails',
+    component: SensitiveDetailsComponent,
+    canActivate: [AuthGuard],
+    data: { authType: 6, forToolbar: false, icon: '' },
+  },
+  // { path: 'workLogComponent', component: WorkLogComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'דוח שעות', icon: icons.clock } },
   { path: 'checklist', component: TaskCheckListComponent },
   { path: 're', component: TaskRepeatableListComponent },
   { path: 'da', component: DashboardAdminComponent },
@@ -325,22 +479,37 @@ export const routes: Routes = [
   { path: 'checklist', component: TaskCheckListComponent },
   { path: 'addClient', component: AddClientComponent, data: { authType: 6 } },
 
-  { path: 'clientTypes', component: ClientTypeComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: false, icon: '' } },
-  { path: 'fieldMamagement', component: FieldManagementComponent, data: { authType: 3, forToolbar: true, label: 'ניהול שדות', icon: '' } },
   {
-    path: 'manager', component: ManagerNavbarComponent, data: { authType: 3, forToolbar: true, icon: icons.manager, label: "מנהל" },
-    children: [
-      { path: 'editClientYearlyReport', component: EditClientYearlyReportComponent },
-      { path: 'editTaxRefuned', component: EditClientTaxRefunedComponent },
-      { path: 'editMonthlyReport', component: EditMonthlyReportComponent }
-
-    ]
+    path: 'clientTypes',
+    component: ClientTypeComponent,
+    canActivate: [AuthGuard],
+    data: { authType: 3, forToolbar: false, icon: '' },
   },
-  { path: 'steps', component: YearlyReportStepsComponent, },
+  // {
+  //   path: 'fieldMamagement',
+  //   component: FieldManagementComponent,
+  //   data: { authType: 3, forToolbar: true, label: 'ניהול שדות', icon: '' },
+  // },
+  {
+    path: 'manager',
+    component: ManagerNavbarComponent,
+    data: { authType: 3, forToolbar: true, icon: icons.manager, label: 'מנהל' },
+    children: [
+      {
+        path: 'editClientYearlyReport',
+        component: EditClientYearlyReportComponent,
+      },
+      { path: 'editTaxRefuned', component: EditClientTaxRefunedComponent },
+    ],
+  },
+  { path: 'steps', component: YearlyReportStepsComponent },
   { path: 'stepsFS', component: FinancialStatementStepsComponent },
   { path: 'steps/createYearlyReport', component: CreateYearlyReportComponent },
-  { path: 'stepsFS/createFinancialStatement', component: ClientCreateFinancialStatementComponent },
-  { path: 'popup/:id', component: PopAppComponent }
+  {
+    path: 'stepsFS/createFinancialStatement',
+    component: ClientCreateFinancialStatementComponent,
+  },
+  { path: 'popup/:id', component: PopAppComponent },
 
   , { path: 'clientTypes', component: ClientTypeComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: false, icon: '' } },
   // { path: 'fieldMamagement', component: FieldManagementComponent, data: { authType: 3, forToolbar: true, label: 'ניהול שדות', icon: '' } },
@@ -355,20 +524,23 @@ export const routes: Routes = [
   { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent, },
   { path: 'popup/create', component: PopAppComponent },
   {
-    path: 'steps', component: YearlyReportStepsComponent,
+    path: 'steps',
+    component: YearlyReportStepsComponent,
     children: [
       { path: 'createYearlyReport', component: CreateYearlyReportComponent },
-    ]
+    ],
   },
   {
-    path: 'stepsFS', component: FinancialStatementComponent,
+    path: 'stepsFS',
+    component: FinancialStatementComponent,
     children: [
-      { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent },
-    ]
+      {
+        path: 'createFinancialStatement',
+        component: ClientCreateFinancialStatementComponent,
+      },
+    ],
   },
-]
-  ;
-
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

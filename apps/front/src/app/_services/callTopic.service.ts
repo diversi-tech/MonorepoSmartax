@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { callTopicSchema } from '../_models/callTopic.module';
+import { CALL_TOPIC } from '../api-urls';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CallTopicService {
-  private apiUrl = 'http://localhost:8080/CallTopicController'
+  private apiUrl = CALL_TOPIC;
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
