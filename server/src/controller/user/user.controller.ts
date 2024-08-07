@@ -9,10 +9,6 @@ import { User } from 'server/src/Models/user.model';
 import { TokenService } from '../../services/jwt.service';
 // import { equals } from 'class-validator';
 import { hashPasswordService } from '../../services/hash-password';
-// import { ValidationException } from 'server/src/common/exceptions/validation.exception';
-import { TokenService } from 'server/src/services/jwt.service';
-import { hashPasswordService } from 'server/src/services/hash-password';
-import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 
 
 @ApiTags('users')
@@ -24,12 +20,6 @@ export class UserController {
     private jwtToken: TokenService,
     private hashService: hashPasswordService
   ) {}
-
-  constructor(
-    private readonly userService: UserService,
-    private jwtToken: TokenService,
-    private hashService: hashPasswordService
-  ) { }
 
   @Put('create')
   @ApiOperation({ summary: 'Create a new user' })
@@ -123,22 +113,17 @@ export class UserController {
     try {
       console.log(updateUserDto);
       console.log(updateUserDto.id);
-
-      const updatedUser = await this.userService.updateUser(
-        updateUserDto.id,
-        updateUserDto
-      );
       const updatedUser = await this.userService.updateUser(updateUserDto.id, updateUserDto);
       if (!updatedUser) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
       return updatedUser;
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
 
       throw new HttpException(
         error.message,
-        error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
         error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
       );
     }

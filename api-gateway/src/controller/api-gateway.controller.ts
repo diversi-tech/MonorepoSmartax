@@ -137,7 +137,6 @@ export class ApiGatewayController {
     return client.send({ cmd }, { id }).toPromise();
   }
 }
-}
 
 
 
