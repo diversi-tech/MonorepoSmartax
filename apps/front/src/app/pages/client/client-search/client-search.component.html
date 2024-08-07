@@ -29,21 +29,20 @@
     </p-footer>
   </p-confirmDialog>
 
-  <button *ngIf="this.choosedClients.length > 0" (click)="addFavoritesClient()" icon="pi pi-star" pButton type="button" label="להוספה למועדפים" class= "p-button-text p-button-raised p-button-rounded"></button>
-  <button *ngIf="this.choosedClients.length > 0" (click)="showConfirmationDelete()" icon="pi pi-trash" pButton type="button" label="מחיקה" class= "p-button-danger p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="this.choosedClients.length > 0" (click)="addFavoritesClient()" icon="pi pi-star"
+     pButton type="button" label="להוספה למועדפים" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="this.choosedClients.length > 0" (click)="showConfirmationDelete()" icon="pi pi-trash"
+     pButton type="button" label="מחיקה" class= "p-button-danger p-button-text p-button-raised p-button-rounded"></button>
    
-  <!--<button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים"
-    (click)="$event.stopPropagation(); addFavoritesClient()"></button> -->
-  <!-- <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה"
-    class= p-button-danger" (click)=" $event.stopPropagation(); showConfirmationDelete()"></button> -->
-
   <p-table dir="rtl" [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients">
 
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th>
-          <button *ngIf="isChoosedAllClient" (click)="removeAllClients()" pButton type="button" label="הסר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
-          <button *ngIf="!isChoosedAllClient" (click)="$event.stopPropagation(); chooseAllClients()" pButton type="button" label="בחר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
+          <button *ngIf="isChoosedAllClient" (click)="removeAllClients()" pButton type="button"
+           label="הסר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
+          <button *ngIf="!isChoosedAllClient" (click)="$event.stopPropagation(); chooseAllClients()"
+           pButton type="button" label="בחר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
         </th>
         <th></th>
         <th></th>
@@ -70,7 +69,7 @@
             (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
             [minLength]="1" placeholder="חיפוש שם או שם חברה" field="name" [dropdown]="true" [forceSelection]="false">
             <ng-template let-client pTemplate="item">
-              שם - {{ client.firstName+" "+client.lastName }} | שם חברה - {{ client.companyName }}
+              שם - {{ client.firstName+" "+client.lastName }} 
             </ng-template>
           </p-autoComplete>
         </div>

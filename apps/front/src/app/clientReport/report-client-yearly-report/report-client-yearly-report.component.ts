@@ -12,7 +12,7 @@ import { IconProfileComponent } from '../../share/icon-profile/icon-profile.comp
 import { Location } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterOutlet } from '@angular/router';
-import { SelectButtonModule } from 'primeng/selectbutton';
+import { TooltipModule } from 'primeng/tooltip';import { SelectButtonModule } from 'primeng/selectbutton';
 import Swal from 'sweetalert2';
 
 @Component({
