@@ -28,3 +28,7 @@ input.ng-touched.ng-invalid, .custom-dropdown.ng-touched.ng-invalid {
   padding: 10px;
   text-align: right;
 }
+
+*{
+  font-size: smaller;
+}
