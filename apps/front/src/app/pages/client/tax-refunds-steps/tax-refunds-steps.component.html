@@ -6,8 +6,8 @@
   <p-stepper dir="rtl" [(activeStep)]="active">
     <ng-container *ngFor="let stepNumber of stepNumbers">
       <p-stepperPanel>
-        <ng-template pTemplate="header" let-click="click" let-index="index">
-          <button class="p-button-text p-button-raised p-button-rounded" (click)="click.emit()">
+        <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+          <button class="p-stepper-action bg-transparent gap-2" (click)="onClick.emit()">
             <span class="p-stepper-number"
               [ngClass]="{'beginned': isStepBeginned(stepNumber), 'completed': isStepComplete(stepNumber),'notstarted':! isStepBeginned(stepNumber)&&!isStepComplete(stepNumber),'current-step': active+1 === stepNumber}">{{stepNumber}}</span>
           </button>
@@ -31,4 +31,6 @@
     </ng-container>
   </p-stepper>
   <button pButton (click)="submitChanges()" label="שלח שינויים"
+    class="p-button-text p-button-raised p-button-rounded"></button>
+    <button pButton (click)="goToUpdate()" label=" עריכת דוח בסיסי"
     class="p-button-text p-button-raised p-button-rounded"></button>

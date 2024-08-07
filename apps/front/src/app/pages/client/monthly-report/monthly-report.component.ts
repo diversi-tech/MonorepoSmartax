@@ -83,7 +83,7 @@ export class MonthlyReportComponent implements OnInit {
         this.createdYear = this.selectedYear;
         if (!this.selectedYear) {
           this.yearService
-            .createYear({ id: '', yearNum: date.getFullYear().toString() })
+            .createYear({yearNum: date.getFullYear().toString() })
             .subscribe({
               next: (data) => {
                 this.years.push(data);

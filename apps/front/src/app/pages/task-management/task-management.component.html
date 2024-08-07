@@ -19,10 +19,10 @@
         <div>
           <label for="client">לקוח</label>
           <p-autoComplete id="client" [(ngModel)]="filter.client" [suggestions]="clientSuggestions"
-            (completeMethod)="searchClients($event)" field="name">
+            (completeMethod)="searchClients($event)" field="firstName">
             <ng-template let-client pTemplate="item">
               <div class="client-item">
-                <app-icon-profile [userName]="client.name" [email]="client.email"></app-icon-profile>
+                <app-icon-profile [userName]="client.firstName" [email]="client.email"></app-icon-profile>
                 <span>{{ client.name }}</span>
               </div>
             </ng-template>

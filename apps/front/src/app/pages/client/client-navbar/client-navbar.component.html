@@ -1,9 +1,9 @@
-<div class="profile">
-  <app-client-profile></app-client-profile>
-</div>
-<div class="wrapper">
+<div class="aba">
     <div class="content">
       <router-outlet></router-outlet> <!-- טוען את הקומפוננטה מצד שמאל -->
+    </div>
+    <div class="profile">
+      <app-client-profile></app-client-profile>
     </div>
     <div class="container">
       <p-button class="b" label="שיחות" [link]="true" (click)="navigateTo('clientCommunicationLogs')"></p-button>

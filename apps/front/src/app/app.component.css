@@ -4,31 +4,16 @@ body {
     background-color: chartreuse;
 }
 
-#app{
-    margin-top: 15rem;
+#app {
+    margin-top: 13rem;
 }
 
 :host {
-    /* margin-top: 10%;
-    font-size: 3.5rem;
-    padding: 0.6rem 2.5rem 0.6rem 2.5rem; */
-    /* color: brown; */
     text-align: right;
     font-family: "Inter var", sans-serif;
 }
 
-/* .smarttax-logo {
-    width: 200px; 
-    height: 45px; 
-    background-image: url('../assets/image/logo1.png'); 
-    background-size: contain; 
-    background-repeat: no-repeat;
-    background-position: center; 
-    display: inline-block; 
-    text-indent: -9999px; 
-  } */
-
-:host ::ng-deep .smartaxToolbar{
+:host ::ng-deep .smartaxToolbar {
     position: fixed;
     top: 0;
     left: 0;
@@ -36,6 +21,13 @@ body {
     z-index: 1000;
 }
 
-
-
-
+:host ::ng-deep .container{
+    max-width: 11040px;
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* display: flex;
+    justify-content: center;
+    min-width: 10rem; */
+}
