@@ -9,13 +9,11 @@ import { MEET_ENDPOINT } from '../api-urls';
 })
 export class MeetService {
   url: string = MEET_ENDPOINT
-  url: string = MEET_ENDPOINT;
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   constructor(private http: HttpClient) { }
-  constructor(private http: HttpClient) {}
 
   // getRoleById(id: string): Observable<Role> {
   //   return this.http.post<Role>(`${this.url}/searchClient`, { id }, this.httpOptions)
@@ -29,9 +27,6 @@ export class MeetService {
   getMeetById(meetId: string): Observable<Meet> {
     const body = { id: meetId }
     return this.http.post<Meet>(`${this.url}/searchMeet`, body)
-  getMeetById(meetId: string): Observable<Meet> {
-    const body = { id: meetId };
-    return this.http.post<Meet>(`${this.url}/searchMeet`, body);
   }
   createMeet(meet: Meet): Observable<Meet> {
     var e = this.http.put<Meet>(this.url, meet)

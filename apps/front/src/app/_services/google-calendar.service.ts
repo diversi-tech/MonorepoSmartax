@@ -445,5 +445,5 @@ export class GoogleAuthService {
       throw error;
     }
   }
-  }
 }
+

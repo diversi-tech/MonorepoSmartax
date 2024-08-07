@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ClientType } from '../../app/_models/clientType.module';
-import { ClientType } from '../../app/_models/clientType.module'; // Update the path according to the location of your model
 import { CLIENT_TYPE } from '../api-urls';
 
 @Injectable({
