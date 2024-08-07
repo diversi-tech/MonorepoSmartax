@@ -1,4 +1,3 @@
-
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { StorageService } from './_services/storage.service';
@@ -83,7 +82,6 @@ export class AppComponent {
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('_id');
   }
-  
 
   ngOnInit(): void {
     this.isLoggedIn = this.storageService.isLoggedIn();
@@ -138,7 +136,6 @@ export class AppComponent {
   //   console.log('showNotification called with:', task);
   //   this.cdr.detectChanges();  // Force change detection
   // }
-  
   logout(): void {
     try {
       this.authService.logout().subscribe(

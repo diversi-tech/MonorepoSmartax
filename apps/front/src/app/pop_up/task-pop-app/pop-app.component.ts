@@ -60,9 +60,10 @@ export class PopAppComponent implements OnInit {
 
   visible: boolean = true;
   show = true
-  create = false;
-  constructor(private route: ActivatedRoute, private location: Location,private router: Router) {}
-  
+  create = false
+
+  constructor(private route: ActivatedRoute, private location: Location, private router: Router) { }
+
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.id == 'create') {
@@ -77,6 +78,7 @@ export class PopAppComponent implements OnInit {
       this.parent = params['parent'];
     });
   }
+
 
   showDialog() {
     this.visible = true;

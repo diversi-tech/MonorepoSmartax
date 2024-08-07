@@ -105,7 +105,7 @@ export class SocketServiceW {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:3000');
+    // this.socket = io('http://localhost:3000');
     this.socket = io('https://monoreposmartax.onrender.com'); // שנה את הכתובת לכתובת השרת שלך אם יש צורך
   }
 
