@@ -155,6 +155,7 @@ export class YearlyReportStepsComponent implements OnInit {
 
   goToUpdate() {
     this.router.navigate(['/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
+  
   }
   goBack() {
     this.location.back();

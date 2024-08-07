@@ -23,8 +23,9 @@ import Swal from 'sweetalert2';
 export class EditClientYearlyReportComponent implements OnInit {
   allStepFields: StepField[] = [];
   filteredStepFields: StepField[] = [];
-  numberOptions = [1, 2, 3, 4, 5];
-  currentStepField: StepField;
+  numberOptions = [
+  ]; 
+   currentStepField: StepField;
   displayAddDialog: boolean = false;
   newStepValue: string = '';
   newStepStepNumber: number = 1;
@@ -33,6 +34,9 @@ export class EditClientYearlyReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAlStepField();
+    this.numberOptions = [1,2,3,4,5,
+     
+    ]; 
   }
   getAlStepField(): void{
     this.stepFieldService.getAllStepField().subscribe(

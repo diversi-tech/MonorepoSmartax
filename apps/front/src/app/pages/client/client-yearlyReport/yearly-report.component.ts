@@ -71,6 +71,7 @@ export class YearlyReportComponent implements OnInit {
     this.curentRoute = this.route.snapshot.url.join('/');
     console.log(this.curentRoute)
     this.getYearlyReportsForClient();
+    
 
   }
   

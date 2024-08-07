@@ -8,7 +8,7 @@
 </div>
 
 <!-- דיאלוג הוספה -->
-<p-dialog header="Add New Step" [(visible)]="displayAddDialog" modal="modal" [style]="{'width': '300px'}">
+<p-dialog header="Add New Step" [(visible)]="displayAddDialog" modal="modal" [style]="{'width': '300px','height': '1000px'}">
     <div class="p-fluid">
         <div class="p-field">
             <label for="value">Value</label>
@@ -17,8 +17,8 @@
         <div class="p-field">
             <label for="stepNumber">Step Number</label>
             <p-dropdown id="stepNumber" [options]="numberOptions" [(ngModel)]="newStepStepNumber"
-                placeholder="Select a step number">
-            </p-dropdown>
+            placeholder="Select a step number">
+        </p-dropdown>
         </div>
     </div>
     <br><br><br>
@@ -28,7 +28,7 @@
     </p-footer>
 </p-dialog>
 
-<p-table [value]="filteredStepFields" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '20rem'}" dir="rtl">
+<p-table [value]="filteredStepFields" dataKey="_id" editMode="row" [tableStyle]="{'width': 'auto','margin': 'auto'}" dir="rtl" class="myTable">
     <ng-template pTemplate="header">
         <tr>
             <th style="width:50%">
