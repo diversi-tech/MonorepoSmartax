@@ -335,6 +335,7 @@ async function bootstrap() {
     // origin: 'http://localhost:4200',
     origin: 'https://monoreposmartax-fronted.onrender.com',
     credentials: true,
+    allowedHeaders: 'Authorization, Content-Type',
   });
   // קבע את הנתיב לתיקיית התמונות הציבורית
   // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
