@@ -13,7 +13,7 @@ import { AuthGuard } from 'server/src/guards/auth.guard';
 @UseFilters(HttpErrorFilter)
 export class CommunicationsController {
     constructor(private readonly communicationsService: CommunicationsService) { }
-    // @UseGuards(AuthGuard, RoleGuard(3))
+    @UseGuards(AuthGuard, RoleGuard(3))
     @Post('create')
     @ApiOperation({ summary: 'Create a new communication' })
     @ApiBody({ type: CreateCommunicationDto })
