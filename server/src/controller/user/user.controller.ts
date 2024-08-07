@@ -1,30 +1,24 @@
 
-import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, Request } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { UserService } from '../../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../../Models/dto/user.dto';
 import { User } from 'server/src/Models/user.model';
 // import { HttpErrorFilter } from '../../common/filters/http-error.filter';
 
-import { TokenService } from '../../services/jwt.service';
 // import { equals } from 'class-validator';
-import { hashPasswordService } from '../../services/hash-password';
 // import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { TokenService } from 'server/src/services/jwt.service';
 import { hashPasswordService } from 'server/src/services/hash-password';
 import { ValidationException } from 'server/src/common/exceptions/validation.exception';
+import { AuthGuard } from 'server/src/guards/auth.guard';
+import { RoleGuard } from 'server/src/guards/role.guard';
 
 
 @ApiTags('users')
 @Controller('users')
 // @UseFilters(HttpErrorFilter)
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private jwtToken: TokenService,
-    private hashService: hashPasswordService
-  ) {}
-
   constructor(
     private readonly userService: UserService,
     private jwtToken: TokenService,
@@ -124,10 +118,6 @@ export class UserController {
       console.log(updateUserDto);
       console.log(updateUserDto.id);
 
-      const updatedUser = await this.userService.updateUser(
-        updateUserDto.id,
-        updateUserDto
-      );
       const updatedUser = await this.userService.updateUser(updateUserDto.id, updateUserDto);
       if (!updatedUser) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -138,7 +128,6 @@ export class UserController {
 
       throw new HttpException(
         error.message,
-        error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
         error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
@@ -167,6 +156,7 @@ export class UserController {
   }
 
   @Put('ChangePassword')
+  @UseGuards(AuthGuard, RoleGuard(3))
   @ApiOperation({ summary: 'Update new password' })
   @ApiResponse({ status: 200, description: 'Password changed successfully' })
   @ApiResponse({ status: 401, description: 'Invalid token' })
@@ -192,8 +182,6 @@ export class UserController {
       role: user.role,
       favoritesClient: user.favoritesClient,
     };
-    await this.userService.updateUser(user.id, userDto);
-
     await this.userService.updateUser(user.id, userDto)
     try {
       return {

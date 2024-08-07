@@ -273,10 +273,7 @@ export class GoogleAuthService {
       });
     } catch (error) {
       console.error('Error creating event:', error);
-    } catch (error) {
-      console.error("Error creat  ing event:", error);
-      console.error('Error creating event:', error);
-    }
+    } 
   }
 
   public updateGoogleEvent(eventDetails: any) {

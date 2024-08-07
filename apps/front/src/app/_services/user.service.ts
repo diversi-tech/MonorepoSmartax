@@ -132,11 +132,11 @@ export class UserService {
       "email": email,
       "favoritesClient":favoritesClient
     }
-    return this.http.post(
-      this.apiUrl + "/update",
-      user,
-      httpOptions
-    );
+    // return this.http.post(
+    //   this.apiUrl + "/update",
+    //   user,
+    //   httpOptions
+    // );
     return this.http
       .post<User>(`${this.apiUrl}/update`, { user }, this.httpOptions)
       .pipe(catchError(this.handleError<User>('update')));

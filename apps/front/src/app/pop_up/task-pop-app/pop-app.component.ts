@@ -60,14 +60,6 @@ export class PopAppComponent implements OnInit {
 
   visible: boolean = true;
   show = true
-
-
-  create = false;
-  constructor(private route: ActivatedRoute, private location: Location,private router: Router) {}
-  id: string | null
-  @Input() parent: string | null = null;
-  visible: boolean = true;
-  show = true
   create = false
 
   constructor(private route: ActivatedRoute, private location: Location, private router: Router) { }
@@ -83,27 +75,13 @@ export class PopAppComponent implements OnInit {
     }
 
     this.route.queryParams.subscribe((params) => {
-      this.id == null
-      this.create = true
-    }
-
-    else {
-      alert('עריכה בפופאפ');
-      this.create = false;
-    }
-
-    this.route.queryParams.subscribe((params) => {
       this.parent = params['parent'];
     });
   }
 
+
   showDialog() {
     this.visible = true;
-  }
-
-  onHide() {
-    console.log('The dialog has been closed.');
-    this.location.back();
   }
 
   onDialogClose() {
