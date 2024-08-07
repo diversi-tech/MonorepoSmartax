@@ -80,26 +80,26 @@ export class MonthlyReportComponent implements OnInit {
         this.selectedYear = this.years.find(
           (y) => y.yearNum === date.getFullYear().toString()
         );
-        this.createdYear = this.selectedYear;
         if (!this.selectedYear) {
           this.yearService
-            .createYear({yearNum: date.getFullYear().toString() })
-            .subscribe({
-              next: (data) => {
-                this.years.push(data);
-                this.selectedYear = this.years.find(
-                  (y) => y.yearNum === date.getFullYear().toString()
-                );
-              },
-              error: (error) => {
-                console.log(error);
-              },
-            });
+          .createYear({yearNum: date.getFullYear().toString() })
+          .subscribe({
+            next: (data) => {
+              this.years.push(data);
+              this.selectedYear = this.years.find(
+                (y) => y.yearNum === date.getFullYear().toString()
+              );
+            },
+            error: (error) => {
+              console.log(error);
+            },
+          });
         }
+        this.createdYear = this.selectedYear;
         this.selectedMonth = date.getMonth() + 1;
         this.createdMonth = this.selectedMonth;
         if (this.currentRoute === 'allClientMonthlyReport') {
-          this.getMonthlyReports();
+          this.getMonthlyReports();          
         } else {
           this.getMonthlyReportsForClient();
           if (this.client.reports === 'מדווח חודשי') {
@@ -151,6 +151,7 @@ export class MonthlyReportComponent implements OnInit {
       next: (reports: any) => {
         this.allMonthlyReports = reports;
         console.log(this.allMonthlyReports);
+        this.changeDate();
       },
       error: (error) => {
         console.error('Error fetching monthly reports for client', error);
@@ -159,22 +160,19 @@ export class MonthlyReportComponent implements OnInit {
   }
 
   getMonthlyReports(): void {
-    this.monthlyReportService.getAllMonthlyReport().subscribe(
-      (reports) => {
+    this.monthlyReportService.getAllMonthlyReport().subscribe({
+      next: (reports: any) => {
         this.allMonthlyReports = reports;
+        console.log(this.allMonthlyReports);
+        this.changeDate();
       },
-      (error) => {
-        console.error('Error fetching yearly reports for client', error);
-      }
-    );
+      error: (error) => {
+        console.error('Error fetching monthly reports for clients', error);
+      },
+    });
   }
 
   changeDate() {
-    this.myReport = this.getReportByMonth(
-      this.allMonthlyReports,
-      this.selectedYear,
-      this.selectedMonth
-    );
     this.myReport = this.getReportByMonth(
       this.allMonthlyReports,
       this.selectedYear,
@@ -202,6 +200,8 @@ export class MonthlyReportComponent implements OnInit {
   }
 
   getReportByMonth(data: any, year: Year, month: string) {
+    console.log(data);
+    
     return data.filter(
       (m) =>
         new Date(m.reportDate).getMonth() + 1 === Number(month) &&
@@ -267,11 +267,9 @@ export class MonthlyReportComponent implements OnInit {
     console.log(updatedSteps);
 
     Object.keys(this.changes[type]).forEach((clientId) => {
-      console.log(clientId);
-
       Object.keys(this.changes[type][clientId]).forEach((value) => {
         const stepIndex = updatedSteps[type].findIndex(
-          (step) => step.clientId === clientId && step.value === value
+          (step) => step.value === value
         );
 
         if (stepIndex !== -1) {

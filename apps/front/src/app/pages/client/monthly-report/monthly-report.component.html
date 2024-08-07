@@ -1,4 +1,4 @@
-<p-button (onClick)="showDialog()" label="חדש" />
+<p-button *ngIf="currentRoute === 'monthlyReport'" (onClick)="showDialog()" label="חדש" />
 <p-dialog header="יצירת דוח חדש" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
     <div class="flex align-items-center gap-3 mb-3">
         <p-dropdown
@@ -36,7 +36,7 @@
           <tr>
             <th *ngIf="currentRoute === 'allClientMonthlyReport'">שם לקוח</th>
             <th *ngFor="let value of getValuesForType(type)">{{ value }}</th>
-            <th></th>
+            <th *ngIf="currentRoute === 'monthlyReport'"></th>
           </tr>
         </thead>
         <tbody>
@@ -53,7 +53,7 @@
                 <input type="text" pInputText [value]="getClientData(type, clientId, value)" (input)="handleInputChange(type, clientId, value, $event)">
               </ng-container>
             </td>
-            <td><button (click)="saveChanges(type)">שמור שינויים</button>
+            <td *ngIf="currentRoute === 'monthlyReport'"><button (click)="saveChanges(type)">שמור שינויים</button>
            </td>
           </tr>
         </tbody>
