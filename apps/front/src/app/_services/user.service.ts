@@ -34,7 +34,7 @@ export class UserService {
       role: role,
       email: email,
     };
-    return this.http.post(this.apiUrl + '/create', newUser, {
+    return this.http.put(this.apiUrl + '/create', newUser, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
