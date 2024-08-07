@@ -1,8 +1,8 @@
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
   <p-footer>
-    <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+    <button type="button" pButton icon="pi pi-times" label="ביטול" class="p-button-text"
       (click)="cancelDelete()"></button>
-    <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+    <button type="button" pButton icon="pi pi-check" label="מחיקה" class="p-button-text"
       (click)="confirmDelete()"></button>
   </p-footer>
 </p-confirmDialog>
@@ -19,10 +19,10 @@
         <div>
           <label for="client">לקוח</label>
           <p-autoComplete id="client" [(ngModel)]="filter.client" [suggestions]="clientSuggestions"
-            (completeMethod)="searchClients($event)" field="name">
+            (completeMethod)="searchClients($event)" field="firstName">
             <ng-template let-client pTemplate="item">
               <div class="client-item">
-                <app-icon-profile [userName]="client.name" [email]="client.email"></app-icon-profile>
+                <app-icon-profile [userName]="client.firstName" [email]="client.email"></app-icon-profile>
                 <span>{{ client.name }}</span>
               </div>
             </ng-template>
@@ -60,7 +60,8 @@
           </p-multiSelect>
         </div>
 
-        <p-button label="Apply Filter" (click)="applyFilter()" class="apply-filter-button"></p-button>
+        <button pButton label="Apply Filter" (click)="applyFilter()"
+          class="p-button-text p-button-raised p-button-rounded"></button>
       </div>
     </div>
   </div>
@@ -70,13 +71,13 @@
 </p-sidebar>
 
 <div class="p-grid">
-  <div class="p-col-4" style="text-align: right; align-items: right">
-    <div class="content-container" style="display: flex; flex-direction: column">
-      <p-button class="buttons" [routerLink]="['/taskSpe', 'create']" id="addBtn" type="button" icon="pi pi-plus"
-        label="הוסף משימה"></p-button>
+  <div>
+    <div class="content-container">
+      <button pButton class="p-button-text p-button-raised p-button-rounded" [routerLink]="['/taskSpe', 'create']"
+        id="addBtn" type="button" icon="pi pi-plus" label="הוסף משימה"></button>
 
-      <p-button class="buttons" type="text" (click)="display = true" (click)="toggleFilter()" icon="pi pi-filter"
-        label="סינון"></p-button>
+      <button pButton class="p-button-text p-button-raised p-button-rounded" type="text" (click)="display = true"
+        (click)="toggleFilter()" icon="pi pi-filter" label="סינון"></button>
 
       <input class="buttons" id="float-input" pInputText type="text" placeholder="חיפוש משימה" (change)="searchTask()"
         [(ngModel)]="searchTerm" />
@@ -148,27 +149,6 @@
                         {{ tag.text }}
                       </button>
                     </td>
-                    <!-- <td>
-                      <button
-                        [routerLink]="['/taskSpe', task._id]"
-                        pButton
-                        icon="pi pi-pencil"
-                        label="Edit"
-                      ></button>
-                      <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil"
-                        style="color: blue;cursor: pointer;"></i>
-                    </td> -->
-                    <!-- <td>
-                      <button
-                        pButton
-                        type="button"
-                        icon="pi pi-trash"
-                        label="Delete"
-                        class="p-button-danger"
-                        (click)="showConfirmation(task)"
-                      ></button>
-                      <i (click)="showConfirmation(task)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
-                    </td> -->
                     <td><button *ngIf="currentTask === task" pButton
                         class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
                         (click)="editTask()"></button>
@@ -186,17 +166,6 @@
         <div *ngIf="filteredTasks.length > 0">
           <p-panel header="Filtered Tasks">
             <p-table [value]="filteredTasks">
-              <!-- <ng-template pTemplate="header">
-                <tr>
-                  <th>Name</th>
-                  <th>assignedTo</th>
-                  <th>Deadline </th>
-                  <th>Tags</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </ng-template> -->
-
               <ng-template pTemplate="header">
                 <tr style="height: 50px">
                   <th style="width: auto; height: 50px">
@@ -256,24 +225,10 @@
                     </button>
                   </td>
                   <td>
-                    <!-- <button
-                      [routerLink]="['/taskSpe', task._id]"
-                      pButton
-                      icon="pi pi-pencil"
-                      label="Edit"
-                    ></button> -->
                     <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil"
                       style="color: blue;cursor: pointer;"></i>
                   </td>
                   <td>
-                    <!-- <button
-                      pButton
-                      type="button"
-                      icon="pi pi-trash"
-                      label="Delete"
-                      class="p-button-danger"
-                      (click)="showConfirmation(task)"
-                    ></button> -->
                     <i (click)="showConfirmation(task)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
                   </td>
                 </tr>

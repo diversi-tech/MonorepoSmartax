@@ -16,22 +16,24 @@
       >
         <div class="flex align-items-center gap-2">
           <!-- x -->
-          <p-button
+          <button pButton 
             (click)="closeDialogInner()"
             label="ביטול"
             icon="pi pi-times"
             rounded="true"
             text="true"
             severity="secondary"
-          />
+            class= "p-button-text p-button-raised p-button-rounded"
+          ></button>
           <!-- v -->
-          <p-button
+          <button pButton 
             (click)="save()"
             label="שמירה"
             icon="pi pi-check"
             rounded="true"
             text="true"
-          />
+            class= "p-button-text p-button-raised p-button-rounded"
+          ></button>
         </div>
         <!-- <span class="p-text-secondary"> לשמירת השינויים </span> -->
       </div>

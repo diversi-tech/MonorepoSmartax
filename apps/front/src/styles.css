@@ -10,43 +10,29 @@
 @import "~quill/dist/quill.snow.css";
 @import "node_modules/primeng/resources/themes/nova-light/theme.css";
 @import "primeng/resources/primeng.css"; */
-/* 
-:host ::ng-deep .highlight {
-    background-color: #edecec;
+
+.highlight {
+  background-color: #edecec;
 }
 
 th,
 td {
-    text-align: center;
+  text-align: center;
 }
 
 .p-button-rounded {
-    border-radius: 20%;
-    margin: 1%;
+  border-radius: 20%;
+  margin: 1%;
 }
 
-:host ::ng-deep .p-ripple,
-:host ::ng-deep .p-element,
-:host ::ng-deep .p-button,
-:host ::ng-deep .p-component {
-    color: darkmagenta important;
+/* .p-fileUpload{
+    
+} */
+body {
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  /* styles.css */
 }
-
-:host ::ng-deep.p-button:not(:disabled) {
-    color: rgb(233, 35, 35);
-}
-
-:host ::ng-deep.p-button:disabled {
-    color: rgb(222, 49, 49);
-}
-*/
-
-/* body {
-    background-color: #cb1010;
-  } */
-
-/* .d{
-    color: aqua;
-}  */
-/*   
-div{color: aqua !important;} */

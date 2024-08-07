@@ -34,7 +34,6 @@ export class SensitiveDataService {
       
     } catch (error) {
       console.log(error);
-      
     }
   }
   async getEncryptedPasswordToClient(
@@ -47,18 +46,14 @@ export class SensitiveDataService {
       return sensData.toObject({ getters: true });   
     } catch (error) {
       console.log(error);
-      
     }
   }
   async getHighestNumber() {
     try {
       const sensData = await this.SensitiveDatatModel.find().exec();
-
       if (sensData.length === 0) {
-        console.log('No clients found');
         return null;
       }
-
       const highestNumber = sensData
         .map((sens) => parseInt(sens.number, 10))
         .filter((clientID) => !isNaN(clientID))

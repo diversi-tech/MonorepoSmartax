@@ -1,32 +1,4 @@
-/* button {
-    padding: 12px 20px;
-    font-family: var(--font);
-    font-size: 14px;
-    text-transform: uppercase;
-    border: none;
-    background: var(--color-button);
-    color: var(--color-button-text);
-    box-shadow: inset #4c924c 0 -2px 0;
-    cursor: pointer;
-    outline: none;
-    transition: background-color 0.2s ease-out;
-    border-radius: 0;
-  } */
-  
-  /* button:disabled {
-    background: var(--color-button-disabled);
-    box-shadow: inset #b3b3b3 0 -2px 0;
-  }
-  
-  button:hover {
-    background: #59a059;
-  }
-  
-  button:active {
-    box-shadow: inset #338033 0 0 0;
-    transform: translateY(2px);
-  } */
-  
+@import '../../../styles.css';
   .error {
     color: red;
   }
@@ -34,20 +6,6 @@
   input.ng-touched.ng-invalid, .custom-dropdown.ng-touched.ng-invalid {
     border-color: red;
   }
-
-  .highlight {
-    background-color: #edecec;
-  }
-  
-  th, td {
-    text-align: center;
-  }
-  
-  .p-button-rounded {
-    border-radius: 20%;
-    margin: 1%;
-  } 
-    
   .green{
     /* background-color:#28a745; */
     color:#28a745;
@@ -59,5 +17,11 @@
   .gray{
    color: #7d7979;
     /* color:white; */
+  }
+  .myInput{
+    width: 110%;
+    height: 40px;
+    padding: 10px;
+    text-align: right;
   }
   

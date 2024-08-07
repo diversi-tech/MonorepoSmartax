@@ -1,41 +1,108 @@
 body {
-    text-align: right;
-    direction: rtl;
-    background-color: chartreuse;
+  text-align: right;
+  direction: rtl;
+  background-color: #f5f5f5;
 }
+#app {
+  /* margin-top: 9.5rem; */
+  min-height: 100vh; /* כדי להבטיח שהדיב יקבל גובה מלא */
+  background-color: #f5f5f5;
+  padding-top: 9.5rem; /* התאם את הערך לפי גובה ה-toolbar כדי למנוע חפיפות */
 
-#app{
-    margin-top: 15rem;
 }
-
 :host {
-    /* margin-top: 10%;
-    font-size: 3.5rem;
-    padding: 0.6rem 2.5rem 0.6rem 2.5rem; */
-    /* color: brown; */
-    text-align: right;
-    font-family: "Inter var", sans-serif;
+  text-align: right;
+  font-family: 'Inter var', sans-serif;
+}
+:host ::ng-deep .smartaxToolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
-/* .smarttax-logo {
-    width: 200px; 
-    height: 45px; 
-    background-image: url('../assets/image/logo1.png'); 
-    background-size: contain; 
-    background-repeat: no-repeat;
-    background-position: center; 
-    display: inline-block; 
-    text-indent: -9999px; 
-  } */
-
-:host ::ng-deep .smartaxToolbar{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
+:host ::ng-deep .container{
+  max-width: 11040px;
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  /* display: flex;
+  justify-content: center;
+  min-width: 10rem; */
 }
 
+/* menu-items */
+::ng-deep .p-menu .p-menuitem-link {
+  text-decoration: none;
+  /* text-align: right;
+  display: block;
+  width: 100%; */
+}
 
+::ng-deep .p-menu .p-menuitem-link:hover {
+  text-decoration: none;
+  text-align: right;
+}
+/* nav-bar */
+/* styles.css */
+.custom-navbar {
+  background-color: white;
+}
 
+.custom-navbar {
+  color: black; /* צבע הכתב עבור טקסטים ולינקים בתוך ה-nav */
+  /* border-bottom: 2px solid black;  */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* צל תחתון */
+  /* padding: 10px 15px; */
+}
 
+.custom-navbar a {
+  text-decoration: none;
+  color: black;
+}
+
+/*  */
+/* styles.css */
+.smartaxToolbar {
+  display: flex;
+  justify-content: center;
+}
+
+.custom-navbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* יישור האלמנטים בתוך ה-navbar */
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item {
+  margin-left: 10px; /* רווח בין פריטים */
+}
+
+.smarttax-logo {
+  font-weight: bold;
+}
+
+.rounded-button {
+  border-radius: 10px;
+}
+
+.nav-link.no-underline {
+  text-decoration: none;
+}
+/*  */
+
+body,
+html {
+  background-color: #f5f5f5; /* צבע רקע אפור בהיר */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}

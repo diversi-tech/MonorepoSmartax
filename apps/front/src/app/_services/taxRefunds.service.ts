@@ -35,7 +35,7 @@ export class TaxRefundsService {
 
    getTaxRefundsForClient(clientId: string): Observable<TaxRefunds[]> {
     return this.getAllTaxRefunds().pipe(
-      map(reports => reports.filter(report => report.idUser === clientId)),
+      map(reports => reports.filter(report => report.idClient === clientId)),
       catchError(this.handleError<TaxRefunds[]>('getTaxRefundsForClient', []))
     );
   }

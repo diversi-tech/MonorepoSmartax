@@ -1,0 +1,84 @@
+<button pButton (click)="goBack()" label="חזור" class= "p-button-text p-button-raised p-button-rounded"></button>
+
+<div class="form-container">
+  <div class="icon-container">
+    <div class="year-icon">{{responseData.year }}</div>
+  </div>
+
+  <div class="details-container">
+    <p class="highlight">תאריך יצירה: <span class="value">{{ responseData.date | date }}</span></p>
+    <p class="highlight">מקדמה ששולמה: <span class="value">{{ responseData.paymentAmountPaid }}</span></p>
+    <p class="highlight">יתרה לתשלום: <span class="value">{{ responseData.balanceDue }}</span></p>
+    <p class="highlight">מחיר: <span class="value">{{ responseData.price }}</span></p>
+  </div>
+
+  <p-stepper dir="rtl" [(activeStep)]="active">
+    <ng-container *ngFor="let stepNumber of stepNumbers">
+      <p-stepperPanel>
+        <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+          <button
+            class="p-stepper-action bg-transparent gap-2"
+            (click)="onClick.emit()"
+          >
+            <span class="p-stepper-number" [ngClass]="{'beginned': isStepBeginned(stepNumber), 'completed': isStepComplete(stepNumber),'notstarted':! isStepBeginned(stepNumber)&&!isStepComplete(stepNumber),'current-step': active+1 === stepNumber}">{{stepNumber}}</span>
+          </button>
+                  </ng-template>
+
+          <ng-template pTemplate="content" let-nextCallback="nextCallback" >
+          <div class="flex flex-column h-12rem">
+            <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex flex-column align-items-center font-medium">
+              <div *ngFor="let task of stepsByNumber[stepNumber]">
+                <div class="checkbox-wrapper">
+                  <label>
+                    <input type="checkbox" [(ngModel)]="task.isCompleted" (change)="update(task)" />
+                    {{ task.value }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+    </ng-container>
+  </p-stepper>
+
+  
+    <!-- <p-stepper dir="rtl" [(activeStep)]="active">
+      <ng-container *ngFor="let stepNumber of stepNumbers">
+      <p-stepperPanel >
+        <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+          <button
+            class="p-stepper-action bg-transparent gap-2"
+            (click)="onClick.emit()"
+          >
+            <span class="p-stepper-number" [ngClass]="{'beginned': isStepBeginned(stepNumber), 'completed': isStepComplete(stepNumber),'notstarted':! isStepBeginned(stepNumber)&&!isStepComplete(stepNumber),'current-step': active+1 === stepNumber}">{{stepNumber}}</span>
+          </button>
+        </ng-template>
+        <ng-template pTemplate="content" let-nextCallback="nextCallback" >
+          <div class="flex flex-column h-12rem">
+            <div
+              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
+            >
+              <div *ngFor="let task of stepsByNumber[stepNumber]">
+                <div class="checkbox-wrapper">
+                  <label>
+                    <input type="checkbox" [(ngModel)]="task.isCompleted" (change)="update(task)" />
+                    {{ task.value }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+    </ng-container>
+    </p-stepper>
+    <p-button (click)="submitChanges()" label="שלח שינויים" />
+   -->
+
+  <div class="buttons-container">
+    <button pButton (click)="submitChanges()" label="שלח שינויים" class= "p-button-text p-button-raised p-button-rounded"></button>
+    <button pButton (click)="goToUpdate()" label="עריכת פרטי דוח בסיסי" class= "p-button-text p-button-raised p-button-rounded"></button>
+  </div>
+</div>
+

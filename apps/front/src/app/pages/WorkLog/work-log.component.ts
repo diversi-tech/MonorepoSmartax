@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WorkLogService } from '../../_services/workLog.service';
 import { WorkLog, TimeEntry } from '../../_models/workLog.model';
 import { MessageService } from 'primeng/api';
+import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
@@ -10,7 +11,7 @@ import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../_services/token.service';
 import { UpdateWorkLogDto } from '../../../../../../timesheet/src/dto/workLog.dto';
-import { FormsModule } from '@angular/forms';
+import { User } from '../../../../../../server/src/Models/user.model';
 
 @Component({
   selector: 'app-work-log',
@@ -30,6 +31,7 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [MessageService]
 })
+
 export class WorkLogComponent implements OnInit {
   workLogs: WorkLog[] = [];
   groupedWorkLogs: any[] = [];
@@ -43,6 +45,8 @@ export class WorkLogComponent implements OnInit {
   logGroup: any;
   currentLogGroup: any;
   currentLog: TimeEntry;
+  users: User[] = [];
+  employName: string | null = null;
 
   constructor(
     private workLogService: WorkLogService,
@@ -51,63 +55,50 @@ export class WorkLogComponent implements OnInit {
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('_id');
     this.userRole = this.tokenService.getCurrentDetail('role').level;
-    console.log(this.userRole);
-    
   }
-
   ngOnInit() {
     this.getWorkLogs();
-    console.log(this.employeeId);
+    this.getUsers();
+  }
+  getUsers() {
+    this.workLogService.getUsers().subscribe((users: User[]) => {
+      this.users = users;
+      this.getWorkLogs();
+      
+    });
+  }
+
+  getEmployeeName(employeeId: string): string {
+    const user = this.users.find(user => user._id === employeeId);
+    return user ? user.userName : '---';
   }
 
   getWorkLogs() {
-    if (this.userRole === 3) {
-      this.workLogService.getWorkLogs().subscribe(
-        (response: WorkLog[]) => {
-          if (response && Array.isArray(response)) {
-            this.workLogs = response.map(log => ({
-              ...log,
-              date: new Date(log.date),
-              timeEntries: log.timeEntries.map(entry => ({
-                ...entry,
-                checkIn: entry.checkIn ? new Date(entry.checkIn) : null,
-                checkOut: entry.checkOut ? new Date(entry.checkOut) : null
-              }))
-            }));
-            this.groupWorkLogsByEmployeeAndDate();
-          } else {
-            console.error('Data received from API is not an array:', response);
-          }
-        },
-        (error) => {
-          console.error('Error fetching work logs:', error);
+    const fetchWorkLogs$ = this.userRole === 3
+      ? this.workLogService.getWorkLogs()
+      : this.workLogService.getWorkLogsByEmployeeId(this.employeeId);
+
+    fetchWorkLogs$.subscribe(
+      (response: WorkLog[]) => {
+        if (response && Array.isArray(response)) {
+          this.workLogs = response.map(log => ({
+            ...log,
+            date: new Date(log.date),
+            timeEntries: log.timeEntries.map(entry => ({
+              ...entry,
+              checkIn: entry.checkIn ? new Date(entry.checkIn) : null,
+              checkOut: entry.checkOut ? new Date(entry.checkOut) : null
+            }))
+          }));
+          this.groupWorkLogsByEmployeeAndDate();
+        } else {
+          console.error('Data received from API is not an array:', response);
         }
-      );
-    } else if (this.userRole === 6) {
-      this.workLogService.getWorkLogsByEmployeeId(this.employeeId).subscribe(
-        (response: WorkLog[]) => {
-          if (response && Array.isArray(response)) {
-            this.workLogs = response.map(log => ({
-              ...log,
-              date: new Date(log.date),
-              timeEntries: log.timeEntries.map(entry => ({
-                ...entry,
-                checkIn: entry.checkIn ? new Date(entry.checkIn) : null,
-                checkOut: entry.checkOut ? new Date(entry.checkOut) : null
-              }))
-            }));
-            this.groupWorkLogsByEmployeeAndDate();
-          } else {
-            console.error('Data received from API is not an array:', response);
-          }
-        },
-        (error) => {
-          console.error('Error fetching work logs:', error);
-        }
-      );
-    } else {
-      console.error('User role not supported for fetching work logs.');
-    }
+      },
+      (error) => {
+        console.error('Error fetching work logs:', error);
+      }
+    );
   }
 
   groupWorkLogsByEmployeeAndDate() {
@@ -125,8 +116,13 @@ export class WorkLogComponent implements OnInit {
       acc[key].totalHoursWorked += log.timeEntries.reduce((sum, entry) => sum + (entry.hoursWorked || 0), 0);
       return acc;
     }, {});
-
     this.groupedWorkLogs = Object.values(grouped);
+
+    this.groupedWorkLogs = Object.values(grouped).map((group: any) => ({
+      ...group,
+      employeeName: this.getEmployeeName(group.employeeId)
+    }));
+    console.log(this.groupedWorkLogs);
   }
 
   checkIn() {
@@ -135,7 +131,7 @@ export class WorkLogComponent implements OnInit {
       return;
     }
 
-    const today = new Date().toLocaleDateString('en-CA'); // תאריך של היום בפורמט 'yyyy-MM-dd'
+    const today = new Date().toLocaleDateString('en-CA')
     const existingWorkLog = this.workLogs.find(log => log.employeeId == this.employeeId && new Date(log.date).toLocaleDateString('en-CA') === today);
 
     if (existingWorkLog) {
@@ -248,6 +244,7 @@ export class WorkLogComponent implements OnInit {
       }
     );
   }
+
   createWorkLog(workLog: WorkLog) {
     this.workLogService.createWorkLog(workLog).subscribe(
       response => {
@@ -308,10 +305,7 @@ export class WorkLogComponent implements OnInit {
         (error) => {
           console.error('Error exporting work logs:', error);
           this.messageService.add({ severity: 'error', summary: 'Failed to export work logs' });
-        }
-      );
-    }
-  }
+        }); } }
 
   private exportWorkLogsToExcel(workLogs: WorkLog[], year: number, month: number) {
     this.workLogService.exportWorkLogsForEmployee(this.employeeId, month, year).subscribe(
@@ -321,10 +315,7 @@ export class WorkLogComponent implements OnInit {
       (error) => {
         console.error('Error exporting work logs for employee:', error);
         this.messageService.add({ severity: 'error', summary: 'Failed to export work logs' });
-      }
-    );
-  }
-
+      } );}
   private downloadExcelBlob(blob: Blob, year: number, month: number) {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -344,5 +335,4 @@ export class WorkLogComponent implements OnInit {
   selectCurrentLog(log: TimeEntry) {
     this.currentLog = log;
   }
-
 }

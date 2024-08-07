@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserService } from '../../_services/user.service';
-import { AuthService } from '../../_services/auth.service';
-import { icons } from '../../icons';
 import { NgClass } from '@angular/common';
 import { MenuItem } from 'primeng/api';
 import { ChipModule } from 'primeng/chip';
@@ -13,6 +9,7 @@ import { MenuModule } from 'primeng/menu';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CardModule } from 'primeng/card';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SafePipe } from '../../_pipes/SafePipe';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +25,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     MenuModule,
     InputTextareaModule,
     CardModule,
+    SafePipe,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -35,9 +33,6 @@ export class HomeComponent implements OnInit {
   content?: string;
 
   constructor(
-    private router: Router,
-    private userService: UserService,
-    private authService: AuthService
   ) {
     this.items = [
       {
@@ -57,30 +52,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.userService.getPublicContent().subscribe({
-    //   next: data => {
-    //     this.content = data;
-    //   },
-    //   error: err => {
-    //     if (err.error) {
-    //       try {
-    //         const res = JSON.parse(err.error);
-    //         this.content = res.message;
-    //       } catch {
-    //         this.content = `Error with status: ${err.status} - ${err.statusText}`;
-    //       }
-    //     } else {
-    //       this.content = `Error with status: ${err.status}`;
-    //     }
-    //   }
-    // });
   }
 
-  // nav() {
-  //   this.router.navigate(['communicationLogs'], { relativeTo: this.activatedRoute })
-  // }
-
-  // =============================================
   items: MenuItem[];
 
   cards = [
@@ -88,6 +61,7 @@ export class HomeComponent implements OnInit {
     { title: 'אטרקציות', description: 'תיאור של אטרקציות' },
     { title: 'צימרים', description: 'תיאור של צימרים' },
   ];
+
 
   // constructor() {
   //   this.items = [

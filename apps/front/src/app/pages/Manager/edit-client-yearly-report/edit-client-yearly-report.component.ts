@@ -9,6 +9,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-edit-client-yearly-report',
   standalone: true,
@@ -22,8 +23,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class EditClientYearlyReportComponent implements OnInit {
   allStepFields: StepField[] = [];
   filteredStepFields: StepField[] = [];
-  numberOptions = [1, 2, 3, 4, 5];
-  currentStepField: StepField;
+  numberOptions = [
+  ]; 
+   currentStepField: StepField;
   displayAddDialog: boolean = false;
   newStepValue: string = '';
   newStepStepNumber: number = 1;
@@ -31,6 +33,12 @@ export class EditClientYearlyReportComponent implements OnInit {
   constructor(private stepFieldService: stepFieldService) { }
 
   ngOnInit(): void {
+    this.getAlStepField();
+    this.numberOptions = [1,2,3,4,5,
+     
+    ]; 
+  }
+  getAlStepField(): void{
     this.stepFieldService.getAllStepField().subscribe(
       (stepFields) => {
         this.allStepFields = stepFields.filter(x => x.type === "yearly-report");
@@ -40,6 +48,7 @@ export class EditClientYearlyReportComponent implements OnInit {
         console.error('Error', error);
       }
     );
+
   }
 
   filterByDescription(description: string): void {
@@ -98,12 +107,12 @@ export class EditClientYearlyReportComponent implements OnInit {
 
   update(step: StepField) {
     if (step.value.length < 2) {
-      alert('הפירוט חייב להיות לפחות 2 תווים.');
+      Swal.fire('Error', 'מינימום 2 תווים', 'error');
       return;
     }
 
     if (step.stepNumber < 1 || step.stepNumber > 5) {
-      alert('מספר השלב חייב להיות בטווח 1 עד 5.');
+      Swal.fire('Error', '.מספר השלב חייב להיות בטווח 1 עד 5', 'error');
       return;
     }
 
@@ -123,6 +132,7 @@ export class EditClientYearlyReportComponent implements OnInit {
   }
 
   delete(id: string) {
+    debugger
     this.stepFieldService.deleteStepField(id).subscribe(
       response => {
         if (response) {
@@ -139,4 +149,23 @@ export class EditClientYearlyReportComponent implements OnInit {
   selectStepField(stepField: StepField) {
     this.currentStepField = stepField;
   }
+  showDeleteConfirmation(id: string) {
+    Swal.fire({
+      title: 'האם אתה בטוח?',
+      text: 'לא ניתן לבטל את הפעולה לאחר שהיא התבצעה.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'כן, מחק זאת!',
+      cancelButtonText: 'ביטול',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // כאן תוכל לקרוא לפונקציה למחיקה
+        this.delete(id);
+      }
+    });
+    this.getAlStepField();
+  }
+  
 }

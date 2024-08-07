@@ -1,11 +1,26 @@
-<div id="app">
+<!-- <p-divider></p-divider>
+
+<div id="app" style="background-color: #f5f5f5">
   <div class="smartaxToolbar">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <nav
+      style="background-color: white; color: black"
+      class="navbar navbar-expand custom-navbar"
+      [style]="{ color: 'black', fontWeight: 'bold' }"
+    >
       <a href="#" class="navbar-brand smarttax-logo">SmartTax</a>
       @if (!isLoggedIn) {
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a href="/login" class="nav-link" routerLink="login">התחברות</a>
+          <button
+            pButton
+            pRipple
+            label="התחברות"
+            class="p-button"
+            severity="secondary"
+            styleClass="rounded-button"
+            [style]="{ 'border-radius': '10px' }"
+            routerLink="login"
+          ></button>
         </li>
       </ul>
       } @else {
@@ -13,21 +28,175 @@
         <li class="nav-item">
           <a href="/profile" class="nav-link" routerLink="profile">{{
             username
-            }}</a>
+          }}</a>
         </li>
         <li class="nav-item">
-          <a href class="nav-link" (click)="logout()">יציאה</a>
+          <p-avatar
+            icon="pi pi-user"
+            styleClass="mr-2"
+            size="large"
+            shape="circle"
+            (click)="menu.toggle($event)"
+            [style]="{
+              backgroundColor: 'white',
+              border: '2px solid black',
+              cursor: 'pointer'
+            }"
+          ></p-avatar>
+          <p-menu
+            #menu
+            [style]="{
+              fontSize: '1rem',
+              'text-decoration': 'none',
+              fontWeight: 'bold',
+              'textAlign': 'right',
+              }"
+            [model]="items"
+            (onItemClick)="options($event)"
+            [popup]="true"
+            class="nav-link no-underline"
+          ></p-menu>
+          <app-tool-bar [items]="toolbarItems"></app-tool-bar>
+
+        </li>
+      </ul>
+
+      }
+    </nav>
+  </div>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</div> -->
+<!-- ================================ -->
+<div id="app" style="background-color: #f5f5f5">
+  <div class="smartaxToolbar">
+    <nav class="navbar navbar-expand custom-navbar">
+      <a href="#" class="navbar-brand smarttax-logo">SmartTax</a>
+      @if (!isLoggedIn) {
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <button
+            pButton
+            pRipple
+            label="התחברות"
+            class="p-button"
+            severity="secondary"
+            styleClass="rounded-button"
+            [style]="{ 'border-radius': '10px' }"
+            routerLink="login"
+          ></button>
+        </li>
+      </ul>
+      } @else {
+      <ul class="navbar-nav ml-auto">
+        <!-- <li class="nav-item">
+          <a href="/profile" class="nav-link" routerLink="profile">{{
+            username
+          }}</a>
+        </li> -->
+        <li style="display: flex" class="nav-item">
+          <p-menu
+            #menu
+            [style]="{
+              fontSize: '1rem',
+              'text-decoration': 'none',
+              fontWeight: 'bold',
+              textAlign: 'right'
+            }"
+            [model]="items"
+            (onItemClick)="options($event)"
+            [popup]="true"
+            class="nav-link no-underline"
+          ></p-menu>
+          <app-tool-bar [items]="toolbarItems"></app-tool-bar>
+          <p-avatar
+            icon="pi pi-user"
+            styleClass="mr-2"
+            size="large"
+            shape="circle"
+            (click)="menu.toggle($event)"
+            [style]="{
+              backgroundColor: 'white',
+              border: '2px solid black',
+              cursor: 'pointer'
+            }"
+           [pTooltip]="username"
+          ></p-avatar>
         </li>
       </ul>
       }
     </nav>
-
-  <app-tool-bar  [items]="toolbarItems"></app-tool-bar>
+  </div>
   <div class="container">
     <router-outlet></router-outlet>
   </div>
 </div>
 
-<app-pop-up-socket></app-pop-up-socket>
+<!-- ================================ -->
+<!--  -->
+<!-- <div style="background-color: #f5f5f5">
+  <div>
+    <nav
+      style="background-color: white; color: black"
+      class="navbar navbar-expand custom-navbar"
+      [style]="{ color: 'black', fontWeight: 'bold' }"
+    >
+      <a href="#" class="navbar-brand smarttax-logo">SmartTax</a>
+      @if (!isLoggedIn) {
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <button
+            pButton
+            pRipple
+            label="התחברות"
+            class="p-button"
+            severity="secondary"
+            styleClass="rounded-button"
+            [style]="{ 'border-radius': '10px' }"
+            routerLink="login"
+          ></button>
+        </li>
+      </ul>
+      } @else {
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <p-avatar
+            icon="pi pi-user"
+            styleClass="mr-2"
+            size="large"
+            shape="circle"
+            (click)="menu.toggle($event)"
+            [style]="{
+              backgroundColor: 'white',
+              border: '2px solid black',
+              cursor: 'pointer'
+            }"
+          ></p-avatar>
+          <p-menu
+            #menu
+            [style]="{
+              fontSize: '1rem',
+              'text-decoration': 'none',
+              fontWeight: 'bold',
+              'textAlign': 'right',
+              }"
+            [model]="items"
+            (onItemClick)="options($event)"
+            [popup]="true"
+            class="nav-link no-underline"
+          ></p-menu>
+          @if(isLoggedIn) {
+          <app-tool-bar [items]="toolbarItems"></app-tool-bar>
+          }
+        </li>
+      </ul>
 
-<!-- <router-outlet></router-outlet> -->
+      }
+    </nav>
+  </div>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</div> -->
+<app-pop-up-socket></app-pop-up-socket>

@@ -2,57 +2,91 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { CreateYearlyReportDto } from '../Models/dto/yearlyReport.dbo';
 import { YearlyReport } from '../Models/yearlyReports.model';
 import { StepField } from '../Models/stepField.model';
 import { UpdateYearlyReportDto } from '../Models/dto/yearlyReport.dbo';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class YearlyReportService {
 
-    constructor(@InjectModel('YearlyReport') private readonly YearlyReportModel: Model<YearlyReport>,
-                 @InjectModel('StepField')private readonly stepFieldModel: Model<StepField>) {}
+  constructor(
+    @InjectModel('YearlyReport') private readonly YearlyReportModel: Model<YearlyReport>,
+    @InjectModel('StepField') private readonly stepFieldModel: Model<StepField>
+  ) { }
 
-    async createYearlyReport(createYearlyReportDto: CreateYearlyReportDto): Promise<YearlyReport> {
-        const allStepFields = await this.stepFieldModel.find().exec();
-        const filteredStepFields = allStepFields.filter(stepField => stepField.type === 'yearly-report');
-                  
-        const createdYearlyReport = new this.YearlyReportModel({
-             ...createYearlyReportDto,
-             stepsList: filteredStepFields,
-        });
-                  
-       return createdYearlyReport.save();
+  async createYearlyReport(createYearlyReportDto: CreateYearlyReportDto): Promise<YearlyReport> {
+    try {
+      const existingYearlyReport = await this.YearlyReportModel.findOne({
+        idClient: createYearlyReportDto.idClient,
+        yearReport: createYearlyReportDto.yearReport
+      }).exec();
+
+      if (existingYearlyReport) {
+        throw new HttpException('A yearly report with the same client ID and year already exists.', HttpStatus.BAD_REQUEST);
+      }
+
+      const allStepFields = await this.stepFieldModel.find().exec();
+      const filteredStepFields = allStepFields.filter(stepField => stepField.type === 'yearly-report');
+
+      const createdYearlyReport = new this.YearlyReportModel({
+        ...createYearlyReportDto,
+        stepsList: filteredStepFields,
+      });
+
+      return await createdYearlyReport.save();
+    } catch (err) {
+      console.log(err);
+      if (err instanceof HttpException) {
+        throw err;
+      }
+      throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
 
-   
-                  
+  async updateYearlyReport(id: string, updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
+    try {
+      const existingYearlyReport = await this.YearlyReportModel.findOne({
+        idClient: updateYearlyReportDto.idClient,
+        yearReport: updateYearlyReportDto.yearReport,
+        _id: { $ne: id} // בדיקה שה-_id שונה מזה של הדוח הנוכחי
 
-    async updateYearlyReport(id: string, updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
+      }).exec();
+      //  console.log('existingYearlyReport', existingYearlyReport._id);
+       console.log('updateYearlyReportDto', id);
+      if (existingYearlyReport)  {
+        throw new HttpException('A yearly report with the same client ID and year already exists.', HttpStatus.BAD_REQUEST);
+      }
       const updatedYearlyReport = await this.YearlyReportModel.findByIdAndUpdate(
         id,
         updateYearlyReportDto,
         // { new: true }
       ).exec();
-  
+
       if (!updatedYearlyReport) {
         throw new NotFoundException('Yearly Report not found');
       }
-  
       return updatedYearlyReport.save();
     }
-
-    async deleteYearlyReport(id: string): Promise<void> {
-      const result = await this.YearlyReportModel.findByIdAndDelete(id).exec();
-      if (!result) {
-        throw new NotFoundException('Yearly Report not found');
+    catch (err) {
+      console.log(err);
+      if (err instanceof HttpException) {
+        throw err;
       }
+      throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR)
     }
+  }
 
-    async getAllYearlyReports(): Promise<YearlyReport[]> {
-      return this.YearlyReportModel.find().exec();
+
+  async deleteYearlyReport(id: string): Promise<void> {
+    const result = await this.YearlyReportModel.findByIdAndDelete(id).exec();
+    if (!result) {
+      throw new NotFoundException('Yearly Report not found');
     }
+  }
 
-
+  async getAllYearlyReports(): Promise<YearlyReport[]> {
+    return this.YearlyReportModel.find().exec();
+  }
 }

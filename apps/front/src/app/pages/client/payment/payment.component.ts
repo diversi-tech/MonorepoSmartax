@@ -13,20 +13,32 @@ import { PaymentDetailsHistoryComponent } from "../payment-details-history/payme
 import { AddBillingComponent } from "../addBilling/addBilling.component";
 import { AddMorePaymentDetailsComponent } from "../addMorePaymentDetails/addMorePaymentDetails.component";
 import { ChangeMainPaymentComponent } from "../changeMainPayment/changeMainPayment.component";
+import { Button } from 'primeng/button';
 
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [CommonModule, DataViewModule, TabViewModule, RouterLinkActive, RouterOutlet, RouterModule, BillingHistoryComponent, PaymentDetailsHistoryComponent, AddBillingComponent, AddMorePaymentDetailsComponent, ChangeMainPaymentComponent],
+  imports: [CommonModule, 
+            DataViewModule, 
+            TabViewModule, 
+            RouterLinkActive, 
+            RouterOutlet, 
+            RouterModule, 
+            BillingHistoryComponent, 
+            PaymentDetailsHistoryComponent, 
+            AddBillingComponent, 
+            AddMorePaymentDetailsComponent, 
+            ChangeMainPaymentComponent
+          ],
   providers: [PaymentService, ClientService, RouterLink],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css',
 })
 export class PaymentComponent implements OnInit {
 
-  thisClient: Client
-  thisPayment: Payment
+  thisClient: Client;
+  thisPayment: Payment;
   show: boolean = false;
 
 
@@ -42,42 +54,32 @@ export class PaymentComponent implements OnInit {
 
     this.paymentService.searchPayment(this.thisClient.payment).subscribe(
       s => {
-        this.thisPayment = s[0],
-          console.log(this.thisPayment);
-        console.log('arr: ');
-        console.log(this.thisPayment.morePaymentDetails);
+        this.thisPayment = s[0]
       },
       f => {
-        console.log(f),
-          console.log('נפל בחיפוש החשבונית');
+        console.log('נפל בחיפוש החשבונית');
       }
     )
   }
   moveToBillingHistory(client: Client) {
-    console.log("click");
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/billingHistory'], { state: { client } });
   }
   moveToPaymentDetailsHistory(client: Client) {
-    console.log("click");
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/paymentDetailsHistory'], { state: { client } });
   }
   addBilling(client: Client) {
-    console.log("click");
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/addBilling'], { state: { client: this.thisClient } });
   }
   changeMainPayment(client: Client) {
-    console.log("click");
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/changeMainPayment'], { state: { client: this.thisClient } });
   }
   addMorePaymentDetails(client: Client) {
-    console.log("click");
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/payments/addMorePaymentDetails'], { state: { client: this.thisClient } });
   }
   setShow() {
     this.show = !this.show
   }
   handle() {
-
     this.show = false;
     this.paymentService.getPayment(history.state.client.payment).subscribe(
       (s) => {
@@ -87,5 +89,16 @@ export class PaymentComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+  stopPaymentDetails() {
+    this.paymentService.stopPaymentDetails(this.thisPayment._id, this.thisPayment.morePaymentDetails[0]._id).subscribe(
+      (s) => {
+        console.log(s);
+        this.handle();
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
   }
 }
