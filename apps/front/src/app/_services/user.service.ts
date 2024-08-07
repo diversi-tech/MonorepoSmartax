@@ -132,23 +132,11 @@ export class UserService {
       "email": email,
       "favoritesClient":favoritesClient
     }
-    return this.http.post(
-      this.apiUrl + "/update",
-      user,
-      httpOptions
-    );
-      id: id,
-      userName: userName,
-      passwordHash: passwordHash,
-      role: role,
-      email: email,
-      favoritesClient: favoritesClient,
-    };
     return this.http
       .post<User>(`${this.apiUrl}/update`, { user }, this.httpOptions)
       .pipe(catchError(this.handleError<User>('update')));
   }
-
+    
   getPublicContent(): Observable<any> {
     return this.http.get(this.apiUrl + 'all', { responseType: 'text' });
   }
@@ -180,11 +168,9 @@ export class UserService {
     };
     return this.http.put<any>(this.apiUrl + '/changePassword', body);
   }
+
   deleteUser(id: string) {
     return this.http.delete<any>(this.apiUrl + '/delete?id=' + id)
-    console.log('delete user in service');
-
-    return this.http.delete<any>(this.apiUrl + '/delete?id=' + id);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
