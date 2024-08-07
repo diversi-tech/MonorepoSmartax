@@ -7,7 +7,6 @@ import { StorageService } from '../../_services/storage.service';
 import { HashPasswordService } from '../../_services/hash-password.service';
 import { NgClass, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { log } from 'util';
 
 declare global {
   interface Window {
@@ -20,7 +19,12 @@ declare global {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [FormsModule, NgClass, NgIf, RouterOutlet]
+  imports: [
+    FormsModule, 
+    NgClass, 
+    NgIf, 
+    RouterOutlet
+  ]
 })
 export class LoginComponent implements OnInit {
   form: any = {
@@ -45,17 +49,13 @@ export class LoginComponent implements OnInit {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
       this.role = this.tokenService.getCurrentDetail("role").name;
-      console.log(this.role);
     }
-    
     this.authService.setCredentialResponseHandler(this.handleCredentialResponse.bind(this));
-    
     this.authService.initGoogleAuth();
   }
 
   onSubmit(): void {
     const { email, password } = this.form;
-
     this.authService.login(email, password).subscribe({
       next: data => {
         if (data) {

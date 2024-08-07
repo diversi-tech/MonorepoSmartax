@@ -1,4 +1,10 @@
 <div class="form-container">
+  <button class="close-button" (click)="goBack()">X</button>
+  <div class="title-container">
+    <div class="icon-circle">
+      <i class="pi pi-user"></i>
+    </div>
+    <h2>:הצהרת הון</h2>
  
     <button class="close-button" (click)="goBack()">X</button>
   
@@ -65,4 +71,85 @@
       <button type="submit" pButton label="Submit" class="custom-button"></button>
     </form>
   </div>
-  
+  <form [formGroup]="financialStatementForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <p-dropdown
+        id="year"
+        formControlName="year"
+        [options]="yearList"
+        optionLabel="yearNum"
+        placeholder="בחירת שנה"
+        [style]="{ width: '80%' }"
+        panelStyleClass="custom-dropdown-panel"
+        styleClass="custom-dropdown"
+      ></p-dropdown>
+      <div
+        *ngIf="
+          financialStatementForm.get('year').invalid &&
+          financialStatementForm.get('year').touched
+        "
+        class="error"
+      >
+        This field is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="price">מחיר:</label>
+      <input
+        type="number"
+        id="price"
+        formControlName="price"
+        class="form-control"
+        placeholder="מחיר"
+      />
+      <div
+        *ngIf="
+          financialStatementForm.get('price').invalid &&
+          financialStatementForm.get('price').touched
+        "
+        class="error"
+      >
+        This field is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="paymentAmountPaid">סכום ששולם:</label>
+      <input
+        type="number"
+        id="paymentAmountPaid"
+        formControlName="paymentAmountPaid"
+        class="form-control"
+        placeholder="סכום ששולם"
+      />
+      <div
+        *ngIf="
+          financialStatementForm.get('paymentAmountPaid').invalid &&
+          financialStatementForm.get('paymentAmountPaid').touched
+        "
+        class="error"
+      >
+        This field is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="balanceDue">יתרה לתשלום:</label>
+      <input
+        type="number"
+        id="balanceDue"
+        formControlName="balanceDue"
+        class="form-control"
+        placeholder="יתרה לתשלום"
+      />
+      <div
+        *ngIf="
+          financialStatementForm.get('balanceDue').invalid &&
+          financialStatementForm.get('balanceDue').touched
+        "
+        class="error"
+      >
+        This field is required.
+      </div>
+    </div>
+    <button type="submit" pButton label="Submit" class="custom-button"></button>
+  </form>
+</div>

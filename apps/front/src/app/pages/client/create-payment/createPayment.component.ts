@@ -16,7 +16,12 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-create-payment',
   standalone: true,
-  imports: [CommonModule, FormsModule, DropdownModule, ButtonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    DropdownModule,
+    ButtonModule
+  ],
   templateUrl: './createPayment.component.html',
   styleUrl: './createPayment.component.css',
 })
@@ -52,14 +57,14 @@ export class CreatePaymentComponent implements OnInit {
   ) { }
 
   setForm() {
-      this.payment.paymentDetails.sumForMonth = '';
-      this.payment.paymentDetails.maxHours = '';
-      this.payment.paymentDetails.frequency.option = this.allFrequencies;
-      this.payment.paymentDetails.dateStart = '';
-      this.payment.paymentDetails.dateFinish = '';
-      this.payment.paymentDetails.description = '';
-      this.payment.totalPayment = '';
-      this.payment.paymentMethod = '';
+    this.payment.paymentDetails.sumForMonth = '';
+    this.payment.paymentDetails.maxHours = '';
+    this.payment.paymentDetails.frequency.option = this.allFrequencies;
+    this.payment.paymentDetails.dateStart = '';
+    this.payment.paymentDetails.dateFinish = '';
+    this.payment.paymentDetails.description = '';
+    this.payment.totalPayment = '';
+    this.payment.paymentMethod = '';
   }
 
   setFrequancy(frequencyName: string) {
@@ -68,49 +73,46 @@ export class CreatePaymentComponent implements OnInit {
 
   ngOnInit(): void {
 
-        this.frequancyService.getAllFrequencys().subscribe(
+    this.frequancyService.getAllFrequencys().subscribe(
+      suc => {
+        this.allFrequencies = suc;
+        this.paymentMethodService.getAllPaymentMethod().subscribe(
           suc => {
-            this.allFrequencies = suc;
-            this.paymentMethodService.getAllPaymentMethod().subscribe(
-              suc => {
-                this.allpaymentMethod = suc;
-                this.setForm()
-              },
-              err => console.log(err)
-            );
-
+            this.allpaymentMethod = suc;
             this.setForm()
           },
           err => console.log(err)
         );
+        this.setForm()
+      },
+      err => console.log(err)
+    );
 
   }
 
   onSubmit() {
-      this.paymentDetailsService.createPaymentDetails(
-        this.thisPayment.mainPaymentDetails.sumForMonth,
-        this.thisPayment.mainPaymentDetails.maxHours,
-        this.thisPayment.mainPaymentDetails.frequency,
-        this.thisPayment.mainPaymentDetails.dateStart,
-        this.thisPayment.mainPaymentDetails.dateFinish,
-        this.thisPayment.mainPaymentDetails.description
-      ).subscribe(
-        suc => {
-          this.newPaymentDetails = suc
-          console.log(suc);
-          this.paymentService.createPayment(
-            this.newPaymentDetails,
-            this.payment.totalPayment,
-            this.payment.paymentMethod
-          ).subscribe(
-            sucs => {
-              console.log(sucs);
-              this.newPayment = sucs
-            },
-            erro => console.log(erro)
-          )
-        },
-        err => console.log(err)
-      )
+    this.paymentDetailsService.createPaymentDetails(
+      this.thisPayment.mainPaymentDetails.sumForMonth,
+      this.thisPayment.mainPaymentDetails.maxHours,
+      this.thisPayment.mainPaymentDetails.frequency,
+      this.thisPayment.mainPaymentDetails.dateStart,
+      this.thisPayment.mainPaymentDetails.dateFinish,
+      this.thisPayment.mainPaymentDetails.description
+    ).subscribe(
+      suc => {
+        this.newPaymentDetails = suc
+        this.paymentService.createPayment(
+          this.newPaymentDetails,
+          this.payment.totalPayment,
+          this.payment.paymentMethod
+        ).subscribe(
+          sucs => {
+            this.newPayment = sucs
+          },
+          erro => console.log(erro)
+        )
+      },
+      err => console.log(err)
+    )
   }
 }
