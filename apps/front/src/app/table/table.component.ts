@@ -10,15 +10,21 @@ import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
 
-
-
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CommonModule, PanelModule, DividerModule, CheckboxModule, ButtonModule, FormsModule],
+  imports: [
+    CommonModule,
+    PanelModule,
+    DividerModule,
+    CheckboxModule,
+    ButtonModule,
+    FormsModule
+  ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
 })
+
 export class TableComponent implements OnInit {
 
   tables: any = [];
@@ -31,12 +37,13 @@ export class TableComponent implements OnInit {
   openFields: string[] = []
   currentTable: string = ''
   currentField: string = ''
-  //
+
   isShowTable2: boolean = false;
   childName: string = ''
   openFields2: string[] = []
 
   constructor(private tableService: TableService) { }
+
   ngOnInit(): void {
     this.getAllTables()
   }
@@ -45,13 +52,9 @@ export class TableComponent implements OnInit {
     return this.tableService.getAllTables().subscribe(
       data => {
         this.tables = data
-        console.log('tables');
-        console.log(this.tables);
-
         this.getTableNames()
-
       },
-      error=>{
+      error => {
         console.log(error)
       }
     )
@@ -74,7 +77,6 @@ export class TableComponent implements OnInit {
         type: this.tables[tableName][prop],
       }));
     }
-
     return props;
   }
 
@@ -95,8 +97,6 @@ export class TableComponent implements OnInit {
 
   checkType(tableName: string, fieldName: string, event: any) {
     const fieldType = this.tables[tableName][fieldName];
-    console.log(`Field Type of ${fieldName} in ${tableName}: ${fieldType}`);
-  
     if (this.tablesNames.includes(fieldType)) {
       if (event.checked) {
         this.selectedValues[tableName][fieldName] = {
@@ -124,26 +124,24 @@ export class TableComponent implements OnInit {
         delete this.selectedValues[tableName][fieldName];
       }
     }
-  
-    console.log('Updated selectedValues:', this.selectedValues);
   }
 
   childType(bigTable: string, bigTableField: string, fieldName: string, event: any) {
     const table2 = this.tableWithFields[bigTable].find(line => line.name === bigTableField).type;
-  
+
     if (this.tablesNames.includes(table2)) {
       const type = this.tableWithFields[table2].find(line => line.name === fieldName).type;
-  
+
       if (event.checked) {
         if (!this.selectedValues[bigTable][bigTableField].children) {
           this.selectedValues[bigTable][bigTableField].children = {};
         }
-  
+
         this.selectedValues[bigTable][bigTableField].children[fieldName] = {
           name: fieldName,
           type: type
         };
-  
+
         if (this.tablesNames.includes(type)) {
           this.selectedValues[bigTable][bigTableField].children[fieldName].children = {};
           this.isShowTable2 = true;
@@ -160,18 +158,12 @@ export class TableComponent implements OnInit {
         this.isShowTable2 = false;
       }
     }
-  
-    console.log('this.selectedValues::');
-    console.log(this.selectedValues);
   }
 
   thirdTable(firstTable: string, secondField: string, thirdField: string, currentField: string, event: any) {
-    console.log(event);
-  
     if (!Array.isArray(this.selectedValues[firstTable][secondField].children[thirdField].children)) {
       this.selectedValues[firstTable][secondField].children[thirdField].children = [];
     }
-  
     if (event.checked) {
       this.selectedValues[firstTable][secondField].children[thirdField].children.push(currentField);
     } else {
@@ -180,23 +172,15 @@ export class TableComponent implements OnInit {
         this.selectedValues[firstTable][secondField].children[thirdField].children.splice(index, 1);
       }
     }
-  
-    console.log('this.selectedValues::');
-    console.log(this.selectedValues);
   }
 
   //xl export
   exportToExcel() {
     this.tableService.getData(this.selectedValues).subscribe(
       data => {
-        
-        console.log('data:');
-        console.log(data);
-        debugger
         this.generateExcel(data);
       },
       error => {
-        debugger
         console.log(error)
       }
     )
@@ -249,8 +233,6 @@ export class TableComponent implements OnInit {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     saveAs(data, `${fileName}.xlsx`);
   }
-
-
 }
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';

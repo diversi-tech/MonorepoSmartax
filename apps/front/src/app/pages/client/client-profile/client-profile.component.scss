@@ -1,4 +1,16 @@
-::ng-deep p-button.custom-button {
-  background-color:rgb(255, 255, 255)!important;
-  color: black!important;
+@import '../../../../styles.css';
+
+.nav{
+    width: 10rem;
+    height: 10rem;
+}
+
+.p{
+    direction: rtl;
+}
+.container{
+    margin-left: 0rem; 
+  padding-left: 1rem;
+  margin-right: 0rem;
+  padding-right: 0rem;
 }

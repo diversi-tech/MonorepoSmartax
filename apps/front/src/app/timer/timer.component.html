@@ -18,14 +18,16 @@
           pButton icon="pi pi-caret-right"
           label="הפעל טיימר"
           [hidden]="!isStartDisabled"
+          class= "p-button-text p-button-raised p-button-rounded"
   ></button>
 
 
-  <button id="save"
+  <button
           (click)="showStart()" 
           pButton icon="pi pi-check"
           label="שמירה"
           [hidden]="isStartDisabled"
+          class= "p-button-text p-button-raised p-button-rounded"
   ></button>
 
   <h3 [hidden]="isStartDisabled">{{ timerDisplay }}</h3>

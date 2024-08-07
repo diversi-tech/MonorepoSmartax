@@ -1,6 +1,8 @@
-<h1 (click)="onSelectionChange(1)">רשימת שיחות</h1>
-<p-button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי"></p-button>
-<p-button *ngIf="isSelected == 2" (click)="onSelectionChange(1)" label="ללא מיון"></p-button>
+<!-- <h1 (click)="onSelectionChange(1)">רשימת שיחות</h1> -->
+<button pButton label="להוספת שיחה" (click)="displayDialog = true" class= "p-button-text p-button-raised p-button-rounded"></button>
+
+<button pButton *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי" class= "p-button-text p-button-raised p-button-rounded"></button>
+<button pButton *ngIf="isSelected == 2" (click)="onSelectionChange(1)" label="ללא מיון" class= "p-button-text p-button-raised p-button-rounded"></button>
 
   <p-table [value]="isSelected != 1 && isSelected != 0 ? filteredCommunicatio : communications">
   <ng-template pTemplate="header" let-columns>
@@ -11,7 +13,7 @@
         <span (click)="onSelectionChange(2)">שם לקוח</span>
         <div>
           <input *ngIf="isSelected == 2" type="text" class="filter-input" [(ngModel)]="filtername"
-            (input)="filterClientsByname()">
+            (input)="filterClientsByname()" pInputText>
         </div>
       </th>
       <th>
@@ -28,7 +30,7 @@
         (click)="sortCommunicatioByDate()"></i>
         <div>
           <input *ngIf="isSelected == 2" type="date" class="filter-input" [(ngModel)]="filterdate"
-            (input)="filterByDate()"> 
+            (input)="filterByDate()" pInputText> 
         </div>
       </th>
       <th>
@@ -86,9 +88,9 @@
 
 <p-confirmDialog header="Confirmation" key="delete">
   <p-footer>
-    <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+    <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text p-button-raised p-button-rounded"
       (click)="cancelDelete()"></button>
-    <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+    <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-danger p-button-text p-button-raised p-button-rounded"
       (click)="confirmDelete()"></button>
   </p-footer>
 </p-confirmDialog>
@@ -122,8 +124,9 @@
           <p-dropdown [options]="users" [(ngModel)]="selectedCommunication.assignedTo" name="editAssignedTo"
             optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
         </div>
-        <button type="submit" class="p-button">Update Communication</button>
+        <button pButton type="submit" class= "p-button-text p-button-raised p-button-rounded">Update Communication</button>
       </form>
     </div>
   </p-footer>
 </p-confirmDialog>
+<app-client-add-communication *ngIf="displayDialog" (close)="displayDialog = false"></app-client-add-communication>

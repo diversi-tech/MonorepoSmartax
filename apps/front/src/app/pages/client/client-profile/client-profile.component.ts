@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Client } from '../../../_models/client.module';
 import { NgIf, DatePipe, NgFor, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,7 @@ import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.c
 import { InputTextModule } from 'primeng/inputtext';
 import { ClientService } from '../../../_services/client.service';
 import { ConfirmationService } from 'primeng/api';
-import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-client-profile',
@@ -33,7 +33,9 @@ import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
     ConfirmDialogModule,
   ],
 })
+
 export class ClientProfileComponent implements OnInit {
+
   client: Client | null = null;
   showDetails: boolean = false;
   sidebarVisible2: boolean = false;
@@ -45,7 +47,7 @@ export class ClientProfileComponent implements OnInit {
   constructor(
     private router: Router,
     private clientService: ClientService,
-    private confirmationService : ConfirmationService,
+    private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit(): void {
@@ -57,7 +59,6 @@ export class ClientProfileComponent implements OnInit {
 
   toggleDetails(): void {
     this.showDetails = !this.showDetails;
-    console.log(this.client)
   }
 
   navigateToSensitiveDetails(): void {
@@ -68,11 +69,10 @@ export class ClientProfileComponent implements OnInit {
 
   isPinned: boolean = false;
 
-
-
   pinSidebar() {
     this.isPinned = !this.isPinned;
   }
+
   togglePersonalDetails() {
     this.showPersonalDetails = !this.showPersonalDetails;
   }
@@ -101,7 +101,6 @@ export class ClientProfileComponent implements OnInit {
   }
 
   showConfirmationDelete(): void {
-    debugger
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this clients?',
       header: 'Confirmation',

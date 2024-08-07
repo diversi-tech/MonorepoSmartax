@@ -1,0 +1,31 @@
+<p-calendar [style]="{ height: '20px', width: '250px' }" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+    [(ngModel)]="rangeDates" selectionMode="range" (ngModelChange)="onDateSelect($event)" dateFormat="dd/mm/yy" />
+
+<p-dropdown [options]="selectSort" optionLabel="name" [(ngModel)]="selectedValue" name="selectedValue"
+    (onChange)="onTypeDateChange($event)" placeholder="בחר סוג תאריך">
+</p-dropdown>
+
+
+
+<div class="allChart">
+
+    <div class="pie-chart">
+
+        <p-chart type="pie" [data]="dataOfStatusTask" [options]="chartOptions"></p-chart>
+
+        <p-chart type="pie" [data]="taskIsComplete" [options]="chartOptions"></p-chart>
+
+        <p-chart type="pie" [data]="taskIsNotComplete" [options]="chartOptions"></p-chart>
+
+    </div>
+
+    <div>
+
+        <div class="aaa">
+            <p-chart type="bar" [data]="dataOfStatusAndEmp" [options]="chartOptions"></p-chart>
+        </div>
+
+        <p-chart type="bar" [data]="dataOfStatusAndClient" [options]="chartOptions"></p-chart>
+
+    </div>
+</div>

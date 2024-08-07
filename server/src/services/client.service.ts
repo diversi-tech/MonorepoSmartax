@@ -13,6 +13,10 @@ export class ClientService {
 
   async createClient(createClientDto: CreateClientDto): Promise<Client> {
     try {
+      const existingClient = await this.clientModel.findOne({ tz: createClientDto.tz }).exec();
+    if (existingClient) {
+      throw new Error('Client with this ID already exists.');
+    }
       const highestClientID = await this.getHighestClientID();
       const newClientID = (parseInt(highestClientID, 10) + 1).toString();
       const createdClient = new this.clientModel({
@@ -37,18 +41,13 @@ export class ClientService {
   async getHighestClientID() {
     try {
       const clients = await this.clientModel.find().exec();
-
       if (clients.length === 0) {
-        console.log('No clients found');
         return null;
       }
-
       const highestClientID = clients
         .map((client) => parseInt(client.clientID, 10))
         .filter((clientID) => !isNaN(clientID))
         .reduce((max, current) => (current > max ? current : max), 0);
-
-      console.log('Highest clientID:', highestClientID.toString());
       return highestClientID.toString();
     } catch (err) {
       console.error('Error finding highest clientID:', err);
@@ -56,8 +55,6 @@ export class ClientService {
   }
   async searchClient(id: string): Promise<Client> {
     const client = await this.clientModel.findOne({ _id: id }).exec();
-    console.log(client);
-    console.log("etty");
     if (!client) {
       throw new NotFoundException('Client not found');
     }
@@ -69,6 +66,11 @@ export class ClientService {
     updateClientDto: UpdateClientDto
   ): Promise<Client> {
     try {
+
+      const existingClient = await this.clientModel.findOne({ tz: updateClientDto.tz }).exec();
+      if (existingClient) {
+        throw new Error('Client with this ID already exists.');
+      }
       const updatedClient = await this.clientModel
         .findByIdAndUpdate(id, updateClientDto, { new: true })
         .exec();
@@ -78,7 +80,6 @@ export class ClientService {
       return updatedClient;    
     } catch (error) {
       console.log(error);
-      
     }
   }
 

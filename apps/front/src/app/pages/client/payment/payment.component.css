@@ -3,8 +3,8 @@
   grid-template-columns: auto;
   gap: 5px;
   position: absolute;
-  top: 300px;
-  left: 10%;
+  top: 250px;
+  /* left: 10%; */
 }
 
   
@@ -82,7 +82,7 @@
     color: #47484b;
   }
   
-  .cart .quantity button {
+  .cart .quantity p-button{
     width: 30px;
     height: 30px;
     display: flex;
@@ -133,7 +133,7 @@
     background-color: transparent;
   }
   
-  .coupons form button {
+  .coupons form p-button{
     display: flex;
     flex-direction: row;
     justify-content: center;

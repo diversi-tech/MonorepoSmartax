@@ -1,34 +1,11 @@
+@import '../../../styles.css';
+
 p-table {
   direction: rtl;
-}
-
-th, td {
-  text-align: right;
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
 }
 
 .text {
   text-align: right;
   padding: 4px;
   border-bottom: 1px solid #ddd;
-}
-
-.p-button-icon .p-button-label {
-  margin-right: 25px;
-  /* הגדירי את הערך הרצוי עבור הרווח */
-}
-
-.p-button {
-  color: red;
-}
-
-.highlight {
-  background-color: #edecec;
-}
-
-.p-button-rounded {
-  border-radius: 20%;
-  margin: 1%;
 }

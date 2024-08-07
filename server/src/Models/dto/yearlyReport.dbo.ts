@@ -1,14 +1,13 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsDateString, IsString, MaxLength, IsBoolean } from 'class-validator';
-import { Types } from 'mongoose'; // Import Types from mongoose
+import { IsNotEmpty, IsDateString, IsString } from 'class-validator';
 import { StepField } from '../stepField.model';
 import { Status } from '../status.model';
+import { Index } from 'typeorm';
 
 @Schema()
-export class CreateYearlyReportDto  {
-    
+export class CreateYearlyReportDto {
+
     @Prop()
     @ApiProperty({ example: 'user_id_example' })
     @IsNotEmpty()
@@ -65,11 +64,10 @@ export class CreateYearlyReportDto  {
     @ApiProperty()
     @IsNotEmpty()
     status: Status;
-
 }
 
-export class UpdateYearlyReportDto  {
-    
+export class UpdateYearlyReportDto {
+
     @Prop()
     @ApiProperty({ example: 'user_id_example' })
     @IsNotEmpty()

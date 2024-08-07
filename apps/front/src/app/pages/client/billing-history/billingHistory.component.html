@@ -1,8 +1,8 @@
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
     <p-footer>
-        <!-- <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+        <!-- <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text"
             (click)="cancelDelete()"></button>
-        <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+        <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text"
             (click)="confirmDelete(selectedUser)"></button> -->
     </p-footer>
 </p-confirmDialog>
@@ -23,13 +23,13 @@
     <ng-template pTemplate="body" let-billing let-columns="columns">
         <tr>
             <!-- <td>
-                <p-button (click)="editDetails(user)" label="עריכת פרטי המשתמש" />
+                <button pButton  (click)="editDetails(user)" label="עריכת פרטי המשתמש" />
             </td> -->
             <td>
-                <p-button (click)="changeIsReturned(billing)" label="שינוי סטטוס תשלום"></p-button>
+                <button pButton  (click)="changeIsReturned(billing)" label="שינוי סטטוס תשלום"></button >
             </td>
             <td>
-                {{billing.isReturned && 'כן' || 'לא'}}
+                {{billing.ifRreturn && 'כן' || 'לא'}}
             </td>
 
             <td>

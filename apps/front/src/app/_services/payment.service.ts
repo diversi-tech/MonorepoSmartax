@@ -35,7 +35,6 @@ export class PaymentService {
   }
 
   createPayment(mainPaymentDetails, totalPayment, paymentMethod): Observable<Payment> {
-
     const newPayment = {
       "mainPaymentDetails": mainPaymentDetails,
       "morePaymentDetails": [],
@@ -63,28 +62,20 @@ export class PaymentService {
       "paymentHistory": paymentHistory,
       "billingHistory": billingHistory
     }
-
-    console.log(payment);
-
     return this.http.post(this.apiUrl + "/update", payment);
   }
 
   addBilling(_id: string, date: Date, amount: number, paymentMethod: PaymentMethod, assignedTo: User) {
-    console.log('start addBilling');
-
     const newBilling = {
       "date": date,
       "amount": amount,
       "paymentMethod": paymentMethod,
       "assignedTo": assignedTo
     }
-    console.log(newBilling);
 
     return this.http.post(this.apiUrl + "/" + _id + "/billing", newBilling)
   }
   changeMainPayment(_id: string, sumForMonth: number, maxHours: number, frequency: Frequency, description: string) {
-    console.log("start change");
-
     const newPaymentDetails = {
       "sumForMonth": sumForMonth,
       "maxHours": maxHours,
@@ -92,32 +83,36 @@ export class PaymentService {
       "dateStart": new Date,
       "description": description
     }
-    console.log("newPaymentDetails: ", newPaymentDetails);
     return this.http.put(this.apiUrl + '/' + _id + '/paymentDetails', newPaymentDetails)
-
-
   }
+
   updateBillingStatus(paymentId: string, billingId: string, status: boolean): Observable<Billing> {
-    console.log("updateBillingStatus in service front ", paymentId, billingId, status);
-    const body = { paymentId, billingId, status };
-    return this.http.put<Billing>(`${this.apiUrl}/updateBillingStatus`, body);
-  }
-  addMorePaymentDetails(paymentId: string,
+    try {
+      const body = { paymentId, billingId, status };
+      return this.http.post<Billing>(`${this.apiUrl}/updateBillingStatus`, body);
+    } catch (err) {
+      console.log(err);
+    }
+
+  } addMorePaymentDetails(paymentId: string,
     sumForMonth: number,
     maxHours: number,
     frequancy: Frequency,
     dateFinish: Date,
     description: string): Observable<Payment> {
-      const newMorePaymentDetails = {
-        "sumForMonth": sumForMonth,
-        "maxHours": maxHours,
-        "frequency": frequancy,
-        "dateStart": new Date,
-        "dateFinish": dateFinish,
-        "description": description
-      }
-      return this.http.post<Payment>(`${this.apiUrl}/${paymentId}/morePaymentDetails`, newMorePaymentDetails);
+    const newMorePaymentDetails = {
+      "sumForMonth": sumForMonth,
+      "maxHours": maxHours,
+      "frequency": frequancy,
+      "dateStart": new Date,
+      "dateFinish": dateFinish,
+      "description": description
+    }
+    return this.http.post<Payment>(`${this.apiUrl}/${paymentId}/morePaymentDetails`, newMorePaymentDetails);
 
   }
-
+  stopPaymentDetails(paymentId: string, paymentDetailsId: string): Observable<Payment> {
+    const body = { paymentId, paymentDetailsId };
+    return this.http.post<Payment>(`${this.apiUrl}/stopPaymentDetails`, body);
+  }
 }

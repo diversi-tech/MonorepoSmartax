@@ -1,4 +1,4 @@
-<p-button (click)="goBack()" label="חזור"></p-button>
+<button pButton (click)="goBack()" label="חזור" class= "p-button-text p-button-raised p-button-rounded"></button>
 
 <div class="form-container">
   <div class="icon-container">
@@ -6,28 +6,27 @@
   </div>
 
   <div class="details-container">
-    <p class="highlight">תאריך יצירה: <span class="value">{{ responseData.dateTime | date }}</span></p>
-    <p class="highlight">מקדמה ששולמה: <span class="value">{{ responseData.paymentAmountPaid }}</span></p>
-    <p class="highlight">יתרה לתשלום: <span class="value">{{ responseData.balanceDue }}</span></p>
-    <p class="highlight">מחיר: <span class="value">{{ responseData.price }}</span></p>
-    <p class="highlight">עבור: <span class="value">{{ responseData.entityType }}</span></p>
+    <p >{{ responseData.dateTime | date:'dd/MM/yyyy' }}<span class="value">:תאריך יצירה</span></p>
+    <p ><span class="value">מקדמה ששולמה </span> {{ responseData.paymentAmountPaid }}</p>
+    <p ><span class="value">יתרה לתשלום </span><span>{{ responseData.balanceDue }}</span></p>
+    <p ><span class="value"> מחיר </span><span >{{ responseData.price }}</span></p>
+    <p ><span class="value"> עבור </span> <span >{{ responseData.entityType }}</span></p>
   </div>
 
   <p-stepper dir="rtl" [(activeStep)]="active">
     <ng-container *ngFor="let stepNumber of stepNumbers">
       <p-stepperPanel>
         <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
-          <button
-            class="p-stepper-action bg-transparent gap-2"
-            (click)="onClick.emit()"
-          >
-            <span class="p-stepper-number" [ngClass]="{'beginned': isStepBeginned(stepNumber), 'completed': isStepComplete(stepNumber),'notstarted':! isStepBeginned(stepNumber)&&!isStepComplete(stepNumber),'current-step': active+1 === stepNumber}">{{stepNumber}}</span>
+          <button  class="myButon" (click)="onClick.emit()">
+            <span class="p-stepper-number"
+              [ngClass]="{'beginned': isStepBeginned(stepNumber), 'completed': isStepComplete(stepNumber),'notstarted':! isStepBeginned(stepNumber)&&!isStepComplete(stepNumber),'current-step': active+1 === stepNumber}">{{stepNumber}}</span>
           </button>
-                  </ng-template>
+        </ng-template>
 
-          <ng-template pTemplate="content" let-nextCallback="nextCallback" >
+        <ng-template pTemplate="content" let-nextCallback="nextCallback">
           <div class="flex flex-column h-12rem">
-            <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex flex-column align-items-center font-medium">
+            <div
+              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex flex-column align-items-center font-medium">
               <div *ngFor="let task of stepsByNumber[stepNumber]">
                 <div class="checkbox-wrapper">
                   <label>
@@ -43,14 +42,14 @@
     </ng-container>
   </p-stepper>
 
-  
-    <!-- <p-stepper dir="rtl" [(activeStep)]="active">
+
+  <!-- <p-stepper dir="rtl" [(activeStep)]="active">
       <ng-container *ngFor="let stepNumber of stepNumbers">
       <p-stepperPanel >
-        <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+        <ng-template pTemplate="header" let-click="click" let-index="index">
           <button
             class="p-stepper-action bg-transparent gap-2"
-            (click)="onClick.emit()"
+            (click)="click.emit()"
           >
             <span class="p-stepper-number" [ngClass]="{'beginned': isStepBeginned(stepNumber), 'completed': isStepComplete(stepNumber),'notstarted':! isStepBeginned(stepNumber)&&!isStepComplete(stepNumber),'current-step': active+1 === stepNumber}">{{stepNumber}}</span>
           </button>
@@ -74,11 +73,9 @@
       </p-stepperPanel>
     </ng-container>
     </p-stepper>
-    <p-button (click)="submitChanges()" label="שלח שינויים" />
+    <button pButton  (click)="submitChanges()" label="שלח שינויים" />
    -->
 
-  <div class="buttons-container">
-    <p-button (click)="submitChanges()" label="שלח שינויים"></p-button>
-    <p-button (click)="goToUpdate()" label="עריכת פרטי דוח בסיסי"></p-button>
-  </div>
+    <button pButton (click)="submitChanges()" label="שלח שינויים" class= "p-button-text p-button-raised p-button-rounded"></button>
+    <button pButton (click)="goToUpdate()" label="עריכת פרטי דוח בסיסי" class= "p-button-text p-button-raised p-button-rounded"></button>
 </div>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TimerService } from '../_services/timer.service';
 import { Timer } from '../_models/timer.model';
 import { TokenService } from '../_services/token.service';
-import { ButtonDirective, Button } from 'primeng/button';
+import { Button, ButtonDirective } from 'primeng/button';
 import { UserService } from '../_services/user.service';
 import { IconProfileComponent } from '../share/icon-profile/icon-profile.component';
 import { Subscription } from 'rxjs';
@@ -11,10 +11,16 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-timer',
   standalone: true,
-  imports: [CommonModule,ButtonDirective,Button, IconProfileComponent],
+  imports: [
+    CommonModule,
+    ButtonDirective,
+    Button,
+    IconProfileComponent
+  ],
   templateUrl: './timer.component.html',
   styleUrl: './timer.component.css',
 })
+
 export class TimerComponent implements OnInit, OnDestroy {
 
   private timerSubscription: Subscription;
@@ -23,7 +29,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   public isStartDisabled: boolean = true;
   public showList: boolean = false;
   currentTimer: Timer
-  userId: string=""
+  userId: string = ""
   @Input() taskId!: string;
   allTimers: Timer[] = [];
   //
@@ -34,7 +40,11 @@ export class TimerComponent implements OnInit, OnDestroy {
 
   userNames: { [userId: string]: string } = {};
 
-  constructor(private timerService: TimerService, private tokenService: TokenService, private userService: UserService) {
+  constructor(
+    private timerService: TimerService,
+    private tokenService: TokenService,
+    private userService: UserService
+  ) {
   }
   ngOnInit(): void {
     this.getUserId();
@@ -52,15 +62,14 @@ export class TimerComponent implements OnInit, OnDestroy {
     }
   }
 
-  getUserId(){
-    this.userId=this.tokenService.getCurrentDetail('_id')
+  getUserId() {
+    this.userId = this.tokenService.getCurrentDetail('_id')
   }
 
    updateTimerDisplay(): void {
     const hours = Math.floor(this.totalSeconds / 3600);
     const minutes = Math.floor((this.totalSeconds - hours * 3600) / 60);
     const seconds = this.totalSeconds - (hours * 3600 + minutes * 60);
-
     this.timerDisplay = `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
   }
 
@@ -114,10 +123,8 @@ updateTotalTime(timer: Timer): void {
     this.seconds += timer.seconds;
     this.minutes += timer.minutes + Math.floor(this.seconds / 60);
     this.seconds = this.seconds % 60;
-
     this.hours += timer.hours + Math.floor(this.minutes / 60);
     this.minutes = this.minutes % 60;
-
     this.updateFormattedTotalTime();
   }
 
@@ -127,27 +134,23 @@ updateTotalTime(timer: Timer): void {
 
   getAllTimer(): void {
     this.timerService.getAllTimer().subscribe(
-      data=>{
+      data => {
         this.allTimers = data.filter((timer) => timer.taskId === this.taskId);
         this.calculateTotalTime();
       },
-      error=>{
+      error => {
         console.log(error);
-        
       }
     );
   }
   calculateTotalTime(): void {
     let totalSeconds = 0;
-
     this.allTimers.forEach((timer) => {
       totalSeconds += timer.hours * 3600 + timer.minutes * 60 + timer.seconds;
     });
-
     this.hours = Math.floor(totalSeconds / 3600);
     this.minutes = Math.floor((totalSeconds % 3600) / 60);
     this.seconds = totalSeconds % 60;
-
     this.updateFormattedTotalTime();
   }
 

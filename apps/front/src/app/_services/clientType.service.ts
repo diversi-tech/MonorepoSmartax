@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ClientType } from '../../app/_models/clientType.module'; // Update the path according to the location of your model
+import { ClientType } from '../../app/_models/clientType.module';
 
 @Injectable({
   providedIn: 'root'

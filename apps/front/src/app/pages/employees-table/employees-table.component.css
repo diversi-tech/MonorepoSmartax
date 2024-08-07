@@ -1,12 +1,6 @@
-.highlight {
-    background-color: #edecec;
-}
+@import '../../../styles.css';
 
-.p-button-rounded {
-    border-radius: 20%;
-    margin: 1%;
-}
-
-tr, td, th{
-    text-align: center;
+.employees{
+    display: flex;
+    justify-content: center;
 }

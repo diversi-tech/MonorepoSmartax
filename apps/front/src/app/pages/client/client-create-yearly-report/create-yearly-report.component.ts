@@ -13,7 +13,6 @@ import { InputOtpModule } from 'primeng/inputotp';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { DialogModule } from 'primeng/dialog';
 import { Location } from '@angular/common';
@@ -23,6 +22,7 @@ import { StatusService } from '../../../_services/status.service';
 import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -39,10 +39,10 @@ import { TableModule } from 'primeng/table';
     ReactiveFormsModule,
     DialogModule,
     InputNumberModule,
-      AutoCompleteModule,
-      PrimeTemplate,
-      TableModule,
-      RouterOutlet
+    AutoCompleteModule,
+    PrimeTemplate,
+    TableModule,
+    RouterOutlet
   ],
   templateUrl: './create-yearly-report.component.html',
   styleUrl: './create-yearly-report.component.css',
@@ -50,31 +50,33 @@ import { TableModule } from 'primeng/table';
 @Injectable({
   providedIn: 'root', // Ensure it's provided in root or a specific module
 })
+
 export class CreateYearlyReportComponent implements OnInit {
+
   displayModal: boolean = false;
   yearlyReportForm: FormGroup;
   userId: string; // Assuming the client ID is passed via the state
   client: any | undefined = undefined;
   formSubmitted = false;
-  newYear: Year={
-    yearNum: "",
-    id: ''
+  newYear: Year = {
+    yearNum: ""
   }
   typeOptions: any[] = [
     { label: 'פיצול לעצמאי', value: 'עצמאי' },
     { label: 'עמותה', value: 'עמותה' },
     { label: 'חברה', value: 'חברה' },
   ];
-  Year2:any[]=[{yearNum:"לא נמצא"}];
+  Year2: any[] = [{ yearNum: "לא נמצא" }];
   employeName: string;
   reportToUpdate: YearlyReport | null = null;
   yearList: Year[];
   yearList2: Year[];
   statusList: Status[] = [];
-  selectedyear: Year| null = null;
-  thisSubject2="";
-  is: boolean=false;
-  thisSubject="";
+  selectedyear: Year | null = null;
+  thisSubject2 = "";
+  is: boolean = false;
+  thisSubject = "";
+
   constructor(
     private fb: FormBuilder,
     private stepFieldsService: stepFieldService,
@@ -82,9 +84,8 @@ export class CreateYearlyReportComponent implements OnInit {
     private yearService: YearService,
     private tokenService: TokenService,
     private router: Router,
-    private route: ActivatedRoute,// Inject ActivatedRoute
     private location: Location,
-    private statusService: StatusService ,
+    private statusService: StatusService,
 
   ) {
     this.loadData();
@@ -93,10 +94,8 @@ export class CreateYearlyReportComponent implements OnInit {
   loadData() {
     this.yearService.getAllYear().subscribe({
       next: (data) => {
-        console.log(data);
         this.yearList = data;
         this.yearList2 = data;
-
       },
       error: (error) => {
         console.log(error);
@@ -115,19 +114,14 @@ export class CreateYearlyReportComponent implements OnInit {
     this.userId = this.tokenService.getCurrentDetail('_id');
     this.client = history.state.client;
     this.reportToUpdate = history.state.report || null;
-    console.log('client', this.client);
-    console.log('user', this.userId);
-    console.log('reportToUpdate', this.reportToUpdate);
   }
 
   showModalDialog() {
     this.displayModal = true;
-
   }
 
   hideModalDialog() {
     this.displayModal = false;
-
   }
 
   ngOnInit(): void {
@@ -136,7 +130,6 @@ export class CreateYearlyReportComponent implements OnInit {
       price: ['', Validators.required],
       paymentAmountPaid: ['', Validators.required],
       balanceDue: ['', Validators.required],
-      // status: ['', Validators.required],
     });
     if (this.reportToUpdate) {
       this.yearlyReportForm.patchValue({
@@ -152,28 +145,22 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   onSubmit() {
-   
     this.formSubmitted = true;
     if (this.yearlyReportForm.valid) {
       const yearlyReport = this.yearlyReportForm.value;
-      yearlyReport.yearReport=this.thisSubject
-      // const status =  this.determineStatus();
-
+      yearlyReport.yearReport = this.thisSubject
       if (this.reportToUpdate) {
-        const status =  this.determineStatus();
-        this.updateYearlyReport(yearlyReport,status);
+        const status = this.determineStatus();
+        this.updateYearlyReport(yearlyReport, status);
       } else {
         this.createYearlyReport(yearlyReport);
       }
     }
-    this.hideModalDialog(); //
-    // this.location.back();
-
+    this.hideModalDialog(); 
   }
 
   determineStatus(): Status {
     const stepsList = this.reportToUpdate ? this.reportToUpdate.stepsList : [];
-
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
 
@@ -187,14 +174,11 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   createYearlyReport(yearlyReport: any) {
-    
-    console.log('yearlyReport', yearlyReport);
     yearlyReport.status = this.statusList.find(s => s.name == 'TO DO') || null;
     const yearly: YearlyReport = {
       idClient: this.client._id,
-      assignee: [this.userId],
       idEmploye: this.userId,
-      yearReport:yearlyReport.yearReport,
+      yearReport: yearlyReport.yearReport,
       dateTime: new Date(),
       price: yearlyReport.price,
       paymentAmountPaid: yearlyReport.paymentAmountPaid,
@@ -202,86 +186,107 @@ export class CreateYearlyReportComponent implements OnInit {
       stepsList: null,
       entityType: yearlyReport.type,
       status: yearlyReport.status,
-    };
+      assignee: [this.userId],
 
+    };
     this.yearlyReportService.createYearlyReport(yearly).subscribe(
       (response) => {
-        console.log("response", response);
-        this.router.navigate(
-          ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
-          {
-            state: { data: response, client: this.client },
-
-          });
+        if (response) {
+          Swal.fire('Success', "הדוח נוסף בהצלחה", "success");
+          this.router.navigate(
+            ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
+            {
+              state: { data: response, client: this.client },
+            }
+          );
+        }
       },
       (error) => {
-        console.log(error);
+        console.error('Error occurred:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error || 'Something went wrong!',
+        });
       }
     );
   }
 
-  updateYearlyReport(yearlyReport: any, status:any) {
+  updateYearlyReport(yearlyReport: any, status: any) {
+    console.log("updateYearlyReport", yearlyReport)
     const updatedReport: YearlyReport = {
       ...this.reportToUpdate,
-      yearReport: yearlyReport.yearNUm,
+      yearReport: yearlyReport.yearReport,
       price: yearlyReport.price,
       paymentAmountPaid: yearlyReport.paymentAmountPaid,
       balanceDue: yearlyReport.balanceDue,
       entityType: yearlyReport.type,
       status: status,
-    };
 
+    };
+    updatedReport.assignee.push(this.userId);
+    updatedReport.idEmploye = this.userId;
     this.yearlyReportService
       .updateYearlyReport(this.reportToUpdate._id, updatedReport)
-      .then(
+      .subscribe(
         (response) => {
-          console.log(response);
-          if (response)
-            this.location.back();
-
+          if (response) {
+            Swal.fire('Success', "הדוח עודכן בהצלחה", "success");
+            this.router.navigate(
+              ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
+              {
+                state: { data: response, client: this.client },
+              }
+            );
+          }
         },
         (error) => {
-          console.log(error);
+          console.error('Error occurred:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error || 'Something went wrong!',
+          });
         }
       );
   }
+
   goBack(): void {
     this.location.back();
   }
+
   filterByyear(value: string): void {
-   console.log(this.yearList2,'2')
     if (value != "") {
-      this.is=false
+      this.is = false
       const query = value.toLowerCase();
-      this.yearList2 = this.yearList.filter(year => 
+      this.yearList2 = this.yearList.filter(year =>
         year.yearNum.toLowerCase().includes(query.toLowerCase())
       );
-      if(this.yearList2.length==0)
-        {
-          this.yearList2=this.Year2
-          this.thisSubject2=value
-          this.is=true; 
-        }
+      if (this.yearList2.length == 0) {
+        this.yearList2 = this.Year2
+        this.thisSubject2 = value
+        this.is = true;
+      }
     }
     else
     {
       this.is=false
-      console.log(this.yearList,'1')
       this.yearList2 = this.yearList;
     }
     this.selectedyear = null;
-    
   }
-  select(event:  AutoCompleteSelectEvent): void {
-      const year = event.value as Year;
-      this.thisSubject=year.yearNum
-    }
-    add(){
-      alert(this.thisSubject2)
-      this.newYear.yearNum=this.thisSubject2
-      this.yearService.createYear(this.newYear).subscribe(response => {
-        this.yearList.push(response); 
-        alert( response.yearNum +" "+"נוסף בהצלחה") 
-      });
-    }
+
+  select(event: AutoCompleteSelectEvent): void {
+    const year = event.value as Year;
+    this.thisSubject = year.yearNum
+  }
+
+  add() {
+    this.newYear.yearNum = this.thisSubject2
+    this.yearService.createYear(this.newYear).subscribe(response => {
+      this.yearList.push(response);
+      Swal.fire('Success', ' שנה נוספה בהצלחה', 'success');
+
+    });
+  }
 }

@@ -1,11 +1,11 @@
+  @import '../../styles.css';
   #start{
-    background-color: green;
-    border: none;
+    color: green;
   }
-  #save{
+  /* #save{
     background-color:red;
     border: none;
-  }
+  } */
   #totalTime{
     color: blue;
   }

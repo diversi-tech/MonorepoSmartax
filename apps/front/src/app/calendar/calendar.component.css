@@ -17,3 +17,7 @@
   .taskBtn{
     margin-left: 40px;
   }
+
+  .calender{
+    direction: rtl;
+  }
