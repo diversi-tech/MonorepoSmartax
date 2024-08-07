@@ -5,8 +5,7 @@ import { Frequency } from '../../../_models/frequency.module';
 import { FrequencyService } from '../../../_services/frequency.service';
 import { PaymentService } from '../../../_services/payment.service';
 import { Payment } from '../../../_models/payment.module';
-import { EventEmitter,Output} from '@angular/core';
-import { Router } from '@angular/router';
+import { EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 
@@ -17,8 +16,8 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './changeMainPayment.component.html',
   styleUrl: './changeMainPayment.component.css',
 })
-export class ChangeMainPaymentComponent implements OnInit{
-  
+export class ChangeMainPaymentComponent implements OnInit {
+
   allFrequaccies: Frequency[] = [];
   thisPayment: Payment;
   paymentDetails: any = {
@@ -26,42 +25,39 @@ export class ChangeMainPaymentComponent implements OnInit{
     maxHours: '',
     frequancy: '',
     dateStart: '',
-    dateFinish:'',
-    description:'',
+    dateFinish: '',
+    description: '',
   }
   @Output() submitEvent = new EventEmitter<void>();
 
-  constructor(private router: Router,private frequancyService: FrequencyService,private paymentService: PaymentService) {}
+  constructor(private frequancyService: FrequencyService, private paymentService: PaymentService) { }
   ngOnInit(): void {
     this.paymentService.getPayment(history.state.client.payment).subscribe(
       s => {
         this.thisPayment = s,
-          console.log(this.thisPayment);
-        this.frequancyService.getAllFrequencys().subscribe(
-          suc => {
-            this.allFrequaccies = suc;
-          },
-          err => console.log(err)
-        )
+          this.frequancyService.getAllFrequencys().subscribe(
+            suc => {
+              this.allFrequaccies = suc;
+            },
+            err => console.log(err)
+          )
       },
       f => {
-        console.log(f),
-          console.log('נפל בחיפוש החשבונית');
+        console.log('נפל בחיפוש החשבונית');
       }
     )
   }
 
-  onSubmit(){
+  onSubmit() {
     this.paymentService.changeMainPayment(this.thisPayment._id,
       this.paymentDetails.sumForMonth,
       this.paymentDetails.maxHours,
       this.paymentDetails.frequancy,
       this.paymentDetails.description).subscribe(data => {
-        console.log(data);
         this.submitEvent.emit();
       },
-      error => {
-        console.log(error);
-      });
+        error => {
+          console.log(error);
+        });
   }
 }

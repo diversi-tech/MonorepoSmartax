@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Client } from '../_models/client.module';
-import { CreateSensitiveDataDto } from '../../../../../server/src/Models/dto/sensitiveData.dto'; // Update the path according to your project structure
+import { CreateSensitiveDataDto } from '../../../../../server/src/Models/dto/sensitiveData.dto';
 
 @Injectable({
   providedIn: 'root'

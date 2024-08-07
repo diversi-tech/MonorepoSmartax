@@ -8,14 +8,15 @@ import { AvatarModule } from 'primeng/avatar';
   imports: [
     FormsModule,
     AvatarModule
-    
+
   ],
   templateUrl: './icon-profile.component.html',
   styleUrl: './icon-profile.component.css'
 })
+
 export class IconProfileComponent {
 
-  constructor() {}
+  constructor() { }
 
   @Input() userName: string | undefined;
   @Input() email: string | undefined;
@@ -23,7 +24,7 @@ export class IconProfileComponent {
   // function - hash that create color profile
 
   getColor(name: string): string {
-    
+
     const hash = name
       .split('')
       .reduce((acc, char) => char.codePointAt(0)! + ((acc << 5) - acc), 0);
@@ -35,5 +36,4 @@ export class IconProfileComponent {
       .join('')}`;
     return color;
   }
-
 }

@@ -1,14 +1,13 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserController } from './controller/user/user.controller';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-// import { DbService } from './services/db.service';
 import { ConfigModule } from '@nestjs/config';
 import { TasksController } from './controller/tasks/tasks.controller';
 import { CommunicationsController } from './controller/communications/communications.controller';
 import { BillingController } from './controller/billing/billing.controller';
-import { getConnectionToken, MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { UserService } from './services/user.service';
 import { User, UserModel } from './Models/user.model';
 import { GoogleDriveController } from './controller/google-drive/google-drive.controller';
@@ -34,7 +33,6 @@ import {
 import { BillingStatusService } from './services/billingStatus';
 import { BillingStatusController } from './controller/billingStatus/billingStatus.controller';
 //add
-import * as cors from 'cors';
 import { MailController } from './services/mail/mail.controller';
 import { MailService } from './services/mail/mail.service';
 import { TokenService } from './services/jwt.service';
@@ -56,7 +54,6 @@ import { Task, TaskModel } from './Models/task.model';
 import { Tag, TagModel } from './Models/tag.model';
 import { TagController } from './controller/tag/tag.controller';
 import { TagService } from './services/tag.service';
-import express from 'express';
 import * as path from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { Status, StatusModel } from './Models/status.model';
@@ -135,7 +132,6 @@ import {
   SensitiveDataModel,
 } from './Models/sensitiveData.model';
 import { SensitiveDataService } from './services/sensitiveData.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { importClientsController } from './controller/importClients/importClients.controller';
 import { TableController } from './controller/table/table.controller';
 import { TableService } from './services/table.service';
@@ -143,18 +139,9 @@ import { RepeatableTask, RepeatableTaskModel } from './Models/repeatableTask.mod
 import { RepeatableTaskController } from './controller/repeatableTask/repeatableTask.controller';
 import { repeatableTaskService } from './services/repeatableTask.service';
 import { TasksGateway } from './services/socket/socket.gateway';
-// import { PopupGateway } from './services/socket/socket.gateway';
-// import { PopupController } from './controller/socket/popUp.controller';
-// import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-// import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-// export function HttpLoaderFactory(http: HttpClient) {
-//   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-// }
-// @Module({ imports: [ MongooseModule.forRootAsync({ imports: [ ConfigModule ], inject: [ConfigService], useClass: MongoService }) })
 import { TaxRefundsService } from './services/taxRefunds.service';
 import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
-import { taxRefundsModel,TaxRefunds } from './Models/taxRefunds.model';
+import { taxRefundsModel, TaxRefunds } from './Models/taxRefunds.model';
 import { YearArchive, YearArchiveModel } from './Models/yearArchive.model';
 import { YearArchiveController } from './controller/yearArchive/yearArchive.controller';
 import { YearArchiveService } from './services/yearArchive.service';
@@ -171,55 +158,55 @@ import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.mod
 @Module({
   //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
-    MongooseModule.forFeature([{ name: ClientField.name, schema: ClientFieldModel }]),
-    MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
-    MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
-    MongooseModule.forFeature([{ name: YearArchive.name, schema: YearArchiveModel }]),
-    MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel },]),
-    MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
-    MongooseModule.forFeature([{ name: SensitiveData.name, schema: SensitiveDataModel },]),
-    MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
-    MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel },]),
-    MongooseModule.forFeature([{ name: Communication.name, schema: communicationModel },]),
-    MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
-    MongooseModule.forFeature([{ name: Docs.name, schema: DocumentsModel }]),
-    MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
-    MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
-    MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
-    MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
-    // MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
-    MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-    MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel },]),
-    MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
-    MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
-    MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel },]),
-    MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel },]),
-    MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel },]),
-    MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel },]),
-    MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
-    MongooseModule.forFeature([{ name: Timer.name, schema: TimerModel }]),
-    MongooseModule.forFeature([{ name: RepeatableTask.name, schema: RepeatableTaskModel }]),
-    MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
-    ServeStaticModule.forRoot({rootPath: path.join(__dirname, '../uploads'),serveRoot: '/uploads',}), // הקובץ ישמש כנתיב הבסיסי לגישה לתמונות
-    MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
-    MongooseModule.forFeature([{ name: StepField.name, schema: stepFieldModel },]),
-    MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
-    MongooseModule.forFeature([{ name: YearlyReport.name, schema: YearlyReportstModel },]),
-    MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]),
-    MongooseModule.forFeature([{ name: CheckListItem.name, schema: CheckListItemModel },]),
-    MongooseModule.forFeature([{ name: CheckList.name, schema: CheckListModel },]),
-    MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
-    MongooseModule.forFeature([{ name: TaxRefunds.name, schema: taxRefundsModel },]),
-    MongooseModule.forFeature([
-      { name: FinancialStatement.name, schema: FinancialStatementModel },
-      { name: MonthlyReport.name, schema: MonthlyReportModel },
-    ]),
-    MongooseModule.forFeature([
-      { name: StepFieldMonth.name, schema: stepFieldMonthModel },
-    ]),
+  MongooseModule.forFeature([{ name: ClientField.name, schema: ClientFieldModel }]),
+  MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
+  MongooseModule.forFeature([{ name: User.name, schema: UserModel }]),
+  MongooseModule.forFeature([{ name: YearArchive.name, schema: YearArchiveModel }]),
+  MongooseModule.forFeature([{ name: ClientType.name, schema: ClientTypeModel },]),
+  MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
+  MongooseModule.forFeature([{ name: SensitiveData.name, schema: SensitiveDataModel },]),
+  MongooseModule.forFeature([{ name: Billing.name, schema: BillingModel }]),
+  MongooseModule.forFeature([{ name: BillingStatus.name, schema: BillingStatusModel },]),
+  MongooseModule.forFeature([{ name: Communication.name, schema: communicationModel },]),
+  MongooseModule.forFeature([{ name: Role.name, schema: RoleModel }]),
+  MongooseModule.forFeature([{ name: Docs.name, schema: DocumentsModel }]),
+  MongooseModule.forFeature([{ name: DocType.name, schema: docTypeModel }]),
+  MongooseModule.forFeature([{ name: Task.name, schema: TaskModel }]),
+  MongooseModule.forFeature([{ name: Tag.name, schema: TagModel }]),
+  MongooseModule.forFeature([{ name: Meet.name, schema: MeetModel }]),
+  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+  MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel },]),
+  MongooseModule.forFeature([{ name: Status.name, schema: StatusModel }]),
+  MongooseModule.forFeature([{ name: Priority.name, schema: PriorityModel }]),
+  MongooseModule.forFeature([{ name: callTopicSchema.name, schema: callTopicSchemaModel },]),
+  MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel },]),
+  MongooseModule.forFeature([{ name: PaymentMethod.name, schema: PaymentMethodModel },]),
+  MongooseModule.forFeature([{ name: PaymentDetails.name, schema: PaymentDetailsModel },]),
+  MongooseModule.forFeature([{ name: Payment.name, schema: PaymentModel }]),
+  MongooseModule.forFeature([{ name: Timer.name, schema: TimerModel }]),
+  MongooseModule.forFeature([{ name: RepeatableTask.name, schema: RepeatableTaskModel }]),
+  MongooseModule.forFeature([{ name: Frequency.name, schema: frequencyModel }]),
+  ServeStaticModule.forRoot({ rootPath: path.join(__dirname, '../uploads'), serveRoot: '/uploads', }), 
+  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
+  MongooseModule.forFeature([{ name: StepField.name, schema: stepFieldModel },]),
+  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
+  MongooseModule.forFeature([{ name: YearlyReport.name, schema: YearlyReportstModel },]),
+  MongooseModule.forFeature([{ name: Year.name, schema: YearModel }]),
+  MongooseModule.forFeature([{ name: CheckListItem.name, schema: CheckListItemModel },]),
+  MongooseModule.forFeature([{ name: CheckList.name, schema: CheckListModel },]),
+  MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
+  MongooseModule.forFeature([{ name: TaxRefunds.name, schema: taxRefundsModel },]),
+  MongooseModule.forFeature([
+    { name: FinancialStatement.name, schema: FinancialStatementModel },
+    { name: MonthlyReport.name, schema: MonthlyReportModel },
+  ]),
+  MongooseModule.forFeature([
+    { name: StepFieldMonth.name, schema: stepFieldMonthModel },
+  ]),
     JwtModule,
-    ScheduleModule.forRoot(),
-        
+  ScheduleModule.forRoot(),
+
   ],
   controllers: [
     YearArchiveController,
@@ -315,10 +302,9 @@ import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.mod
     TableService,
     TasksGateway,
     StepFieldMonthService
-    // PopupGateway,
   ],
 })
-export class AppModule {}
+export class AppModule { }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -326,18 +312,15 @@ async function bootstrap() {
     .setTitle('Your API Title')
     .setDescription('API description')
     .setVersion('1.0')
-    .addBearerAuth() // הוספת BearerAuth
+    .addBearerAuth()
     .addTag('yourTag')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  // app.use(cors())
   app.enableCors({
     origin: 'http://localhost:4200',
     credentials: true,
   });
-  // קבע את הנתיב לתיקיית התמונות הציבורית
-  // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
   await app.listen(8080);
 }
 bootstrap();
