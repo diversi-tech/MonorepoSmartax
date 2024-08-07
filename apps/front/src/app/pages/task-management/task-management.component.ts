@@ -24,6 +24,7 @@ import { Button, ButtonDirective, ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-task-management',
   templateUrl: './task-management.component.html',
@@ -54,6 +55,7 @@ import { Router, RouterLink } from '@angular/router';
     ButtonModule,
   ],
 })
+
 export class TaskManagementComponent implements OnInit {
   statuses: Status[] = [];
 
@@ -98,7 +100,7 @@ export class TaskManagementComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private statusService: StatusService,
     private router: Router,
-  ) { }
+  ) {  }
 
   ngOnInit(): void {
     this.getTasks();
@@ -107,22 +109,17 @@ export class TaskManagementComponent implements OnInit {
     });
     this.statusService.getAllStatuses().subscribe((data) => {
       this.statuses = data;
-      // console.log(this.statuses);
     });
   }
 
   getTasks(): void {
     this.taskService.getAllTasks().subscribe((allTasks: Task[]) => {
       this.tasks = allTasks;
-      // console.log(this.tasks);
     });
   }
 
   categorizeTasks(status: Status): Task[] {
-    // console.log(status.name);
-    // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
-      // console.log('Task status:', task.status); // הדפסת המצב של המשימה
       { return task.status && task.status.name === status.name; }
     });
   }
@@ -139,7 +136,7 @@ export class TaskManagementComponent implements OnInit {
         if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
           this.filteredTasks.push(t);
       });
-      if(this.filteredTasks.length == 0){
+      if (this.filteredTasks.length == 0) {
         alert("לא נמצאות משימות בשם זה")
       }
     }
@@ -147,16 +144,14 @@ export class TaskManagementComponent implements OnInit {
 
   showConfirmation(): void {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this task?',
+      message: 'האם אתה בטוח שברצונך למחוק משימה זו?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log('delete start');
         this.deleteTask();
       },
       reject: () => {
         console.log('cancel start');
-        // Add the code to close the pop-up here
       },
     });
   }
@@ -174,7 +169,6 @@ export class TaskManagementComponent implements OnInit {
   }
 
   editTask() {
-    debugger
     this.router.navigate(['/taskSpe', this.currentTask._id]);
   }
 
@@ -211,8 +205,7 @@ export class TaskManagementComponent implements OnInit {
     this.taskSuggestions = this.tasks!
       .filter((task) =>
         (task.taskName?.toLowerCase())?.includes(query.toLowerCase())
-      )
-      .map((task) => ({ taskName: task.taskName }));
+      ).map((task) => ({ taskName: task.taskName }));
   }
 
   searchTags(event: any): void {
@@ -220,7 +213,6 @@ export class TaskManagementComponent implements OnInit {
       this.tagSuggestions = tags.filter((tag) =>
         tag['text'].toLowerCase().includes(event.query.toLowerCase())
       );
-      // this.filter.tags = tags;
     });
   }
 
@@ -233,7 +225,6 @@ export class TaskManagementComponent implements OnInit {
       const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
 
       const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
-
       const taskNameMatch = !this.filter.task || task.taskName!.toLowerCase()!.includes(this.filter.task.taskName.trim().toLowerCase());
       let tagsMatch = true;
 
@@ -249,42 +240,6 @@ export class TaskManagementComponent implements OnInit {
         this.filteredTasks.push(task);
     });
   }
-
-  // sort
-  // בקומפוננטה שלך
-  // sortTasks(field: string, list: Task[], reverse: boolean) {
-  //   // debugger
-  //   console.log(this.filteredTasks);
-
-  //   list.sort((a, b) => {
-  //     // כאן אתה יכול להוסיף לוגיקה למיון על פי השדה שנבחר
-  //     if (field === 'taskName') {
-  //       if (reverse) {
-  //         return b.taskName.localeCompare(a.taskName);
-  //       }
-  //       return a.taskName.localeCompare(b.taskName); // מיון לפי שם המשימה
-  //     }
-  //     if (field === 'assignedTo') {
-  //       if (reverse) {
-  //         return b.assignedTo.length - a.assignedTo.length;
-  //       }
-  //       return a.assignedTo.length - b.assignedTo.length; 
-  //     }
-  //     if (field === 'dueDate') {
-  //       if (reverse) {
-  //         return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate();
-  //       }
-  //       return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate(); // מיון לפי תאריך יעד
-  //     }
-  //     if (field === 'tags') {
-  //       if (reverse) {
-  //         return b.tags.length - a.tags.length;
-  //       }
-  //       return a.tags.length - b.tags.length; // מיון לפי מספר התגיות של המשימה
-  //     }
-  //     return 0; // במקרה שלא נמצא שדה תואם
-  //   });
-  // }
 
   sortTasks(field: string, list: Task[], reverse: boolean) {
     list.sort((a, b) => {
@@ -311,7 +266,6 @@ export class TaskManagementComponent implements OnInit {
   }
 
   selectCurrentTask(task: Task) {
-    debugger
     this.currentTask = task;
   }
 }

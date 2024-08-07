@@ -5,6 +5,7 @@ import { CreateBillingDto, UpdateBillingDto } from '../Models/dto/billing.dto';
 import { Billing } from '../Models/billing.model';
 
 @Injectable()
+
 export class BillingsService {
   billingIfRreturn:UpdateBillingDto;
   constructor(@InjectModel('Billing') private readonly BillingModel: Model<Billing>) { }
@@ -20,21 +21,17 @@ export class BillingsService {
       updateBillingDto,
       { new: true }
     ).exec();
-
     if (!updatedBilling) {
       throw new NotFoundException('Billing not found');
     }
-
     return updatedBilling;
   }
 
   async deleteBilling(id: string): Promise<Billing> {
     const deletedBilling = await this.BillingModel.findByIdAndDelete(id).exec();
-
     if (!deletedBilling) {
       throw new NotFoundException('Billing not found');
     }
-
     return deletedBilling;
   }
 
@@ -42,13 +39,6 @@ export class BillingsService {
     return this.BillingModel.find().exec();
   }
 
-  // async getBillingsByClientId(clientId: string): Promise<Billing[]> {
-  //   console.log('Searching for Billings with client ID:', clientId);
-  //   const Billings = await this.BillingModel.find({ 'client._id': clientId })
-  //   .populate('client').populate('status').populate('assignedTo').exec();
-  //   console.log('Billings found:', Billings);
-  //   return Billings;
-  // }
   async getBillingById(id: string): Promise<Billing> {
     try {
       const Billing = await this.BillingModel.findById(id).exec();
@@ -58,20 +48,12 @@ export class BillingsService {
       return Billing;
     } catch (err) {
       console.log(err);
-
     }
   }
   async updateBillingStatus(id: string, status: boolean): Promise<Billing> {
     console.log("start change billing status in billing service front ");
     const billing = await this.BillingModel.findById(id).exec();
-    console.log("billing found in billing service ");
-    billing.ifRreturn = status
-    
-
-    // this.updateBilling(id, this.billingIfRreturn);   
-     console.log("billing updated in billing service ", billing);
-
+    billing.ifRreturn = status;
     return billing.save();
   }
-
 }

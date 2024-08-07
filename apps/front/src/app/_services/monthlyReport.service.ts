@@ -6,8 +6,8 @@ import { catchError, map, Observable, of } from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
+    'Content-Type': 'application/json',
+  }),
 };
 
 @Injectable({
@@ -27,7 +27,8 @@ export class MonthlyReportService {
   }
 
   getAllMonthlyReport(): Observable<MonthlyReport[]> {
-    return this.http.get<MonthlyReport[]>(`${this.apiUrl}/all`)
+    return this.http
+      .get<MonthlyReport[]>(`${this.apiUrl}/all`)
       .pipe(
         catchError(this.handleError<MonthlyReport[]>('getAllMonthlyReport', []))
       );
@@ -35,8 +36,10 @@ export class MonthlyReportService {
 
   getMonthlyReportForClient(clientId: string): Observable<MonthlyReport[]> {
     return this.getAllMonthlyReport().pipe(
-      map(reports => reports.filter(report => report.idUser === clientId)),
-      catchError(this.handleError<MonthlyReport[]>('getMonthlyReportForClient', []))
+      map((reports) => reports.filter((report) => report.idUser === clientId)),
+      catchError(
+        this.handleError<MonthlyReport[]>('getMonthlyReportForClient', [])
+      )
     );
 
   }

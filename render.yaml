@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: front
+    env: node
+    buildCommand: npm install && npm run build:front
+    startCommand: npx serve -s dist/apps/front -l $PORT

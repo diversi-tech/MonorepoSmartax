@@ -7,7 +7,8 @@ import { WorkLog, WorkLogDocument } from '../model/workLog.model';
 
 @Injectable()
 export class WorkLogService {
-  constructor(@InjectModel(WorkLog.name) private workLogModel: Model<WorkLogDocument>) {}
+
+  constructor(@InjectModel(WorkLog.name) private workLogModel: Model<WorkLogDocument>) { }
 
   async create(createWorkLogDto: CreateWorkLogDto): Promise<WorkLog> {
     const createdWorkLog = new this.workLogModel(createWorkLogDto);
@@ -21,11 +22,9 @@ export class WorkLogService {
         hoursWorked: updateWorkLogDto.hoursWorked,
       },
     }, { new: true });
-
     if (!updatedWorkLog) {
       throw new NotFoundException(`WorkLog #${id} not found`);
     }
-
     return updatedWorkLog;
   }
 
@@ -50,9 +49,7 @@ export class WorkLogService {
     if (updateTimeEntryDto.hoursWorked) {
       workLog.timeEntries[entryIndex].hoursWorked = updateTimeEntryDto.hoursWorked;
     }
-
     await workLog.save();
-
     return workLog;
   }
 
@@ -70,17 +67,12 @@ export class WorkLogService {
   }
 
   async exportWorkLogs(month: number, year: number): Promise<Buffer> {
-    console.log(`Searching work logs for month: ${month}, year: ${year}`);
-
     const workLogs = await this.workLogModel.find({
       date: {
         $gte: new Date(year, month - 1, 1),
         $lte: new Date(year, month, 0),
       },
     }).exec();
-
-    console.log(`Found work logs: ${workLogs.length}`);
-    
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Work Logs');
 
@@ -108,8 +100,6 @@ export class WorkLogService {
     return Buffer.from(buffer);
   }
   async exportWorkLogsForEmployee(employeeId: string, month: number, year: number): Promise<Buffer> {
-    console.log(`Searching work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`);
-
     const workLogs = await this.workLogModel.find({
       employeeId,
       date: {
@@ -117,9 +107,6 @@ export class WorkLogService {
         $lte: new Date(year, month, 0),
       },
     }).exec();
-
-    console.log(`Found work logs for employeeId: ${employeeId}: ${workLogs.length}`);
-    
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Work Logs');
 

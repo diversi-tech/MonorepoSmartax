@@ -3,59 +3,53 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Field } from '../_models/field.module';
-; // Update the path according to the location of your model
+import { FIELD } from '../api-urls'; // Update the path according to the location of your model
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FieldService {
-
-  private apiUrl = 'http://localhost:8080/field'; // Base URL for the Field API
+  private apiUrl = FIELD;
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }) // Define headers for HTTP requests
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // Create a new Field
   createField(field: Field): Observable<Field> {
-    return this.http.post<Field>(this.apiUrl, field, this.httpOptions)
-      .pipe(
-        catchError(this.handleError<Field>('createField'))
-      );
+    return this.http
+      .post<Field>(this.apiUrl, field, this.httpOptions)
+      .pipe(catchError(this.handleError<Field>('createField')));
   }
 
   // Get all Fields
   getAllField(): Observable<Field[]> {
-    return this.http.get<Field[]>(`${this.apiUrl}`)
-      .pipe(
-        catchError(this.handleError<Field[]>('getAllField', []))
-      );
+    return this.http
+      .get<Field[]>(`${this.apiUrl}`)
+      .pipe(catchError(this.handleError<Field[]>('getAllField', [])));
   }
 
   // Search for a Field by ID
   searchField(id: string): Observable<Field[]> {
-    return this.http.post<Field[]>(`${this.apiUrl}/searchField`, { id }, this.httpOptions)
-      .pipe(
-        catchError(this.handleError<Field[]>('searchField', []))
-      );
+    return this.http
+      .post<Field[]>(`${this.apiUrl}/searchField`, { id }, this.httpOptions)
+      .pipe(catchError(this.handleError<Field[]>('searchField', [])));
   }
 
   // Update an existing Field
   updateClientType(field: Field): Observable<Field> {
-    return this.http.put<Field>(`${this.apiUrl}`, field, this.httpOptions)
-      .pipe(
-        catchError(this.handleError<Field>('updateField'))
-      );
+    return this.http
+      .put<Field>(`${this.apiUrl}`, field, this.httpOptions)
+      .pipe(catchError(this.handleError<Field>('updateField')));
   }
 
   // Delete a Field by ID
   deleteField(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
-      .pipe(
-        catchError(this.handleError<boolean>('deleteField', false))
-      );
+    return this.http
+      .delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
+      .pipe(catchError(this.handleError<boolean>('deleteField', false)));
   }
 
   // Error handling function
@@ -66,4 +60,3 @@ export class FieldService {
     };
   }
 }
-

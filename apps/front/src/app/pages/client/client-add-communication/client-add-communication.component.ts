@@ -21,7 +21,6 @@ import { ClientService } from '../../../_services/client.service';
 
 
 @Component({
-  // standalone:true,
   selector: 'app-client-add-communication',
   templateUrl: './client-add-communication.component.html',
   styleUrl: './client-add-communication.component.css',
@@ -90,22 +89,26 @@ export class ClientAddCommunicationComponent implements OnInit {
     this.loadUsers();
     this.getCallTopics();
   }
+
   getCallTopics(): void {
     this.calltopicservice.getAll().subscribe(callTopic => {
       this.callTopics = callTopic
       this.filteredCallTopic = callTopic;
     });
   }
+
   private formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
+
   onStatusChange(statusValue: any) {
     if (statusValue == "0: true")
       this.newCommunication.Status = true;
   }
+
   setTodayDate(): void {
     this.newCommunication.date = new Date();
     this.formattedDate = this.formatDate(this.newCommunication.date);
@@ -122,7 +125,6 @@ export class ClientAddCommunicationComponent implements OnInit {
     this.communicationService.createCommunication(this.newCommunication)
       .subscribe(
         (newCommunication: Communication) => {
-          console.log('Communication created:', newCommunication);
           this.resetForm();
         },
         error => {
@@ -131,6 +133,7 @@ export class ClientAddCommunicationComponent implements OnInit {
       );
     this.close.emit();
   }
+
   private resetForm(): void {
     this.newCommunication = {
       client: this.client?._id ?? '',
@@ -161,13 +164,14 @@ export class ClientAddCommunicationComponent implements OnInit {
   add() {
     this.newcallTopicSchema.name = this.thisSubject2
     this.calltopicservice.createCallTopic(this.newcallTopicSchema).subscribe(response => {
-      this.callTopics.push(response);
-      alert(response.name + " " + "נוסף בהצלחה")
-      // הוספת הנושא החדש לרשימה המקומית
+      this.callTopics.push(response); 
+      alert( response.name+" "+"נוסף בהצלחה")
+       // הוספת הנושא החדש לרשימה המקומית
     });
   }
-  filterByNameCallTopic(value: string): void {
 
+  filterByNameCallTopic(value: string): void {
+  
     if (value != "") {
       this.is = false
       const query = value.toLowerCase();
@@ -178,7 +182,6 @@ export class ClientAddCommunicationComponent implements OnInit {
         this.filteredCallTopic = this.callTopics2
         this.thisSubject2 = value
         this.is = true;
-
       }
     }
     else {
