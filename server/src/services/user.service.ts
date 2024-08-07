@@ -51,6 +51,7 @@ export class UserService {
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const { userName, email, role, favoritesClient } = updateUserDto;
+    console.log(updateUserDto)
     if (updateUserDto.email == "a@a")
       throw new Error('אין הרשאה לשינוי מנהל המערכת');
     const updatedUser = await this.userModel.findByIdAndUpdate(
