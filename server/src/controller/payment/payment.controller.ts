@@ -97,5 +97,14 @@ export class PaymentController {
      
   ): Promise<Payment> {
     return await this.PaymentService.updateBillingStatus(body.paymentId,body.billingId,body.status);
+
+  }
+  @ApiBody({
+    schema: { type: 'object', properties: { paymentId: { type: 'string' } ,paymentDetailsId: { type: 'string' }} },
+  })
+  @Post('stopPaymentDetails')
+  async stopPaymentDetails(
+  @Body(new ValidationPipe())body:{ paymentId: string,paymentDetailsId: string}): Promise<Payment> {
+    return await this.PaymentService.stopPaymentDetails(body.paymentId,body.paymentDetailsId);
   }
 }

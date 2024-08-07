@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { TaxRefundsService } from '../../../_services/taxRefunds.service';
 import { Status } from '../../../_models/status.module';
 import { StatusService } from '../../../_services/status.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tax-refunds-steps',
@@ -25,7 +26,9 @@ import { StatusService } from '../../../_services/status.service';
 export class TaxRefundsStepsComponent {
   constructor(private taxRefundsService: TaxRefundsService,
     private location: Location,
-    private statusService: StatusService,
+    private statusService: StatusService,  
+      private router: Router,
+
   ) { }
 
   tasksStep: StepField[] = [];
@@ -140,4 +143,9 @@ export class TaxRefundsStepsComponent {
   goBack() {
     this.location.back();
   }
+  goToUpdate() {
+   
+      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client, responseData: this.responseData } });
+  }
+
 }

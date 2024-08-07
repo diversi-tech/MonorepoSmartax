@@ -198,44 +198,72 @@ export class AddClientComponent implements OnInit {
   }
 
   sent() {
-    if (this.contactForm.valid) {
-      if (this.editingClient) {
-        const updatedClient = { ...this.editingClient, ...this.contactForm.value };
-        updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-        updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-        this.clientService.updateClient(updatedClient).subscribe(
-          response => {
-            if (response?._id) {
-              console.log('Client updated successfully:', response);
-              Swal.fire('Success', 'לקוח עודכן בהצלחה', 'success');
-              this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
-            } else {
-              Swal.fire('Error', 'Invalid client', 'error');
-            }
-            this.close.emit();
-          },
-          error => {
-            console.error('Error updating client:', error);
-            Swal.fire('Error', `Failed to update client: ${error.message}`, 'error');
+    if(this.contactForm.valid) {
+    if (this.editingClient) {
+      console.log('update client');
+      const updatedClient = { ...this.editingClient, ...this.contactForm.value };
+      updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+      updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
+  
+      this.clientService.updateClient(updatedClient).subscribe(
+        response => {
+          if (response?._id) {
+            console.log('Client updated successfully:', response);
+            Swal.fire('Success', 'לקוח עודכן בהצלחה', 'success');
+            this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
+          } else {
+            Swal.fire('Error', 'Invalid client', 'error');
           }
-        );
-      }
-      else {
-        this.clientService.createClient(this.newClient).subscribe(
-          response => {
-            if (response) {
-              Swal.fire('Success', 'לקוח נוצר בהצלחה', 'success');
-            }
-            this.close.emit();
-          },
-          error => {
-            console.error('Error creating client:', error);
-            Swal.fire('Error', `Failed to create client: ${error.message}`, 'error');
-          }
-        );
-      }
+          this.close.emit();
+        },
+        error => {
+          console.error('Error updating client:', error);
+          Swal.fire('Error', `Failed to update client: ${error.message}`, 'error');
+        }
+      );
     }
-  }
+     else {
+      this.newClient.companyName= this.contactForm.value.companyName,
+      this.newClient.lastName= this.contactForm.value.lastName,
+      this.newClient.firstName= this.contactForm.value.firstName,
+      this.newClient.contactPersonName= this.contactForm.value.contactPersonName,
+      this.newClient.tz= this.contactForm.value.tz,
+      this.newClient.spouseName= this.contactForm.value.spouseName,
+      this.newClient.spouseTZ= this.contactForm.value.spouseTZ,
+      this.newClient.phone= this.contactForm.value.phone,
+      this.newClient.whatsapp= this.contactForm.value.whatsapp,
+      this.newClient.email= this.contactForm.value.email,
+      this.newClient.address= this.contactForm.value.address,
+      this.newClient.dateOfBirth= this.contactForm.value.dateOfBirth,
+      this.newClient.comments= this.contactForm.value.comments,
+      this.newClient.isEmploysWorkers= this.contactForm.value.isEmploysWorkers,
+      this.newClient.isWorkData= this.contactForm.value.isWorkData,
+      this.newClient.incomeTaxFileNumber= this.contactForm.value.incomeTaxFileNumber,
+      this.newClient.incomeTaxDeductions_registerID= this.contactForm.value.incomeTaxDeductions_registerID,
+      this.newClient.VATFileNumber= this.contactForm.value.VATFileNumber,
+      this.newClient.reports= this.contactForm.value.reports,
+      this.newClient.isStatisticsData= this.contactForm.value.isStatisticsData,
+      this.newClient.referrerName= this.contactForm.value.referrerName,
+      this.newClient.joinDate= this.contactForm.value.joinDate,
+      this.newClient.isAccounter= this.contactForm.value.isAccounter,
+      this.newClient.isOpenAccountWithUs= this.contactForm.value.isOpenAccountWithUs,
+      this.newClient.isPreferWhatsapp= this.contactForm.value.isPreferWhatsapp
+      this.clientService.createClient(this.newClient).subscribe(
+        response => {
+          if (response) {
+            console.log('Client created successfully:', response);
+            Swal.fire('Success', 'לקוח נוצר בהצלחה', 'success');
+          }
+          this.close.emit();
+        },
+        error => {
+          console.error('Error creating client:', error);
+          Swal.fire('Error', `Failed to create client: ${error.message}`, 'error');
+        }
+      );
+    }
+   }
+   }
 
   onClose() {
     this.close.emit();

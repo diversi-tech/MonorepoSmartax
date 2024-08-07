@@ -12,7 +12,7 @@ import { IconProfileComponent } from '../../share/icon-profile/icon-profile.comp
 import { Location } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterOutlet } from '@angular/router';
-
+import { TooltipModule } from 'primeng/tooltip';
 @Component({
   selector: 'app-report-client-yearly-report',
   standalone: true,
@@ -22,7 +22,8 @@ import { Router, RouterOutlet } from '@angular/router';
     RouterOutlet,
     TableModule,
     IconProfileComponent,
-    InputTextModule
+    InputTextModule,
+    TooltipModule
   ],
   templateUrl: './report-client-yearly-report.component.html',
   styleUrls: ['./report-client-yearly-report.component.css'],
@@ -36,6 +37,12 @@ export class ReportClientYearlyReportComponent implements OnInit {
   allClient: Client[] = [];
   sortedReports: YearlyReport[] = [];
   currentYearlyReport: YearlyReport;
+  isSelected: number = 5;
+  selectedStatus:string="";
+  filterstatus: string = "";
+  is:number =2
+  filterallYearlyReport: YearlyReport[] ;
+
 
   constructor(
     private yearlyReportService: YearlyReportService,
@@ -75,15 +82,20 @@ export class ReportClientYearlyReportComponent implements OnInit {
     );
   }
 
-  goToSteps(client: Client, task: YearlyReport): void {
-    this.router.navigate(['steps'], { state: { data: task, client: client } });
+  goToSteps(idClient: string, task: YearlyReport): void {
+    this.router.navigate(['steps'], { state: { data: task, client: this.getClient(idClient) } });
   }
 
   getEmployeName(idEmploye: string): User | undefined {
     return this.allEmployes.find((x) => x._id === idEmploye);
   }
 
-  getClientName(idClient: string): Client | undefined {
+  getClientName(idClient: string): string | undefined {
+    const client = this.allClient.find((x) => x._id === idClient);
+    return client?.firstName +' '+client?.lastName;
+  }
+
+  getClient(idClient: string): Client | undefined {
     return this.allClient.find((x) => x._id === idClient);
   }
 
@@ -93,22 +105,22 @@ export class ReportClientYearlyReportComponent implements OnInit {
 
   filterByClient(name: string): void {
     this.sortedReports = this.allYearlyReport.filter((task) =>
-      (this.getClientName(task.idClient)?.firstName + ' ' + this.getClientName(task.idClient)?.lastName).toLowerCase().includes(name.toLowerCase())
+      (this.getClientName(task.idClient)).toLowerCase().includes(name.toLowerCase())
     );
   }
 
   sortReports(): void {
     this.sortedReports = [...this.allYearlyReport].sort((a, b) => {
-      const nameA = this.getClientName(a.idClient)?.firstName || '';
-      const nameB = this.getClientName(b.idClient)?.firstName || '';
+      const nameA = this.getClientName(a.idClient) || '';
+      const nameB = this.getClientName(b.idClient) || '';
       return nameA.localeCompare(nameB);
     });
   }
 
   sortReportsByClientName(): void {
     this.sortedReports = [...this.allYearlyReport].sort((a, b) => {
-      const clientNameA = this.getClientName(a.idClient)?.firstName || '';
-      const clientNameB = this.getClientName(b.idClient)?.firstName || '';
+       const clientNameA = this.getClientName(a.idClient) || '';
+       const clientNameB = this.getClientName(b.idClient)|| '';
       return clientNameA.localeCompare(clientNameB);
     });
   }
@@ -116,4 +128,9 @@ export class ReportClientYearlyReportComponent implements OnInit {
   selectYearlyReport(yearlyReport: YearlyReport) {
     this.currentYearlyReport = yearlyReport;
   }
+
+  
+
 }
+
+

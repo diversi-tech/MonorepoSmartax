@@ -16,6 +16,7 @@ import { RouterOutlet } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
+import { ClientAddCommunicationComponent } from "../client-add-communication/client-add-communication.component";
 
 @Component({
   selector: 'app-client-communication-logs',
@@ -39,6 +40,8 @@ import { Button } from 'primeng/button';
     NgClass,
     ConfirmDialogModule,
     InputTextModule,
+    ClientAddCommunicationComponent,
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -65,6 +68,7 @@ export class AllCommunicationComponent {
   newcallTopicSchema: callTopicSchema = { name: "" };
   thisSubject = "";
   thisSubject2 = "";
+  displayDialog: boolean = false;
 
   constructor(
     private communicationService: CommunicationService,

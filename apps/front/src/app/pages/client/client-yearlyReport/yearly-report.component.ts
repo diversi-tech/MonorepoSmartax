@@ -13,11 +13,13 @@ import { UserService } from '../../../_services/user.service';
 import { User } from '../../../_models/user.module';
 import { Router, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TooltipModule } from 'primeng/tooltip';
+import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
 
 @Component({
   selector: 'app-yearly-report',
   standalone: true,
-  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule, FormsModule],
+  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule,FormsModule,TooltipModule, IconProfileComponent],
   templateUrl: './yearly-report.component.html',
   styleUrl: './yearly-report.component.css',
 })
@@ -119,5 +121,9 @@ export class YearlyReportComponent implements OnInit {
 
   selectYearlyReport(yearlyReport: YearlyReport) {
     this.currentYearlyReport = yearlyReport;
+  }
+
+  getClientName(name: string): string {
+    return this.client.firstName + " " + this.client.lastName;
   }
 }

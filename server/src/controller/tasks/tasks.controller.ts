@@ -25,7 +25,6 @@ import * as path from 'path';
 
 @ApiTags('tasks')
 @UseFilters(HttpErrorFilter)
-@UseFilters(ValidationException)
 @Controller('tasks')
 export class TasksController {
   constructor(

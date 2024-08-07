@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsDateString, IsString } from 'class-validator';
 import { StepField } from '../stepField.model';
 import { Status } from '../status.model';
+import { Index } from 'typeorm';
 
 @Schema()
 export class CreateYearlyReportDto {

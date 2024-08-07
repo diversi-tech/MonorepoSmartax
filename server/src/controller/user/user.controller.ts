@@ -6,7 +6,9 @@ import { CreateUserDto, UpdateUserDto } from '../../Models/dto/user.dto';
 import { User } from 'server/src/Models/user.model';
 import { TokenService } from 'server/src/services/jwt.service';
 import { hashPasswordService } from 'server/src/services/hash-password';
+import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 
+//
 @ApiTags('users')
 @Controller('users')
 // @UseFilters(HttpErrorFilter)

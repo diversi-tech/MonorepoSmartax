@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { StepsModule } from 'primeng/steps';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../../_services/client.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-tax-refunds',
@@ -22,6 +23,7 @@ import { ClientService } from '../../../_services/client.service';
     StepperModule,
     StepsModule,
     TableModule,
+    TooltipModule
   ],
   templateUrl: './tax-refunds.component.html',
   styleUrl: './tax-refunds.component.css',
@@ -48,12 +50,12 @@ export class TaxRefundsComponent {
 
   ngOnInit(): void {
     this.client = history.state.client;
-    if(this.currentRoute === 'allClientTaxRefunds') {
+    if (this.currentRoute === 'allClientTaxRefunds') {
       this.getAllClients();
       this.getTaxRefunds()
     }
-    else{   
-       this.getTaxRefundsForClient();
+    else {
+      this.getTaxRefundsForClient();
     }
     this.userService.getAllUsers().subscribe(
       (Employes) => {
@@ -96,10 +98,10 @@ export class TaxRefundsComponent {
     if(this,this.currentRoute === 'allClientTaxRefunds'){
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps'], { state: { data: task, client: this.getClientName(task.idClient) } });
     }
-    else{
+    else {
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });
 
-    }  
+    }
   }
   getAllClients(): void {
     this.clientService.getAllClients().subscribe(
@@ -109,10 +111,14 @@ export class TaxRefundsComponent {
   }
   getClientName(idClient: string): Client | undefined {
     debugger
-    console.log(this.allClients.find((x) => x._id === idClient),'client');
-    
+    console.log(this.allClients.find((x) => x._id === idClient), 'client');
+
     return this.allClients.find((x) => x._id === idClient);
   }
+  createReprtTag(): void {
+      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client } });
+  }
+  
 
   selectTaxRefunds(taxRefunds: TaxRefunds) {
     this.currentTaxRefunds = taxRefunds;

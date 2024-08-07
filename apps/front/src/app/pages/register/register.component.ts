@@ -30,6 +30,7 @@ export class RegisterComponent implements OnInit {
   };
 
   constructor(
+    private router: Router,
     public ar: ActivatedRoute,
     private userService: UserService,
     private roleService: RoleServiceService
@@ -90,6 +91,8 @@ export class RegisterComponent implements OnInit {
         next: data => {
           this.isSuccessful = true;
           this.isSignUpFailed = false;
+          this.router.navigate(['/employeesTable']);
+
         },
         error: err => {
           this.errorMessage = err.error.message;

@@ -1,0 +1,68 @@
+<div class="form-container">
+ 
+    <button class="close-button" (click)="goBack()">X</button>
+  
+    <div class="title-container">
+      <div class="icon-circle">
+        <i class="pi pi-user"></i>
+      </div>
+      <h2> 
+        :דוח שנתי</h2>
+  
+    </div>
+    <form [formGroup]="taxRefundsForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <p-dropdown id="type" formControlName="type" [options]="typeOptions" placeholder="עבור-"
+          [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown"></p-dropdown>
+        <div *ngIf="taxRefundsForm.get('type').invalid && taxRefundsForm.get('type').touched" class="error">
+          This field is required.
+        </div>
+      </div>
+  
+      <div class="p-field p-mb-3">
+        <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2"
+          (completeMethod)="filterByyear($event.query)" [minLength]="1"
+          placeholder="בחירת שנה" field="yearNum" [dropdown]="true" (onSelect)="select($event)"
+          [style]="{width: '100%'}" required>
+          <ng-template let-yearname pTemplate="item">
+            <div class="p-d-flex p-ai-center">
+              שנת  {{ yearname.yearNum}}
+              <ng-container *ngIf="is">
+                <button type="button" pButton class="p-ml-2" (click)="add()">רוצה להוסיף שנה </button>
+              </ng-container>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+      
+  
+      <div class="form-group">
+        <label for="price">מחיר:</label>
+        <input type="number" id="price" formControlName="price" class="form-control" placeholder="מחיר">
+        <div *ngIf="taxRefundsForm.get('price').invalid && taxRefundsForm.get('price').touched" class="error">
+          This field is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="paymentAmountPaid">סכום ששולם:</label>
+        <input type="number" id="paymentAmountPaid" formControlName="paymentAmountPaid" class="form-control"
+          placeholder="סכום ששולם">
+        <div *ngIf="taxRefundsForm.get('paymentAmountPaid').invalid && taxRefundsForm.get('paymentAmountPaid').touched"
+          class="error">
+          This field is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="balanceDue">יתרה לתשלום:</label>
+        <input type="number" id="balanceDue" formControlName="balanceDue" class="form-control" placeholder="יתרה לתשלום">
+        <div *ngIf="taxRefundsForm.get('balanceDue').invalid && taxRefundsForm.get('balanceDue').touched" class="error">
+          This field is required.
+        </div>
+      </div>
+  
+      <button type="submit" pButton label="Submit" class="custom-button"></button>
+    </form>
+  </div>
+  

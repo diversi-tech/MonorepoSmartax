@@ -1,0 +1,100 @@
+<p-toast></p-toast>
+<br><br>
+
+
+<!-- כפתור הוספה -->
+<div class="mb-3">
+    <button pButton pRipple type="button" label="הוספת רשומה חדשה" icon="pi pi-plus" (click)="showAddDialog()">
+    </button>
+</div>
+
+<!-- דיאלוג הוספה -->
+<p-dialog header="הוספת רשומה חדשה" [(visible)]="displayAddDialog" modal="modal" [style]="{'width': '300px'}">
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="value"> ערך הרשומה</label>
+            <input id="value" type="text" pInputText [(ngModel)]="newStepValue" />
+        </div>
+
+    </div>
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="content">האם מסוג טקסט חופשי</label>
+            <input id="content" type="checkbox" [(ngModel)]="newStepContent" />
+        </div>
+
+    </div>
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="type">סוג</label>
+            <p-dropdown id="type" [options]="uniqueSelectedSteps" [(ngModel)]="newStepType" placeholder="בחר סוג">
+            </p-dropdown>
+        </div>
+    </div>
+    <br><br><br>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" label="הוספה" (click)="addStep()"></button>
+        <button type="button" pButton icon="pi pi-times" label="ביטול" (click)="hideAddDialog()"></button>
+    </p-footer>
+</p-dialog>
+
+<p-table [value]="allStepFields" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '20rem'}" dir="rtl">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:50%">
+                פירוט
+                <input type="text" pInputText (input)="filterByDescription($event.target.value)" placeholder="חפש..." />
+            </th>
+            <th style="width:25%">
+                סוג
+                <p-dropdown [options]="uniqueSelectedSteps" placeholder=" בחר סוג"
+                    (onChange)="filterByStepNumber($event.value)">
+                </p-dropdown>
+            </th>
+            <th style="width:25%"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-stepField let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="stepField" (click)="selectStepField(stepField)"
+            [ngClass]="{ 'highlight': currentStepField === stepField }">
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input [value]="stepField.value" pInputText type="text" required
+                            [(ngModel)]="stepField.value" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{stepField.value}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input [value]="stepField.type" pInputText type="text" [(ngModel)]="stepField.type" required />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{stepField.type}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <div class="flex align-items-center justify-content-center gap-2">
+                    <button *ngIf="!editing && currentStepField === stepField" pButton pRipple type="button"
+                        pInitEditableRow class="pi pi-pencil p-button-outlined p-button-rounded p-button-info">
+                    </button>
+                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow (click)="update(stepField)"
+                        class="pi pi-check p-button-outlined p-button-rounded p-button-info mr-2">
+                    </button>
+                    <button *ngIf="!editing && currentStepField === stepField" pButton pRipple type="button"
+                        pCancelEditableRow (click)="delete(stepField._id)"
+                        class="pi pi-trash p-button-outlined p-button-rounded p-button-danger">
+                    </button>
+                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow
+                        class="pi pi-times p-button-outlined p-button-rounded p-button-danger">
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

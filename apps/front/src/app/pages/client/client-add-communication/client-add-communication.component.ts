@@ -4,7 +4,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { Client } from '../../../_models/client.module';
 import { PrimeTemplate, SelectItem } from 'primeng/api';
 import { Communication } from '../../../_models/communication.module';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { CommunicationService } from '../../../_services/communicaton.service';
 import { UserService } from '../../../_services/user.service';
 import { callTopicSchema } from '../../../_models/callTopic.module';
@@ -17,6 +17,7 @@ import { DialogModule } from 'primeng/dialog';
 import { EventEmitter } from '@angular/core';
 import { TokenService } from '../../../_services/token.service';
 import { ButtonModule } from 'primeng/button';
+import { ClientService } from '../../../_services/client.service';
 
 
 @Component({
@@ -38,6 +39,7 @@ import { ButtonModule } from 'primeng/button';
 export class ClientAddCommunicationComponent implements OnInit {
   client: Client | null = null;
   users: SelectItem[] = [];
+  clients: Client[] = [];
   newCommunication: Communication = {
     client: '',
     date: new Date(),
@@ -57,22 +59,32 @@ export class ClientAddCommunicationComponent implements OnInit {
   is: boolean = false;
   newcallTopicSchema: callTopicSchema = { name: "" };
   displayDialog: boolean = true;
+  currentRoute: string;
+  selectedClient: Client;
   @Output() close = new EventEmitter<void>();
   statusOptions = [
     { label: 'ליד', value: true },
     { label: 'מעקב', value: false }
   ];
 
-  constructor(
-    private communicationService: CommunicationService,
-    private userService: UserService,
-    private calltopicservice: CallTopicService,
-    private tokenService: TokenService,
-  ) { }
+  constructor(private router: Router, private communicationService: CommunicationService, private userService: UserService,
+    private calltopicservice: CallTopicService, private tokenService: TokenService,
+    private clientService: ClientService, private route: ActivatedRoute
+
+  ) {
+    this.currentRoute = this.route.snapshot.url.join('/');
+  }
 
   ngOnInit(): void {
-    this.client = history.state.client;
-    this.newCommunication.client = this.client?._id ?? '';
+    if(this.currentRoute === 'allCommunication')
+    {
+      this.getAllClients();
+      this.client = this.selectedClient;
+    }
+    else{
+      this.client = history.state.client;
+      this.newCommunication.client = this.client?._id ?? '';
+    }
     this.formattedDate = this.formatDate(this.newCommunication.date);
     this.loadUsers();
     this.getCallTopics();
@@ -103,8 +115,13 @@ export class ClientAddCommunicationComponent implements OnInit {
   }
 
   createCommunication(): void {
+    if(this.currentRoute ==="allCommunication")
+    {
+      this.newCommunication.client = this.selectedClient._id;
+    }
     this.newCommunication.Subject = this.thisSubject;
     this.newCommunication.assignedTo = this.tokenService.getCurrentDetail("_id");
+    console.log('Creating communication:', this.newCommunication);
     this.communicationService.createCommunication(this.newCommunication)
       .subscribe(
         (newCommunication: Communication) => {
@@ -138,16 +155,23 @@ export class ClientAddCommunicationComponent implements OnInit {
         }));
       });
   }
-
+  getAllClients(): void {
+    this.clientService.getAllClients().subscribe(
+      (clients) => (this.clients = clients),
+      (error) => console.error('Error ', error)
+    );
+  }
   add() {
     this.newcallTopicSchema.name = this.thisSubject2
     this.calltopicservice.createCallTopic(this.newcallTopicSchema).subscribe(response => {
-      this.callTopics.push(response);
-      alert(response.name + " " + "נוסף בהצלחה")
+      this.callTopics.push(response); 
+      alert( response.name+" "+"נוסף בהצלחה")
+       // הוספת הנושא החדש לרשימה המקומית
     });
   }
 
   filterByNameCallTopic(value: string): void {
+  
     if (value != "") {
       this.is = false
       const query = value.toLowerCase();
