@@ -78,7 +78,7 @@ export class AuthService {
     try {
       if (window.google && window.google.accounts) {
         window.google.accounts.id.initialize({
-          client_id: '427515481723-ja7nlkmti3amubd5e5qbtdig27fc06ik.apps.googleusercontent.com',
+          client_id: '43995385201-q9j7i65l1t9t7nqucup4iu0g5k2fkv6u.apps.googleusercontent.com',
           callback: this.handleCredentialResponseWrapper.bind(this),
         });
         window.google.accounts.id.renderButton(
