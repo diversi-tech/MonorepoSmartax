@@ -24,8 +24,8 @@ export class TableComponent implements OnInit {
   tables: any = [];
   tablesNames: string[] = [];
   fieldsNames: string[] = [];
-  selectedValues: { [key: string]: any } = {};//המערך שנבחר
-  tableWithFields: { [key: string]: any } = {};//מערך של שמות המאפיינים עם הסוגים
+  selectedValues: { [key: string]: any } = {};
+  tableWithFields: { [key: string]: any } = {};
   //
   isShowTable: boolean = false;
   openFields: string[] = []
@@ -68,9 +68,7 @@ export class TableComponent implements OnInit {
   getFieldNames(tableName: string): string[] {
     const props = Object.keys(this.tables[tableName]);
 
-    // Check if the tableName is already in tableWithFields
     if (!this.tableWithFields[tableName]) {
-      // If not, add it with the fields and their types
       this.tableWithFields[tableName] = props.map((prop) => ({
         name: prop,
         type: this.tables[tableName][prop],
@@ -88,7 +86,6 @@ export class TableComponent implements OnInit {
       this.getFieldNames(tableName).forEach(fieldName => {
         const fieldType = this.tables[tableName][fieldName];
 
-        // אם המאפיין הוא סוג של טבלה אחרת, נאתחל את "ילדיו"
         if (this.tablesNames.includes(fieldType)) {
           this.selectedValues[tableName][fieldName] = { children: {} };
         }
@@ -96,41 +93,6 @@ export class TableComponent implements OnInit {
     });
   }
 
-  // checkType(tableName: string, fieldName: string, event: any) {
-  //   const fieldType = this.tables[tableName][fieldName];
-  //   console.log(`Field Type of ${fieldName} in ${tableName}: ${fieldType}`);
-
-  //   // אם המאפיין הוא טבלה ונבחר
-  //   if (this.tablesNames.includes(fieldType)) {
-  //     if (event.checked) {
-  //       if (this.tableWithFields[fieldType] === undefined) {
-  //         const props = this.getFieldNames(fieldType);
-  //         this.tableWithFields[fieldType] = props;
-  //       }
-
-  //       // עדכון selectedValues
-  //       this.selectedValues[tableName][fieldName] = { children: {} };
-
-  //       this.getFieldNames(fieldType).forEach(childFieldName => {
-  //         this.selectedValues[tableName][fieldName].children[childFieldName] = false;
-  //       });
-
-  //       this.isShowTable = true;
-  //       this.openFields = this.getFieldNames(fieldType);
-  //       this.currentTable = tableName;
-  //       this.currentField = fieldName;
-  //     }
-  //     else {
-  //       // אם המאפיין לא נבחר, נמחק את ה-children
-  //       this.selectedValues[tableName][fieldName] = { children: {} };
-  //       this.isShowTable = false;
-  //     }
-  //   }
-  //   else {
-  //     // אם המאפיין הוא לא טבלה, נעדכן אותו כ-true או false
-  //     this.selectedValues[tableName][fieldName] = event.checked;
-  //   }
-  // }
   checkType(tableName: string, fieldName: string, event: any) {
     const fieldType = this.tables[tableName][fieldName];
     console.log(`Field Type of ${fieldName} in ${tableName}: ${fieldType}`);
@@ -206,16 +168,13 @@ export class TableComponent implements OnInit {
   thirdTable(firstTable: string, secondField: string, thirdField: string, currentField: string, event: any) {
     console.log(event);
   
-    // בדוק אם 'children' הוא מערך, ואם לא, הפוך אותו למערך
     if (!Array.isArray(this.selectedValues[firstTable][secondField].children[thirdField].children)) {
       this.selectedValues[firstTable][secondField].children[thirdField].children = [];
     }
   
     if (event.checked) {
-      // הוסף את 'currentField' למערך 'children'
       this.selectedValues[firstTable][secondField].children[thirdField].children.push(currentField);
     } else {
-      // הסר את 'currentField' מהמערך 'children'
       const index = this.selectedValues[firstTable][secondField].children[thirdField].children.indexOf(currentField);
       if (index > -1) {
         this.selectedValues[firstTable][secondField].children[thirdField].children.splice(index, 1);
@@ -243,43 +202,49 @@ export class TableComponent implements OnInit {
     )
   }
 
+
   generateExcel(data: { [key: string]: any[] }) {
     const workbook = new ExcelJS.Workbook();
-
+  
     for (const tableName in data) {
       if (data.hasOwnProperty(tableName)) {
         const tableData = data[tableName];
         const worksheet = workbook.addWorksheet(tableName, { views: [{ rightToLeft: true }] });
-
-        // הוספת נתונים לגיליון
-        if (tableData.length > 0) {
-          const columns = Object.keys(tableData[0]).map(key => ({ header: key, key }));
-          worksheet.columns = columns;
-
-          tableData.forEach(row => {
-            worksheet.addRow(row);
+  
+        const allKeys = new Set<string>();
+        tableData.forEach(row => {
+          Object.keys(row).forEach(key => allKeys.add(key));
+        });
+  
+        const columns = Array.from(allKeys).map(key => ({ header: key, key }));
+        worksheet.columns = columns;
+  
+        tableData.forEach(row => {
+          const newRow = {};
+          columns.forEach(column => {
+            newRow[column.key] = row[column.key] !== undefined ? row[column.key] : '';
           });
-
-          // הרחבת העמודות באופן אוטומטי לפי התוכן
-          worksheet.columns.forEach(column => {
-            let maxLength = 0;
-            column.eachCell({ includeEmpty: true }, cell => {
-              const columnLength = cell.value ? cell.value.toString().length : 0;
-              if (columnLength > maxLength) {
-                maxLength = columnLength;
-              }
-            });
-            column.width = maxLength + 2;
+          worksheet.addRow(newRow);
+        });
+  
+        worksheet.columns.forEach(column => {
+          let maxLength = 0;
+          column.eachCell({ includeEmpty: true }, cell => {
+            const columnLength = cell.value ? cell.value.toString().length : 0;
+            if (columnLength > maxLength) {
+              maxLength = columnLength;
+            }
           });
-        }
+          column.width = maxLength + 2;
+        });
       }
     }
-
+  
     workbook.xlsx.writeBuffer().then(buffer => {
       this.saveAsExcelFile(buffer, 'נתוני טבלאות');
     });
   }
-
+  
   saveAsExcelFile(buffer: any, fileName: string) {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     saveAs(data, `${fileName}.xlsx`);
