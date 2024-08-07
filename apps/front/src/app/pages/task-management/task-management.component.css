@@ -5,6 +5,10 @@
   justify-content: space-between;
 }
 
+#mainContainer{
+  direction: rtl;
+}
+
 .p-col {
   flex: 1;
   margin: 0 10px;

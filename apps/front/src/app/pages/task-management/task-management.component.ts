@@ -113,6 +113,7 @@ export class TaskManagementComponent implements OnInit {
 
   getTasks(): void {
     this.taskService.getAllTasks().subscribe((allTasks: Task[]) => {
+      allTasks = allTasks.filter((task: Task) => !task.parent);
       this.tasks = allTasks;
       // console.log(this.tasks);
     });
@@ -139,7 +140,7 @@ export class TaskManagementComponent implements OnInit {
         if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
           this.filteredTasks.push(t);
       });
-      if(this.filteredTasks.length == 0){
+      if (this.filteredTasks.length == 0) {
         alert("לא נמצאות משימות בשם זה")
       }
     }
@@ -174,7 +175,6 @@ export class TaskManagementComponent implements OnInit {
   }
 
   editTask() {
-    debugger
     this.router.navigate(['/taskSpe', this.currentTask._id]);
   }
 
@@ -227,14 +227,16 @@ export class TaskManagementComponent implements OnInit {
   applyFilter() {
     this.tasks.forEach((task) => {
       this.filterFirstStatus = false;
-
       const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
-      const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
+      const clientMatch = !this.filter.client || ((task.client &&task.client.firstName&&task.client.lastName)&&
+        ((task.client.firstName === this.filter.client.firstName) && (task.client.lastName === this.filter.client.lastName)));
 
-      const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
 
-      const taskNameMatch = !this.filter.task || task.taskName!.toLowerCase()!.includes(this.filter.task.taskName.trim().toLowerCase());
+      let userMatch = !this.filter.user
+      // task.assignedTo.forEach(user => { user?.userName!.includes(this.filter!.user!.userName!) ? userMatch = true : false });
+
+      const taskNameMatch = !this.filter.task || task.taskName?.toLowerCase()!.includes(this.filter.task.taskName.trim().toLowerCase());
       let tagsMatch = true;
 
       if (this.filter.tags && this.filter.tags.length > 0) {
@@ -311,7 +313,6 @@ export class TaskManagementComponent implements OnInit {
   }
 
   selectCurrentTask(task: Task) {
-    debugger
     this.currentTask = task;
   }
 }

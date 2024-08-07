@@ -24,6 +24,7 @@ import { TaskComponent } from '../task/task.component';
 import { DialogModule } from 'primeng/dialog';
 import { setTimeout } from 'timers/promises';
 import { error } from 'console';
+import { PopAppComponent } from '../pop_up/task-pop-app/pop-app.component';
 
 @Component({
   selector: 'app-sub-task',
@@ -51,7 +52,7 @@ import { error } from 'console';
     AutoCompleteModule,
     PrimeTemplate,
     IconProfileComponent,
-    MultiSelectModule
+    MultiSelectModule,
   ],
   templateUrl: './sub-task.component.html',
   styleUrl: './sub-task.component.css',
@@ -62,6 +63,7 @@ export class SubTaskComponent implements OnInit {
   tagSuggestions: Tag[] = [];
   tasks: Task[] = [];
   statuses: Status[] = []
+  showPopup = false;
 
   @Input()
   subTasks: string[] = [];
@@ -189,4 +191,6 @@ export class SubTaskComponent implements OnInit {
       return 0;
     });
   }
+
+
 }

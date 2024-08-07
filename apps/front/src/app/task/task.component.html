@@ -17,7 +17,7 @@
         </p-inputGroup>
       </div>
     </div>
-    <br/>
+    <br />
     <!--  -->
     <!-- Select User -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
@@ -54,79 +54,8 @@
         </ng-template>
       </p-multiSelect>
     </div>
-    <!--  -->
-    <!-- Assignees -->
-    <!-- <div>
-      <div
-        style="display: flex; align-items: center; height: 50px"
-        id="divHover"
-      >
-        <p style="margin-top: 2%; margin-right: 5%">
-          <span class="pi pi-user"></span>
-          משוייך ל
-        </p>
-      </div>
-      <div style="margin-left: 60px; width: 32%">
-        <p-multiSelect
-          [options]="users"
-          [(ngModel)]="selectedUsers"
-          name="selectedUsers"
-          placeholder="Select Users"
-          defaultLabel="Select Users"
-          [style]="{ height: '50px', width: '100%' }"
-        >
-          <ng-template let-user pTemplate="item">
-            <div class="avatar-item">
-              <app-icon-profile
-                class="avatar"
-                [userName]="user.userName"
-              ></app-icon-profile>
-              <span>{{ user.userName }}</span>
-            </div>
-          </ng-template>
-          <ng-template let-user pTemplate="selectedItems">
-            <div class="selected-items-container" style="display: flex">
-              <div
-                *ngFor="let selectedUser of selectedUsers"
-                class="selected-item"
-                style="margin-right: 10px"
-              >
-                <app-icon-profile
-                  class="avatar"
-                  [userName]="selectedUser.userName"
-                ></app-icon-profile>
-              </div>
-            </div>
-          </ng-template>
-        </p-multiSelect>
-      </div>
-      <div (click)="showAssignees = !showAssignees">
-        <app-icon-profile
-          *ngIf="selectedUser"
-          [userName]="selectedUser.userName"
-          [email]="selectedUser.email"
-        ></app-icon-profile>
-      </div>
-    </div> -->
 
-    <!-- <form [formGroup]="formGroupUser" *ngIf="showAssignees">
-          <p-listbox [options]="users" [filter]="true" formControlName="selectedUser" [(ngModel)]="selectedUser"
-            optionLabel="userName" [style]="{ width: '15rem' }" [listStyle]="{ 'max-height': '400px' }"
-            (onChange)="showAssignees = !showAssignees">
-            <ng-template let-user pTemplate="item">
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                  <app-icon-profile class="avatar" [userName]="user.userName" [email]="user.email"></app-icon-profile>
-                  <span style="margin-left: 5%;">{{ user.userName }}</span>
-                </div>
-              </div>
-            </ng-template>
-          </p-listbox>
-        </form> -->
     <br />
-    <!-- </div> -->
-
-    <!-- Status  -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-spinner-dotted"></span>
@@ -134,8 +63,8 @@
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
-          <button pButton  [style]="{ height: '20px' }" label="{{ selectStatus ? selectStatus.name : 'NOT_STARTED' }}"
-            [outlined]="true" severity="secondary" (click)="showStatus = !showStatus"></button >
+          <button pButton [style]="{ height: '20px' }" label="{{ selectStatus ? selectStatus.name : 'NOT_STARTED' }}"
+            [outlined]="true" severity="secondary" (click)="showStatus = !showStatus"></button>
           <p-inputGroupAddon><i class="pi pi-angle-right"></i></p-inputGroupAddon>
           <p-inputGroupAddon>
             <div class="card flex justify-content-center">
@@ -214,12 +143,13 @@
       <!-- buttons -->
       <div style="margin-left: 100px">
         <p-inputGroup class="w-full md:w-30rem flex-container">
-          <button pButton  (click)="showTagsList = !showTagsList"
+          <button pButton (click)="showTagsList = !showTagsList"
             [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }" icon="pi pi-tag" [outlined]="true"
             severity="secondary">
           </button>
-          <button pButton (click)="showTags = !showTags" [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
-            label="חדש" [outlined]="true" severity="secondary"></button>
+          <button pButton (click)="showTags = !showTags"
+            [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }" label="חדש" [outlined]="true"
+            severity="secondary"></button>
           <!--  -->
           <button *ngFor="let button of buttons; let i = index"
             [ngStyle]="{ backgroundColor: button.color, color: 'white' }" class="custom-button"
@@ -383,10 +313,9 @@
         <span class="pi pi-file-o"></span>
         העלאת מסמכים
       </p>
-      <div style="margin-right: 10%">
+      <div>
         <p-inputGroup class="w-full" [style]="{ height: '20px', marginRight: '15%' }">
-          <p-inputGroupAddon style="margin-right: 10%"><span (click)="showDoc = !showDoc"
-              class="pi pi-file-plus"></span>
+          <p-inputGroupAddon><span (click)="showDoc = !showDoc" class="pi pi-file-plus"></span>
           </p-inputGroupAddon>
         </p-inputGroup>
       </div>
@@ -441,8 +370,11 @@
               <input pInputText id="name" [(ngModel)]="newListName" class="flex-auto" autocomplete="off" />
             </div>
             <div class="flex justify-content-end gap-2">
-              <button pButton  label="ביטול" severity="secondary" (click)="visible = false"></button>
-              <button pButton  label="אישור" (click)="addNewList()"></button>
+              <button pButton label="ביטול" icon="pi pi-undo" severity="danger" (click)="visible = false"
+                class="p-button-text p-button-raised p-button-rounded"></button>
+              <button pButton label="אישור" icon="pi pi-check" (click)="addNewList()"
+                class="p-button-text p-button-raised p-button-rounded"></button>
+
             </div>
           </p-dialog>
         </p-tabPanel>
@@ -455,13 +387,15 @@
 
       </p-tabView>
     </div>
-    
+
     <!--  -->
     <!-- footer -->
     <ng-template pTemplate="footer">
       <div class="flex gap-3 mt-1" style="margin-left: 70%">
-        <button pButton  label="ביטול" icon="pi pi-undo" severity="danger" (click)="cancel()" class= "p-button-text p-button-raised p-button-rounded"></button>
-        <button pButton  label="אישור" icon="pi pi-check" (click)="showDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <button pButton label="ביטול" icon="pi pi-undo" severity="danger" (click)="cancel()"
+          class="p-button-text p-button-raised p-button-rounded"></button>
+        <button pButton label="אישור" icon="pi pi-check" (click)="showDialog()"
+          class="p-button-text p-button-raised p-button-rounded"></button>
       </div>
     </ng-template>
 
@@ -475,8 +409,10 @@
   <span class="p-text-secondary block mb-5">להוסיף את המשימה הזו ליומן גוגל שלך?</span>
   <br />
   <div>
-    <button pButton  icon="pi pi-times" label="לא" severity="secondary" (click)="cancelDialog()" class= "p-button-text p-button-raised p-button-rounded"></button>
-    <button pButton  icon="pi pi-check" label="כן" (click)="createGoogleTask()" class= "p-button-text p-button-raised p-button-rounded"></button>
+    <button pButton icon="pi pi-times" label="לא" severity="secondary" (click)="cancelDialog()"
+      class="p-button-text p-button-raised p-button-rounded"></button>
+    <button pButton icon="pi pi-check" label="כן" (click)="createGoogleTask()"
+      class="p-button-text p-button-raised p-button-rounded"></button>
   </div>
 </p-dialog>
 

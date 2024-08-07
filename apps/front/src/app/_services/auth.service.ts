@@ -68,7 +68,7 @@ export class AuthService {
   }
 
   checkTokenAndPolicyValidity(policy: number): Observable<boolean> {
-    const body = { policy };
+    const body = { role:policy };
     return this.http.post<any>(this.apiUrl + '/validate-token', body).pipe(
       map(response => response.message === 'Token is valid and policy is valid')
     );

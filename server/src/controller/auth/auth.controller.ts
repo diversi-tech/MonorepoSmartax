@@ -77,10 +77,10 @@ export class AuthController {
   @ApiResponse({ status: 403, description: 'the policy is not current' })
   @ApiBearerAuth()
   async validateRole(@Body() body: { role: number }, @Request() req) {
-    const token = req.headers!.authorization?.split(' ')![2]!;
+    const token = req.headers!.authorization?.split(' ')![1]!;
     
     const policy = body.role;
-
+    
     try {
         const tokenPolicy = await this.jwtToken.getRoleFromToken(token);
 
