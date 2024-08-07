@@ -9,11 +9,11 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
-    selector: 'app-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.css'],
-    standalone: true,
-    imports: [FormsModule, DropdownModule, NgClass, ButtonModule]
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css'],
+  standalone: true,
+  imports: [FormsModule, DropdownModule, NgClass, ButtonModule]
 })
 export class RegisterComponent implements OnInit {
   allRolies: Role[] = [];
@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit {
 
     this.form.role = this.allRolies.find(role => role.name === roleName) || null;
   }
-  
+
   setForm() {
     if (this.type === 'edit' && history.state.user) {
       this.form.username = history.state.user.userName;
@@ -89,21 +89,26 @@ export class RegisterComponent implements OnInit {
       });
     }
     else {
-      this.userService.update(history.state.user._id, this.form.username, this.form.email, history.state.user.passwordHash, this.form.role, history.state.user.favorites).subscribe({
-        next: data => {
-          console.log(data);
-          this.isSuccessful = true;
-          this.isSignUpFailed = false;
-          this.router.navigate(['/employeesTable']);
+      this.userService.update(history.state.user._id,
+        this.form.username,
+        this.form.email,
+        history.state.user.passwordHash,
+        this.form.role,
+        history.state.user.favorites)
+        .subscribe({
+          next: data => {
+            console.log(data);
+            this.isSuccessful = true;
+            this.isSignUpFailed = false;
+            this.router.navigate(['/employeesTable']);
 
-        },
-        error: err => {
-          console.log(err);
-          this.errorMessage = err.error.message;
-          this.isSignUpFailed = true;
-        }
-      });
-
+          },
+          error: err => {
+            console.log(err);
+            this.errorMessage = err.error.message;
+            this.isSignUpFailed = true;
+          }
+        });
     }
   }
 }
