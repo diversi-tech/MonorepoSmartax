@@ -21,28 +21,53 @@ export class UserController {
     private hashService: hashPasswordService
   ) {}
 
+  // @Put('create')
+  // @ApiOperation({ summary: 'Create a new user' })
+  // @ApiBody({ type: CreateUserDto })
+  // async create(@Body() createUserDto: CreateUserDto): Promise<any> {
+  //   console.log('Received createUserDto:', createUserDto); // הוסף לוג כדי לראות מה נשלח
+
+  //   try {
+  //     createUserDto.passwordHash = await this.hashService.hashPassword(
+  //       createUserDto.passwordHash
+  //     );
+
+  //     createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
+  //     const user = await this.userService.createUser(createUserDto);
+  //     return;
+  //   } catch (error) {
+  //     throw new HttpException(
+  //       'Failed to create user',
+  //       HttpStatus.INTERNAL_SERVER_ERROR
+  //     );
+  //   }
+  // }
   @Put('create')
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
   async create(@Body() createUserDto: CreateUserDto): Promise<any> {
-    console.log('Received createUserDto:', createUserDto); // הוסף לוג כדי לראות מה נשלח
 
     try {
-      createUserDto.passwordHash = await this.hashService.hashPassword(
-        createUserDto.passwordHash
-      );
-
       createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
+
       const user = await this.userService.createUser(createUserDto);
+
+      // const response = {
+      //   _id: user._id,
+      //   userName: user.userName,
+      //   email: user.email,
+      //   role: user.role.name
+      // }
+
       return;
+
     } catch (error) {
       throw new HttpException(
         'Failed to create user',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
-
   @Get('findAll')
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'Return all users.' })
