@@ -14,6 +14,9 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class YearlyReportService {
+  close() {
+    throw new Error('Method not implemented.');
+  }
   constructor(private http: HttpClient) {}
 
   private apiUrl = YEARLYREPORT;
@@ -58,7 +61,7 @@ export class YearlyReportService {
 
   // Delete a yearly report by ID
   deleteYearlyReport(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}`, { body: { id } })
+    return this.http.delete<boolean>(`${this.apiUrl}/delete/${id}`)
       .pipe(
         catchError(this.handleError<boolean>('deleteYearlyReport', false))
       );
