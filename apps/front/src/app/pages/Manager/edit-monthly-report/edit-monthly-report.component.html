@@ -38,7 +38,7 @@
     </p-footer>
 </p-dialog>
 
-<p-table [value]="allStepFields" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '20rem'}" dir="rtl">
+<p-table [value]="filteredStepFields" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '20rem'}" dir="rtl">
     <ng-template pTemplate="header">
         <tr>
             <th style="width:50%">
@@ -48,7 +48,7 @@
             <th style="width:25%">
                 סוג
                 <p-dropdown [options]="uniqueSelectedSteps" placeholder=" בחר סוג"
-                    (onChange)="filterByStepNumber($event.value)">
+                    (onChange)="filterByType($event.value)">
                 </p-dropdown>
             </th>
             <th style="width:25%"></th>
