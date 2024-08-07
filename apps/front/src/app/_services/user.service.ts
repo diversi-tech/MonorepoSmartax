@@ -34,7 +34,7 @@ export class UserService {
       role: role,
       email: email,
     };
-    return this.http.put(this.apiUrl + '/create', {newUser}, httpOptions);
+    return this.http.put(this.apiUrl + '/create', newUser, httpOptions);
   }
   update(
     id: string,
