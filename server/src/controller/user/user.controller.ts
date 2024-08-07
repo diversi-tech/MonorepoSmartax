@@ -123,7 +123,8 @@ export class UserController {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
       return updatedUser;
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
 
       throw new HttpException(

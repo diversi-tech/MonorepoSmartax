@@ -11,7 +11,6 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { EditorModule } from 'primeng/editor';
 import { DividerModule } from 'primeng/divider';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { CheckboxModule } from 'primeng/checkbox';
 import { MessagesModule } from 'primeng/messages';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -46,6 +45,7 @@ import { TagService } from './app/_services/tag.service';
 import { ClientService } from './app/_services/client.service';
 import { CommunicationService } from './app/_services/communicaton.service';
 import { httpInterceptorProviders } from './app/_helpers/http.interceptor';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 bootstrapApplication(AppComponent, {
