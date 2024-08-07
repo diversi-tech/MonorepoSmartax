@@ -13,7 +13,6 @@ import { InputOtpModule } from 'primeng/inputotp';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Client } from '../../../_models/client.module';
 import { TokenService } from '../../../_services/token.service';
 import { DialogModule } from 'primeng/dialog';
 import { Location } from '@angular/common';
@@ -51,7 +50,9 @@ import Swal from 'sweetalert2';
 @Injectable({
   providedIn: 'root', // Ensure it's provided in root or a specific module
 })
+
 export class CreateYearlyReportComponent implements OnInit {
+
   displayModal: boolean = false;
   yearlyReportForm: FormGroup;
   userId: string; // Assuming the client ID is passed via the state
@@ -75,6 +76,7 @@ export class CreateYearlyReportComponent implements OnInit {
   thisSubject2 = "";
   is: boolean = false;
   thisSubject = "";
+
   constructor(
     private fb: FormBuilder,
     private stepFieldsService: stepFieldService,
@@ -82,7 +84,6 @@ export class CreateYearlyReportComponent implements OnInit {
     private yearService: YearService,
     private tokenService: TokenService,
     private router: Router,
-    private route: ActivatedRoute,// Inject ActivatedRoute
     private location: Location,
     private statusService: StatusService,
 
@@ -93,10 +94,8 @@ export class CreateYearlyReportComponent implements OnInit {
   loadData() {
     this.yearService.getAllYear().subscribe({
       next: (data) => {
-        console.log(data);
         this.yearList = data;
         this.yearList2 = data;
-
       },
       error: (error) => {
         console.log(error);
@@ -123,7 +122,6 @@ export class CreateYearlyReportComponent implements OnInit {
 
   hideModalDialog() {
     this.displayModal = false;
-
   }
 
   ngOnInit(): void {
@@ -147,12 +145,10 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   onSubmit() {
-
     this.formSubmitted = true;
     if (this.yearlyReportForm.valid) {
       const yearlyReport = this.yearlyReportForm.value;
       yearlyReport.yearReport = this.thisSubject
-
       if (this.reportToUpdate) {
         const status = this.determineStatus();
         this.updateYearlyReport(yearlyReport, status);
@@ -160,13 +156,11 @@ export class CreateYearlyReportComponent implements OnInit {
         this.createYearlyReport(yearlyReport);
       }
     }
-    this.hideModalDialog(); //
-
+    this.hideModalDialog(); 
   }
 
   determineStatus(): Status {
     const stepsList = this.reportToUpdate ? this.reportToUpdate.stepsList : [];
-
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
 
@@ -180,10 +174,7 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   createYearlyReport(yearlyReport: any) {
-
-    console.log('yearlyReport', yearlyReport);
     yearlyReport.status = this.statusList.find(s => s.name == 'TO DO') || null;
-
     const yearly: YearlyReport = {
       idClient: this.client._id,
       idEmploye: this.userId,
@@ -201,7 +192,6 @@ export class CreateYearlyReportComponent implements OnInit {
     this.yearlyReportService.createYearlyReport(yearly).subscribe(
       (response) => {
         if (response) {
-          console.log("response", response);
           Swal.fire('Success', "הדוח נוסף בהצלחה", "success");
           this.router.navigate(
             ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
@@ -241,7 +231,6 @@ export class CreateYearlyReportComponent implements OnInit {
       .subscribe(
         (response) => {
           if (response) {
-            console.log("response", response);
             Swal.fire('Success', "הדוח עודכן בהצלחה", "success");
             this.router.navigate(
               ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
@@ -261,12 +250,12 @@ export class CreateYearlyReportComponent implements OnInit {
         }
       );
   }
+
   goBack(): void {
     this.location.back();
   }
 
   filterByyear(value: string): void {
-    console.log(this.yearList2, '2')
     if (value != "") {
       this.is = false
       const query = value.toLowerCase();
@@ -279,13 +268,12 @@ export class CreateYearlyReportComponent implements OnInit {
         this.is = true;
       }
     }
-    else {
-      this.is = false
-      console.log(this.yearList, '1')
+    else
+    {
+      this.is=false
       this.yearList2 = this.yearList;
     }
     this.selectedyear = null;
-
   }
 
   select(event: AutoCompleteSelectEvent): void {

@@ -4,7 +4,7 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { HashPasswordService } from '../_services/hash-password.service';
 import { AUTH_ENDPOINT } from '../api-urls';
 import { Role } from '../_models/role.module';
-import jwt_decode from 'jwt-decode'; // Correct import statement
+import jwt_decode from 'jwt-decode';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,7 +19,6 @@ const httpOptions = {
 export class AuthService {
   private apiUrl = AUTH_ENDPOINT;
 
-  // פונקציה שתשמש כ-Callback
   private credentialResponseHandler: (email: string, password: string) => void = () => {};
 
   constructor(private http: HttpClient, private hashService: HashPasswordService) {
@@ -75,7 +74,6 @@ export class AuthService {
   }
 
   initGoogleAuth() {
-    console.log("Initializing Google Auth");
     try {
       if (window.google && window.google.accounts) {
         window.google.accounts.id.initialize({
@@ -98,9 +96,7 @@ export class AuthService {
     try {
       const userObject: any = jwt_decode(response.credential);
       const email = userObject.email;
-      const password = 'Aa123456'; // Use a fixed password or generate dynamically as needed
-      console.log();
-
+      const password = 'Aa123456'; 
       this.credentialResponseHandler(email, password);
 
     } catch (error) {
