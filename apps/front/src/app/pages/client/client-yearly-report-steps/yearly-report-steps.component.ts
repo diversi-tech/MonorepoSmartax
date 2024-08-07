@@ -50,7 +50,8 @@ export class YearlyReportStepsComponent implements OnInit {
   statusList: Status[] = []; // List to hold statuses
 
 
-  constructor(private yearlyReportService: YearlyReportService,
+  constructor(
+    private yearlyReportService: YearlyReportService,
     private router: Router,
     private location: Location,
     private statusService: StatusService
@@ -73,7 +74,6 @@ export class YearlyReportStepsComponent implements OnInit {
   }
 
   groupSteps() {
-    // console.log("task",history.state.task)
     this.allStep.forEach((step) => {
       const stepNumber = step.stepNumber; // Assuming stepNumber is the property you want to group by
       if (!this.stepsByNumber[stepNumber]) {
@@ -101,7 +101,6 @@ export class YearlyReportStepsComponent implements OnInit {
 
   determineStatus(): Status {
     const stepsList = this.responseData.stepsList;
-
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
 
@@ -123,7 +122,6 @@ export class YearlyReportStepsComponent implements OnInit {
       }
     }
     const status = this.determineStatus();
-
     if (status) {
       this.responseData.status = status;
     } else {
@@ -132,8 +130,6 @@ export class YearlyReportStepsComponent implements OnInit {
     }
     try {
       const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
-
-      console.log("response from server", response);
       Swal.fire('Success', 'דוח שנתי עודכן בהצלחה', 'success');
       this.responseData = response;
       this.changes = {};
@@ -141,7 +137,6 @@ export class YearlyReportStepsComponent implements OnInit {
       console.log(error);
     }
   }
-
 
   goToUpdate() {
     this.router.navigate(['/createYearlyReport'], { state: { client: this.client, report: this.responseData } });

@@ -145,12 +145,10 @@ export class CreateYearlyReportComponent implements OnInit {
   }
 
   onSubmit() {
-
     this.formSubmitted = true;
     if (this.yearlyReportForm.valid) {
       const yearlyReport = this.yearlyReportForm.value;
       yearlyReport.yearReport = this.thisSubject
-      // const status =  this.determineStatus();
       if (this.reportToUpdate) {
         const status = this.determineStatus();
         this.updateYearlyReport(yearlyReport, status);
@@ -158,8 +156,7 @@ export class CreateYearlyReportComponent implements OnInit {
         this.createYearlyReport(yearlyReport);
       }
     }
-    this.hideModalDialog(); //
-
+    this.hideModalDialog(); 
   }
 
   determineStatus(): Status {
@@ -178,7 +175,6 @@ export class CreateYearlyReportComponent implements OnInit {
 
   createYearlyReport(yearlyReport: any) {
     yearlyReport.status = this.statusList.find(s => s.name == 'TO DO') || null;
-
     const yearly: YearlyReport = {
       idClient: this.client._id,
       idEmploye: this.userId,
@@ -196,7 +192,6 @@ export class CreateYearlyReportComponent implements OnInit {
     this.yearlyReportService.createYearlyReport(yearly).subscribe(
       (response) => {
         if (response) {
-          console.log("response", response);
           Swal.fire('Success', "הדוח נוסף בהצלחה", "success");
           this.router.navigate(
             ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
@@ -236,7 +231,6 @@ export class CreateYearlyReportComponent implements OnInit {
       .subscribe(
         (response) => {
           if (response) {
-            console.log("response", response);
             Swal.fire('Success', "הדוח עודכן בהצלחה", "success");
             this.router.navigate(
               ['/clientSearch/clientManagement/clientNavbar/yearlyReport'],
@@ -256,6 +250,7 @@ export class CreateYearlyReportComponent implements OnInit {
         }
       );
   }
+
   goBack(): void {
     this.location.back();
   }
@@ -279,7 +274,6 @@ export class CreateYearlyReportComponent implements OnInit {
       this.yearList2 = this.yearList;
     }
     this.selectedyear = null;
-
   }
 
   select(event: AutoCompleteSelectEvent): void {

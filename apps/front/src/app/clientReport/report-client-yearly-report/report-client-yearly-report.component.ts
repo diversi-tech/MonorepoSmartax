@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterOutlet } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
+
 @Component({
   selector: 'app-report-client-yearly-report',
   standalone: true,
@@ -38,10 +39,10 @@ export class ReportClientYearlyReportComponent implements OnInit {
   sortedReports: YearlyReport[] = [];
   currentYearlyReport: YearlyReport;
   isSelected: number = 5;
-  selectedStatus:string="";
+  selectedStatus: string = "";
   filterstatus: string = "";
-  is:number =2
-  filterallYearlyReport: YearlyReport[] ;
+  is: number = 2
+  filterallYearlyReport: YearlyReport[];
 
 
   constructor(
@@ -92,7 +93,7 @@ export class ReportClientYearlyReportComponent implements OnInit {
 
   getClientName(idClient: string): string | undefined {
     const client = this.allClient.find((x) => x._id === idClient);
-    return client?.firstName +' '+client?.lastName;
+    return client?.firstName + ' ' + client?.lastName;
   }
 
   getClient(idClient: string): Client | undefined {
@@ -119,8 +120,8 @@ export class ReportClientYearlyReportComponent implements OnInit {
 
   sortReportsByClientName(): void {
     this.sortedReports = [...this.allYearlyReport].sort((a, b) => {
-       const clientNameA = this.getClientName(a.idClient) || '';
-       const clientNameB = this.getClientName(b.idClient)|| '';
+      const clientNameA = this.getClientName(a.idClient) || '';
+      const clientNameB = this.getClientName(b.idClient) || '';
       return clientNameA.localeCompare(clientNameB);
     });
   }
@@ -128,9 +129,6 @@ export class ReportClientYearlyReportComponent implements OnInit {
   selectYearlyReport(yearlyReport: YearlyReport) {
     this.currentYearlyReport = yearlyReport;
   }
-
-  
-
 }
 
 

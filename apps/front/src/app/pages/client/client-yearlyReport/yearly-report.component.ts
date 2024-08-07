@@ -19,7 +19,18 @@ import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.c
 @Component({
   selector: 'app-yearly-report',
   standalone: true,
-  imports: [CommonModule, StepperModule, CheckboxModule, Button, RouterOutlet, TableModule, ButtonModule,FormsModule,TooltipModule, IconProfileComponent],
+  imports: [
+    CommonModule, 
+    StepperModule, 
+    CheckboxModule, 
+    Button, 
+    RouterOutlet, 
+    TableModule, 
+    ButtonModule,
+    FormsModule,
+    TooltipModule, 
+    IconProfileComponent
+  ],
   templateUrl: './yearly-report.component.html',
   styleUrl: './yearly-report.component.css',
 })
@@ -41,7 +52,8 @@ export class YearlyReportComponent implements OnInit {
   filterstatus: string = "";
   is: number = 2
 
-  constructor(private stepFieldsService: stepFieldService,
+  constructor(
+    private stepFieldsService: stepFieldService,
     private yearlyReportService: YearlyReportService,
     private router: Router,
     private tokenService: TokenService,

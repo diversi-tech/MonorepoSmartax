@@ -144,8 +144,6 @@ export class TaxRefundsStepsComponent {
     this.location.back();
   }
   goToUpdate() {
-   
       this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client, responseData: this.responseData } });
   }
-
 }

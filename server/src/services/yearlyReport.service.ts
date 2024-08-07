@@ -45,13 +45,8 @@ export class YearlyReportService {
     }
   }
 
-
-
-
-
   async updateYearlyReport(id: string, updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
     try {
-      // בדוק אם כבר קיים דוח שנתי עם אותו `idClient` ו-`yearReport`
       const existingYearlyReport = await this.YearlyReportModel.findOne({
         idClient: updateYearlyReportDto.idClient,
         yearReport: updateYearlyReportDto.yearReport
@@ -69,7 +64,6 @@ export class YearlyReportService {
       if (!updatedYearlyReport) {
         throw new NotFoundException('Yearly Report not found');
       }
-
       return updatedYearlyReport.save();
     }
     catch (err) {
@@ -92,6 +86,4 @@ export class YearlyReportService {
   async getAllYearlyReports(): Promise<YearlyReport[]> {
     return this.YearlyReportModel.find().exec();
   }
-
-
 }

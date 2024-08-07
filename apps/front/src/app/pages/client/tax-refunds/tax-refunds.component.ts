@@ -39,7 +39,7 @@ export class TaxRefundsComponent {
 
   ) {
     this.currentRoute = this.route.snapshot.url.join('/');
-  
+
   }
   client: Client;
   allTaxRefunds: TaxRefunds[] | null;
@@ -70,7 +70,6 @@ export class TaxRefundsComponent {
     this.taxRefundsService.getAllTaxRefunds().subscribe(
       (reports) => {
         this.allTaxRefunds = reports;
-        console.log('report', this.allTaxRefunds);
       },
       (error) => {
         console.error('Error fetching tax refunds', error);
@@ -79,7 +78,7 @@ export class TaxRefundsComponent {
   }
 
   getTaxRefundsForClient(): void {
-    
+
     const clientId = this.client._id;
     this.taxRefundsService.getTaxRefundsForClient(clientId).subscribe(
       (reports) => {
@@ -93,14 +92,13 @@ export class TaxRefundsComponent {
   getEmployeName(idEmploye: string): any {
     return this.allEmploye.find((x) => x._id == idEmploye);
   }
- 
-   goToSteps(task: any) {  
-    if(this,this.currentRoute === 'allClientTaxRefunds'){
+
+  goToSteps(task: any) {
+    if (this, this.currentRoute === 'allClientTaxRefunds') {
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps'], { state: { data: task, client: this.getClientName(task.idClient) } });
     }
     else {
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/taxrefundsteps', this.router], { state: { data: task, client: this.client } });
-
     }
   }
   getAllClients(): void {
@@ -110,15 +108,11 @@ export class TaxRefundsComponent {
     );
   }
   getClientName(idClient: string): Client | undefined {
-    debugger
-    console.log(this.allClients.find((x) => x._id === idClient), 'client');
-
     return this.allClients.find((x) => x._id === idClient);
   }
   createReprtTag(): void {
-      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client } });
+    this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client } });
   }
-  
 
   selectTaxRefunds(taxRefunds: TaxRefunds) {
     this.currentTaxRefunds = taxRefunds;
