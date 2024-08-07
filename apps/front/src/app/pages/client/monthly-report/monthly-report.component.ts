@@ -108,7 +108,7 @@ export class MonthlyReportComponent implements OnInit {
                 (r) =>
                   r.reportDate.getFullYear().toString() ===
                     this.selectedYear.yearNum &&
-                  r.reportDate.getMonth().toString() === this.selectedMonth
+                  (r.reportDate.getMonth()+1).toString() === this.selectedMonth
               )
             )
               this.createMonthlyReport();
@@ -208,18 +208,22 @@ export class MonthlyReportComponent implements OnInit {
         new Date(m.reportDate).getFullYear() === Number(year.yearNum)
     );
   }
-  onSubmit() {
+  onSubmit() { 
+    this.exist=false;
+
+    console.log(this.createdMonth,this.createdYear.yearNum);
+    
     if (
       !this.allMonthlyReports.find(
         (r) =>
-          r.reportDate.getFullYear().toString() === this.selectedYear.yearNum &&
-          r.reportDate.getMonth().toString() === this.selectedMonth
+          new Date( r.reportDate).getFullYear().toString() === this.createdYear.yearNum &&
+        (new Date( r.reportDate).getMonth()+1) === this.createdMonth
       )
     ){
       this.createMonthlyReport();
     }
     else{
-      this.exist=!this.exist
+      this.exist=true
     }
   }
   createMonthlyReport() {
@@ -240,6 +244,7 @@ export class MonthlyReportComponent implements OnInit {
           this.selectedYear = this.createdYear;
           this.selectedMonth = this.createdMonth;
           this.changeDate();
+          this.visible=false;
         },
         error: (error) => {
           console.log(error);
