@@ -22,6 +22,8 @@ export class FinancialStatementComponent implements OnInit {
   steps: any[];
   allFinancialStatement: FinancialStatement[] | null;
   client: Client;
+  currentFinancialStatement: FinancialStatement;
+
 
   constructor(
     private financialStatementService: FinancialStatementService,
@@ -50,13 +52,17 @@ export class FinancialStatementComponent implements OnInit {
     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createFinancialStatement'], { state: { client: this.client } });
   }
 
-  goToSteps(task: any) {
-    this.router.navigate(['clientSearch/clientManagement/clientNavbar/stepsFS', this.router], { state: { data: task, client: this.client } });
+  goToSteps() {
+    this.router.navigate(['clientSearch/clientManagement/clientNavbar/stepsFS', this.router], { state: { data: this.currentFinancialStatement, client: this.client } });
   }
 
-  goToUpdate(statement: FinancialStatement) {
-    if (statement) {
-      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/financialStatement/createFinancialStatement'], { state: { client: this.client, report: statement } });
-    }
+  // goToUpdate(statement: FinancialStatement) {
+  //   if (statement) {
+  //     this.router.navigate(['/clientSearch/clientManagement/clientNavbar/financialStatement/createFinancialStatement'], { state: { client: this.client, report: statement } });
+  //   }
+  // }
+  
+  selectFinancialStatement(financialStatement: FinancialStatement) {
+    this.currentFinancialStatement = financialStatement;
   }
 }
