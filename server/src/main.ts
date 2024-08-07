@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors({
     // origin: '', // Allow requests from this origin
     origin:['https://monoreposmartax-fronted.onrender.com','http://localhost:4200'] ,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     allowedHeaders: 'Authorization, Content-Type',
   });
