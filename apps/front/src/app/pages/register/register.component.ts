@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Role } from '../../_models/role.module';
 import { UserService } from '../../_services/user.service';
 import { RoleServiceService } from '../../_services/role-service.service';
@@ -7,23 +7,15 @@ import { NgClass } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   standalone: true,
-  imports: [
-    FormsModule,
-    DropdownModule,
-    NgClass,
-    ButtonModule
-  ]
+  imports: [FormsModule, DropdownModule, NgClass, ButtonModule]
 })
-
 export class RegisterComponent implements OnInit {
-  
   allRolies: Role[] = [];
   type: string = "";
   form: any = {
@@ -47,6 +39,7 @@ export class RegisterComponent implements OnInit {
           suc => {
             this.allRolies = suc;
             this.setForm()
+
           },
           err => console.log(err)
         );
@@ -55,6 +48,7 @@ export class RegisterComponent implements OnInit {
   }
 
   setRole(roleName: string) {
+
     this.form.role = this.allRolies.find(role => role.name === roleName) || null;
   }
 
@@ -63,6 +57,8 @@ export class RegisterComponent implements OnInit {
       this.form.username = history.state.user.userName;
       this.form.email = history.state.user.email;
       this.setRole(history.state.user.role.name);
+      console.log(history.state.user);
+      console.log(this.form);
     }
     else {
       this.form.username = ''
@@ -77,13 +73,16 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     const { username, email, role } = this.form;
+    console.log(username, email);
     if (this.type === 'register') {
       this.userService.register(username, email, role).subscribe({
         next: data => {
+          console.log(data);
           this.isSuccessful = true;
           this.isSignUpFailed = false;
         },
         error: err => {
+          console.log(err);
           this.errorMessage = err.error.message;
           this.isSignUpFailed = true;
         }
