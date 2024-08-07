@@ -49,5 +49,13 @@ COPY --from=builder /app/dist /app/dist
 COPY package*.json ./
 RUN npm install --only=production
 
+# חשיפת הפורטים שבהם האפליקציות מאזינות
+EXPOSE 3000  
+# פורט של server
+EXPOSE 3001 
+ # פורט של timesheet
+EXPOSE 3002  
+# פורט של api-gateway
+
 # הפעלת השירותים
 CMD ["sh", "-c", "node dist/server/main.js & node dist/timesheet/main.js & node dist/api-gateway/main.js"]
