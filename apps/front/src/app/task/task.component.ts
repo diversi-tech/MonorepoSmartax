@@ -216,7 +216,7 @@ export class TaskComponent implements OnInit {
         next: (data) => {
 
           this.currentTask = data;
-          this.subTasks = this.currentTask.subTasks
+          this.subTasks = this.currentTask.subTasks!
           this.selectStatus = this.currentTask.status;
           this.selectedPriority = this.currentTask.priority;
           // this.selectedClient = this.currentTask.client;
@@ -240,7 +240,6 @@ export class TaskComponent implements OnInit {
           this.selectedTags = this.currentTask.tags;
           this.eventId = this.currentTask.googleId;
           this.currentTask.checkList?.forEach((listId: string) => {
-
             this.checkListServise.getCheckLists(listId).subscribe((data: CheckList) => {
               this.checkList.push(data);
             });
@@ -385,7 +384,7 @@ export class TaskComponent implements OnInit {
   }
 
   notInThisTask(id: string) {
-    this.currentTask.checkList.forEach(item => {
+    this.currentTask.checkList?.forEach(item => {
       if (item === id)
         return false
     })
@@ -543,7 +542,7 @@ export class TaskComponent implements OnInit {
     if (this.parent) newTask.parent = this.parent;
     console.log(this.eventId);
 
-    if (this.id == 'create'  || this.create == true) {
+    if (this.id == 'create' || this.create == true) {
       this.tasksService.createTask(newTask).subscribe({
         next: (task) => {
           console.log(task);
@@ -713,7 +712,8 @@ export class TaskComponent implements OnInit {
       let l: CheckList = { name: this.newListName, items: [] }
       this.checkListServise.createCheckList(l).subscribe({
         next: (newList) => {
-          this.currentTask.checkList.push(newList._id)
+          this.currentTask.checkList?.push(newList._id)
+          if(!this.currentTask.checkList) this.currentTask.checkList=[newList._id]
           this.checkList.push(newList)
           this.save()
         },
