@@ -40,89 +40,89 @@ export class FavoritesClientsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userService
-      .findOne(this.tokenService.getCurrentDetail('_id'))
-      .subscribe({
-        next: (response: any) => {
-          this.user = response;
-          this.user.favoritesClient.forEach(c => {
-            this.clientService.searchClient(c).subscribe
-              ({
-                next: (favoriteClients) => {
-                  this.favoriteClients.push(favoriteClients);
-                }
-              })
-          })
-        },
-        error: (err) => {
-          console.error('Error get current user', err);
-        },
-      });
+    // this.userService
+    //   .findOne(this.tokenService.getCurrentDetail('_id'))
+    //   .subscribe({
+    //     next: (response: any) => {
+    //       this.user = response;
+    //       this.user.favoritesClient.forEach(c => {
+    //         this.clientService.searchClient(c).subscribe
+    //           ({
+    //             next: (favoriteClients) => {
+    //               this.favoriteClients.push(favoriteClients);
+    //             }
+    //           })
+    //       })
+    //     },
+    //     error: (err) => {
+    //       console.error('Error get current user', err);
+    //     },
+    //   });
   }
 
-  updateFavorite() {
-    this.userService
-      .update(
-        this.user._id,
-        this.user.userName,
-        this.user.email,
-        this.user.passwordHash,
-        this.user.role,
-        []
-        // this.user.favoritesClient
-      )
-      .subscribe({
-        next: (response: any) => {
-          console.log(response);
-        },
-        error: (err) => {
-          console.error('Error add to favorite', err);
-        },
-      });
-  }
+  // updateFavorite() {
+  //   this.userService
+  //     .update(
+  //       this.user._id,
+  //       this.user.userName,
+  //       this.user.email,
+  //       this.user.passwordHash,
+  //       this.user.role,
+  //       []
+  //       // this.user.favoritesClient
+  //     )
+  //     .subscribe({
+  //       next: (response: any) => {
+  //         console.log(response);
+  //       },
+  //       error: (err) => {
+  //         console.error('Error add to favorite', err);
+  //       },
+  //     });
+  // }
 
-  removeFromFavorite(client: Client) {
-    this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
-    this.favoriteClients = this.favoriteClients.filter(c => c._id != client._id);
-    this.updateFavorite();
-  }
+  // removeFromFavorite(client: Client) {
+  //   this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
+  //   this.favoriteClients = this.favoriteClients.filter(c => c._id != client._id);
+  //   this.updateFavorite();
+  // }
 
-  selectClientFromList(client: Client): void {
-    this.router.navigate(['/clientSearch/clientManagement'], {
-      state: { client },
-    });
-  }
+  // selectClientFromList(client: Client): void {
+  //   this.router.navigate(['/clientSearch/clientManagement'], {
+  //     state: { client },
+  //   });
+  // }
 
-  showConfirmationDelete(): void {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this clients?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      key: "delete"
-    });
-  }
+  // showConfirmationDelete(): void {
+  //   this.confirmationService.confirm({
+  //     message: 'Are you sure you want to delete this clients?',
+  //     header: 'Confirmation',
+  //     icon: 'pi pi-exclamation-triangle',
+  //     key: "delete"
+  //   });
+  // }
 
-  confirmDelete(): void {
-    this.deleteClient();
-  }
+  // confirmDelete(): void {
+  //   this.deleteClient();
+  // }
 
-  deleteClient(): void {
-    this.clientService.deleteClient(this.currentClient._id).subscribe({
-      next: () => {
-        window.location.reload();
-      },
-      error: (err) => console.error('Error deleting client: ', err),
-    });
-  }
+  // deleteClient(): void {
+  //   this.clientService.deleteClient(this.currentClient._id).subscribe({
+  //     next: () => {
+  //       window.location.reload();
+  //     },
+  //     error: (err) => console.error('Error deleting client: ', err),
+  //   });
+  // }
 
-  cancelDelete(): void {
-    this.confirmationService.close();
-  }
+  // cancelDelete(): void {
+  //   this.confirmationService.close();
+  // }
 
-  editClient() {
-    this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
-  }
-  selectCurrentClient(client: Client) {
-    this.currentClient = client;
-  }
+  // editClient() {
+  //   this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
+  // }
+  // selectCurrentClient(client: Client) {
+  //   this.currentClient = client;
+  // }
 }
