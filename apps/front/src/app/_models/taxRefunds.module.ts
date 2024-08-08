@@ -4,7 +4,6 @@ import { StepField } from "./stepField.module";
 export interface TaxRefunds {
   idClient: string;
   idEmploye: string;
-  idUser?: string;
   year: string;
   date: Date;
   stepsList: StepField[];

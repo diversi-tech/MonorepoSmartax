@@ -17,14 +17,7 @@ import { DropdownModule } from 'primeng/dropdown';
     templateUrl: './task-report.component.html',
     styleUrl: './task-report.component.css',
     standalone: true,
-    imports: [
-        ChartModule,
-        CalendarModule,
-        CommonModule,
-        MultiSelectModule,
-        FormsModule,
-        DropdownModule
-    ],
+    imports: [ChartModule, CalendarModule, CommonModule, MultiSelectModule, FormsModule, DropdownModule],
 })
 
 export class TaskReportComponent implements OnInit {
@@ -79,10 +72,10 @@ export class TaskReportComponent implements OnInit {
 
 
     constructor(private taskService: TaskService,
-        private userService: UserService,
-        private clientService: ClientService
-    ) { }
-
+                private userService: UserService,
+                private clientService: ClientService
+            ) {}
+    
     //server calls
     ngOnInit() {
         this.taskService.getAllTasks()?.subscribe({
@@ -306,6 +299,7 @@ export class TaskReportComponent implements OnInit {
         this.tasks = this.baseTask;
         let d = new Date();
         if (this.selectedValue === undefined) {
+            console.log("No filtering");
             return;
         }
         try {
@@ -318,12 +312,14 @@ export class TaskReportComponent implements OnInit {
             else {
                 this.tasks = this.tasks.filter((task) => {
                     d = new Date(task.deadline);
+                    console.log(`deadline: ${task.deadline}, range: ${this.rangeDates[0]} - ${this.rangeDates[1]}`);
                     return d < this.rangeDates[1] && d > this.rangeDates[0];
                 })
             }
             await this.sortTask();
         } catch (error) {
             console.error("Error filtering tasks:", error);
+
         }
     }
 }

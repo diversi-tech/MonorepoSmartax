@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 import { MEET_ENDPOINT } from '../api-urls';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MeetService {
-  url: string = MEET_ENDPOINT;
+  url:string=MEET_ENDPOINT
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   constructor(private http: HttpClient) { }
@@ -21,18 +21,26 @@ export class MeetService {
 
   getAllMeetings(): Observable<Meet[]> {
     return this.http.get<Meet[]>(`${this.url}`)
+      
   }
-  getMeetById(meetId: string): Observable<Meet> {
-    const body = { id: meetId }
-    return this.http.post<Meet>(`${this.url}/searchMeet`, body)
+  getMeetById(meetId:string):Observable<Meet>{
+    const body={id:meetId}
+    return this.http.post<Meet>(`${this.url}/searchMeet`,body)
   }
   createMeet(meet: Meet): Observable<Meet> {
-    var e = this.http.put<Meet>(this.url, meet)
+    debugger
+    var e= this.http.put<Meet>(this.url, meet)
+    debugger
     return e
   }
 
   updateMeet(id: string, meet: Meet): Observable<Meet> {
-    var e = this.http.post<Meet>(`${this.url}`, { id, ...meet }, this.httpOptions)
+    debugger
+    var e= this.http.post<Meet>(`${this.url}`, { id, ...meet }, this.httpOptions)
     return e
   }
+
+  // deleteRole(id: string): Observable<boolean> {
+  //   return this.http.delete<boolean>(`${this.url}`, { ...this.httpOptions, body: { id } })
+  // }
 }

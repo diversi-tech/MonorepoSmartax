@@ -11,35 +11,35 @@ import { PaymentService } from '../../../_services/payment.service';
 @Component({
   selector: 'app-payment-details-history',
   standalone: true,
-  imports: [DatePipe,
-    CommonModule,
-    ConfirmDialogModule,
-    Footer,
-    ButtonDirective,
-    TableModule,
-    PrimeTemplate,
-    Button
-  ],
+  imports: [DatePipe,CommonModule, ConfirmDialogModule, Footer, ButtonDirective, TableModule, PrimeTemplate, Button],
   templateUrl: './paymentDetailsHistory.component.html',
   styleUrl: './paymentDetailsHistory.component.css',
 })
-
-export class PaymentDetailsHistoryComponent implements OnInit {
-
-  allpaymentDetails: PaymentDetails[] = [];
-  payment: Payment;
-
-  constructor(private paymentService: PaymentService) { }
-
+export class PaymentDetailsHistoryComponent implements OnInit{
+  allpaymentDetails: PaymentDetails[]=[];
+  payment:Payment;
+  constructor(private paymentService:PaymentService) { }
   ngOnInit(): void {
     this.paymentService.getPayment(history.state.client.payment).subscribe(
       s => {
         this.payment = s,
-          this.allpaymentDetails = this.payment.paymentHistory
+        console.log(this.payment._id);
+        
+        console.log(this.payment);
+        console.log('arr: ');
+        console.log(this.payment.paymentHistory);
+        this.allpaymentDetails = this.payment.paymentHistory
+
       },
       f => {
+        console.log(f),
         console.log('נפל בחיפוש החשבונית');
       }
     )
+
+    
   }
+
+
+
 }

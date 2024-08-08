@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Billing } from '../_models/billing.module';
 import { BILLING_ENDPOINT } from '../api-urls';
 
@@ -20,6 +21,14 @@ export class BillingService {
     getAllBillings(): Observable<Billing[]> {
         return this.http.get<Billing[]>(`${this.apiUrl}/all`, {});
     }
+    // getBillingsByClientId(clientId: string): Observable<Billing[]> {
+    //     const params = new HttpParams().set('clientId', clientId);
+
+    //     return this.http.get<Billing[]>(`${this.apiUrl}/by-client`, { params: params, headers: this.httpOptions.headers })
+    //         .pipe(
+    //             catchError(this.handleError<Billing[]>('getBillingsByClientId', []))
+    //         );
+    // }
 
     createBilling(billing: Billing): Observable<Billing> {
         return this.http.post<Billing>(`${this.apiUrl}/create`, billing, this.httpOptions);
@@ -35,4 +44,7 @@ export class BillingService {
     getBilling(id: string): Observable<Billing> {
         return this.http.get<Billing>(`${this.apiUrl}/${id}`);
     }
+   
+
+
 }

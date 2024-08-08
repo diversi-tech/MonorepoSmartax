@@ -7,7 +7,7 @@ import { TagService } from '../../_services/tag.service';
 import { User } from '../../_models/user.module';
 import { Client } from '../../_models/client.module';
 import { Tag } from '../../_models/tag.module';
-import { ConfirmationService, Footer, PrimeTemplate, } from 'primeng/api';
+import { ConfirmationService, MessageService, Footer, PrimeTemplate, } from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
 import { ToastModule } from 'primeng/toast';
@@ -24,7 +24,6 @@ import { Button, ButtonDirective, ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-
 @Component({
   selector: 'app-task-management',
   templateUrl: './task-management.component.html',
@@ -100,7 +99,7 @@ export class TaskManagementComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private statusService: StatusService,
     private router: Router,
-  ) {  }
+  ) { }
 
   ngOnInit(): void {
     this.getTasks();
@@ -109,17 +108,23 @@ export class TaskManagementComponent implements OnInit {
     });
     this.statusService.getAllStatuses().subscribe((data) => {
       this.statuses = data;
+      // console.log(this.statuses);
     });
   }
 
   getTasks(): void {
     this.taskService.getAllTasks().subscribe((allTasks: Task[]) => {
+      allTasks = allTasks.filter((task: Task) => !task.parent);
       this.tasks = allTasks;
+      // console.log(this.tasks);
     });
   }
 
   categorizeTasks(status: Status): Task[] {
+    // console.log(status.name);
+    // console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
+      // console.log('Task status:', task.status); // הדפסת המצב של המשימה
       { return task.status && task.status.name === status.name; }
     });
   }
@@ -144,17 +149,20 @@ export class TaskManagementComponent implements OnInit {
 
   showConfirmation(): void {
     this.confirmationService.confirm({
-      message: 'האם אתה בטוח שברצונך למחוק משימה זו?',
+      message: 'Are you sure you want to delete this task?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        console.log('delete start');
         this.deleteTask();
       },
       reject: () => {
         console.log('cancel start');
+        // Add the code to close the pop-up here
       },
     });
   }
+
   confirmDelete(): void {
     this.deleteTask();
   }
@@ -185,7 +193,7 @@ export class TaskManagementComponent implements OnInit {
   }
 
   searchClients(event: any): void {
-    this.clientService.getAllClients().subscribe((clients: Client[]) => {
+    this.clientService.getAllClients().subscribe((clients: any[]) => {
       this.clientSuggestions = clients.filter(client => client.firstName && client["firstName"].toLowerCase().includes(event.query.toLowerCase()));
     });
   }
@@ -205,7 +213,8 @@ export class TaskManagementComponent implements OnInit {
     this.taskSuggestions = this.tasks!
       .filter((task) =>
         (task.taskName?.toLowerCase())?.includes(query.toLowerCase())
-      ).map((task) => ({ taskName: task.taskName }));
+      )
+      .map((task) => ({ taskName: task.taskName }));
   }
 
   searchTags(event: any): void {
@@ -213,19 +222,24 @@ export class TaskManagementComponent implements OnInit {
       this.tagSuggestions = tags.filter((tag) =>
         tag['text'].toLowerCase().includes(event.query.toLowerCase())
       );
+      // this.filter.tags = tags;
     });
   }
 
   applyFilter() {
+    this.filteredTasks = [];
     this.tasks.forEach((task) => {
-      this.filterFirstStatus = false;
 
+      this.filterFirstStatus = false;
       const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
-      const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
+      const clientMatch = !this.filter.client || (task.client &&task.client == this.filter.client._id)
 
-      const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
-      const taskNameMatch = !this.filter.task || task.taskName!.toLowerCase()!.includes(this.filter.task.taskName.trim().toLowerCase());
+
+      let userMatch = !this.filter.user
+      task.assignedTo.forEach(user => { user?._id==this.filter!.user!._id ? userMatch = true : false });
+
+      const taskNameMatch = !this.filter.task || task.taskName?.toLowerCase()!.includes(this.filter.task.taskName.trim().toLowerCase());
       let tagsMatch = true;
 
       if (this.filter.tags && this.filter.tags.length > 0) {
@@ -235,7 +249,6 @@ export class TaskManagementComponent implements OnInit {
           );
         });
       }
-
       if (deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch)
         this.filteredTasks.push(task);
     });

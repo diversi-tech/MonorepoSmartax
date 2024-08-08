@@ -38,7 +38,6 @@
               <p>{{details.dateFinish | date: 'dd/MM/yy'}}</p>
               <span *ngIf="thisPayment.mainPaymentDetails.maxHours">:מקסימום שעות עבודה</span>
               <p>{{thisPayment.mainPaymentDetails.maxHours}}</p>
-              <button class="checkout-btn" id="showBtn" (click)="stopPaymentDetails()">סיום המנוי והעברה להסטוריה</button>
             </div>
             <div class="quantity">
             </div>
@@ -52,12 +51,10 @@
   <div class="card coupons">
     <label class="title">מידע נוסף</label>
     <form class="form">
-      <p>{{thisPayment.totalPayment}}</p>
       <span *ngIf="thisPayment.totalPayment">:סכום לגביה</span>
-
-      <p>{{thisPayment.paymentMethod.name}}</p>
+      <p>{{thisPayment.totalPayment}}</p>
       <span *ngIf="thisPayment.paymentMethod">:צורת תשלום</span>
-
+      <p>{{thisPayment.paymentMethod.name}}</p>
     </form>
   </div>
 

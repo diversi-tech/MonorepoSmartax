@@ -1,5 +1,4 @@
 export interface Role {
-  _id?: string;
-  name: string;
-  level: number;
-}
+    name:string
+    level:number
+  }
