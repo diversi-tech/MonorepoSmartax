@@ -1,42 +1,45 @@
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
     <p-footer>
-        <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text p-button-raised p-button-rounded"
+        <button type="button" pButton icon="pi pi-times" label="ביטול" class="p-button-text"
             (click)="cancelDelete()"></button>
-        <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text p-button-raised p-button-rounded"
+        <button type="button" pButton icon="pi pi-check" label="מחיקה" class="p-button-text"
             (click)="confirmDelete()"></button>
     </p-footer>
 </p-confirmDialog>
 
-<button pButton  (click)="addUser()" label="הוספת משתמש" class= "p-button-text p-button-raised p-button-rounded"></button>
+<button pButton (click)="addUser()" label="הוספת משתמש" 
+    class="p-button-text p-button-raised p-button-rounded"></button>
 
-<p-table [value]="users" [tableStyle]="{'max-width': '50rem'}">
-    <ng-template pTemplate="header" let-columns>
-        <tr>
-            <th></th>
-            <th>רמת הרשאה</th>
-            <th>מייל</th>
-            <th>שם משתמש </th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-user let-columns="columns">
-        <tr (click)="selectCurrentUser(user)" [ngClass]="{ 'highlight': currentUser === user }">
-            <td><button *ngIf="currentUser === user" pButton
-                    class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
-                    (click)="editDetails()"></button>
-                <button *ngIf="currentUser === user" pButton
-                    class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
-                    (click)="showConfirmation()"></button>
-            </td>
-            <td>
-                {{user.role && user.role.name}}
-            </td>
-            <td>
-                {{user.email && user.email}}
-            </td>
-            <td>
-                {{user.userName && user.userName}}
-            </td>
+<div class="employees">
+    <p-table [value]="users" [tableStyle]="{'width': '60rem'}">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th></th>
+                <th>רמת הרשאה</th>
+                <th>מייל</th>
+                <th>שם משתמש </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user let-columns="columns">
+            <tr (click)="selectCurrentUser(user)" [ngClass]="{ 'highlight': currentUser === user }">
+                <td><button *ngIf="currentUser === user" pButton
+                        class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+                        (click)="editDetails()"></button>
+                    <button *ngIf="currentUser === user" pButton
+                        class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
+                        (click)="showConfirmation()"></button>
+                </td>
+                <td>
+                    {{user.role && user.role.name}}
+                </td>
+                <td>
+                    {{user.email && user.email}}
+                </td>
+                <td>
+                    {{user.userName && user.userName}}
+                </td>
 
-        </tr>
-    </ng-template>
-</p-table>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

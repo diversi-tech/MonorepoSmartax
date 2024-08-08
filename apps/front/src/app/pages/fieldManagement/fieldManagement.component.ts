@@ -78,7 +78,6 @@ getAllFields(): void {
     this.fieldService.deleteField(id).subscribe(
       (result: boolean) => {
         if (result) {
-          console.log('Field deleted successfully');
           this.getAllFields();
         } else {
           console.error('Failed to delete field');

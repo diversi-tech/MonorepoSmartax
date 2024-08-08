@@ -15,12 +15,9 @@ import {
 import { Tag } from '../_models/tag.module';
 import { Task } from '../_models/task.module';
 import { Client } from '../_models/client.module';
-import { Status } from '../_models/status.module';
 import { User } from '../_models/user.module';
 import { ClientService } from '../_services/client.service';
-import { StatusService } from '../_services/status.service';
 import { TagService } from '../_services/tag.service';
-import { TaskService } from '../_services/task.service';
 import { UserService } from '../_services/user.service';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -75,6 +72,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
   templateUrl: './task-repeatable-list.component.html',
   styleUrl: './task-repeatable-list.component.css',
 })
+
 export class TaskRepeatableListComponent {
   frequencies: Frequency[] = [];
 
@@ -97,12 +95,12 @@ export class TaskRepeatableListComponent {
     task: Task | null;
     tags: Tag[];
   } = {
-    deadlineRange: null,
-    client: null,
-    user: null,
-    task: null,
-    tags: [],
-  };
+      deadlineRange: null,
+      client: null,
+      user: null,
+      task: null,
+      tags: [],
+    };
 
   clientSuggestions: Client[] = [];
   userSuggestions: User[] = [];
@@ -117,9 +115,8 @@ export class TaskRepeatableListComponent {
     private clientService: ClientService,
     private tagService: TagService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
     private frequencyService: FrequencyService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getTasks();
@@ -128,7 +125,6 @@ export class TaskRepeatableListComponent {
     });
     this.frequencyService.getAllFrequencys().subscribe((data) => {
       this.frequencies = data;
-      console.log(this.frequencies);
     });
   }
 
@@ -137,46 +133,50 @@ export class TaskRepeatableListComponent {
       .getAllRepeatableTasks()
       .subscribe((allTasks: RepeatableTask[]) => {
         this.tasks = allTasks;
+        this.progressValue = this.progressDueDate() / this.tasks.length * 100;
         console.log(this.tasks);
-        this.progressValue = this.progressDueDate()/this.tasks.length*100;
+        this.progressValue = (this.progressDueDate() / this.tasks.length) * 100;
         console.log(this.progressValue);
       });
   }
 
   categorizeTasks(f: Frequency): RepeatableTask[] {
-    return this.tasks.filter((task) => {
-      {
-        return task.frequency && task.frequency.name === f.name;
-      }
-    });
+    console.log(this.tasks);
+    console.log(this.filteredTasks);
+
+    if (this.filteredTasks.length > 0) {
+      return this.filteredTasks.filter((task) => {
+        {
+          return task.frequency && task.frequency.name === f.name;
+        }
+      });
+    } else {
+      return this.tasks.filter((task) => {
+        {
+          return task.frequency && task.frequency.name === f.name;
+        }
+      });
+    }
   }
 
   searchTask(): void {
-    console.log(typeof this.searchTerm);
-
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
     } else {
       this.filteredTasks = this.tasks.filter((task) =>
         task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
-      console.log('filter: ', this.filteredTasks);
     }
   }
 
   showConfirmation(task: RepeatableTask): void {
     this.selectedTask = task;
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this task?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
+      message: '?אתה בטוח רוצה למחוק את המשימה',
       accept: () => {
-        console.log('delete start');
         this.deleteTask(this.selectedTask);
       },
       reject: () => {
-        console.log('cancel start');
-        // Add the code to close the pop-up here
       },
     });
   }
@@ -216,8 +216,6 @@ export class TaskRepeatableListComponent {
   }
 
   searchUsers(event: any): void {
-    console.log(event.query);
-
     this.userService.getAllUsers().subscribe((users: any[]) => {
       this.userSuggestions = users.filter(
         (user) =>
@@ -241,7 +239,6 @@ export class TaskRepeatableListComponent {
       this.tagSuggestions = tags.filter((tag) =>
         tag['text'].toLowerCase().includes(event.query.toLowerCase())
       );
-      // this.filter.tags = tags;
     });
   }
 
@@ -254,24 +251,15 @@ export class TaskRepeatableListComponent {
         !this.filter.deadlineRange ||
         (new Date(task.dueDate) >= this.filter.deadlineRange[0] &&
           new Date(task.dueDate) <= this.filter.deadlineRange[1]);
-
-      // const clientMatch = !this.filter.client || task.client.firstName.includes(this.filter.client.firstName);
       const clientMatch =
         !this.filter.client ||
         (task.client &&
           task.client.firstName.includes(this.filter.client.firstName));
-
-      // const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
       const userMatch =
         !this.filter.user ||
         (task.assignedTo[0] &&
           task.assignedTo[0].userName &&
           task.assignedTo[0].userName.includes(this.filter.user.userName));
-
-      console.log(userMatch);
-      console.log(this.filter.user);
-      console.log(task.assignedTo[0].userName);
-
       const taskNameMatch =
         !this.filter.task || task.taskName.includes(this.filter.task.taskName);
       let tagsMatch = true;
@@ -282,22 +270,16 @@ export class TaskRepeatableListComponent {
           );
         });
       }
-
-      console.log(
-        deadlineMatch,
-        clientMatch,
-        userMatch,
-        taskNameMatch,
-        tagsMatch
-      );
-
       return (
         deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
       );
     });
+    console.log(this.filteredTasks);
   }
   // sort
   sortTasks(field: string, list: Task[], reverse: boolean) {
+    if (this.filteredTasks.length > 0) list = this.filteredTasks;
+    else list = this.tasks;
     list.sort((a, b) => {
       if (field === 'taskName') {
         return reverse
@@ -328,14 +310,17 @@ export class TaskRepeatableListComponent {
   }
 
   progressDueDate() {
-    // const today = new Date();
-    // const tasksDueToday = this.tasks.filter(task => new Date(task.dueDate) >= today);
-    // return tasksDueToday.length;
     const today = new Date();
     const t = this.tasks.filter((obj) => {
       const objDate = new Date(obj.dueDate);
       return objDate < today;
     });
     return t.length;
+  }
+  //
+  currentTask: RepeatableTask;
+  selectCurrentTask(task: RepeatableTask) {
+    debugger;
+    this.currentTask = task;
   }
 }

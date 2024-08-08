@@ -7,8 +7,7 @@ import { TokenService } from '../../../_services/token.service';
 import { ButtonModule } from 'primeng/button';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -40,9 +39,15 @@ import Swal from 'sweetalert2';
     ]),
   ],
   standalone: true,
-  imports: [DialogModule, FormsModule, ReactiveFormsModule, NgIf,ButtonModule],
+  imports: [
+    DialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    ButtonModule
+  ],
 })
-export class AddClientComponent implements OnInit { // הוספתי implements OnInit
+export class AddClientComponent implements OnInit {
   contactForm!: FormGroup;
   displayDialog: boolean = true;
   @Output() close = new EventEmitter<void>();
@@ -63,7 +68,6 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
     encryptedPasswords: [],
     comments: '',
     lastUserUpdate: {
-      // _id: '',
       userName: '',
       email: '',
       passwordHash: '',
@@ -89,7 +93,7 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   };
   isWorkData: boolean = false;
   form: FormGroup;
-  editingClient: Client | null = null; 
+  editingClient: Client | null = null;
   get VATFileNumber() { return this.form.get('VATFileNumber'); }
 
 
@@ -97,10 +101,8 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
     private formBuilder: FormBuilder,
     private clientService: ClientService,
     private tokenService: TokenService,
-    private router: Router, 
-    private route: ActivatedRoute, 
-    private confirmationService: ConfirmationService,
-  ) {}
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     this.contactForm = this.formBuilder.group({
@@ -150,17 +152,13 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
       isOpenAccountWithUs: [false],
       isPreferWhatsapp: [false]
     });
-
-    
-
-    if(history.state.client){
-      this.editingClient= history.state.client
+    if (history.state.client) {
+      this.editingClient = history.state.client
       this.populateForm(this.editingClient)
     }
-    else{
+    else {
       this.populateForm(this.newClient);
     }
-
     this.onCHangeIsWorkData();
   }
 
@@ -200,59 +198,77 @@ export class AddClientComponent implements OnInit { // הוספתי implements O
   }
 
   sent() {
-    if(this.contactForm.valid) {
-    if (this.editingClient) {
-      console.log('update client');
-      const updatedClient = { ...this.editingClient, ...this.contactForm.value };
-      updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
-      updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
-  
-      this.clientService.updateClient(updatedClient).subscribe(
-        response => {
-          if (response?._id) {
-            console.log('Client updated successfully:', response);
-            Swal.fire('Success', 'לקוח עודכן בהצלחה', 'success');
-            this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
-          } else {
-            Swal.fire('Error', 'Invalid client', 'error');
+    if (this.contactForm.valid) {
+      if (this.editingClient) {
+        console.log('update client');
+        const updatedClient = { ...this.editingClient, ...this.contactForm.value };
+        updatedClient.lastUserUpdate = this.tokenService.getCurrentDetail('_id');
+        updatedClient.assignTo.push(this.tokenService.getCurrentDetail('_id'));
+
+        this.clientService.updateClient(updatedClient).subscribe(
+          response => {
+            if (response?._id) {
+              Swal.fire('Success', 'לקוח עודכן בהצלחה', 'success');
+              this.router.navigate(['/clientSearch/clientManagement/clientNavbar'], { state: { client: response } });
+            } else {
+              Swal.fire('Error', 'Invalid client', 'error');
+            }
+            this.close.emit();
+          },
+          error => {
+            console.error('Error updating client:', error);
+            Swal.fire('Error', `Failed to update client: ${error.message}`, 'error');
           }
-          this.close.emit();
-        },
-        error => {
-          console.error('Error updating client:', error);
-          Swal.fire('Error', `Failed to update client: ${error.message}`, 'error');
-        }
-      );
-    }
-     else {
-      console.log('create client', this.contactForm.value);
-  
-      this.clientService.createClient(this.contactForm.value).subscribe(
-        response => {
-          if (response) {
-            console.log('Client created successfully:', response);
-            Swal.fire('Success', 'לקוח נוצר בהצלחה', 'success');
+        );
+      }
+      else {
+        this.newClient.companyName = this.contactForm.value.companyName,
+          this.newClient.lastName = this.contactForm.value.lastName,
+          this.newClient.firstName = this.contactForm.value.firstName,
+          this.newClient.contactPersonName = this.contactForm.value.contactPersonName,
+          this.newClient.tz = this.contactForm.value.tz,
+          this.newClient.spouseName = this.contactForm.value.spouseName,
+          this.newClient.spouseTZ = this.contactForm.value.spouseTZ,
+          this.newClient.phone = this.contactForm.value.phone,
+          this.newClient.whatsapp = this.contactForm.value.whatsapp,
+          this.newClient.email = this.contactForm.value.email,
+          this.newClient.address = this.contactForm.value.address,
+          this.newClient.dateOfBirth = this.contactForm.value.dateOfBirth,
+          this.newClient.comments = this.contactForm.value.comments,
+          this.newClient.isEmploysWorkers = this.contactForm.value.isEmploysWorkers,
+          this.newClient.isWorkData = this.contactForm.value.isWorkData,
+          this.newClient.incomeTaxFileNumber = this.contactForm.value.incomeTaxFileNumber,
+          this.newClient.incomeTaxDeductions_registerID = this.contactForm.value.incomeTaxDeductions_registerID,
+          this.newClient.VATFileNumber = this.contactForm.value.VATFileNumber,
+          this.newClient.reports = this.contactForm.value.reports,
+          this.newClient.isStatisticsData = this.contactForm.value.isStatisticsData,
+          this.newClient.referrerName = this.contactForm.value.referrerName,
+          this.newClient.joinDate = this.contactForm.value.joinDate,
+          this.newClient.isAccounter = this.contactForm.value.isAccounter,
+          this.newClient.isOpenAccountWithUs = this.contactForm.value.isOpenAccountWithUs,
+          this.newClient.isPreferWhatsapp = this.contactForm.value.isPreferWhatsapp
+        this.clientService.createClient(this.newClient).subscribe(
+          response => {
+            if (response) {
+              console.log('Client created successfully:', response);
+              Swal.fire('Success', 'לקוח נוצר בהצלחה', 'success');
+            }
+            this.close.emit();
+          },
+          error => {
+            console.error('Error creating client:', error);
+            Swal.fire('Error', `Failed to create client: ${error.message}`, 'error');
           }
-          this.close.emit();
-        },
-        error => {
-          console.error('Error creating client:', error);
-          Swal.fire('Error', `Failed to create client: ${error.message}`, 'error');
-        }
-      );
+        );
+      }
     }
-   }
-   }
+  }
 
   onClose() {
     this.close.emit();
   }
-  
+
   cancel() {
-    //return to last page
     window.history.back();
   }
- 
-  
-  
 }

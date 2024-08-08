@@ -1,56 +1,77 @@
-<div class="form-container">
- 
+<div class="form-container" [style]="{width: '25rem'}">
+
   <button class="close-button" (click)="goBack()">X</button>
 
-  <div class="title-container">
+  <div class="title-container" dir="rtl">
     <div class="icon-circle">
-      <i class="pi pi-user"></i>
+      <i class="pi pi-file"></i>
     </div>
-    <h2> 
+    <h2>
       :דוח שנתי</h2>
 
   </div>
   <form [formGroup]="yearlyReportForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <p-dropdown id="type" formControlName="type" [options]="typeOptions" placeholder="עבור-"
-      [style]="{width: '80%'}"  class="form-control-2" ></p-dropdown>
+      <p-dropdown id="type" formControlName="type" [options]="typeOptions" placeholder="עבור-" [style]="{width: '80%'}"
+        class="form-control-2"></p-dropdown>
       <div *ngIf="yearlyReportForm.get('type').invalid && yearlyReportForm.get('type').touched" class="error">
         This field is required.
       </div>
     </div>
-    <div class="form-group">
+
+    <div class="form-group" *ngIf="noClient">
+      <p-dropdown id="type" formControlName="client" [options]="allClients" placeholder="בחירת לקוח"
+        [style]="{ width: '80%' }" class="form-control-2">
+        <ng-template let-client pTemplate="item">
+          <div class="client-item">
+            <span>{{ client.firstName + " " + client.lastName }} </span>
+            <app-icon-profile [userName]="client.firstName + ' ' + client.lastName"></app-icon-profile>
+          </div>
+        </ng-template>
+
+        <ng-template let-client pTemplate="selectedItem">
+          <div class="client-item">
+            <span>{{ client.firstName + " " + client.lastName }} </span>
+            <app-icon-profile [userName]="client.firstName + ' ' + client.lastName"></app-icon-profile>
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <div *ngIf="yearlyReportForm.get('type').invalid && yearlyReportForm.get('type').touched" class="error">
+        This field is required.
+      </div>
+    </div>
 
     <div class="p-field p-mb-3">
-      <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2" 
-        (completeMethod)="filterByyear($event.query)" [minLength]="1"
-        placeholder="בחירת שנה" field="yearNum" [dropdown]="true" (onSelect)="select($event)"
+      <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2" (completeMethod)="filterByyear($event.query)"
+        [minLength]="1" placeholder="בחירת שנה" field="yearNum" [dropdown]="true" (onSelect)="select($event)"
         [style]="{width: '80%'}" class="form-control-2" required>
         <ng-template let-yearname pTemplate="item" class="template">
           <div class="p-d-flex p-ai-center">
-            שנת  {{ yearname.yearNum}}
+            שנת {{ yearname.yearNum}}
             <ng-container *ngIf="is">
-              <button type="button" pButton class= "p-button-text p-button-raised p-button-rounded" (click)="add()">רוצה להוסיף שנה </button>
+              <button type="button" pButton class="p-button-text p-button-raised p-button-rounded" (click)="add()">רוצה
+                להוסיף שנה </button>
             </ng-container>
           </div>
         </ng-template>
       </p-autoComplete>
     </div>
-    </div>
-    
+
 
     <div class="form-group">
-      <label for="price">מחיר:</label>
-      <input type="number" id="price" formControlName="price" class="form-control" placeholder="מחיר">
+      <label for="price" dir="rtl">מחיר:</label>
+      <input type="number" id="price" formControlName="price" class="form-control" placeholder="מחיר" dir="rtl">
       <div *ngIf="yearlyReportForm.get('price').invalid && yearlyReportForm.get('price').touched" class="error">
         This field is required.
       </div>
     </div>
 
     <div class="form-group">
-      <label for="paymentAmountPaid">סכום ששולם:</label>
+      <label for="paymentAmountPaid" dir="rtl">סכום ששולם:</label>
       <input type="number" id="paymentAmountPaid" formControlName="paymentAmountPaid" class="form-control"
         placeholder="סכום ששולם">
-      <div *ngIf="yearlyReportForm.get('paymentAmountPaid').invalid && yearlyReportForm.get('paymentAmountPaid').touched"
+      <div
+        *ngIf="yearlyReportForm.get('paymentAmountPaid').invalid && yearlyReportForm.get('paymentAmountPaid').touched"
         class="error">
         This field is required.
       </div>
@@ -59,11 +80,12 @@
     <div class="form-group">
       <label for="balanceDue">יתרה לתשלום:</label>
       <input type="number" id="balanceDue" formControlName="balanceDue" class="form-control" placeholder="יתרה לתשלום">
-      <div *ngIf="yearlyReportForm.get('balanceDue').invalid && yearlyReportForm.get('balanceDue').touched" class="error">
+      <div *ngIf="yearlyReportForm.get('balanceDue').invalid && yearlyReportForm.get('balanceDue').touched"
+        class="error">
         This field is required.
       </div>
     </div>
 
-    <button type="submit" pButton label="אישור "  id="submitButon"></button>
+    <button type="submit" pButton label="אישור " id="submitButon"></button>
   </form>
 </div>

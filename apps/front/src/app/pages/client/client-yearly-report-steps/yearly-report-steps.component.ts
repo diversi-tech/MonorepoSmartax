@@ -41,7 +41,7 @@ export class YearlyReportStepsComponent implements OnInit {
   responseData: any;
   allStep: StepField[] = [];
   stepsByNumber: { [key: number]: StepField[] } = {};
-  activeStep = 0; // מתחיל בשלב הראשון
+  activeStep = 0;
   changes: { [key: string]: boolean } = {};
   client: Client;
   activeIndex: number = 0;
@@ -50,13 +50,12 @@ export class YearlyReportStepsComponent implements OnInit {
   statusList: Status[] = []; // List to hold statuses
 
 
-  constructor(private yearlyReportService: YearlyReportService,
+  constructor(
+    private yearlyReportService: YearlyReportService,
     private router: Router,
     private location: Location,
     private statusService: StatusService
-  ) {
-
-  };
+  ) { };
 
 
   ngOnInit() {
@@ -75,7 +74,6 @@ export class YearlyReportStepsComponent implements OnInit {
   }
 
   groupSteps() {
-    // console.log("task",history.state.task)
     this.allStep.forEach((step) => {
       const stepNumber = step.stepNumber; // Assuming stepNumber is the property you want to group by
       if (!this.stepsByNumber[stepNumber]) {
@@ -88,9 +86,6 @@ export class YearlyReportStepsComponent implements OnInit {
   getStepNumbers() {
     return Object.keys(this.stepsByNumber).map(Number);
   }
-
-
-
 
   async update(task: StepField) {
     const taskId = task._id;
@@ -106,10 +101,8 @@ export class YearlyReportStepsComponent implements OnInit {
 
   determineStatus(): Status {
     const stepsList = this.responseData.stepsList;
-
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
-
     if (allCompleted) {
       return this.statusList.find(s => s.name == 'COMPLETE') || null;
       ;
@@ -121,40 +114,39 @@ export class YearlyReportStepsComponent implements OnInit {
   }
 
   async submitChanges() {
-    console.log("Submitting changes:", this.changes);
-
     for (const taskId in this.changes) {
       const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
       if (taskIndex !== -1) {
-        this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
+        this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId]; ;
       }
     }
     const status = this.determineStatus();
-
     if (status) {
       this.responseData.status = status;
     } else {
       console.error('Status not found');
       return;
     }
-
-
-
+    console.log("this.responseData after updating status", this.responseData);
     try {
-      const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
+      this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData).subscribe(data => {
+        if(data){
+         Swal.fire('Success', 'דוח שנתי עודכן בהצלחה', 'success');
 
-      console.log("response from server", response);
-      Swal.fire('Success', 'דוח שנתי עודכן בהצלחה', 'success');
-      this.responseData = response;
-      this.changes = {};
+        }
+         this.responseData = data;
+        this.changes = {};
+      });
+      
+      console.log("this.responseData", this.responseData);
     } catch (error) {
-      console.log(error);
+      console.log("angular error",error);
     }
   }
 
-
   goToUpdate() {
     this.router.navigate(['/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
+  
   }
   goBack() {
     this.location.back();
@@ -163,6 +155,7 @@ export class YearlyReportStepsComponent implements OnInit {
   isStepComplete(stepNumber: number): boolean {
     return this.getStepByNumber(stepNumber).every((task) => task.isCompleted == true);
   }
+  
   isStepBeginned(stepNumber: number): boolean {
     return (
       this.getStepByNumber(stepNumber).some((task) => task.isCompleted) &&
@@ -171,11 +164,6 @@ export class YearlyReportStepsComponent implements OnInit {
   }
 
   getStepByNumber(stepNumber: number) {
-    console.log("getStepByNumber")
     return this.stepsByNumber[stepNumber] || [];
   }
-
-
-
-
 }

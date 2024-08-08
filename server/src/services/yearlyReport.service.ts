@@ -2,7 +2,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { CreateYearlyReportDto } from '../Models/dto/yearlyReport.dbo';
 import { YearlyReport } from '../Models/yearlyReports.model';
 import { StepField } from '../Models/stepField.model';
@@ -12,9 +11,10 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 @Injectable()
 export class YearlyReportService {
 
-  constructor(@InjectModel('YearlyReport') private readonly YearlyReportModel: Model<YearlyReport>,
-    @InjectModel('StepField') private readonly stepFieldModel: Model<StepField>) { }
-
+  constructor(
+    @InjectModel('YearlyReport') private readonly YearlyReportModel: Model<YearlyReport>,
+    @InjectModel('StepField') private readonly stepFieldModel: Model<StepField>
+  ) { }
 
   async createYearlyReport(createYearlyReportDto: CreateYearlyReportDto): Promise<YearlyReport> {
     try {
@@ -45,19 +45,17 @@ export class YearlyReportService {
     }
   }
 
-
-
-
-
   async updateYearlyReport(id: string, updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
     try {
-      // בדוק אם כבר קיים דוח שנתי עם אותו `idClient` ו-`yearReport`
       const existingYearlyReport = await this.YearlyReportModel.findOne({
         idClient: updateYearlyReportDto.idClient,
-        yearReport: updateYearlyReportDto.yearReport
-      }).exec();
+        yearReport: updateYearlyReportDto.yearReport,
+        _id: { $ne: id} // בדיקה שה-_id שונה מזה של הדוח הנוכחי
 
-      if (existingYearlyReport) {
+      }).exec();
+      //  console.log('existingYearlyReport', existingYearlyReport._id);
+       console.log('updateYearlyReportDto', id);
+      if (existingYearlyReport)  {
         throw new HttpException('A yearly report with the same client ID and year already exists.', HttpStatus.BAD_REQUEST);
       }
       const updatedYearlyReport = await this.YearlyReportModel.findByIdAndUpdate(
@@ -69,7 +67,6 @@ export class YearlyReportService {
       if (!updatedYearlyReport) {
         throw new NotFoundException('Yearly Report not found');
       }
-
       return updatedYearlyReport.save();
     }
     catch (err) {
@@ -92,6 +89,4 @@ export class YearlyReportService {
   async getAllYearlyReports(): Promise<YearlyReport[]> {
     return this.YearlyReportModel.find().exec();
   }
-
-
 }

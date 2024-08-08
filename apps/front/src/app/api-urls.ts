@@ -1,6 +1,12 @@
-export const API_URL = 'http://localhost:8080';
+// export const API_URL = 'http://localhost:8080';
+import { environment } from '../environments/environment';
+
+export const API_URL = environment.apiUrl;
+export const API_URL_APIGATEWAY = environment.apiUrlapigatway;
+// https://monoreposmartax-n13o.onrender.com/
 export const AUTH_ENDPOINT = `${API_URL}/auth`;
 export const USER_ENDPOINT = `${API_URL}/users`;
+export const USER_ENDPOINT2 = `${API_URL}/api/test`;
 export const TASK_ENDPOINT = `${API_URL}/tasks`;
 export const DOCS_ENDPOINT = `${API_URL}/docs`;
 export const DOCS_TYPES_ENDPOINT = `${API_URL}/doctypes`;
@@ -26,4 +32,14 @@ export const CHECKLIST_ENDPOINT = `${API_URL}/checkList`;
 export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checkListItem`;
 export const IMPORTCLIENTS_ENDPOIMT = `${API_URL}/importclients`;
 export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;
-export const MONTHLY_REPORT = `${API_URL}/monthly-report`;
+export const MONTHLY_REPORT = `${API_URL}/monthly report`;
+export const CALL_TOPIC = `${API_URL}/CallTopicController`;
+export const SENSITIVE_DATA = `${API_URL}/SensitiveData`;
+export const CLIENTS = `${API_URL}/clients`;
+export const CLIENT_TYPE = `${API_URL}/clientTypes`;
+export const COMMUNICATIONS = `${API_URL}/communications`;
+export const FIELD = `${API_URL}/field`;
+export const PRIORITY = `${API_URL}/Priority`;
+export const STEP_FIELD = `${API_URL}/step-field`;
+export const WORK_LOGS = `${API_URL_APIGATEWAY}/worklogs`;
+export const YEARS = `${API_URL}/years`;

@@ -9,21 +9,26 @@ import { ImportClientsService } from '../../../_services/importClients.service';
 @Component({
   selector: 'app-import-client',
   standalone: true,
-  imports: [CommonModule,DialogModule, ButtonModule, InputTextModule,FileUploadModule],
+  imports: [CommonModule,
+    DialogModule,
+    ButtonModule,
+    InputTextModule,
+    FileUploadModule
+  ],
   templateUrl: './import-client.component.html',
   styleUrl: './import-client.component.css',
 })
+
 export class ImportClientComponent {
   data: any;
   file: File | null = null;
   visible: boolean = false;
-  constructor(private importClientService:ImportClientsService) {}
+  constructor(private importClientService: ImportClientsService) { }
 
   showDialog() {
-    debugger
-      this.visible = true;
+    this.visible = true;
   }
-  onUpload(event:any) {
+  onUpload(event: any) {
     this.file = event.files[0];
     if (this.file) {
       const formData: FormData = new FormData();
@@ -31,7 +36,7 @@ export class ImportClientComponent {
       this.importClientService.upload(formData).subscribe((response) => {
         console.log(response);
       });
-   }
+    }
   }
 
   downloadTemplate() {

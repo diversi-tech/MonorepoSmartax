@@ -1,7 +1,16 @@
-<p-dialog header="המשימה שלך" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }" (onHide)="onDialogClose()">
-    <span class="p-text-secondary block mb-5">צור וערוך את תת המשימה שלך</span>
-    <div class="flex align-items-center gap-3 mb-3">
-    
-    <app-task [parent]= "parent" [taskId]="id" [create]="create"(closeModal)="onDialogClose()"></app-task>
-    </div>
+<p-dialog
+  header=" תת משימה"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '50rem' }"
+  (onHide)="onHide()"
+>
+  <span class="p-text-secondary block mb-5">צור וערוך את תת המשימה שלך</span>
+  <div class="flex align-items-center gap-3 mb-3">
+    <app-task [parent]="parent" [taskId]="id" [create]="create"></app-task>
+  </div>
+  <!-- <div class="flex justify-content-end gap-2">
+        <p-button label="ביטול" severity="secondary" />
+        <p-button label="אישור" />
+    </div> -->
 </p-dialog>

@@ -1,14 +1,20 @@
 <router-outlet></router-outlet>
-<input type="text" pInputText placeholder="חיפוש לפי שם לקוח" (input)="filterByClient($event.target.value)" />
+<!-- <input type="text" pInputText placeholder="חיפוש לפי שם לקוח" (input)="filterByClient($event.target.value)" /> -->
+<button pButton   (click)="createYearlyReport()" label=" יצירת דוח חדש" class= "p-button-text p-button-raised p-button-rounded"></button >
+<button pButton  *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי" class= "p-button-text p-button-raised p-button-rounded"></button >
+    <button pButton  *ngIf="isSelected == 2" (click)="onSelectionChange(5)" label="ללא מיון" class= "p-button-text p-button-raised p-button-rounded"></button >
+    <button pButton  *ngIf="is == 2" (click)="filterToDoWithBalanceDue()" label="TO DO סנן לפי סכום ששלום ו" class= "p-button-text p-button-raised p-button-rounded"></button>
+    <button pButton  *ngIf="is != 2" (click)="canelFilter()" label="ללא סינון" class= "p-button-text p-button-raised p-button-rounded"></button>
 
-
-<p-table [value]="sortedReports" [tableStyle]="{ 'max-width': '68rem' }">
-    <ng-template pTemplate="header">
+    <p-table [value]="isSelected != 1 && isSelected != 0 ?filterallYearlyReport :allYearlyReport " [tableStyle]="{ 'width': '68em','margin-left': '10%' }">
+        <ng-template pTemplate="header">
         <tr>
             <th></th>
+            <th></th>
+
             <th>סטטוס
                 <div>
-                    <select *ngIf="isSelected == 2" [(ngModel)]="selectedStatus" (change)="filterByStatus($event)">
+                    <select *ngIf="isSelected == 2" [(ngModel)]="selectedStatus" (change)="filterByStatus($event)" class="myInput">
                       <option>TO DO</option>
                       <option>IN PROGRESS</option>
                     </select>
@@ -26,8 +32,11 @@
             <th pSortableColumn="yearReport" class="sort">
                 :שנה <p-sortIcon field="yearReport" />
             </th>
-            <th>שם לקוח</th>
-
+            <th>שם לקוח
+                <div>
+                    <input *ngIf="isSelected == 2" type="text" pInputText placeholder="חיפוש לפי שם לקוח" (input)="filterByClient($event.target.value)" class="myInput" />
+                </div>
+            </th>
             <th></th>
         </tr>
     </ng-template>
@@ -37,6 +46,11 @@
         <td><button *ngIf="currentYearlyReport === yearlyReport" pButton
                 class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
                 (click)="goToSteps(yearlyReport.idClient,yearlyReport)"></button>
+        </td>
+        <td>
+            <button *ngIf="currentYearlyReport === yearlyReport" pButton
+            class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
+            (click)="showDeleteConfirmation(yearlyReport._id)"></button>
         </td>
         <td class="{{yearlyReport.status?.color}}">{{yearlyReport.status?.name}}</td>
         <td>{{yearlyReport.entityType}}</td>
