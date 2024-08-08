@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TaskService } from '../../_services/task.service';
 import { UserService } from '../../_services/user.service';
 import { ChartModule } from 'primeng/chart';
@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
+
     selector: 'app-task-report',
     templateUrl: './task-report.component.html',
     styleUrl: './task-report.component.css',
@@ -28,6 +29,8 @@ import { DropdownModule } from 'primeng/dropdown';
 })
 
 export class TaskReportComponent implements OnInit {
+
+    @Input() showDialogtasks: boolean;
 
     tasks: Task[] | undefined | null;
 

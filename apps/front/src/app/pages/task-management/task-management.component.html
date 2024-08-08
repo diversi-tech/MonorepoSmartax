@@ -169,35 +169,35 @@
               <ng-template pTemplate="header">
                 <tr style="height: 50px">
                   <th style="width: auto; height: 50px">
-                    Name
+                    שם
                     <i class="pi pi-caret-up" (click)="sortTasks('taskName', tasks, false)"
                       style="cursor: pointer; margin-left: 5px"></i>
                     <i class="pi pi-caret-down" (click)="sortTasks('taskName', tasks,true)"
                       style="cursor: pointer; margin-left: 5px"></i>
                   </th>
                   <th style="width: auto; height: 50px">
-                    assignedTo
+                    משוייך ל
                     <i class="pi pi-caret-up" (click)="sortTasks('assignedTo', tasks, false)"
                       style="cursor: pointer; margin-left: 5px"></i>
                     <i class="pi pi-caret-down" (click)="sortTasks('assignedTo', tasks,true)"
                       style="cursor: pointer; margin-left: 5px"></i>
                   </th>
                   <th style="width: auto">
-                    Due Date
+                    תאריך הגשה
                     <i class="pi pi-caret-up" (click)="sortTasks('dueDate', tasks, false)"
                       style="cursor: pointer; margin-left: 5px"></i>
                     <i class="pi pi-caret-down" (click)="sortTasks('dueDate', tasks,true)"
                       style="cursor: pointer; margin-left: 5px"></i>
                   </th>
                   <th style="width: auto">
-                    Tags
+                    תגים
                     <i class="pi pi-caret-up" (click)="sortTasks('tags', tasks, false)"
                       style="cursor: pointer; margin-left: 5px"></i>
                     <i class="pi pi-caret-down" (click)="sortTasks('tags', tasks,true)"
                       style="cursor: pointer; margin-left: 5px"></i>
                   </th>
-                  <th style="width: auto">Edit</th>
-                  <th style="width: auto">Delete</th>
+                  <th style="width: auto">עריכה</th>
+                  <th style="width: auto">מחיקה</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-task>
