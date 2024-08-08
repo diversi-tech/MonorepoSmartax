@@ -156,7 +156,6 @@ import { StepFieldMonthService } from './services/stepFieldMonth.service';
 import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.model';
 
 @Module({
-  //add
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI),
   MongooseModule.forFeature([{ name: ClientField.name, schema: ClientFieldModel }]),
   MongooseModule.forFeature([{ name: Field.name, schema: FieldModell }]),
@@ -318,8 +317,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   app.enableCors({
-    origin: 'http://localhost:4200',
+    // origin: process.env.PATH_FRONT,
+    // origin: 'http://localhost:4200',
+    origin: 'https://monoreposmartax-fronted.onrender.com',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    allowedHeaders: 'Authorization, Content-Type',
   });
   await app.listen(8080);
 }

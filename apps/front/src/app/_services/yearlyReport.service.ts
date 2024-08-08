@@ -6,17 +6,18 @@ import { catchError, map, Observable, of, throwError } from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
+    'Content-Type': 'application/json',
+  }),
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class YearlyReportService {
-  constructor(
-    private http: HttpClient,
-  ) { }
+  close() {
+    throw new Error('Method not implemented.');
+  }
+  constructor(private http: HttpClient) {}
 
   private apiUrl = YEARLYREPORT;
 
@@ -30,7 +31,8 @@ export class YearlyReportService {
 
   // Get all yearly reports
   getAllYearlyReports(): Observable<YearlyReport[]> {
-    return this.http.get<YearlyReport[]>(`${this.apiUrl}/all`)
+    return this.http
+      .get<YearlyReport[]>(`${this.apiUrl}/all`)
       .pipe(
         catchError(this.handleError<YearlyReport[]>('getAllYearlyReports', []))
       );
@@ -39,8 +41,12 @@ export class YearlyReportService {
   // Get all yearly reports for a specific client (filtered on the client side)
   getYearlyReportsForClient(clientId: string): Observable<YearlyReport[]> {
     return this.getAllYearlyReports().pipe(
-      map(reports => reports.filter(report => report.idClient === clientId)),
-      catchError(this.handleError<YearlyReport[]>('getYearlyReportsForClient', []))
+      map((reports) =>
+        reports.filter((report) => report.idClient === clientId)
+      ),
+      catchError(
+        this.handleError<YearlyReport[]>('getYearlyReportsForClient', [])
+      )
     );
   }
 
@@ -55,7 +61,7 @@ export class YearlyReportService {
 
   // Delete a yearly report by ID
   deleteYearlyReport(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}`, { body: { id } })
+    return this.http.delete<boolean>(`${this.apiUrl}/delete/${id}`)
       .pipe(
         catchError(this.handleError<boolean>('deleteYearlyReport', false))
       );

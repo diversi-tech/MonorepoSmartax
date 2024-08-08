@@ -14,7 +14,7 @@
       <ng-template pTemplate="header">
         <tr>
           <th>תאריך</th>
-          <th>מספר עובד</th>
+          <th>שם עובד</th>
           <th>שעות עבודה כולל</th>
           <th></th>
         </tr>
@@ -23,7 +23,7 @@
       <ng-template pTemplate="body" let-logGroup>
         <tr (click)="selectCurrentLogGroup(logGroup)" [ngClass]="{ 'highlight': currentLogGroup === logGroup }">
           <td>{{ logGroup.date }}</td>
-          <td>{{ logGroup.employeeId }}</td>
+          <td>{{ logGroup.employeeName }}</td> <!-- הצגת שם העובד -->
           <td>{{ logGroup.totalHoursWorked ? logGroup.totalHoursWorked.toFixed(2) : '---' }}</td>
           <td>
             <button pButton  class="pi pi-plus p-button-outlined p-button-rounded p-button-info" (click)="logGroup.expanded = !logGroup.expanded"></button >

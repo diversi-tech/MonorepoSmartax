@@ -59,6 +59,8 @@ export class RegisterComponent implements OnInit {
   }
 
   setForm() {
+    console.log(history.state.user);
+    
     if (this.type === 'edit' && history.state.user) {
       this.form.username = history.state.user.userName;
       this.form.email = history.state.user.email;

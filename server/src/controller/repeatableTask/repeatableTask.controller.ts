@@ -16,7 +16,7 @@ import {
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTaskDto, UpdateTaskDto } from 'server/src/Models/dto/task.dto';
 import { Task } from 'server/src/Models/task.model';
-import { ValidationException } from 'server/src/common/exceptions/validation.exception';
+// import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
 import { hashPasswordService } from 'server/src/services/hash-password';
 import { TokenService } from 'server/src/services/jwt.service';

@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Put, Delete, Body, UseFilters, ValidationPipe, UseGuards } from '@nestjs/common';
-import { HttpExceptionFilter } from 'server/src/common/filters/http-exception.filter';
-import { Client } from 'server/src/Models/client.model';
-import { CreateClientDto, UpdateClientDto } from 'server/src/Models/dto/client.dto';
-import { ClientService } from 'server/src/services/client.service';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'server/src/guards/auth.guard';
-import { RoleGuard } from 'server/src/guards/role.guard';
+import { Controller, Get, Post, Put, Delete, Body, NotFoundException, UseFilters, ValidationPipe, UseGuards } from '@nestjs/common';
+import { HttpExceptionFilter } from '../../common/filters/http-exception.filter';
+import { Client } from '../../Models/client.model';
+import { CreateClientDto, UpdateClientDto } from '../../Models/dto/client.dto';
+import { ClientService } from '../../services/client.service';
+import { ApiOperation, ApiBody, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { Tag } from '../../Models/tag.model';
+import { AuthGuard } from '../../guards/auth.guard';
+import { RoleGuard } from '../../guards/role.guard';
 
 @ApiTags('clients')
 @Controller('clients')

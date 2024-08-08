@@ -97,6 +97,8 @@ export class AuthService {
       const userObject: any = jwt_decode(response.credential);
       const email = userObject.email;
       const password = 'Aa123456'; 
+      console.log();
+
       this.credentialResponseHandler(email, password);
 
     } catch (error) {

@@ -6,7 +6,7 @@ export interface MonthlyReport {
   idUser: string;
   idEmploye: string;
   reportDate: Date;
-  monthlyReportFields: stepFieldMonth[];
+  monthlyReportFields:Map<string, Array<stepFieldMonth>>;
   status: Status[];
 
 }
