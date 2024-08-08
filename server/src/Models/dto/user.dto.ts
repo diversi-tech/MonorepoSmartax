@@ -112,7 +112,7 @@ export class UpdateUserDto {
 
     @ApiProperty({ description: 'The user email address', required: false })
     @IsOptional()
-    @IsEmail()
+    // @IsEmail()
     email?: string;
 
     @ApiProperty({ description: 'The hashed password', required: false })

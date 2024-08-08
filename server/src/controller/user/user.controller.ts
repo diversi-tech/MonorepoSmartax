@@ -146,7 +146,7 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
   // }
 
 
-  @UseGuards(AuthGuard, RoleGuard(3))
+  // @UseGuards(AuthGuard, RoleGuard(3))
   @Post('update')
   @ApiOperation({ summary: 'Update a user by ID' })
   @ApiBody({ type: UpdateUserDto })
