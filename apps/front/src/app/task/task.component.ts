@@ -133,6 +133,7 @@ export class TaskComponent implements OnInit {
   tags2: Tag[] = [];
   color: string = '#1976d2';
   value: string;
+  currentRoute: string;
 
   //
   additionTask: MenuItem[] = [
@@ -158,6 +159,7 @@ export class TaskComponent implements OnInit {
   showDoc: boolean = false;
   showTagsList: boolean = false;
   showTag2: boolean = false;
+  allClient: boolean = false;
   //
   selectedCity!: any;
   selectedClient!: any;
@@ -191,10 +193,19 @@ export class TaskComponent implements OnInit {
     private socketService: SocketService,
     private googleTask: GoogleTaskService,
     private checkListServise: CheckListService
-  ) { }
+  ) {
+    this.currentRoute = this.route.snapshot.url.join('/');
+    console.log('Current route path:', this.currentRoute);
+  }
 
   newTaskCreated: boolean = false;
   ngOnInit(): void {
+    if (history.state.client === undefined) {
+      this.allClient = true;
+    }
+    else {
+      this.selectedClient = history.state.client;
+    }
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId)
       this.id = this.taskId;
@@ -213,7 +224,9 @@ export class TaskComponent implements OnInit {
           // this.selectedClient = this.currentTask.client;
           // this.selectedUser = this.currentTask.assignedTo;
           this.selectedUsers = this.currentTask.assignedTo;
-          this.selectedClient = this.currentTask.client;
+          if (this.allClient === true) {
+            this.selectedClient = this.currentTask.client;
+          }
           this.rangeDates = [new Date(), new Date()];
           this.rangeDates![0] = new Date(this.currentTask.startDate);
           this.rangeDates![1] = new Date(this.currentTask.deadline);
@@ -636,15 +649,15 @@ export class TaskComponent implements OnInit {
               //   id: dataTag._id!,
               // });
               // this.tags2.push({
-                color: dataTag.color,
-                text: dataTag.text,
-                _id: dataTag._id!,
-              });
-              this.value = '';
-            },
-              error: (errTag) => {
-                console.log(errTag);
-              },
+              color: dataTag.color,
+              text: dataTag.text,
+              _id: dataTag._id!,
+            });
+            this.value = '';
+          },
+          error: (errTag) => {
+            console.log(errTag);
+          },
         });
     }
   }

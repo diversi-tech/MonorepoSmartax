@@ -41,7 +41,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let clientId of getClientsForType(type)">
-            <td *ngIf="currentRoute === 'allClientMonthlyReport'">{{ clientId }}</td>
+            <td *ngIf="currentRoute === 'allClientMonthlyReport'">{{ findClientName(clientId) }}</td>
             <td *ngFor="let value of getValuesForType(type)">
               <ng-container *ngIf="getClientData(type, clientId, value) === 'בוצע'">
                 <input type="checkbox" class="p-checkbox" (change)="handleCheckboxChange(type, clientId, value, $event)" [checked]="true">
