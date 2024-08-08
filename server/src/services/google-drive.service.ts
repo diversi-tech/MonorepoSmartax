@@ -12,6 +12,7 @@ import { ClientController } from '../controller/clients/clients.controller';
 import { ClientService } from './client.service';
 import { DocType, docTypeModel } from '../Models/docType.model';
 import { DocTypeService } from './docTypes.service';
+import { UserService } from './user.service';
 
 @Injectable()
 export class GoogleDriveService {
@@ -21,24 +22,28 @@ export class GoogleDriveService {
   constructor(
     @InjectModel('Docs') private readonly docModel: Model<Docs>,
     private readonly clientService: ClientService,
+    private readonly userService: UserService,
     private readonly docTypeService: DocTypeService
   ) {
-
     const keyPath = path.join('service-account.json');
     const keys = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
 
-    this.auth = new google.auth.JWT(
-      keys.client_email,
-      null,
-      keys.private_key,
-      ['https://www.googleapis.com/auth/drive']
-    );
+    this.auth = new google.auth.JWT(keys.client_email, null, keys.private_key, [
+      'https://www.googleapis.com/auth/drive',
+    ]);
     this.drive = google.drive({ version: 'v3', auth: this.auth });
   }
-  async uploadFile(file: Express.Multer.File, clientId: string, docType: string): Promise<any> {
+  async uploadFile(
+    file: Express.Multer.File,
+    clientId: string,
+    docType: string
+  ): Promise<any> {
     try {
       const client = await this.clientService.searchClient(clientId);
-      const clientfolderId = await this.getOrCreateFolder(client.firstName, this.rootFolderId);
+      const clientfolderId = await this.getOrCreateFolder(
+        client.firstName,
+        this.rootFolderId
+      );
       const folderId = await this.getOrCreateFolder(docType, clientfolderId);
       const response = await this.drive.files.create({
         requestBody: {
@@ -51,19 +56,23 @@ export class GoogleDriveService {
         },
       });
       fs.unlinkSync(file.path);
+      this.setFilePermissionForAllUsers(response.data.id);
       const createdDoc = new this.docModel({
         _id: response.data.id,
         name: response.data.name,
         viewLink: await this.generateViewLink(response.data.id),
         client,
-        status: "uploaded",
+        status: 'uploaded',
         date: Date.now(),
-        DocType: await this.docTypeService.getDocTypeByName(docType)
+        DocType: await this.docTypeService.getDocTypeByName(docType),
       });
       await createdDoc.save();
-      return { fileId: createdDoc._id, viewLink: createdDoc.viewLink }
+      return { fileId: createdDoc._id, viewLink: createdDoc.viewLink };
     } catch (error) {
-      console.error('Error uploading file:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error uploading file:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to upload file');
     }
   }
@@ -75,12 +84,18 @@ export class GoogleDriveService {
       });
       return response.data.webViewLink;
     } catch (error) {
-      console.error('Error generating view link:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error generating view link:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to generate view link');
     }
   }
 
-  private async getOrCreateFolder(folderName: string, parentFolderId: string): Promise<string> {
+  private async getOrCreateFolder(
+    folderName: string,
+    parentFolderId: string
+  ): Promise<string> {
     const query = `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and '${parentFolderId}' in parents`;
 
     try {
@@ -89,7 +104,9 @@ export class GoogleDriveService {
         fields: 'files(id, name)',
       });
 
-      const folder = response.data.files.find((file) => file.name === folderName);
+      const folder = response.data.files.find(
+        (file) => file.name === folderName
+      );
       if (folder) {
         return folder.id;
       } else {
@@ -107,7 +124,10 @@ export class GoogleDriveService {
         return folderResponse.data.id;
       }
     } catch (error) {
-      console.error('Error in folder creation:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error in folder creation:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to get or create folder');
     }
   }
@@ -119,12 +139,15 @@ export class GoogleDriveService {
         fields: 'mimeType, name',
       });
 
-      const fileStream = await this.drive.files.get({
-        fileId: fileId,
-        alt: 'media',
-      }, {
-        responseType: 'stream'
-      });
+      const fileStream = await this.drive.files.get(
+        {
+          fileId: fileId,
+          alt: 'media',
+        },
+        {
+          responseType: 'stream',
+        }
+      );
 
       return {
         stream: fileStream.data,
@@ -132,7 +155,10 @@ export class GoogleDriveService {
         name: fileResponse.data.name,
       };
     } catch (error) {
-      console.error('Error fetching file:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error fetching file:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to fetch file');
     }
   }
@@ -145,24 +171,38 @@ export class GoogleDriveService {
       );
       return Buffer.from(response.data);
     } catch (error) {
-      console.error('Error downloading file:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error downloading file:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to download file');
     }
   }
   async getLink(clientId: string, fileName: string) {
-    const file = await this.docModel.findOne({ client: clientId, name: fileName }).select('viewLink -_id').lean().exec();
+    const file = await this.docModel
+      .findOne({ client: clientId, name: fileName })
+      .select('viewLink -_id')
+      .lean()
+      .exec();
     if (!file) {
       throw new ValidationException('file not found');
     }
-    return file
+    return file;
   }
   async getAllFiles(clientId: string) {
     const file = await this.docModel.find({ client: clientId }).exec();
     if (!file) {
       throw new ValidationException('there is no files for this client');
     }
-    return file
+    return file;
   }
+  async setFilePermissionForAllUsers(fileId: string) {
+    const users = await this.userService.findAll();
+    users.forEach((user) => {
+      this.setFilePermissions(fileId, user.email);
+    });
+  }
+
   async setFilePermissions(fileId: string, userEmail: string): Promise<void> {
     try {
       await this.drive.permissions.create({
@@ -174,7 +214,10 @@ export class GoogleDriveService {
         },
       });
     } catch (error) {
-      console.error('Error setting file permissions:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error setting file permissions:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to set file permissions');
     }
   }
@@ -183,7 +226,10 @@ export class GoogleDriveService {
       await this.drive.files.delete({ fileId });
       await this.docModel.deleteOne({ _id: fileId });
     } catch (error) {
-      console.error('Error deleting file:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error deleting file:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to delete file');
     }
   }
