@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsDateString, IsString, IsOptional, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsDateString, IsString, IsOptional, MaxLength, IsBoolean } from 'class-validator';
 import { Types } from 'mongoose';
 
 
@@ -31,7 +31,8 @@ export class CreateCommunicationDto {
     
     @ApiProperty({ type: Boolean, example: 'false' ,required: true})
     @IsNotEmpty()
-    @IsString()
+    @IsBoolean()
+    // @IsString()
     Status : boolean
 }
 
@@ -62,7 +63,7 @@ export class UpdateCommunicationDto {
     
     @ApiProperty({ type: Boolean, example: 'false', required: true })
     @IsOptional()
-    @IsString()
+    // @IsString()
     Status?: boolean;
 
     @ApiProperty({ type: String, example: '123456789', required: true })
