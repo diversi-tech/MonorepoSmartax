@@ -103,7 +103,7 @@ export class ClientProfileComponent implements OnInit {
   showConfirmationDelete(): void {
     this.confirmationService.confirm({
       message: 'האם אתה בטוח שברצונך למחוק את הלקוחות האלה?',
-      header: 'Confirmation',
+      header: 'אישור מחיקה',
       icon: 'pi pi-exclamation-triangle',
       key: "delete"
     });

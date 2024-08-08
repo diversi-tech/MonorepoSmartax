@@ -145,7 +145,7 @@ export class TaskManagementComponent implements OnInit {
   showConfirmation(): void {
     this.confirmationService.confirm({
       message: 'האם אתה בטוח שברצונך למחוק משימה זו?',
-      header: 'Confirmation',
+      header: 'אישור מחיקה',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteTask();

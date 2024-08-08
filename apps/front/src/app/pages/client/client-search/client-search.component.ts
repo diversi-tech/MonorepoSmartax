@@ -235,7 +235,7 @@ export class ClientSearchComponent implements OnInit {
   showConfirmationDelete(): void {
     this.confirmationService.confirm({
       message: '?האם אתה בטוח שברצונך למחוק לקוח זה',
-      header: 'Confirmation',
+      header: 'אישור מחיקה',
       icon: 'pi pi-exclamation-triangle',
       key: "delete"
     });

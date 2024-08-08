@@ -84,7 +84,7 @@ export class EmployeesTableComponent implements OnInit {
   showConfirmation(): void {
     this.confirmationService.confirm({
       message: 'האם אתה בטוח שברצונך למחוק משתמש זה?',
-      header: 'Confirmation',
+      header: 'אישור מחיקה',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteUser()

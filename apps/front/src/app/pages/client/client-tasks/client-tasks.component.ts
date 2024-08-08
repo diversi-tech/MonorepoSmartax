@@ -135,7 +135,7 @@ export class ClientTasksComponent implements OnInit {
   showConfirmation(): void {
     this.confirmationService.confirm({
       message: 'האם אתה בטוח שברצונך למחוק משימה זו?',
-      header: 'Confirmation',
+      header: 'אישור מחיקהאישור מחיקה',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteTask();
