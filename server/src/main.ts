@@ -20,7 +20,7 @@ async function bootstrap() {
     // origin: process.env.PATH_FRONT,
     origin: [
       'http://localhost:4200',
-      'https://monoreposmartax-fronted.onrender.com',
+      'https://monoreposmartax-o1oz.onrender.com',
     ], // Allow requests from this origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
