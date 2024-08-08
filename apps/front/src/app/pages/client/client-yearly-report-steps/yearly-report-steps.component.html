@@ -28,7 +28,8 @@
         <ng-template pTemplate="content" let-nextCallback="nextCallback">
           <div class="flex flex-column h-12rem">
             <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex flex-column align-items-center font-medium">
+              class="border-2 border-dashed surface-border border-round surface-ground
+                      flex-auto flex flex-column align-items-center font-medium">
               <div *ngFor="let task of stepsByNumber[stepNumber]">
                 <div class="checkbox-wrapper">
                   <label>
