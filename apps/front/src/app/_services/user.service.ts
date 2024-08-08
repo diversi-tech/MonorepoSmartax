@@ -37,16 +37,23 @@ export class UserService {
   //   return this.http.put(this.apiUrl + '/create', newUser, httpOptions);
   // }
 
-  register(username: string, email: string, role: Role, favoritesClient: Client[]): Observable<any> {
+  register(
+    username: string,
+    email: string,
+    role: Role,
+    favoritesClient: Client[]
+  ): Observable<any> {
     const passwordHash = this.hashService.encryptPassword('Aa123456'); // יצירת הסיסמה המוצפנת
     const newUser = {
       userName: username,
       email: email,
-      passwordHash: passwordHash,
+      // passwordHash: passwordHash,
+      passwordHash: 'Aa123456',
+
       role: role,
       favoritesClient: favoritesClient, // הוספת רשימת הלקוחות המועדפים
     };
-    
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -65,18 +72,14 @@ export class UserService {
     favoritesClient: Client[]
   ) {
     const user = {
-      "id": id,
-      "userName": userName,
-      "passwordHash": passwordHash,
-      "role": role,
-      "email": email,
-      "favoritesClient":favoritesClient
-    }
-    return this.http.post(
-      this.apiUrl + "/update",
-      user,
-      httpOptions
-    );
+      id: id,
+      userName: userName,
+      passwordHash: passwordHash,
+      role: role,
+      email: email,
+      favoritesClient: favoritesClient,
+    };
+    return this.http.post(this.apiUrl + '/update', user, httpOptions);
   }
 
   getPublicContent(): Observable<any> {
