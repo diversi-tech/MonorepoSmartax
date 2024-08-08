@@ -7,6 +7,8 @@ import { StorageService } from '../../_services/storage.service';
 import { HashPasswordService } from '../../_services/hash-password.service';
 import { NgClass, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { log } from 'util';
+import { ForgotPasswordComponent } from '../forget-password/forget-password.component';
 
 declare global {
   interface Window {
@@ -19,17 +21,12 @@ declare global {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [
-    FormsModule, 
-    NgClass, 
-    NgIf, 
-    RouterOutlet
-  ]
+  imports: [FormsModule, NgClass, NgIf, RouterOutlet,ForgotPasswordComponent],
 })
 export class LoginComponent implements OnInit {
   form: any = {
     email: null,
-    password: null
+    password: null,
   };
 
   forgot: boolean = false;
@@ -43,35 +40,48 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private storageService: StorageService,
     private router: Router,
-    private hash: HashPasswordService) { }
+    private hash: HashPasswordService
+  ) {}
 
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
       this.role = this.tokenService.getCurrentDetail("role").name;
+      this.role = this.tokenService.getCurrentDetail("role").name;
+      this.role = this.tokenService.getCurrentDetail('role').name;
+      console.log(this.role);
     }
     this.authService.setCredentialResponseHandler(this.handleCredentialResponse.bind(this));
+
+    this.authService.setCredentialResponseHandler(
+      this.handleCredentialResponse.bind(this)
+    );
+
     this.authService.initGoogleAuth();
+    if (this.role) this.navigateByRole();
   }
 
   onSubmit(): void {
     const { email, password } = this.form;
     this.authService.login(email, password).subscribe({
-      next: data => {
+      next: (data) => {
         if (data) {
           this.tokenService.saveToken(data);
           this.isLoginFailed = false;
           this.isLoggedIn = true;
-          this.role = this.tokenService.getCurrentDetail("role").name;
+          this.role = this.tokenService.getCurrentDetail('role').name;
           this.reloadPage();
+
+          this.navigateByRole();
         }
       },
-      error: err => {
-        this.errorMessage = err.status === 404 || err.status === 401 
-          ? "אחד מהנתונים שהזנת שגוי, אנא נסה שנית" 
-          : "שגיאת מערכת, אנא נסה שנית";
+      error: (err) => {
+        this.errorMessage =
+          err.status === 404 || err.status === 401
+            ? 'אחד מהנתונים שהזנת שגוי, אנא נסה שנית'
+            : 'שגיאת מערכת, אנא נסה שנית';
         this.isLoginFailed = true;
-      }
+      },
     });
   }
 
@@ -83,6 +93,8 @@ export class LoginComponent implements OnInit {
 
   forgotPassword() {
     this.forgot = true;
+    console.log(this.forgot);
+    
   }
 
   reloadPage(): void {
@@ -91,5 +103,17 @@ export class LoginComponent implements OnInit {
 
   signInWithGoogle(): void {
     this.authService.signIn();
+  }
+
+  navigateByRole(): void {
+    console.log(this.role.name);
+
+    if (String(this.role) === 'מנהל') {
+      this.router.navigate(['/da']);
+    } else if (String(this.role) === 'עובד') {
+      this.router.navigate(['/du']);
+    } else {
+      this.router.navigate(['/home']);
+    }
   }
 }

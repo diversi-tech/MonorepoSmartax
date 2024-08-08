@@ -1,6 +1,6 @@
 {
   "name": "server-e2e",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "implicitDependencies": ["server"],
   "targets": {
@@ -12,6 +12,13 @@
         "passWithNoTests": true
       },
       "dependsOn": ["server:build"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "server-e2e/jest.config.ts",
+        "passWithNoTests": true
+      }
     }
   }
 }

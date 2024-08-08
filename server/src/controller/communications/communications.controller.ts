@@ -14,6 +14,7 @@ import { AuthGuard } from 'server/src/guards/auth.guard';
 export class CommunicationsController {
 
     constructor(private readonly communicationsService: CommunicationsService) { }
+    @UseGuards(AuthGuard, RoleGuard(3))
 
     // @UseGuards(AuthGuard, RoleGuard(3))
     @Post('create')

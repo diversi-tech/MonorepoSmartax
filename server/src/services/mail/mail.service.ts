@@ -28,12 +28,16 @@ export class MailService {
 
   async sendMail(body: any) {
     const { to, email } = body;
-    // Create a random password from numbers only and 4 characters long
     const validPassword = this.generatePassword(4);
     const fileContent = fs.readFileSync(
       '../MonorepoSmartax/server/src/services/mail/mail.service.ts',
       'utf8'
     );
+
+    // const fileContent = fs.readFileSync(
+    //   '../MonorepoSmartax/server/src/services/mail/mail.service.ts',
+    //   'utf8'
+    // );
 
     const mailOptions = {
       from: process.env.EMAIL,
@@ -41,9 +45,9 @@ export class MailService {
       subject: 'Forgot Password ❓- Smartax',
       text: `Password to verify email address. Your password is: ${validPassword}`,
     };
-
     try {
       const info = await this.transporter.sendMail(mailOptions);
+      console.log('Email sent: ' + info.response);
       return { success: true, password: validPassword, email: to };
     } catch (error) {
       console.error('Error sending email:', error);

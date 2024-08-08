@@ -9,7 +9,7 @@ import { ApiGatewayController } from './controller/api-gateway.controller';
         name: 'TIMESHEET',
         transport: Transport.TCP,
         options: {
-          host: 'localhost',
+          host: 'https://monoreposmartax-timesheet.onrender.com/api',
           port: 3001,
         },
       },

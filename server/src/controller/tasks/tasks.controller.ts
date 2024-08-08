@@ -14,11 +14,13 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateTaskDto, UpdateTaskDto } from 'server/src/Models/dto/task.dto';
-import { Task } from 'server/src/Models/task.model';
-import { ValidationException } from 'server/src/common/exceptions/validation.exception';
-import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
-import { TaskService } from 'server/src/services/task.service';
+import { CreateTaskDto, UpdateTaskDto } from '../../Models/dto/task.dto';
+import { Task } from '../../Models/task.model';
+import { ValidationException } from '../../common/exceptions/validation.exception';
+import { HttpErrorFilter } from '../../common/filters/http-error.filter';
+import { hashPasswordService } from '../../services/hash-password';
+import { TokenService } from '../../services/jwt.service';
+import { TaskService } from '../../services/task.service';
 import { UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as path from 'path';
@@ -40,9 +42,9 @@ export class TasksController {
       return newTask;
     } catch (error) {
       console.log(error);
-      throw new HttpException(
-        error.message!, error.status!
-      );
+      const status = error.status || HttpStatus.INTERNAL_SERVER_ERROR;
+      const message = error.message || 'An unexpected error occurred';
+      throw new HttpException(message, status);
     }
   }
 
@@ -62,7 +64,7 @@ export class TasksController {
   }
 
   @ApiBody({
-    schema: { type: 'object', properties: { id: { type: 'string' } } },
+    schema: { type: 'object', properties: { id: { type: 'string' }} },
   })
 
   @Post('findOne')

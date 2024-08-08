@@ -3,7 +3,6 @@ import { MonthlyReportService } from '../../../_services/monthlyReport.service';
 import { YearService } from '../../../_services/year.service';
 import { TokenService } from '../../../_services/token.service';
 import { MonthlyReport } from '../../../_models/monthlyReport.module';
-// import { Client } from '../../../../../../../server/src/Models/client.model';
 import { stepFieldMonth } from '../../../_models/stepFieldMonth.module';
 import { Year } from '../../../_models/year.module';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
@@ -374,9 +373,6 @@ export class MonthlyReportComponent implements OnInit {
   private loadUsers(): void {
     this.clientService.getAllClients()
       .subscribe((clients: any[]) => {
-        // clients.forEach((client: Client) => {
-        //   this.clients.set(client._id, `${client.firstName} ${client.lastName}`);
-        // })
         this.clients = clients.map((client:Client) => ({
           label: client._id,
           value: `${client.firstName} ${client.lastName}`

@@ -94,6 +94,10 @@ p-button-text p-button-raised p-button-rounded{
   width: 100%;
 }
 
+#submitButon{
+  width: 80%;
+  margin-right: 9%;
+}
 .template{
   text-align: right;
 }

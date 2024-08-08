@@ -60,7 +60,7 @@ export class TaskService {
     try {
       const task = await this.taskModel.findById({ _id: id }).exec();
       if (!task) {
-        throw new ValidationException('Task not found');
+        // throw new ValidationException('Task not found');
       }
       return task;
     } catch (err) {

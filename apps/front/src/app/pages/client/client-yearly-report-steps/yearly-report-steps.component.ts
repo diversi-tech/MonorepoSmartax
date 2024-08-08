@@ -103,7 +103,6 @@ export class YearlyReportStepsComponent implements OnInit {
     const stepsList = this.responseData.stepsList;
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
-
     if (allCompleted) {
       return this.statusList.find(s => s.name == 'COMPLETE') || null;
       ;
@@ -118,7 +117,7 @@ export class YearlyReportStepsComponent implements OnInit {
     for (const taskId in this.changes) {
       const taskIndex = this.responseData.stepsList.findIndex(t => t._id === taskId);
       if (taskIndex !== -1) {
-        this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId];
+        this.responseData.stepsList[taskIndex].isCompleted = this.changes[taskId]; ;
       }
     }
     const status = this.determineStatus();
@@ -128,18 +127,26 @@ export class YearlyReportStepsComponent implements OnInit {
       console.error('Status not found');
       return;
     }
+    console.log("this.responseData after updating status", this.responseData);
     try {
-      const response = await this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData);
-      Swal.fire('Success', 'דוח שנתי עודכן בהצלחה', 'success');
-      this.responseData = response;
-      this.changes = {};
+      this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData).subscribe(data => {
+        if(data){
+         Swal.fire('Success', 'דוח שנתי עודכן בהצלחה', 'success');
+
+        }
+         this.responseData = data;
+        this.changes = {};
+      });
+      
+      console.log("this.responseData", this.responseData);
     } catch (error) {
-      console.log(error);
+      console.log("angular error",error);
     }
   }
 
   goToUpdate() {
     this.router.navigate(['/createYearlyReport'], { state: { client: this.client, report: this.responseData } });
+  
   }
   goBack() {
     this.location.back();

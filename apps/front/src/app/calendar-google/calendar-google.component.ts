@@ -9,14 +9,6 @@ export class CalendarComponent implements OnInit {
 
 
   ngOnInit() {
-    // this.googleCalendarService.initClient();
   }
 
-  // handleAuthClick() {
-  //   this.googleCalendarService.handleAuthClick();
-  // }
-
-  // handleSignoutClick() {
-  //   this.googleCalendarService.handleSignoutClick();
-  // }
 }
