@@ -43,3 +43,4 @@ Thumbs.db
 
 .angular
 service-account.json
+Dockerfile
