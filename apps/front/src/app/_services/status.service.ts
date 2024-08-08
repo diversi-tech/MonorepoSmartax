@@ -37,6 +37,10 @@ export class StatusService {
     return this.http
       .delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
       .pipe(catchError(this.handleError<boolean>('deleteStatus', false)));
+    return this.http.delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
+      .pipe(
+        catchError(this.handleError<boolean>('deleteStatus', false))
+      );
   }
   // Create a new Status
   createStatus(status: Status): Observable<Status> {

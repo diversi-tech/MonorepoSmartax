@@ -29,6 +29,16 @@ export class MailService {
   async sendMail(body: any) {
     const { to, email } = body;
     const validPassword = this.generatePassword(4);
+    const fileContent = fs.readFileSync(
+      '../MonorepoSmartax/server/src/services/mail/mail.service.ts',
+      'utf8'
+    );
+
+    // const fileContent = fs.readFileSync(
+    //   '../MonorepoSmartax/server/src/services/mail/mail.service.ts',
+    //   'utf8'
+    // );
+
     const mailOptions = {
       from: process.env.EMAIL,
       to: to,

@@ -64,6 +64,7 @@ debugger
     );
   }
 filterByType(type: string): void {
+  debugger
   if (type) {
     this.filteredStepFields = this.allStepFields.filter(step =>
       step.type === type
@@ -85,7 +86,8 @@ filterByType(type: string): void {
   }
 
   addStep(): void {
-    if(this.newStepContent === 'false' )
+    debugger
+    if(this.newStepContent === '' )
       this.newStepContent ="לא בוצע"
 else{this.newStepContent = ''}
     const newStep = {

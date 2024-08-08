@@ -1,3 +1,4 @@
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -10,7 +11,6 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { EditorModule } from 'primeng/editor';
 import { DividerModule } from 'primeng/divider';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { CheckboxModule } from 'primeng/checkbox';
 import { MessagesModule } from 'primeng/messages';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -45,57 +45,16 @@ import { TagService } from './app/_services/tag.service';
 import { ClientService } from './app/_services/client.service';
 import { CommunicationService } from './app/_services/communicaton.service';
 import { httpInterceptorProviders } from './app/_helpers/http.interceptor';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(
-            AutoCompleteModule, 
-            FormsModule, 
-            ChipModule, 
-            DropdownModule, 
-            AppRoutingModule, 
-            FormsModule, 
-            ReactiveFormsModule, 
-            CardModule, 
-            PanelModule, 
-            ButtonModule, 
-            ReactiveFormsModule, 
-            InputTextareaModule, 
-            TableModule, 
-            TagModule, 
-            RatingModule, 
-            MenuModule, 
-            DialogModule, 
-            AvatarModule, 
-            SidebarModule, 
-            MultiSelectModule, 
-            BadgeModule, 
-            MenuModule, 
-            RippleModule, 
-            ListboxModule, 
-            CalendarModule, 
-            ConfirmDialogModule, 
-            ChipsModule, 
-            InputGroupAddonModule, 
-            InputGroupModule, 
-            MessagesModule, 
-            BrowserModule,
-            CheckboxModule, 
-            RadioButtonModule, 
-            DividerModule, 
-            EditorModule, 
-            SelectButtonModule, 
-            FileUploadModule, 
-            ButtonModule, 
-            BadgeModule, 
-            ProgressBarModule, 
-            ToastModule,
-            CommonModule, 
-            ColorPickerModule, 
-            DropdownModule,
-            TabMenuModule
-        ),
+        importProvidersFrom(AutoCompleteModule, FormsModule, ChipModule, DropdownModule, AppRoutingModule, FormsModule, ReactiveFormsModule, CardModule, PanelModule, ButtonModule, ReactiveFormsModule, InputTextareaModule, TableModule, TagModule, RatingModule, MenuModule, DialogModule, AvatarModule, SidebarModule, MultiSelectModule, BadgeModule, MenuModule, RippleModule, ListboxModule, CalendarModule, ConfirmDialogModule, ChipsModule, InputGroupAddonModule, InputGroupModule, MessagesModule, BrowserModule
+            // Message ,
+            , CheckboxModule,
+            // OrderListModule,
+            RadioButtonModule, DividerModule, EditorModule, SelectButtonModule, FileUploadModule, ButtonModule, BadgeModule, ProgressBarModule, ToastModule, CommonModule, ColorPickerModule, DropdownModule, TabMenuModule),
         httpInterceptorProviders,
         CommunicationService,
         ClientService,
@@ -109,5 +68,5 @@ bootstrapApplication(AppComponent, {
         provideHttpClient(withInterceptorsFromDi())
     ]
 })
-  .catch(err => console.error(err));
-  
+    .catch(err => console.error(err));
+//

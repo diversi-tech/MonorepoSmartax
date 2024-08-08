@@ -1,19 +1,17 @@
-/* eslint-disable */
-export default {
-  displayName: 'server-e2e',
-  preset: '../jest.preset.js',
-  globalSetup: '<rootDir>/src/support/global-setup.ts',
-  globalTeardown: '<rootDir>/src/support/global-teardown.ts',
-  setupFiles: ['<rootDir>MonorepoSmartax/server-e2e/src/support/test-setup.ts'],
+module.exports = {
+  preset: 'ts-jest',
   testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]s$': [
-      'ts-jest',
-      {
-        tsconfig: '<rootDir>/tsconfig.spec.json',
-      },
-    ],
+  moduleNameMapper: {
+    '^@src/(.*)$': '<rootDir>/server/src/$1',
+    '^@app/(.*)$': '<rootDir>/apps/$1',
+    '^@libs/(.*)$': '<rootDir>/libs/$1'
   },
-  moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../coverage/server-e2e',
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.js$': 'babel-jest'
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(@nestjs|nest))'
+  ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'json', 'node']
 };

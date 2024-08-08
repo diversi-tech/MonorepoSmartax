@@ -402,6 +402,7 @@ export const routes: Routes = [
       { path: 'clientTypeTag', component: ClientTypeTagComponent },
       { path: 'clientField', component: ClientFieldComponent },
       { path: 'createYearlyReport', component: CreateYearlyReportComponent },
+      { path: 'createYearlyReport', component: CreateYearlyReportComponent },
       { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent },
       { path: 'steps', component: YearlyReportStepsComponent },
       { path: 'stepsFS', component: FinancialStatementStepsComponent },
@@ -496,12 +497,11 @@ export const routes: Routes = [
     component: ManagerNavbarComponent,
     data: { authType: 3, forToolbar: true, icon: icons.manager, label: 'מנהל' },
     children: [
-      {
-        path: 'editClientYearlyReport',
-        component: EditClientYearlyReportComponent,
-      },
+      { path: 'editClientYearlyReport', component: EditClientYearlyReportComponent },
       { path: 'editTaxRefuned', component: EditClientTaxRefunedComponent },
-    ],
+      { path: 'editMonthlyReport', component: EditMonthlyReportComponent }
+
+    ]
   },
   { path: 'steps', component: YearlyReportStepsComponent },
   { path: 'stepsFS', component: FinancialStatementStepsComponent },
@@ -551,4 +551,3 @@ export const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule { }
-

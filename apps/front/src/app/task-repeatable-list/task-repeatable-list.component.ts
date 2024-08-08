@@ -134,6 +134,9 @@ export class TaskRepeatableListComponent {
       .subscribe((allTasks: RepeatableTask[]) => {
         this.tasks = allTasks;
         this.progressValue = this.progressDueDate() / this.tasks.length * 100;
+        console.log(this.tasks);
+        this.progressValue = (this.progressDueDate() / this.tasks.length) * 100;
+        console.log(this.progressValue);
       });
   }
 

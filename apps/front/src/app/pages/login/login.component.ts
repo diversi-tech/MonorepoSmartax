@@ -47,7 +47,11 @@ export class LoginComponent implements OnInit {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
       this.role = this.tokenService.getCurrentDetail("role").name;
+      this.role = this.tokenService.getCurrentDetail("role").name;
+      this.role = this.tokenService.getCurrentDetail('role').name;
+      console.log(this.role);
     }
+    this.authService.setCredentialResponseHandler(this.handleCredentialResponse.bind(this));
 
     this.authService.setCredentialResponseHandler(
       this.handleCredentialResponse.bind(this)

@@ -42,6 +42,7 @@ export class CommunicationService {
   }
 
   createCommunication(communication: Communication): Observable<Communication> {
+    console.log('Payload for createCommunication:', communication);
     return this.http
       .post<Communication>(
         `${this.apiUrl}/create`,
