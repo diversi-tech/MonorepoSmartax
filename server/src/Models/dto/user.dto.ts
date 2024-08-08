@@ -81,7 +81,7 @@ export class CreateUserDto {
 
     @ApiProperty({ description: 'The hashed password' })
     @IsNotEmpty()
-    @IsString()
+    // @IsString()
     // @MinLength(8)
     // @MaxLength(20)
     // @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
