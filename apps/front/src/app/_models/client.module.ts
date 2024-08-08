@@ -1,3 +1,5 @@
+import { ClientField } from "./clientField.module";
+import { ClientType } from "./clientType.module";
 import { SensitiveData } from "./sensitiveData.module";
 import { Tag } from "./tag.module";
 import { User } from "./user.module";
@@ -41,4 +43,6 @@ export interface Client {
   isAccounter: boolean;
   isOpenAccountWithUs: boolean;
   tag:Tag;
+  clientTypes: ClientType[];
+  clientFields: string[];
 }

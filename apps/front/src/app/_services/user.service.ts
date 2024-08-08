@@ -10,8 +10,8 @@ import { Client } from '../_models/client.module';
 const API_URL = 'http://localhost:8080/api/test/';
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-  }),
+    'Content-Type': 'application/json'
+  })
 };
 
 @Injectable({
@@ -21,8 +21,7 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private hashService: HashPasswordService,
-    private roleService: RoleServiceService
-  ) {}
+    private roleService: RoleServiceService) { }
 
   private apiUrl = USER_ENDPOINT;
 
@@ -99,23 +98,23 @@ export class UserService {
   }
 
   getAllUsers(): Observable<any> {
-    return this.http.get(this.apiUrl + '/findAll');
+    return this.http.get(this.apiUrl + '/findAll')
   }
 
-  findOne(userId: string): Observable<any> {
-    return this.http.get(this.apiUrl + `/findOne?id=${userId}`);
+  findOne(userId:string): Observable<any>{
+    return this.http.get(this.apiUrl +`/findOne?id=${userId}`)
   }
 
-  changPassword(newPassword: string, email: string): Observable<any> {
+  changPassword(newPassword: string, email:string): Observable<any> {
     const body = {
-      newPassword: this.hashService.encryptPassword(newPassword),
-      emailFront: email,
-    };
-    return this.http.put<any>(this.apiUrl + '/changePassword', body);
+       newPassword: this.hashService.encryptPassword(newPassword),
+       emailFront:email
+     };
+     return this.http.put<any>(this.apiUrl + '/changePassword', body)
   }
   deleteUser(id: string) {
     console.log('delete user in service');
 
-    return this.http.delete<any>(this.apiUrl + '/delete?id=' + id);
+    return this.http.delete<any>(this.apiUrl + '/delete?id=' + id)
   }
 }

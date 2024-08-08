@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Put, Delete, Body, UseFilters, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, NotFoundException, UseFilters, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from 'server/src/common/filters/http-exception.filter';
-import { ApiBody, ApiTags} from '@nestjs/swagger';
+import {  ApiOperation ,ApiBody, ApiProperty, ApiTags} from '@nestjs/swagger';
+import { Tag } from '../../Models/tag.model';
 import { FieldService } from 'server/src/services/field.service';
 import { CreateFieldDto, UpdateFieldDto } from 'server/src/Models/dto/field.dto';
 import { Field } from 'server/src/Models/field.model';
@@ -39,3 +40,4 @@ export class FieldController {
         return await this.fieldservice.deleteField(id.id);
     }
 }
+    // הוספת פרופרטי tag למוצא לבדוק אם הכול עובד כרגיל וכן להוסיף את לא אם Even the Their

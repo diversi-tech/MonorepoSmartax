@@ -27,7 +27,6 @@ export class ToolBarComponent implements OnInit {
   }
 
   onTabChange(event: any) {
-    alert('test');
     const selectedItem = event.value;
     this.navigateTo(selectedItem.route);
   }

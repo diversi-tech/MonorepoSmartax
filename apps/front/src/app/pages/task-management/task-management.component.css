@@ -5,6 +5,10 @@
   justify-content: space-between;
 }
 
+#mainContainer{
+  direction: rtl;
+}
+
 .p-col {
   flex: 1;
   margin: 0 10px;
@@ -12,7 +16,7 @@
 
 .content-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .custom-button {

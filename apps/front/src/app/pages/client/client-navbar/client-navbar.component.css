@@ -2,35 +2,30 @@ body {
   margin: 0;
   height: 100vh;
   display: flex;
-  justify-content: flex-end;
-  /* מציב את הכפתורים בצד ימין */
+  justify-content: flex-end; /* מציב את הכפתורים בצד ימין */
 }
 
 .wrapper {
   display: flex;
-  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .container {
-  width: 20%;
   display: flex;
   flex-direction: column;
+  width: fit-content;
+  margin-left: 20px; /* נותן רווח קטן מהצד השמאלי של המסך */
 }
 
 .b {
-  margin-bottom: 10px;
-  /* נותן רווח קטן בין הכפתורים */
+  margin-bottom: 10px; /* נותן רווח קטן בין הכפתורים */
 }
 
 .content {
   flex: 1;
-  margin-right: 20px;
-  /* נותן רווח קטן מהצד הימני של המסך */
-  /* width: 100px;
-  height: 30px; */
+  margin-right: 20px; /* נותן רווח קטן מהצד הימני של המסך */
 }
-
-.profile {
+.profile{
   text-align: left;
-  width: 20%;
 }

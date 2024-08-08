@@ -4,7 +4,9 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { HashPasswordService } from '../_services/hash-password.service';
 import { AUTH_ENDPOINT } from '../api-urls';
 import { Role } from '../_models/role.module';
-import jwt_decode from 'jwt-decode';
+import jwt_decode from 'jwt-decode'; // Correct import statement
+import { StorageService } from './storage.service';
+import { Router } from '@angular/router';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,9 +21,11 @@ const httpOptions = {
 export class AuthService {
   private apiUrl = AUTH_ENDPOINT;
 
-  private credentialResponseHandler: (email: string, password: string) => void = () => {};
+  // פונקציה שתשמש כ-Callback
+  private credentialResponseHandler: (email: string, password: string) => void = () => { };
 
-  constructor(private http: HttpClient, private hashService: HashPasswordService) {
+  constructor(private http: HttpClient, private hashService: HashPasswordService, private storageService: StorageService, private router: Router
+  ) {
     this.initGoogleAuth();
   }
 
@@ -35,19 +39,31 @@ export class AuthService {
   }
 
   logout(): Observable<number> {
-    return this.http.post(this.apiUrl + '/signout', {}, httpOptions).pipe(
-      map((response: HttpResponse<any>) => {
-        if (response.status >= 200 && response.status < 300) {
-          return response.status;
-        } else {
-          throw new Error('HTTP Error: ' + response.status);
-        }
-      }),
-      catchError(error => {
-        console.error('An error occurred:', error);
-        return throwError(error);
-      })
-    );
+    this.storageService.clean();
+    return new Observable<200>()
+    //exit from the server
+    // try {
+    //   return this.http.delete(this.apiUrl + '/signout').pipe(
+    //     map((response: HttpResponse<any>) => {
+    //       // alert("response in logout")
+    //       // if (response.status >= 200 && response.status < 300) {
+    //       //   this.storageService.clean();
+    //       //   alert("cleaned successfully")
+    //       //   return response.status;
+    //       // } else {
+    //       //   throw new Error('HTTP Error: ' + response.status);
+    //       // }
+    //       return null
+    //     }),
+    //     catchError(error => {
+    //       alert("error in logout")
+    //       console.error('An error occurred:', error);
+    //       return throwError(error);
+    //     })
+    //   );
+    // } catch (err) {
+    //   alert(err)
+    // }
   }
 
   getCurrentRole(): Observable<Role> {
@@ -67,13 +83,14 @@ export class AuthService {
   }
 
   checkTokenAndPolicyValidity(policy: number): Observable<boolean> {
-    const body = { policy };
+    const body = { role: policy };
     return this.http.post<any>(this.apiUrl + '/validate-token', body).pipe(
       map(response => response.message === 'Token is valid and policy is valid')
     );
   }
 
   initGoogleAuth() {
+    console.log("Initializing Google Auth");
     try {
       if (window.google && window.google.accounts) {
         window.google.accounts.id.initialize({
@@ -96,7 +113,9 @@ export class AuthService {
     try {
       const userObject: any = jwt_decode(response.credential);
       const email = userObject.email;
-      const password = 'Aa123456'; 
+      const password = 'Aa123456'; // Use a fixed password or generate dynamically as needed
+      console.log();
+
       this.credentialResponseHandler(email, password);
 
     } catch (error) {

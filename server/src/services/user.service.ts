@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserModel } from '../Models/user.model';
+import { User ,UserModel } from '../Models/user.model';
 import { CreateUserDto, UpdateUserDto } from '../Models/dto/user.dto';
 import { ValidationException } from '../common/exceptions/validation.exception';
 import { TokenService } from './jwt.service';
@@ -12,12 +12,11 @@ import { throwError } from 'rxjs';
 
 @Injectable()
 export class UserService {
-
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    private jwtToken: TokenService
-  ) { }
-
+    private jwtToken:TokenService
+    
+  ) {}
   async findByEmail(email: string): Promise<User> {
     return await this.userModel.findOne({ email }).exec();
   }
@@ -71,8 +70,10 @@ export class UserService {
         throw new ValidationException('User not found');
       }
       return user;
+      
     } catch (error) {
       console.log(error);
+      
     }
   }
 
@@ -90,6 +91,8 @@ export class UserService {
     if (!updatedUser) {
       throw new ValidationException('User not found');
     }
+
+
     return updatedUser;
   }
 
