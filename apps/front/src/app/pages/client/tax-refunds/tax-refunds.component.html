@@ -14,7 +14,8 @@
       <th pSortableColumn="taxRefunds" class="sort">
         :שנה <p-sortIcon field="taxRefunds" />
       </th>
-      <th></th>
+      <th *ngIf="currentRoute==='allClientTaxRefunds'">לקוח</th>
+      <th *ngIf="currentRoute === 'allClientTaxRefunds'"></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task>
@@ -32,6 +33,12 @@
       <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
       <td>{{ task.date | date : 'dd/MM/yyyy' }}</td>
       <td>{{ task.year }}</td>
+        <td *ngIf="currentRoute==='allClientTaxRefunds'">{{getClientName(task.idClient)?.firstName }}
+           {{getClientName(task.idClient)?.lastName }}</td>
+        <app-icon-profile  *ngIf="currentRoute==='allClientTaxRefunds'"
+            [userName]="getClientName(task.idClient)?.firstName  && 
+             getClientName(task.idClient)?.lastName"
+            style="width: 50px;"></app-icon-profile>
 
     </tr>
   </ng-template>

@@ -130,7 +130,12 @@ export class TaskComponent implements OnInit {
   tags: Tag[] = [];
   checkList: CheckList[] = [];
   checkListId: string[] | undefined;
-  subTasks: string[] = []
+  subTasks: string[] = [];
+  tags2: Tag[] = [];
+  color: string = '#1976d2';
+  value: string;
+  currentRoute: string;
+
   //
   additionTask: MenuItem[] = [
     { id: '1', label: 'Check List' },
@@ -154,6 +159,8 @@ export class TaskComponent implements OnInit {
   showPriority: boolean = false;
   showDoc: boolean = false;
   showTagsList: boolean = false;
+  showTag2: boolean = false;
+  allClient: boolean = false;
   //
   selectedCity!: any;
   selectedClient!: any;
@@ -187,11 +194,19 @@ export class TaskComponent implements OnInit {
     private socketService: SocketService,
     private googleTask: GoogleTaskService,
     private checkListServise: CheckListService
-  ) { }
+  ) {
+    this.currentRoute = this.route.snapshot.url.join('/');
+    console.log('Current route path:', this.currentRoute);
+  }
 
   newTaskCreated: boolean = false;
   ngOnInit(): void {
-    // alert("inputs:\n"+this.taskId+"\ncreate: "+this.create+"\nparent: "+this.parent);
+    if (history.state.client === undefined) {
+      this.allClient = true;
+    }
+    else {
+      this.selectedClient = history.state.client;
+    }
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId)
       this.id = this.taskId;
@@ -207,7 +222,9 @@ export class TaskComponent implements OnInit {
           // this.selectedClient = this.currentTask.client;
           // this.selectedUser = this.currentTask.assignedTo;
           this.selectedUsers = this.currentTask.assignedTo;
-          this.selectedClient = this.currentTask.client;
+          if (this.allClient === true) {
+            this.selectedClient = this.currentTask.client;
+          }
           this.rangeDates = [new Date(), new Date()];
           this.rangeDates![0] = new Date(this.currentTask.startDate);
           this.rangeDates![1] = new Date(this.currentTask.deadline);
@@ -618,16 +635,22 @@ export class TaskComponent implements OnInit {
           next: (dataTag) => {
             console.log(dataTag);
             this.selectedTags.push({
+              // this.selectedTags.push({
+              //   color: dataTag.color,
+              //   text: dataTag.text,
+              //   _id: dataTag._id!,
+              // });
+              // this.buttons.push({
+              //   color: this.selectedColor,
+              //   text: this.buttonText,
+              //   id: dataTag._id!,
+              // });
+              // this.tags2.push({
               color: dataTag.color,
               text: dataTag.text,
               _id: dataTag._id!,
             });
-            this.buttons.push({
-              color: this.selectedColor,
-              text: this.buttonText,
-              id: dataTag._id!,
-            });
-            this.buttonText = '';
+            this.value = '';
           },
           error: (errTag) => {
             console.log(errTag);

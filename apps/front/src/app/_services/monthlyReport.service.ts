@@ -1,7 +1,7 @@
 import { Injectable,Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MonthlyReport } from '../_models/monthlyReport.module';
-import { MONTHLY_REPORT } from '../api-urls';
+import { MONTHLY_REPORT, STEP_FIELD_MONTH } from '../api-urls';
 import { catchError, map, Observable, of } from 'rxjs';
 
 const httpOptions = {
@@ -18,8 +18,8 @@ export class MonthlyReportService {
 
  
   private apiUrl = MONTHLY_REPORT;
-
-  createMonthlyReport(monthlyReport: MonthlyReport): Observable<MonthlyReport> {
+  private stepapiUrl = STEP_FIELD_MONTH;
+  createMonthlyReport(monthlyReport: any): Observable<MonthlyReport> {
     return this.http.post<MonthlyReport>(`${this.apiUrl}/create`, monthlyReport)
       .pipe(
         catchError(this.handleError<MonthlyReport>('createMonthlyReport'))
@@ -35,19 +35,31 @@ export class MonthlyReportService {
 
   getMonthlyReportForClient(clientId: string): Observable<MonthlyReport[]> {
     return this.getAllMonthlyReport().pipe(
-      map(reports => reports.filter(report => report.idUser === clientId)),
-      catchError(this.handleError<MonthlyReport[]>('getMonthlyReportForClient', []))
+      map((reports) => reports.filter((report) => report.idUser === clientId)),
+      catchError(
+        this.handleError<MonthlyReport[]>('getMonthlyReportForClient', [])
+      )
     );
 
+  }
+  getAllTypes(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.stepapiUrl}/types`)
+      .pipe(
+        catchError(this.handleError<string[]>('getAllMonthlyReport', []))
+      );
+  } 
+   getAllValuesForType(type:string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.stepapiUrl}/values/${type}`)
+      .pipe(
+        catchError(this.handleError<string[]>('getAllMonthlyReport', []))
+      );
   }
 
 
 
-
-  async updateMonthlyReport(id: string, monthlyReport: MonthlyReport): Promise<MonthlyReport> {
+   updateMonthlyReport(id: string, monthlyReport: MonthlyReport): Observable<MonthlyReport> {
     try {
-      const response = await this.http.post<MonthlyReport>(`${this.apiUrl}/update/${id}`, monthlyReport).toPromise();
-      return response;
+      return  this.http.post<MonthlyReport>(`${this.apiUrl}/update/${id}`, monthlyReport);
     } catch (error) {
       this.handleError<MonthlyReport>('updateMonthlyReport', error);
       throw error;

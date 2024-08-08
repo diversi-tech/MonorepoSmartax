@@ -4,6 +4,5 @@ export interface stepFieldMonth {
    value: string;
    content: boolean;
    type: string;
-  
   }
   

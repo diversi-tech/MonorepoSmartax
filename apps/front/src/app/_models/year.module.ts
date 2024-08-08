@@ -1,5 +1,5 @@
 
 export interface Year {
-    _id: string,
+    _id?: string,
     yearNum: string;
 }

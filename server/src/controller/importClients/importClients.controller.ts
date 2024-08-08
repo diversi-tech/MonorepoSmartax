@@ -73,51 +73,50 @@ export class importClientsController {
 
   @Get('download-template')
   async downloadTemplate(@Res() res: Response) {
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('לקוחות');
-
-    // הגדרת כיוון הטקסט מימין לשמאל
-    worksheet.views = [{ rightToLeft: true }];
-
-    // הגדרת כותרות העמודות
-    const columns = [
-      'שם החברה', 'שם פרטי', 'שם משפחה', 'שם איש קשר', 'ת.ז.', 'שם בן/בת זוג', 
-      'ת.ז. בן/בת זוג', 'טלפון', 'וואטסאפ', 'אימייל', 'העדפה לווטסאפ', 'כתובת', 
-      'הערות', 'תאריך לידה', 'מעסיק עובדים', 'מידע על עבודה', 'מספר תיק מס הכנסה', 
-      'מספר רישום ניכויי מס', 'מספר תיק מע"מ', 'סוג דוח', 'מידע סטטיסטי', 'שם המפנה', 
-      'תאריך הצטרפות', 'עבר רואה חשבון', 'פתח חשבון אצלנו'
-    ];
-
-    worksheet.columns = columns.map(column => ({ header: column, key: column }));
-    worksheet.getCell(2['עבר רואה חשבון']).dataValidation = {
-      type: 'list',
-      formulae: ["כן","לא"],
-      showErrorMessage: true,
-      errorTitle: 'Invalid input',
-      error:"בחר 'כן' או 'לא'"
-    };
-    // הגדרת תבנית עבור מספרי טלפון
-    worksheet.getCell(2['טלפון']).numFmt = '000-000-0000'; // תבנית של מספר טלפון
-
-    // הגדרת תבנית עבור תאריך
-    worksheet.getCell(2['תאריך הצטרפות']).numFmt = 'dd/mm/yyyy'; // תבנית של תאריך
-    // הגדרת כיוון טקסט מימין לשמאל עבור כותרות העמודות
-    worksheet.getRow(1).eachCell((cell, colNumber) => {
-      cell.alignment = { readingOrder: 'rtl', horizontal: 'right' };
-    });
-
-    // כתיבת הקובץ לתגובה
-    res.setHeader(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    );
-    res.setHeader(
-      'Content-Disposition',
-      'attachment; filename=' + 'customers.xlsx',
-    );
-
-    await workbook.xlsx.write(res);
-    res.end();
+    try {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('לקוחות');
+      worksheet.views = [{ rightToLeft: true }];
+  
+      const columns = [
+        'שם החברה', 'שם פרטי', 'שם משפחה', 'שם איש קשר', 'ת.ז.', 'שם בן/בת זוג',
+        'ת.ז. בן/בת זוג', 'טלפון', 'וואטסאפ', 'אימייל', 'העדפה לווטסאפ', 'כתובת',
+        'הערות', 'תאריך לידה', 'מעסיק עובדים', 'מידע על עבודה', 'מספר תיק מס הכנסה',
+        'מספר רישום ניכויי מס', 'מספר תיק מע"מ', 'סוג דוח', 'מידע סטטיסטי', 'שם המפנה',
+        'תאריך הצטרפות', 'עבר רואה חשבון', 'פתח חשבון אצלנו'
+      ];
+  
+      worksheet.columns = columns.map(column => ({ header: column, key: column }));
+      // worksheet.getCell(2['עבר רואה חשבון']).dataValidation = {
+      //   type: 'list',
+      //   formulae: ["כן", "לא"],
+      //   showErrorMessage: true,
+      //   errorTitle: 'Invalid input',
+      //   error: "בחר 'כן' או 'לא'"
+      // };
+      // worksheet.getCell(2['טלפון']).numFmt = '000-000-0000';
+  
+      // worksheet.getCell(2['תאריך הצטרפות']).numFmt = 'dd/mm/yyyy';
+      // worksheet.getRow(1).eachCell((cell, colNumber) => {
+      //   cell.alignment = { readingOrder: 'rtl', horizontal: 'right' };
+      // });
+  
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      );
+      res.setHeader(
+        'Content-Disposition',
+        'attachment; filename=' + 'customers.xlsx',
+      );
+  
+      await workbook.xlsx.write(res);
+      res.end();
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
   }

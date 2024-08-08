@@ -1,0 +1,42 @@
+@import '../../../../styles.css';
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center; /* Center text inside table cells */
+  }
+  
+  th {
+    background-color: #f4f4f4;
+  }
+  
+  /* Centering the buttons */
+  button {
+    display: block; /* Make buttons block-level to center them */
+    margin: 10px auto; /* Center horizontally */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Centering the dropdowns and inputs */
+  select, input[type="text"], input[type="checkbox"] {
+    display: block;
+    margin: 10px auto; /* Center horizontally */
+  }
+  .table-header {
+    text-align: center; /* Center text inside the table header */
+    margin: 20px 0; /* Add margin to separate from table */
+  }

@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 import { StepsModule } from 'primeng/steps';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../../_services/client.service';
+import { TooltipModule } from 'primeng/tooltip';
+import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
 
 @Component({
   selector: 'app-tax-refunds',
@@ -22,6 +24,8 @@ import { ClientService } from '../../../_services/client.service';
     StepperModule,
     StepsModule,
     TableModule,
+    TooltipModule,
+    IconProfileComponent
   ],
   templateUrl: './tax-refunds.component.html',
   styleUrl: './tax-refunds.component.css',

@@ -18,6 +18,7 @@ import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-client-tasks',
@@ -33,6 +34,7 @@ import { Router } from '@angular/router';
     PanelModule,
     TableModule,
     NgTemplateOutlet,
+    InputTextModule,
   ],
 })
 export class ClientTasksComponent implements OnInit {
@@ -101,9 +103,9 @@ editTask(){
   this.router.navigate(['/taskSpe', this.currentTask._id]);
 }
 
-createTask(){
-  this.router.navigate(['/taskSpe', 'create']);
-}
+  createTask() {
+    this.router.navigate(['/taskSpe', 'create'],{ state: { client: this.client}});
+  }
 
 
   getTasks(): void {
@@ -131,18 +133,36 @@ createTask(){
     });
   }
 
+
   searchTask(): void {
     console.log(typeof this.searchTerm);
 
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
+      alert("לחיפוש משימה אנא הקלידו את שם המשימה")
     } else {
-      this.filteredTasks = this.tasks.filter((task) =>
-        task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-      console.log('filter: ', this.filteredTasks);
+      this.filteredTasks = [];
+      this.searchTerm.trim()
+      this.searchTerm.toLowerCase()
+      this.tasks.forEach(t => {
+        if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
+          this.filteredTasks.push(t);
+      });
+      if (this.filteredTasks.length == 0) {
+        alert("לא נמצאות משימות בשם זה")
+      }
     }
   }
+
+  // searchTask(): void {
+  //   if (this.searchTerm.trim() === '') {
+  //     this.filteredTasks = [];
+  //   } else {
+  //     this.filteredTasks = this.tasks.filter((task) =>
+  //       task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //     );
+  //   }
+  // }
 
   showConfirmation(): void {
     this.confirmationService.confirm({
