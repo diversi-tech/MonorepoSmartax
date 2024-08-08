@@ -121,6 +121,7 @@ export class TaskComponent implements OnInit {
   rangeDates: Date[] = [];
   dueDate: Date | undefined;
   id: string | undefined;
+  clientIds: string [] = [];
   checked: boolean = false;
   text: string | undefined; //description of task
   buttonText: string = '';
@@ -170,6 +171,7 @@ export class TaskComponent implements OnInit {
   selectedTags: Tag[] = [];
   selectedPriority!: Priority;
   // array
+  sentClients: Client[] = []
   selectedClients: Client[] = [];
   selectedUsers: User[] = [];
   //
@@ -183,6 +185,8 @@ export class TaskComponent implements OnInit {
   @Input() taskId: string | null = null;
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
   //
+
+  clientIdsParam: string[]
   constructor(
     private userSErvice: UserService,
     private clientService: ClientService,
@@ -201,6 +205,23 @@ export class TaskComponent implements OnInit {
 
   newTaskCreated: boolean = false;
   ngOnInit(): void {
+    
+    const clientIdsString = this.route.snapshot.paramMap.get('clientIds');
+    if (clientIdsString) {
+      this.clientIdsParam = clientIdsString.split(',');
+    }
+    this.clientIdsParam.forEach(clientId => {
+      this.clientService.searchClient(clientId).subscribe({
+        next: (client: Client) => {
+          this.selectedClients.push(client);
+        },
+        error: (err) => {
+          console.error('Error loading client:', err);
+        }
+      });
+    });
+  
+
     if (history.state.client === undefined) {
       this.allClient = true;
     }
@@ -526,9 +547,22 @@ export class TaskComponent implements OnInit {
   save() {
 
     const newTask: Task = {
+      // client: this.selectedClient,
+      // client: this.selectedClients,
+      // description: this.htmlContent,
+      // status: this.selectStatus,
+      // tags: this.buttons,
+      // // assignedTo: this.selectedUser,
+      // assignedTo: this.selectedUsers,
+      // taskName: this.taskName,
+      // deadline: this.rangeDates[1]!,
+      // startDate: this.rangeDates[0]!,
+      // images: this.images,
+      // priority: this.selectedPriority,
+      // dueDate: this.currentTask.dueDate!,
     };
 
-    if (this.selectedClient) newTask.client = this.selectedClient;
+    if (this.selectedClients) newTask.client = this.selectedClient;
     if (this.htmlContent) newTask.description = this.htmlContent;
     if (this.selectStatus) newTask.status = this.selectStatus;
     if (this.buttons) newTask.tags = this.buttons;
@@ -543,7 +577,7 @@ export class TaskComponent implements OnInit {
     if (this.parent) newTask.parent = this.parent;
     console.log(this.eventId);
 
-    if (this.id == 'create'  || this.create == true) {
+    if (this.id == 'create' || this.clientIdsParam || this.create == true) {
       this.tasksService.createTask(newTask).subscribe({
         next: (task) => {
           console.log(task);

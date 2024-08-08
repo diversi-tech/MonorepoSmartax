@@ -16,6 +16,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { RouterLink } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import Swal from 'sweetalert2';
+import { RepeatableTask } from '../../../_models/repeatable.module';
+import { RepeatableTaskService } from '../../../_services/repeatable.service';
 
 @Component({
   selector: 'app-client-type',
@@ -40,13 +42,13 @@ import Swal from 'sweetalert2';
 export class ClientTypeComponent implements OnInit {
   clientTypes: ClientType[] = [];
   selectedClientType: ClientType; // No need to initialize here
-  tasks: Task[] = [];
-  selectedTasks: Task[] = [];
+  tasks: RepeatableTask[] = [];
+  selectedTasks: RepeatableTask[] = [];
 
   constructor(
     private clientTypeService: ClientTypeService,
     private primengConfig: PrimeNGConfig,
-    private taskService: TaskService,
+    private taskService: RepeatableTaskService,
     private confirmationService: ConfirmationService // private location:Location
   ) {}
 
@@ -114,7 +116,7 @@ export class ClientTypeComponent implements OnInit {
   }
 
   loadAllTasks(): void {
-    this.taskService.getAllTasks().subscribe((tasks) => {
+    this.taskService.getAllRepeatableTasks().subscribe((tasks) => {
       this.tasks = tasks;
       console.log(JSON.stringify(this.tasks));
     });
@@ -131,7 +133,7 @@ export class ClientTypeComponent implements OnInit {
     this.selectedTasks = []; // Clear existing tasks
     if (this.selectedClientType && this.selectedClientType.tasks) {
       for (const taskId of this.selectedClientType.tasks) {
-        this.filterTask(taskId);
+        this.filterTask(taskId._id);
       }
     }
     console.log(JSON.stringify(this.selectedTasks));

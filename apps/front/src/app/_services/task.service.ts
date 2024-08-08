@@ -25,6 +25,13 @@ export class TaskService {
       );
   }
 
+  // createTaskForSomeClients( clientIds: string [],Task: Task): Observable<Task> {
+  //   return this.http.post<Task>(`${this.apiUrl}/${clientIds}`, Task, this.httpOptions)
+  //     .pipe(
+  //       catchError(this.handleError<Task>('createTaskForClients'))
+  //     );
+  // }
+
   // Get all Tasks
   getAllTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(`${this.apiUrl+'/findAll'}`)

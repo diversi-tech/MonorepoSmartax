@@ -111,7 +111,9 @@ export const routes: Routes = [
   { path: 'mod', component: BoardModeratorComponent, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' } },
   // { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'מנהל', icon: icons.admin } },
   { path: 'tasks', component: TaskManagementComponent, children: [{ path: 'task-in-list', component: TaskInListComponent }], canActivate: [AuthGuard], data: { authType: 6, forToolbar: true, label: 'משימות', icon: icons.tasks } },
-  { path: 'taskSpe/:id', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
+  { path: 'taskSpe/:id/:clientIds', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
+  { path: 'taskSpe/:id', component: TaskComponent },
+  // { path: 'taskSpe/:clientIds', component: TaskComponent },//, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
   // { path: 'taskRpe', component: TaskRepeatableListComponent },
 
   { path: 'forget-password', component: ForgotPasswordComponent, data: { authType: 6, forToolbar: false, label: 'שכחתי סיסמה', icon: '' } },
