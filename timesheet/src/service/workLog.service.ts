@@ -126,19 +126,21 @@ export class WorkLogService {
     // חישוב סך השעות ומספר הימים בחודש
     let totalHoursWorked = 0;
     const daysWorked = new Set(); // Set כדי למנוע ימים כפולים חישוב מספר הימים שעבד העובד
+
     workLogs.forEach((log) => {
       log.timeEntries.forEach((entry) => {
         totalHoursWorked += entry.hoursWorked;
         daysWorked.add(log.date.getDate());
       });
     });
-    const summaryRow = worksheet.addRow({
+    const summaryRow = worksheet.addRow({ 
       employeeId: 'כלל השעות שעבד העובד בחודש',
       date: '',
       checkIn: '',
       checkOut: '',
       hoursWorked: totalHoursWorked.toFixed(2), // מעגל את המשתנה
     });
+
     // סגנון עבור שורת הסיכום
     summaryRow.eachCell((cell) => {
       cell.fill = {
@@ -150,13 +152,14 @@ export class WorkLogService {
         bold: true, // טקסט מודגש
       };
     });
-    const summaryRow2 = worksheet.addRow({
+
+    const summaryRow2 = worksheet.addRow({ 
       employeeId: 'מספר הימים שעבד העובד בחודש',
       date: '',
       checkIn: '',
       checkOut: '',
       hoursWorked: daysWorked.size, // עבודה הוא עבד
-    });
+    }); 
     summaryRow2.eachCell((cell) => {
       cell.fill = {
         type: 'pattern',
@@ -166,6 +169,6 @@ export class WorkLogService {
       cell.font = {
         bold: true, // טקסט מודגש
       };
-    });
+    }); 
       }
 }

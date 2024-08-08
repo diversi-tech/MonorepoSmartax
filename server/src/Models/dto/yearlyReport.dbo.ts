@@ -16,7 +16,7 @@ export class CreateYearlyReportDto {
     @Prop()
     @ApiProperty({ type: [String], example: ['assignee1', 'assignee2'] })
     @IsNotEmpty()
-    assignee: string[];
+    assignee?: string[];
 
     @Prop()
     @ApiProperty({ example: 'employee_id_example' })
@@ -67,6 +67,11 @@ export class CreateYearlyReportDto {
 }
 
 export class UpdateYearlyReportDto {
+    
+    @Prop()
+    @ApiProperty({ example: '_id' })
+    @IsNotEmpty()
+    _id: string;
 
     @Prop()
     @ApiProperty({ example: 'user_id_example' })

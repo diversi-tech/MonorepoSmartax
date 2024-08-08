@@ -1,22 +1,31 @@
 <router-outlet></router-outlet>
 
 <br><br>
-<button pButton  (click)="createReprtTag()" label="יצירת דוח שנתי חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
-<button pButton  *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי" class= "p-button-text p-button-raised p-button-rounded"></button >
-<button pButton  *ngIf="isSelected == 2" (click)="onSelectionChange(5)" label="ללא מיון" class= "p-button-text p-button-raised p-button-rounded"></button >
-<button pButton  *ngIf="is == 2" (click)="filterToDoWithBalanceDue()" label="TO DO סנן לפי סכום ששלום ו" class= "p-button-text p-button-raised p-button-rounded"></button>
-<button pButton  *ngIf="is != 2" (click)="filterToDoWithBalanceDue2()" label="ללא סינון" class= "p-button-text p-button-raised p-button-rounded"></button>
-<p-table [value]="isSelected != 1 && isSelected != 0 ?filterallYearlyReport :allYearlyReport " [tableStyle]="{ 'width': '68em' }">
+<button pButton (click)="createReprtTag()" label="יצירת דוח שנתי חדש"
+    class="p-button-text p-button-raised p-button-rounded"></button>
+<button pButton *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי"
+    class="p-button-text p-button-raised p-button-rounded"></button>
+<button pButton *ngIf="isSelected == 2" (click)="onSelectionChange(5)" label="ללא מיון"
+    class="p-button-text p-button-raised p-button-rounded"></button>
+<button pButton *ngIf="is == 2" (click)="filterToDoWithBalanceDue()" label="TO DO סנן לפי סכום ששלום ו"
+    class="p-button-text p-button-raised p-button-rounded"></button>
+<button pButton *ngIf="is != 2" (click)="filterToDoWithBalanceDue2()" label="ללא סינון"
+    class="p-button-text p-button-raised p-button-rounded"></button>
+<p-table [value]="isSelected != 1 && isSelected != 0 ?filterallYearlyReport :allYearlyReport "
+    [tableStyle]="{ 'width': '68em' }">
     <ng-template pTemplate="header" let-columns>
         <tr>
             <th></th>
+
+            <th></th>
             <th>סטטוס
                 <div>
-                    <select *ngIf="isSelected == 2" [(ngModel)]="selectedStatus" (change)="filterByStatus($event)">
-                      <option>TO DO</option>
-                      <option>IN PROGRESS</option>
+                    <select *ngIf="isSelected == 2" [(ngModel)]="selectedStatus" (change)="filterByStatus($event)"
+                        class="myInput">
+                        <option>TO DO</option>
+                        <option>IN PROGRESS</option>
                     </select>
-                  </div>   
+                </div>
             </th>
             <th>ישות</th>
             <th>עובד מטפל</th>
@@ -26,13 +35,13 @@
                 מחיר <p-sortIcon field="price" />
             </th>
             <th>תאריך יצירה</th>
-
             <th pSortableColumn="yearReport" class="sort">
                 :שנה <p-sortIcon field="yearReport" />
             </th>
-            <th>שם לקוח</th>
-
+            <th>שם לקוח
+            </th>
             <th></th>
+            
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-yearlyReport>
@@ -45,7 +54,11 @@
                 tooltipPosition="bottom"
                     (click)="goToSteps(yearlyReport)"></button>
             </td>
-            <td class="{{yearlyReport.status.color}}">{{yearlyReport.status.name}}</td>
+            <td> <button *ngIf="currentYearlyReport === yearlyReport" pButton
+                    class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
+                    (click)="showDeleteConfirmation(yearlyReport._id)"></button>
+            </td>
+            <td class="{{yearlyReport.status?.color}}">{{yearlyReport.status?.name}}</td>
             <td>{{yearlyReport.entityType}}</td>
             <td>{{getEmployeName(yearlyReport.idEmploye)?.userName }}</td>
             <td>{{ yearlyReport.balanceDue }}</td>
@@ -53,11 +66,9 @@
             <td>{{ yearlyReport.price }}</td>
             <td>{{ yearlyReport.dateTime | date:'dd/MM/yyyy' }}</td>
             <td>{{ yearlyReport.yearReport }}</td>
-
-            <td>{{ getClientName(yearlyReport.idUser) }} </td>
-            <app-icon-profile
-            [userName]="getClientName(yearlyReport.idClient)"
-            style="width: 50px;"></app-icon-profile>
+            <td>{{ getClientName(yearlyReport.idClient) }} </td>
+            <app-icon-profile [userName]="getClientName(yearlyReport.idClient)" style="width: 50px;">
+            </app-icon-profile>
         </tr>
     </ng-template>
 </p-table>

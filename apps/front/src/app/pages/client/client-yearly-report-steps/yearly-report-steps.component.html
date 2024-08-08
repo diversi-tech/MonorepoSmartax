@@ -17,12 +17,14 @@
     <ng-container *ngFor="let stepNumber of stepNumbers">
       <p-stepperPanel>
         <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
-          <button  class="myButon" (click)="onClick.emit()">
+          <button  class="p-stepper-action bg-transparent gap-2" (click)="onClick.emit()">
             <span class="p-stepper-number"
-              [ngClass]="{'beginned': isStepBeginned(stepNumber), 'completed': isStepComplete(stepNumber),'notstarted':! isStepBeginned(stepNumber)&&!isStepComplete(stepNumber),'current-step': active+1 === stepNumber}">{{stepNumber}}</span>
+              [ngClass]="{'beginned': isStepBeginned(stepNumber),
+                           'completed': isStepComplete(stepNumber),
+                           'notstarted':! isStepBeginned(stepNumber)&&!isStepComplete(stepNumber),
+                           'current-step': active+1 === stepNumber}">{{stepNumber}}</span>
           </button>
         </ng-template>
-
         <ng-template pTemplate="content" let-nextCallback="nextCallback">
           <div class="flex flex-column h-12rem">
             <div

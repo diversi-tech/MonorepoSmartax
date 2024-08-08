@@ -21,6 +21,18 @@ body {
   width: 100%;
   z-index: 1000;
 }
+
+:host ::ng-deep .container{
+  max-width: 11040px;
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  /* display: flex;
+  justify-content: center;
+  min-width: 10rem; */
+}
+
 /* menu-items */
 ::ng-deep .p-menu .p-menuitem-link {
   text-decoration: none;
