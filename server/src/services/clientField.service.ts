@@ -4,7 +4,7 @@ import { ClientField } from '../Models/clientField.model';
 import { Client } from '../Models/client.model';
 import { ClientType } from '../Models/clientType.model';
 import { Model, Types } from 'mongoose';
-import { CreateClientFieldDto } from '../Models/dto/clientField.dto';
+import { CreateClientFieldDto, UpdateClientFieldDto } from '../Models/dto/clientField.dto';
 import { ValidationException } from '../common/exceptions/validation.exception';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class ClientFieldService {
         ccf.save();
         console.log("V2");      
           
-        {client.clientFields.push( ccf?._id!);}
+       {client.clientFields.push( String(ccf._id));}
 
         console.log("ccf: "+ ccf);
 
@@ -70,6 +70,23 @@ export class ClientFieldService {
 
     return clientFields;
   }
+
+  async searchClientField(id:string): Promise<ClientField> {
+    const clientField = await this.clientFieldModel.findOne({"_id":id}).exec();
+    if (!clientField) {
+        throw new NotFoundException('ClientFiels not found');
+      }
+      return clientField;
+}
+
+async updateClientField(id: string, updateClientFieldDto: UpdateClientFieldDto): Promise<ClientField> {
+  try {
+    console.log("in back - service" + id);
+    return this.clientFieldModel.findByIdAndUpdate(id, updateClientFieldDto, { new: true }).exec();
+  } catch (err) {
+    console.log(err);
+  }
+}
 
     async getALLClientFields(): Promise<ClientField[]> {
       return await this.clientFieldModel.find().exec();

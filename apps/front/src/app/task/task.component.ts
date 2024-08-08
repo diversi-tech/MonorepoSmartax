@@ -567,7 +567,7 @@ export class TaskComponent implements OnInit {
     // newTask.checkList = this.currentTask.checkList;
     console.log(this.eventId);
 
-    if (this.id == 'create' || (this.create == null || this.create == true)) {
+    if (this.id == 'create' || this.clientIdsParam ||(this.create == null || this.create == true)) {
       this.tasksService.createTask(newTask).subscribe({
         next: (task) => {
           console.log(task);

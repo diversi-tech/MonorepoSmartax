@@ -123,10 +123,10 @@ export class ClientService {
   ): Promise<Client> {
     try {
 
-      const existingClient = await this.clientModel.findOne({ tz: updateClientDto.tz }).exec();
-      if (existingClient) {
-        throw new Error('Client with this ID already exists.');
-      }
+      // const existingClient = await this.clientModel.findOne({ tz: updateClientDto.tz }).exec();
+      // if (existingClient) {
+      //   throw new Error('Client with this ID already exists.');
+      // }
       const updatedClient = await this.clientModel
         .findByIdAndUpdate(id, updateClientDto, { new: true })
         .exec();

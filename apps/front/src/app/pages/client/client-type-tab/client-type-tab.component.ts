@@ -52,6 +52,7 @@ export class ClientTypeTabComponent {
 
   onClientSelected(client: Client): void {
     console.log('Selected Client:', client);
+    this.thisClient = client
     this.getAllCFields();
 
   }
@@ -62,21 +63,17 @@ export class ClientTypeTabComponent {
     this.clientFieldId = this.thisClient.clientFields
 
     this.clientFieldId.forEach(cf => {
-      console.log("in foreach");
-      console.log(cf);
+      console.log("in foreach: " + cf);
+      if (cf != null){
       this.clientFieldService.searchClientField(cf).subscribe(
         {
           next: (data) => {
-            let x: ClientField
-            if (typeof (data) == typeof (x)&&data!=undefined) {
               this.CFields.push(data)
-
-            }
-            else{
-            }
+              console.log(this.CFields);
+            
           }
         }
-      )
+      )}
     });
   }
 

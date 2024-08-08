@@ -48,11 +48,13 @@ export class ClientFieldService {
 
   // Update an existing ClientField
   updateClientField(clientField: ClientField): Observable<ClientField> {
-    return this.http.put<ClientField>(`${this.apiUrl}`, clientField, this.httpOptions)
-      .pipe(
-        catchError(this.handleError<ClientField>('updateClientField'))
-      );
-  }
+    try {
+        const res = this.http.put<ClientField>(`${this.apiUrl}/${clientField._id}`, clientField)
+        return res
+    } catch (err) {
+        console.log(err);
+    }
+}
 
   // Delete a ClientField by ID
   deleteClientField(id: string): Observable<boolean> {

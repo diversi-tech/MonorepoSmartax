@@ -1,11 +1,12 @@
-import { Controller, Post, Body, Get, ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Post, Body, Get, ValidationPipe, HttpException, HttpStatus, Put, Param } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ClientField } from 'server/src/Models/clientField.model';
-import { CreateClientFieldDto } from 'server/src/Models/dto/clientField.dto';
+import { CreateClientFieldDto, UpdateClientFieldDto } from 'server/src/Models/dto/clientField.dto';
 import { ClientFieldService } from 'server/src/services/clientField.service';
 
 @ApiTags('ClientField')
 @Controller('ClientField')
+@ApiBearerAuth()
 export class ClientFieldController {
   constructor(private clientFieldService: ClientFieldService) {}
 
@@ -38,6 +39,22 @@ export class ClientFieldController {
     return this.clientFieldService.createClientFieldsByClientType( body.clientTypeId, body.clientId);
   }
 
+  @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })
+  @Post('searchClientField')
+  async searchClientField(@Body(new ValidationPipe()) body: { "id": string }): Promise<ClientField> {
+    return await this.clientFieldService.searchClientField(body.id);
+  }
+
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() updateClientFieldDto: UpdateClientFieldDto): Promise<ClientField> {
+    try {
+      return this.clientFieldService.updateClientField(id, updateClientFieldDto);
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+  
   @Get()
   async getAllClientType(): Promise<ClientField[]> {
       return await this.clientFieldService.getALLClientFields();

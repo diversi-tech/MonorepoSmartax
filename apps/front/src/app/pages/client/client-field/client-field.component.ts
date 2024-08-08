@@ -26,20 +26,15 @@ export class ClientFieldComponent implements OnInit {
   constructor(private fb: FormBuilder, private clientFieldService: ClientFieldService) {}
 
   ngOnInit(): void {
-    alert("this in client field component:"+this.Cfield)
-    alert(this.CId)
     this.form = this.fb.group({
       [this.Cfield.field.key]: ['', Validators.required] // Dynamic form control based on key
     });
   }
 
   onSubmit(): void {
-    const clientField: ClientField = {
-      field: this.Cfield.field,
-      value: this.form.get(this.Cfield.field.key)?.value || ''
-    };
-    
-    this.clientFieldService.updateClientField(clientField ).subscribe(
+    this.Cfield.value = this.form.get(this.Cfield.field.key)?.value || '';
+
+    this.clientFieldService.updateClientField(this.Cfield).subscribe(
       response => {
         console.log('Client field saved:', response);
       },

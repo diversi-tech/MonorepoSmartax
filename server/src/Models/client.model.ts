@@ -16,8 +16,8 @@ export enum ReportType {
 @Schema()
 export class Client extends Document {
   
-  @Prop()
-  _id?:string
+  // @Prop()
+  // _id?:string
   
   @Prop()
   companyName: string;

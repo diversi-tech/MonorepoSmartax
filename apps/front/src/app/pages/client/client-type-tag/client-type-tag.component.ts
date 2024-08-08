@@ -94,52 +94,50 @@ export class ClientTypeTagComponent implements OnInit {
     this.ClientTypesselected.push(ct);
     console.log(this.ClientTypesselected);
     this.showClientTypesList = !this.showClientTypesList;
-
+  
     if (!this.thisClient.clientTypes) {
       this.thisClient.clientTypes = [];
     }
-
+  
     this.thisClient.clientTypes.push(ct);
     console.log(this.thisClient.clientTypes);
-
+  
     // קריאה לפונקציה שיוצרת ClientFields לפי ClientType בשרת
     this.clientFieldService.createClientFieldsByClientType(ct._id, this.thisClient._id).subscribe({
       next: (response) => {
-        console.log( this.thisClient);
-        console.log( this.thisClient._id);
+        console.log(this.thisClient);
+        console.log(this.thisClient._id);
         console.log('ClientFields created by ClientType:', response);
-        //this.thisClient.clientFields = response;
         
-
         const taskPromises = ct.tasks.map((tId) => {
           return new Promise<void>((resolve, reject) => {
-            console.log(String(tId));
+            console.log('Processing task:', tId);
             this.repeatableTaskService.searchRepeatableTask(String(tId)).subscribe({
               next: (repeatableTask) => {
                 console.log('repeatableTask: ', repeatableTask);
-                const newRtask = repeatableTask;
-                newRtask.client = this.thisClient;
+                const newRtask = { ...repeatableTask, client: this.thisClient }; // יצירת אובייקט חדש עם client מעודכן
                 this.repeatableTaskService.createRepeatableTask(newRtask).subscribe({
                   next: (newRepeatableTask) => {
                     console.log('newRepeatableTask created: ', newRepeatableTask);
                     resolve();
                   },
                   error: (err) => {
-                    console.error('Failed:', err);
+                    console.error('Failed to create new repeatable task:', err);
                     reject(err);
                   }
                 });
               },
               error: (err) => {
-                console.error('Failed:', err);
+                console.error('Failed to search repeatable task:', err);
                 reject(err);
               }
             });
           });
         });
-
+  
         Promise.all(taskPromises)
           .then(() => {
+            console.log('All tasks processed successfully');
             this.clientService.updateClient(this.thisClient).subscribe({
               next: (updatedClient) => {
                 console.log('Client updated:', updatedClient);
@@ -159,7 +157,7 @@ export class ClientTypeTagComponent implements OnInit {
       }
     });
   }
-
+  
 
   getColor(name: string): string {
     if (!name) {
