@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Post, Put, UseFilters, ValidationPipe } from "@nestjs/common";
-import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
 import { HttpExceptionFilter } from "server/src/common/filters/http-exception.filter";
 import { CreatefrequencyDto, UpdatefrequencyDto } from "server/src/Models/dto/frequency.dto";
 import { Frequency } from "server/src/Models/frequency.model";
@@ -8,6 +8,7 @@ import { FrequencyService } from "server/src/services/frequency.service"
 @ApiTags('Frequency')
 @Controller('Frequency')
 @UseFilters(HttpExceptionFilter) 
+@ApiBearerAuth()
 export class FrequencyController {
 
     constructor(private readonly FrequencyService: FrequencyService) { }

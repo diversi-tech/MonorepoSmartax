@@ -210,7 +210,7 @@ export class TaskComponent implements OnInit {
     if (clientIdsString) {
       this.clientIdsParam = clientIdsString.split(',');
     }
-    this.clientIdsParam.forEach(clientId => {
+    this.clientIdsParam?.forEach(clientId => {
       this.clientService.searchClient(clientId).subscribe({
         next: (client: Client) => {
           this.selectedClients.push(client);
@@ -237,7 +237,7 @@ export class TaskComponent implements OnInit {
         next: (data) => {
 
           this.currentTask = data;
-          this.subTasks = this.currentTask.subTasks
+          this.subTasks = this.currentTask.subTasks!||null
           this.selectStatus = this.currentTask.status;
           this.selectedPriority = this.currentTask.priority;
           // this.selectedClient = this.currentTask.client;
@@ -261,7 +261,6 @@ export class TaskComponent implements OnInit {
           this.selectedTags = this.currentTask.tags;
           this.eventId = this.currentTask.googleId;
           this.currentTask.checkList?.forEach((listId: string) => {
-
             this.checkListServise.getCheckLists(listId).subscribe((data: CheckList) => {
               this.checkList.push(data);
             });
@@ -406,7 +405,7 @@ export class TaskComponent implements OnInit {
   }
 
   notInThisTask(id: string) {
-    this.currentTask.checkList.forEach(item => {
+    this.currentTask.checkList!.forEach(item => {
       if (item === id)
         return false
     })
@@ -546,21 +545,7 @@ export class TaskComponent implements OnInit {
   //functions
   save() {
 
-    const newTask: Task = {
-      // client: this.selectedClient,
-      // client: this.selectedClients,
-      // description: this.htmlContent,
-      // status: this.selectStatus,
-      // tags: this.buttons,
-      // // assignedTo: this.selectedUser,
-      // assignedTo: this.selectedUsers,
-      // taskName: this.taskName,
-      // deadline: this.rangeDates[1]!,
-      // startDate: this.rangeDates[0]!,
-      // images: this.images,
-      // priority: this.selectedPriority,
-      // dueDate: this.currentTask.dueDate!,
-    };
+    const newTask: Task = {};
 
     if (this.selectedClients) newTask.client = this.selectedClient;
     if (this.htmlContent) newTask.description = this.htmlContent;
@@ -747,7 +732,8 @@ export class TaskComponent implements OnInit {
       let l: CheckList = { name: this.newListName, items: [] }
       this.checkListServise.createCheckList(l).subscribe({
         next: (newList) => {
-          this.currentTask.checkList.push(newList._id)
+          this.currentTask.checkList?.push(newList._id)
+          if(!this.currentTask.checkList) this.currentTask.checkList=[newList._id]
           this.checkList.push(newList)
           this.save()
         },

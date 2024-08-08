@@ -1,10 +1,12 @@
-<!-- ===================== -->
 <div style="margin-top: 10%" id="container">
+
   <p-card header="משימה" subheader="ליצור ולערוך משימות" [style]="{ width: '800px' }">
-    <app-timer *ngIf="id != 'create'" [taskId]="id"></app-timer>
-    <ng-template pTemplate="header">
-      <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
-    </ng-template>
+
+    <app-timer *ngIf="id != 'create'" [taskId]="id" style="display: inline-block;"></app-timer>
+
+    <!-- all task detatails without timer -->
+    <div> 
+
     <!-- Task Name -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
@@ -18,7 +20,7 @@
       </div>
     </div>
     <br />
-    <!--  -->
+
     <!-- Select User -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%">
@@ -55,6 +57,7 @@
       </p-multiSelect>
     </div>
 
+    <!-- status -->
     <br />
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
@@ -78,6 +81,7 @@
         </p-inputGroup>
       </div>
     </div>
+
     <!-- pop -->
     <form [formGroup]="formGroupStatus" *ngIf="showStatus">
       <br /><br />
@@ -101,6 +105,7 @@
       </div>
     </form>
     <br />
+
     <!-- Priority  -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
@@ -115,6 +120,7 @@
         </p-inputGroup>
       </div>
     </div>
+
     <!-- pop -->
     <form [formGroup]="formGroupStatus" *ngIf="showPriority">
       <br /><br />
@@ -134,6 +140,7 @@
       </div>
     </form>
     <br /><br />
+
     <!-- Tags -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
@@ -163,6 +170,7 @@
       </div>
     </div>
     <br /><br />
+
     <!-- pop -->
     <form [formGroup]="formGroupUser" *ngIf="showTagsList">
       <p-listbox [options]="tags!" [filter]="true" formControlName="selectedUser" optionLabel="text"
@@ -182,7 +190,8 @@
         </ng-template>
       </p-listbox>
     </form>
-    <!--  -->
+
+    <!-- tags -->
     <div style="width: 40%" *ngIf="showTags">
       <p>בחירת צבע:</p>
       <p-colorPicker [(ngModel)]="selectedColor" [style]="{ width: '250px' }" [inline]="true"></p-colorPicker>
@@ -204,6 +213,7 @@
         </div>
       </p-inputGroup>
     </div>
+
     <!-- Dates -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
@@ -219,6 +229,7 @@
       </div>
     </div>
     <br /><br />
+
     <!-- Client -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
@@ -272,6 +283,7 @@
         </p-multiSelect>
       </div>
     </div>
+
     <!-- pop -->
     <form [formGroup]="formGroupClient" *ngIf="showClients">
       <br /><br />
@@ -294,6 +306,7 @@
       </p-listbox>
     </form>
     <br /><br />
+
     <!-- description -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
@@ -308,11 +321,13 @@
       </div>
     </div>
     <br /><br />
+
     <!-- pop -->
     <app-editor *ngIf="showDescription && !currentTask" [initialContent]="htmlContent"
       (contentChange)="onContentChange($event)"></app-editor>
     <app-editor *ngIf="showDescription && currentTask" [initialContent]="currentTask!.description"
       (contentChange)="onContentChange($event)"></app-editor>
+
     <!-- upload doc -->
     <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
@@ -326,10 +341,12 @@
         </p-inputGroup>
       </div>
     </div>
+
     <!-- array id -->
     <app-upload-doc-task *ngIf="showDoc" [idClient]="selectedClients[0] && selectedClients[0]._id"
       (responseReceived)="handleResponse($event)">
     </app-upload-doc-task>
+    
     <!-- drive image -->
     <div *ngFor="let image of images">
       <a [href]="image" download="{{ image }}">{{ image }}
@@ -387,7 +404,7 @@
 
         <p-tabPanel header="משימות משניות">
           <div>
-            <!-- <app-sub-task [subTasks]="subTasks" [parentId]="id"></app-sub-task> -->
+            <app-sub-task [subTasks]="subTasks" [parentId]="id"></app-sub-task>
           </div>
         </p-tabPanel>
 
@@ -405,6 +422,7 @@
       </div>
     </ng-template>
 
+    </div>
 
 
   </p-card>

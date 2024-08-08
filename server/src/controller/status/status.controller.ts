@@ -4,7 +4,7 @@ import { HttpExceptionFilter } from '../../common/filters/http-exception.filter'
 import { Client } from 'server/src/Models/client.model';
 import { CreateClientDto, UpdateClientDto } from 'server/src/Models/dto/client.dto';
 import { ClientService } from 'server/src/services/client.service';
-import {  ApiOperation ,ApiBody, ApiProperty, ApiTags} from '@nestjs/swagger';
+import {  ApiOperation ,ApiBody, ApiProperty, ApiTags, ApiBearerAuth} from '@nestjs/swagger';
 import { StatusService } from '../../services/status.service';
 import { CreateStatusDto, UpdateStatusDto } from '../../Models/dto/status.dto';
 import { Status } from '../../Models/status.model';
@@ -12,6 +12,7 @@ import { Status } from '../../Models/status.model';
 @ApiTags('Status')
 @Controller('Status')
 @UseFilters(HttpExceptionFilter) 
+@ApiBearerAuth()
 export class StatusController {
 
     constructor(private readonly StatusService: StatusService) { }

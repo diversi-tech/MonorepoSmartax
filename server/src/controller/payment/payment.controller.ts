@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters, ValidationPipe } from "@nestjs/common";
-import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
 import { HttpExceptionFilter } from "server/src/common/filters/http-exception.filter";
 import { CreateBillingDto } from "server/src/Models/dto/billing.dto";
 import { CreatePaymentDto, UpdatePaymentDto } from "server/src/Models/dto/payment.dto";
@@ -10,6 +10,7 @@ import { PaymentService } from "server/src/services/payment.service";
 @ApiTags('Payment')
 @Controller('Payment')
 @UseFilters(HttpExceptionFilter)
+@ApiBearerAuth()
 export class PaymentController {
 
   constructor(private readonly PaymentService: PaymentService) { }

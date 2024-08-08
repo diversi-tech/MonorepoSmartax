@@ -3,7 +3,7 @@ import { Controller, Post, UploadedFile, UseInterceptors, Body, Get, Param, Res,
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GoogleDriveService } from '../../services/google-drive.service';
 import { diskStorage } from 'multer';
-import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
 import { Response } from 'express';
 import { HttpErrorFilter } from '../../common/filters/http-error.filter';
@@ -13,6 +13,7 @@ import { DocType } from 'server/src/Models/docType.model';
 @ApiTags('docs')
 @Controller('docs')
 @UseFilters(HttpErrorFilter) 
+@ApiBearerAuth()
 export class GoogleDriveController {
   constructor(private readonly googleDriveService: GoogleDriveService) { }
   @Post()

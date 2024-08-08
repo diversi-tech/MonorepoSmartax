@@ -4,7 +4,7 @@ import { HttpExceptionFilter } from '../../common/filters/http-exception.filter'
 import { Client } from 'server/src/Models/client.model';
 import { CreateClientDto, UpdateClientDto } from '../../Models/dto/client.dto';
 import { ClientService } from 'server/src/services/client.service';
-import {  ApiOperation ,ApiBody, ApiProperty, ApiTags} from '@nestjs/swagger';
+import {  ApiOperation ,ApiBody, ApiProperty, ApiTags, ApiBearerAuth} from '@nestjs/swagger';
 import { PriorityService } from '../../services/priority.service';
 import { CreatePriorityDto ,UpdatePriorityDto } from 'server/src/Models/dto/priority.dto';
 import { Priority } from 'server/src/Models/priority.model';
@@ -12,6 +12,7 @@ import { Priority } from 'server/src/Models/priority.model';
 @ApiTags('Priority')
 @Controller('Priority')
 @UseFilters(HttpExceptionFilter) 
+@ApiBearerAuth()
 export class PriorityController {
 
     constructor(private readonly PriorityService: PriorityService) { }

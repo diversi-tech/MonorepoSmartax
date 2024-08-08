@@ -49,29 +49,8 @@ import { PaymentComponent } from './pages/client/payment/payment.component';
 import { TaskRepeatableListComponent } from './task-repeatable-list/task-repeatable-list.component';
 import { TypeClientCreateComponent } from './pages/client/type-client-edit-create/type-client-create.component';
 import { AddClientComponent } from './pages/client/add-client/add-client.component';
-
 import { TaxRefundsStepsComponent } from './pages/client/tax-refunds-steps/tax-refunds-steps.component';
-// import { MeetComponent } from './meet/meet.component';
-// import { TaskInListComponent } from './task-in-list/task-in-list.component';
-// import { CalendarComponent } from './calendar/calendar.component';
-// import { icons } from './icons';
 import { customfieldComponent } from './custom-field/custom-field.component';
-// Example of navigation in the application
-// Parameters:
-// - path: The navigation path in the application
-// - component: The component that will be displayed when navigating to this path
-// - data: Additional information for the navigation, including the type of authorization, whether it should be displayed in the toolbar, the label name, and icon
-// {
-//   path: 'home',
-//   component: HomeComponent,
-//   data: {
-//     authType: 10, // Authorization type: 10
-//     forToolbar: false, // Display in the toolbar: No
-//     label: 'Home', // Label name: 'Home'
-//     icon: 'home' // Icon: 'home'
-//   }
-//for toolBar
-//dashboard, clients, tasks, payments, sessions, reports, users, schedule
 import { FieldManagementComponent } from './pages/fieldManagement/fieldManagement.component';
 import { EditClientYearlyReportComponent } from './pages/Manager/edit-client-yearly-report/edit-client-yearly-report.component';
 import { ManagerNavbarComponent } from './pages/Manager/edit-client-yearly-report/manager-navbar/manager-navbar.component';
@@ -92,10 +71,7 @@ import { AddMorePaymentDetailsComponent } from './pages/client/addMorePaymentDet
 import { ClientCreateFinancialStatementComponent } from './pages/client/client-create-financialStatement/client-create-financial-statement.component';
 import { FinancialStatementStepsComponent } from './pages/client/client-financial-statement-steps/financial-statement-steps.component';
 import { CreateMonthlyReportComponent } from './pages/client/client-create-monthly-report/create-monthly-report.component';
-// import * as path from 'path';
-// import * as path from 'path';
 
-//
 export const routes: Routes = [
   {
     path: 'manager', component: ManagerNavbarComponent, data: { authType: 3, forToolbar: true, icon: icons.manager, label: "מנהל" },
@@ -358,9 +334,7 @@ export const routes: Routes = [
       { path: 'createFinancialStatement', component: ClientCreateFinancialStatementComponent },
     ]
   },
-]
-  ;
-
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

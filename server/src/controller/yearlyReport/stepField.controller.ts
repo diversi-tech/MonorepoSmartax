@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, UseFilters } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
 import { CreateStepFieldDto, UpdateStepFieldDto } from "server/src/Models/dto/stepField.dto";
 import { StepField, stepFieldModel} from "server/src/Models/stepField.model";
@@ -11,6 +11,7 @@ import { StepFieldService } from "server/src/services/stepField.service";
 @ApiTags('step-field')
 @Controller('step-field')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class StepFieldController{
     constructor(private readonly stepFieldService: StepFieldService) { }
 
