@@ -24,8 +24,8 @@ export class TableComponent implements OnInit {
   tables: any = [];
   tablesNames: string[] = [];
   fieldsNames: string[] = [];
-  selectedValues: { [key: string]: any } = {};//המערך שנבחר
-  tableWithFields: { [key: string]: any } = {};//מערך של שמות המאפיינים עם הסוגים
+  selectedValues: { [key: string]: any } = {};
+  tableWithFields: { [key: string]: any } = {};
   //
   isShowTable: boolean = false;
   openFields: string[] = []
@@ -69,9 +69,7 @@ export class TableComponent implements OnInit {
   getFieldNames(tableName: string): string[] {
     const props = Object.keys(this.tables[tableName]);
 
-    // Check if the tableName is already in tableWithFields
     if (!this.tableWithFields[tableName]) {
-      // If not, add it with the fields and their types
       this.tableWithFields[tableName] = props.map((prop) => ({
         name: prop,
         type: this.tables[tableName][prop],
@@ -89,7 +87,6 @@ export class TableComponent implements OnInit {
       this.getFieldNames(tableName).forEach(fieldName => {
         const fieldType = this.tables[tableName][fieldName];
 
-        // אם המאפיין הוא סוג של טבלה אחרת, נאתחל את "ילדיו"
         if (this.tablesNames.includes(fieldType)) {
           this.selectedValues[tableName][fieldName] = { children: {} };
         }
@@ -244,43 +241,49 @@ export class TableComponent implements OnInit {
     )
   }
 
+
   generateExcel(data: { [key: string]: any[] }) {
     const workbook = new ExcelJS.Workbook();
-
+  
     for (const tableName in data) {
       if (data.hasOwnProperty(tableName)) {
         const tableData = data[tableName];
         const worksheet = workbook.addWorksheet(tableName, { views: [{ rightToLeft: true }] });
-
-        // הוספת נתונים לגיליון
-        if (tableData.length > 0) {
-          const columns = Object.keys(tableData[0]).map(key => ({ header: key, key }));
-          worksheet.columns = columns;
-
-          tableData.forEach(row => {
-            worksheet.addRow(row);
+  
+        const allKeys = new Set<string>();
+        tableData.forEach(row => {
+          Object.keys(row).forEach(key => allKeys.add(key));
+        });
+  
+        const columns = Array.from(allKeys).map(key => ({ header: key, key }));
+        worksheet.columns = columns;
+  
+        tableData.forEach(row => {
+          const newRow = {};
+          columns.forEach(column => {
+            newRow[column.key] = row[column.key] !== undefined ? row[column.key] : '';
           });
-
-          // הרחבת העמודות באופן אוטומטי לפי התוכן
-          worksheet.columns.forEach(column => {
-            let maxLength = 0;
-            column.eachCell({ includeEmpty: true }, cell => {
-              const columnLength = cell.value ? cell.value.toString().length : 0;
-              if (columnLength > maxLength) {
-                maxLength = columnLength;
-              }
-            });
-            column.width = maxLength + 2;
+          worksheet.addRow(newRow);
+        });
+  
+        worksheet.columns.forEach(column => {
+          let maxLength = 0;
+          column.eachCell({ includeEmpty: true }, cell => {
+            const columnLength = cell.value ? cell.value.toString().length : 0;
+            if (columnLength > maxLength) {
+              maxLength = columnLength;
+            }
           });
-        }
+          column.width = maxLength + 2;
+        });
       }
     }
-
+  
     workbook.xlsx.writeBuffer().then(buffer => {
       this.saveAsExcelFile(buffer, 'נתוני טבלאות');
     });
   }
-
+  
   saveAsExcelFile(buffer: any, fileName: string) {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     saveAs(data, `${fileName}.xlsx`);

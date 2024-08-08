@@ -6,6 +6,7 @@ import { TokenService } from '../_services/token.service';
 import { Button, ButtonDirective } from 'primeng/button';
 import { UserService } from '../_services/user.service';
 import { IconProfileComponent } from '../share/icon-profile/icon-profile.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-timer',
@@ -16,7 +17,7 @@ import { IconProfileComponent } from '../share/icon-profile/icon-profile.compone
 })
 export class TimerComponent implements OnInit, OnDestroy {
 
-  private timerInterval: any;
+  private timerSubscription: Subscription;
   public totalSeconds: number = 0;
   public timerDisplay: string = '00:00:00';
   public isStartDisabled: boolean = true;
@@ -38,23 +39,24 @@ export class TimerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getUserId();
     this.getAllTimer();
+    this.timerSubscription = this.timerService.getTotalSeconds().subscribe(seconds => {
+      this.totalSeconds = seconds;
+      this.updateTimerDisplay();
+      this.isStartDisabled = !this.timerService.isTimerRunning();
+    });
   }
 
   ngOnDestroy(): void {
-    this.clearTimer();
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
   }
 
   getUserId(){
     this.userId=this.tokenService.getCurrentDetail('_id')
   }
 
- clearTimer(): void {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-    }
-  }
-
-  private updateTimerDisplay(): void {
+   updateTimerDisplay(): void {
     const hours = Math.floor(this.totalSeconds / 3600);
     const minutes = Math.floor((this.totalSeconds - hours * 3600) / 60);
     const seconds = this.totalSeconds - (hours * 3600 + minutes * 60);
@@ -62,18 +64,14 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.timerDisplay = `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
   }
 
-  private pad(num: number): string {
+  pad(num: number): string {
     return num < 10 ? '0' + num : num.toString();
   }
 
   showTimer(): void {
-    this.startTimer();
+    this.timerService.startTimer();
     this.isStartDisabled = false;
 }
-
-  public startTimer(): void {
-    this.timerInterval = setInterval(() => this.countUpTimer(), 1000);
-  }
 
   showStart(): void {
     this.saveTimer();
@@ -81,7 +79,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
 
   public saveTimer(): void {
-    this.clearTimer();
+    this.timerService.stopTimer();
 
     const hours = Math.floor(this.totalSeconds / 3600);
     const minutes = Math.floor((this.totalSeconds - hours * 3600) / 60);
@@ -108,14 +106,9 @@ export class TimerComponent implements OnInit, OnDestroy {
     });
   }
 
-  private resetTimer(): void {
-    this.totalSeconds = 0;
+  resetTimer(): void {
+    this.timerService.resetTimer();
     this.timerDisplay = '00:00:00';
-  }
-
-  private countUpTimer(): void {
-    this.totalSeconds++;
-    this.updateTimerDisplay();
   }
 
 updateTotalTime(timer: Timer): void {
