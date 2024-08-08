@@ -45,7 +45,7 @@ export class CreateClientDto {
     @ApiProperty({ type: String ,example: '555-555-5555'})
     @IsNotEmpty()
     @IsString()
-    @IsPhoneNumber('IL', { message: 'phone must be a valid Israeli phone number' })
+    @IsPhoneNumber(null, { message: 'phone must be a valid Israeli phone number' })
     @Length(10, 10, { message: 'phone must be exactly 10 digits' })
     phone: string;
 
@@ -82,7 +82,7 @@ export class CreateClientDto {
     @ApiProperty({ example: 1001 })
     @IsOptional()
     @IsNumber()
-    clientId?: string;
+    clientId?: number;
 
     @ApiProperty({ example: '1969-01-01' })
     @IsDateString()
@@ -229,7 +229,7 @@ export class UpdateClientDto {
     @ApiProperty({ example: 1001 })
     @IsOptional()
     @IsNumber()
-    clientId?: string;
+    clientId?: number;
 
     @ApiProperty({ example: '1969-01-01' })
     @IsOptional()

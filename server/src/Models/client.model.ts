@@ -62,7 +62,7 @@ export class Client extends Document {
   assignTo: User[];
 
   @Prop({ unique: true })
-  clientID: string;
+  clientID: number;
 
   @Prop()
   dateOfBirth: Date;
