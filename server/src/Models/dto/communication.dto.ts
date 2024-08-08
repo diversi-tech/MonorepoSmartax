@@ -70,57 +70,124 @@
 //     id?: string;
 // }
 
+import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { Types } from 'mongoose';
 
 export class CreateCommunicationDto {
+  @ApiProperty({
+    type: String,
+    example: 'client_id_example',
+    description: 'The client ID as a string',
+  })
   @IsString()
   @IsNotEmpty()
   client: string; // ObjectId as string
 
+  @ApiProperty({
+    type: Date,
+    example: new Date(),
+    description: 'The date of the communication',
+  })
   @IsDate()
   @IsNotEmpty()
   date: Date;
 
+  @ApiProperty({
+    type: String,
+    example: 'Meeting',
+    description: 'The subject of the communication',
+  })
+  @IsString()
+  @IsNotEmpty()
+  Subject: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'Discussion summary',
+    description: 'Summary of the communication',
+  })
   @IsString()
   @IsNotEmpty()
   summary: string;
 
+  @ApiProperty({
+    type: String,
+    example: 'user_id_example',
+    description: 'The ID of the user assigned to the communication',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   assignedTo: string | null; // Store SelectItem's value (assumed to be string)
 
+  @ApiProperty({
+    type: Boolean,
+    example: false,
+    description: 'The status of the communication',
+  })
   @IsBoolean()
   @IsNotEmpty()
   Status: boolean;
-
-  @IsString()
-  @IsNotEmpty()
-  Subject: string;
 }
 
 export class UpdateCommunicationDto {
-  @IsString()
-  @IsNotEmpty()
-  client: string; // ObjectId as string
-
-  @IsDate()
-  @IsNotEmpty()
-  date: Date;
-
-  @IsString()
-  @IsNotEmpty()
-  summary: string;
-
+  @ApiProperty({
+    type: String,
+    example: 'client_id_example',
+    description: 'The client ID as a string',
+    required: false,
+  })
   @IsString()
   @IsOptional()
-  assignedTo: string | null; // Store SelectItem's value (assumed to be string)
+  client?: string; // ObjectId as string
 
-  @IsBoolean()
-  @IsNotEmpty()
-  Status: boolean;
+  @ApiProperty({
+    type: Date,
+    example: new Date(),
+    description: 'The date of the communication',
+    required: false,
+  })
+  @IsDate()
+  @IsOptional()
+  date?: Date;
 
+  @ApiProperty({
+    type: String,
+    example: 'Meeting',
+    description: 'The subject of the communication',
+    required: false,
+  })
   @IsString()
-  @IsNotEmpty()
-  Subject: string;
+  @IsOptional()
+  Subject?: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'Discussion summary',
+    description: 'Summary of the communication',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  summary?: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'user_id_example',
+    description: 'The ID of the user assigned to the communication',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  assignedTo?: string | null; // Store SelectItem's value (assumed to be string)
+
+  @ApiProperty({
+    type: Boolean,
+    example: false,
+    description: 'The status of the communication',
+    required: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  Status?: boolean;
 }
