@@ -63,9 +63,10 @@
 // }
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsEmail, IsOptional, MinLength, MaxLength, Matches, IsArray } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, IsOptional, MinLength, MaxLength, Matches, IsArray, ValidateNested } from 'class-validator';
 import { Role } from '../../Models/role.modle';
 import { Client } from '../client.model';
+import { Type } from 'class-transformer';
 
 export class CreateUserDto {
     @ApiProperty({ description: 'The user name' })
@@ -126,11 +127,15 @@ export class UpdateUserDto {
 
     @ApiProperty({ description: 'The role of the user', required: false })
     @IsOptional()
+    @ValidateNested()
+    @Type(() => Role) // מתאר את סוג האובייקט של role
     role?: Role;
 
     @ApiProperty({ description: 'The list of favorite clients', required: false })
     @IsOptional()
     @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => Client) // מתאר את סוג האובייקט של favoritesClient
     favoritesClient?: Client[];
 }
 
