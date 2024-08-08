@@ -3,7 +3,6 @@ import { MonthlyReportService } from '../../../_services/monthlyReport.service';
 import { YearService } from '../../../_services/year.service';
 import { TokenService } from '../../../_services/token.service';
 import { MonthlyReport } from '../../../_models/monthlyReport.module';
-import { Client } from '../../../../../../../server/src/Models/client.model';
 import { stepFieldMonth } from '../../../_models/stepFieldMonth.module';
 import { Year } from '../../../_models/year.module';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
@@ -13,6 +12,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { ClientService } from '../../../_services/client.service';
+import { Client } from '../../../_models/client.module';
 
 @Component({
   selector: 'app-monthly-report',
@@ -60,10 +61,14 @@ export class MonthlyReportComponent implements OnInit {
   report: MonthlyReport;
   currentRoute: string;
   client: Client;
+  clients: { label: string; value: string; }[];
+  // clients:Map<string, string> = new Map();
+  // clients:any={};
   constructor(
     private monthlyReportService: MonthlyReportService,
     private yearService: YearService,
     private tokenService: TokenService,
+    private clientService: ClientService,
     private route: ActivatedRoute
   ) {
     this.currentRoute = this.route.snapshot.url.join('/');
@@ -99,7 +104,8 @@ export class MonthlyReportComponent implements OnInit {
         this.selectedMonth = date.getMonth() + 1;
         this.createdMonth = this.selectedMonth;
         if (this.currentRoute === 'allClientMonthlyReport') {
-          this.getMonthlyReports();          
+          this.loadUsers();    
+          this.getMonthlyReports();
         } else {
           this.getMonthlyReportsForClient();
           if (this.client.reports === 'מדווח חודשי') {
@@ -108,7 +114,7 @@ export class MonthlyReportComponent implements OnInit {
                 (r) =>
                   r.reportDate.getFullYear().toString() ===
                     this.selectedYear.yearNum &&
-                  r.reportDate.getMonth().toString() === this.selectedMonth
+                  (r.reportDate.getMonth()+1).toString() === this.selectedMonth
               )
             )
               this.createMonthlyReport();
@@ -208,18 +214,22 @@ export class MonthlyReportComponent implements OnInit {
         new Date(m.reportDate).getFullYear() === Number(year.yearNum)
     );
   }
-  onSubmit() {
+  onSubmit() { 
+    this.exist=false;
+
+    console.log(this.createdMonth,this.createdYear.yearNum);
+    
     if (
       !this.allMonthlyReports.find(
         (r) =>
-          r.reportDate.getFullYear().toString() === this.selectedYear.yearNum &&
-          r.reportDate.getMonth().toString() === this.selectedMonth
+          new Date( r.reportDate).getFullYear().toString() === this.createdYear.yearNum &&
+        (new Date( r.reportDate).getMonth()+1) === this.createdMonth
       )
     ){
       this.createMonthlyReport();
     }
     else{
-      this.exist=!this.exist
+      this.exist=true
     }
   }
   createMonthlyReport() {
@@ -240,6 +250,7 @@ export class MonthlyReportComponent implements OnInit {
           this.selectedYear = this.createdYear;
           this.selectedMonth = this.createdMonth;
           this.changeDate();
+          this.visible=false;
         },
         error: (error) => {
           console.log(error);
@@ -357,5 +368,18 @@ export class MonthlyReportComponent implements OnInit {
     });
 
     return Array.from(values);
+  }
+
+  private loadUsers(): void {
+    this.clientService.getAllClients()
+      .subscribe((clients: any[]) => {
+        this.clients = clients.map((client:Client) => ({
+          label: client._id,
+          value: `${client.firstName} ${client.lastName}`
+        }));
+      }); 
+    }
+  findClientName(clientId: string): string {
+    return this.clients.find(c=>(c.label === clientId)).value
   }
 }
