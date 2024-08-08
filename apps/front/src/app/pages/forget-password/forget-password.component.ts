@@ -1,3 +1,4 @@
+import { StorageService } from '../../_services/storage.service';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../_services/token.service';
 import { NgIf } from '@angular/common';
@@ -32,9 +33,7 @@ import { Button } from 'primeng/button';
     InputOtpModule,
   ],
 })
-
 export class ForgotPasswordComponent {
-
   visible: boolean = true;
   visible2: boolean = false;
   userEmail: string = ''; // Variable to hold the email entered by user
@@ -46,6 +45,7 @@ export class ForgotPasswordComponent {
   constructor(
     private fb: FormBuilder,
     private forgotService: ForgotPasswordService,
+    private storage: StorageService,
     private tokenService: TokenService,
     private r: Router
   ) {
@@ -72,6 +72,7 @@ export class ForgotPasswordComponent {
             this.visible2 = true;
           },
         });
+        console.log(response);
         this.response = response;
       },
       (error) => {
@@ -83,6 +84,7 @@ export class ForgotPasswordComponent {
           timer: 4000,
           showConfirmButton: false,
         });
+        console.log(error);
       }
     );
     // Optionally, close the dialog
@@ -97,9 +99,25 @@ export class ForgotPasswordComponent {
     if (this.response.password === this.value) {
       this.r.navigate([`/restartPassword/${this.response.email}`]);
     }
-    else {
+    else{
       this.visible2 = false;
       this.r.navigate([`/login`]);
     }
   }
 }
+
+// validateEmail(emailForm: FormGroup): { [key: string]: any } | null {
+//   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+//   const emailControl = emailForm.get('email'); // Assuming the email field name is 'email'
+
+//   if (
+//     emailControl &&
+//     emailControl.value &&
+//     !emailPattern.test(emailControl.value.toLowerCase())
+//   ) {
+//     return { invalidEmail: true };
+//   }
+
+//   return null;
+// }

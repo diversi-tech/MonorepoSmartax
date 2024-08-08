@@ -1,11 +1,12 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { CheckListItem } from "../../Models/checkListItem.model";
 import { CreateCheckListItemDto, UpdateCheckListItemDto } from "../../Models/dto/checkListItem.dto";
 import { CheckListItemService } from "../../services/checkListItem.service";
 
 @ApiTags('CheckListItem')
 @Controller('checkListItem')
+@ApiBearerAuth()
 export class CheckListItemController {
   constructor(private readonly checkListItemService: CheckListItemService) {}
 

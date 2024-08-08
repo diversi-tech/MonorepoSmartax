@@ -1,6 +1,4 @@
 <!-- <h1 (click)="onSelectionChange(1)">רשימת שיחות</h1> -->
-<button pButton label="להוספת שיחה" (click)="displayDialog = true" class= "p-button-text p-button-raised p-button-rounded"></button>
-
 <button pButton *ngIf="isSelected != 2" (click)="onSelectionChange(2)" label="מיין לפי" class= "p-button-text p-button-raised p-button-rounded"></button>
 <button pButton *ngIf="isSelected == 2" (click)="onSelectionChange(1)" label="ללא מיון" class= "p-button-text p-button-raised p-button-rounded"></button>
 
@@ -129,4 +127,3 @@
     </div>
   </p-footer>
 </p-confirmDialog>
-<app-client-add-communication *ngIf="displayDialog" (close)="displayDialog = false"></app-client-add-communication>

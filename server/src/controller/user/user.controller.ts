@@ -1,32 +1,44 @@
 
-import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, Request } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, UseFilters, Request } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBody, ApiQuery, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from '../../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../../Models/dto/user.dto';
 import { User } from 'server/src/Models/user.model';
+// import { HttpErrorFilter } from '../../common/filters/http-error.filter';
+
 import { TokenService } from 'server/src/services/jwt.service';
+import { equals } from 'class-validator';
 import { hashPasswordService } from 'server/src/services/hash-password';
 import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 
 
 @ApiTags('users')
 @Controller('users')
+// @UseFilters(HttpErrorFilter)
+//@UseFilters(ValidationException)
 export class UserController {
 
-  constructor(
-    private readonly userService: UserService,
-    private jwtToken: TokenService,
-    private hashService: hashPasswordService
-  ) { }
+  constructor(private readonly userService: UserService, private jwtToken: TokenService, private hashService: hashPasswordService) { }
 
   @Put('create')
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
   async create(@Body() createUserDto: CreateUserDto): Promise<any> {
+
     try {
       createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
+
       const user = await this.userService.createUser(createUserDto);
+
+      // const response = {
+      //   _id: user._id,
+      //   userName: user.userName,
+      //   email: user.email,
+      //   role: user.role.name
+      // }
+
       return;
+
     } catch (error) {
       throw new HttpException(
         'Failed to create user',
@@ -56,6 +68,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Return the user.' })
   @ApiResponse({ status: 404, description: 'User not found.' })
   async findOne(@Query('id') id: string): Promise<User> {
+
     try {
       const user = await this.userService.findOne(id);
       if (!user) {
@@ -93,6 +106,9 @@ export class UserController {
   @ApiBody({ type: UpdateUserDto })
   async update(@Body() updateUserDto: UpdateUserDto): Promise<User> {
     try {
+      console.log(updateUserDto);
+      console.log(updateUserDto.id);
+      
       const updatedUser = await this.userService.updateUser(updateUserDto.id, updateUserDto);
       if (!updatedUser) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -100,9 +116,10 @@ export class UserController {
       return updatedUser;
     } catch (error) {
       console.log(error);
+      
       throw new HttpException(
         error.message,
-        error.status ? error.status : HttpStatus.INTERNAL_SERVER_ERROR
+        error.status?error.status:HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
   }
@@ -111,6 +128,7 @@ export class UserController {
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiQuery({ name: 'id', required: true, description: 'The ID of the user to find' })
   async delete(@Query('id') id: string): Promise<User> {
+
     try {
       const deletedUser = await this.userService.deleteUser(id);
       if (!deletedUser) {
@@ -150,6 +168,7 @@ export class UserController {
       favoritesClient: user.favoritesClient
     };
     await this.userService.updateUser(user.id, userDto)
+
     try {
       return {
         status: HttpStatus.OK,
@@ -161,5 +180,6 @@ export class UserController {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
   }
+
 }
 

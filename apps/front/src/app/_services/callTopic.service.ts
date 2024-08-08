@@ -13,10 +13,12 @@ export class CallTopicService {
   };
   constructor(private http: HttpClient) {}
 
+  // פונקציה להוספת נתונים
   createCallTopic(callTopic: callTopicSchema): Observable<callTopicSchema> {
     return this.http.post<callTopicSchema>(`${this.apiUrl}`, callTopic, this.httpOptions);
   }
 
+  // פונקציה לקריאת כל הנתונים
   getCallTopics(): Observable<callTopicSchema[]> {
     return this.http.get<callTopicSchema[]>(`${this.apiUrl}`);
   }

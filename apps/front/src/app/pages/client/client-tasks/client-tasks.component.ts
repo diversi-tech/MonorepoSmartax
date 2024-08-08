@@ -18,6 +18,7 @@ import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-client-tasks',
@@ -33,9 +34,9 @@ import { Router } from '@angular/router';
     PanelModule,
     TableModule,
     NgTemplateOutlet,
+    InputTextModule,
   ],
 })
-
 export class ClientTasksComponent implements OnInit {
 
   statuses: Status[] = [];
@@ -92,45 +93,76 @@ export class ClientTasksComponent implements OnInit {
     });
     this.statusService.getAllStatuses().subscribe((data) => {
       this.statuses = data;
+      console.log(this.statuses);
     });
   }
 
 
-  editTask() {
-    this.router.navigate(['/taskSpe', this.currentTask._id]);
-  }
+editTask(){
+  debugger
+  this.router.navigate(['/taskSpe', this.currentTask._id]);
+}
 
   createTask() {
-    this.router.navigate(['/taskSpe', 'create']);
+    this.router.navigate(['/taskSpe', 'create'],{ state: { client: this.client}});
   }
 
 
   getTasks(): void {
+    debugger
+    console.log(this.client._id)
     this.taskService.getTasksByClientId(this.client._id).subscribe(
       (data) => {
+        console.log(data);
         this.tasks = data;
+        console.log("gettasks", this.tasks);
       },
       (error) => {
         console.log('Failed to fetch users:', error);
       })
+    //   this.filteredTasks = this.tasks;
   }
 
 
   categorizeTasks(status: Status): Task[] {
+    console.log(status.name)
+    console.log('Tasks before filtering:', this.tasks); // דוגמה להדפסה לצורך בדיקה
     return this.tasks.filter((task) => {
+      console.log('Task status:', task.status); // הדפסת המצב של המשימה
       return task.status && task.status.name === status.name;
     });
   }
 
+
   searchTask(): void {
+    console.log(typeof this.searchTerm);
+
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
+      alert("לחיפוש משימה אנא הקלידו את שם המשימה")
     } else {
-      this.filteredTasks = this.tasks.filter((task) =>
-        task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
+      this.filteredTasks = [];
+      this.searchTerm.trim()
+      this.searchTerm.toLowerCase()
+      this.tasks.forEach(t => {
+        if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
+          this.filteredTasks.push(t);
+      });
+      if (this.filteredTasks.length == 0) {
+        alert("לא נמצאות משימות בשם זה")
+      }
     }
   }
+
+  // searchTask(): void {
+  //   if (this.searchTerm.trim() === '') {
+  //     this.filteredTasks = [];
+  //   } else {
+  //     this.filteredTasks = this.tasks.filter((task) =>
+  //       task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //     );
+  //   }
+  // }
 
   showConfirmation(): void {
     this.confirmationService.confirm({
@@ -138,9 +170,12 @@ export class ClientTasksComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        console.log('delete start');
         this.deleteTask();
       },
       reject: () => {
+        console.log('cancel start');
+        // Add the code to close the pop-up here
       },
     });
   }
@@ -166,6 +201,7 @@ export class ClientTasksComponent implements OnInit {
   }
 
   toggleFilter(): void {
+    debugger
     this.showFilter = true;
   }
 
@@ -190,7 +226,8 @@ export class ClientTasksComponent implements OnInit {
     this.taskSuggestions = this.tasks
       .filter((task) =>
         task.taskName.toLowerCase().includes(query.toLowerCase())
-      ).map((task) => ({ taskName: task.taskName }));
+      )
+      .map((task) => ({ taskName: task.taskName }));
   }
 
   searchTags(event: any): void {
@@ -198,20 +235,26 @@ export class ClientTasksComponent implements OnInit {
       this.tagSuggestions = tags.filter((tag) =>
         tag['text'].toLowerCase().includes(event.query.toLowerCase())
       );
+      // this.filter.tags = tags;
     });
   }
 
   applyFilter() {
+    this.filteredTasks = []
     this.filteredTasks = this.tasks.filter((task) => {
       this.filterFirstStatus = false;
 
       const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
-
-      const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
+      
+      let clientMatch = false
+      this.clientService.searchClient(task.client).subscribe((response) => {
+        !this.filter.client || response.firstName.includes(this.filter.client.firstName);
+      })
 
       const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
 
       const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
+      
       let tagsMatch = true;
       if (this.filter.tags && this.filter.tags.length > 0) {
         tagsMatch = this.filter.tags.every((filterTag) => {
@@ -220,11 +263,48 @@ export class ClientTasksComponent implements OnInit {
           );
         });
       }
+      // console.log(deadlineMatch, clientMatch, userMatch, taskNameMatch, tagsMatch);
+
       return (
-        deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
+        (deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch)
       );
     });
   }
+  // sort
+  // בקומפוננטה שלך
+  // sortTasks(field: string, list: Task[], reverse: boolean) {
+  //   // debugger
+  //   console.log(this.filteredTasks);
+
+  //   list.sort((a, b) => {
+  //     // כאן אתה יכול להוסיף לוגיקה למיון על פי השדה שנבחר
+  //     if (field === 'taskName') {
+  //       if (reverse) {
+  //         return b.taskName.localeCompare(a.taskName);
+  //       }
+  //       return a.taskName.localeCompare(b.taskName); // מיון לפי שם המשימה
+  //     }
+  //     if (field === 'assignedTo') {
+  //       if (reverse) {
+  //         return b.assignedTo.length - a.assignedTo.length;
+  //       }
+  //       return a.assignedTo.length - b.assignedTo.length; 
+  //     }
+  //     if (field === 'dueDate') {
+  //       if (reverse) {
+  //         return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate();
+  //       }
+  //       return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate(); // מיון לפי תאריך יעד
+  //     }
+  //     if (field === 'tags') {
+  //       if (reverse) {
+  //         return b.tags.length - a.tags.length;
+  //       }
+  //       return a.tags.length - b.tags.length; // מיון לפי מספר התגיות של המשימה
+  //     }
+  //     return 0; // במקרה שלא נמצא שדה תואם
+  //   });
+  // }
 
   sortTasks(field: string, list: Task[], reverse: boolean) {
     list.sort((a, b) => {
@@ -251,6 +331,7 @@ export class ClientTasksComponent implements OnInit {
   }
 
   selectCurrentTask(task: Task) {
+    debugger
     this.currentTask = task;
   }
 }

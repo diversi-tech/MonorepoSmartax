@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+// import { GoogleCalendarService } from '../_services/google-calendar.service';
 
 @Component({
   selector: 'app-calendar-google',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CalendarComponent implements OnInit {
 
+  // constructor(private googleCalendarService: GoogleCalendarService) { }
 
   ngOnInit() {
     // this.googleCalendarService.initClient();

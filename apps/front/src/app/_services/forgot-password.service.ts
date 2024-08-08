@@ -16,7 +16,9 @@ export class ForgotPasswordService {
     return this.http.post(`${this.apiUrl}/login`, { email, password });
   }
 
-  forgotPassword(to: string): Observable<any> {    
+  forgotPassword(to: string): Observable<any> {
+    console.log(to);
+    
     return this.http.post(`${this.apiUrl}/mail/send-email`, { to });
   }
 }

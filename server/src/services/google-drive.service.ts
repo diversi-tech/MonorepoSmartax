@@ -1,3 +1,4 @@
+
 import { Injectable, Logger } from '@nestjs/common';
 import { google } from 'googleapis';
 import { JWT } from 'google-auth-library';
@@ -7,25 +8,31 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Docs } from '../Models/doc.model';
 import { Model } from 'mongoose';
 import { ValidationException } from '../common/exceptions/validation.exception';
-import { Client, ClientModel } from '../Models/client.model';
+import { Client ,ClientModel } from '../Models/client.model';
 import { ClientController } from '../controller/clients/clients.controller';
 import { ClientService } from './client.service';
 import { DocType, docTypeModel } from '../Models/docType.model';
 import { DocTypeService } from './docTypes.service';
+import { UserService } from './user.service';
 
 @Injectable()
 export class GoogleDriveService {
   private drive;
   private auth: JWT;
   private readonly rootFolderId: string = '1iJFMZKQfhdWCTcW6taWqMZ19M9dpKabp';
+
   constructor(
     @InjectModel('Docs') private readonly docModel: Model<Docs>,
     private readonly clientService: ClientService,
+    private readonly userService: UserService,
     private readonly docTypeService: DocTypeService
   ) {
+    const serviceAccount = process.env.SERVICE_ACCOUNT;
+    if (!serviceAccount) {
+      throw new Error('Service account credentials are not set');
+    }
 
-    const keyPath = path.join('service-account.json');
-    const keys = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
+    const keys = JSON.parse(serviceAccount);
 
     this.auth = new google.auth.JWT(
       keys.client_email,
@@ -33,12 +40,20 @@ export class GoogleDriveService {
       keys.private_key,
       ['https://www.googleapis.com/auth/drive']
     );
+
     this.drive = google.drive({ version: 'v3', auth: this.auth });
   }
-  async uploadFile(file: Express.Multer.File, clientId: string, docType: string): Promise<any> {
+  async uploadFile(
+    file: Express.Multer.File,
+    clientId: string,
+    docType: string
+  ): Promise<any> {
     try {
       const client = await this.clientService.searchClient(clientId);
-      const clientfolderId = await this.getOrCreateFolder(client.firstName, this.rootFolderId);
+      const clientfolderId = await this.getOrCreateFolder(
+        client.firstName,
+        this.rootFolderId
+      );
       const folderId = await this.getOrCreateFolder(docType, clientfolderId);
       const response = await this.drive.files.create({
         requestBody: {
@@ -51,22 +66,27 @@ export class GoogleDriveService {
         },
       });
       fs.unlinkSync(file.path);
+      this.setFilePermissionForAllUsers(response.data.id);
       const createdDoc = new this.docModel({
         _id: response.data.id,
         name: response.data.name,
         viewLink: await this.generateViewLink(response.data.id),
         client,
-        status: "uploaded",
+        status: 'uploaded',
         date: Date.now(),
-        DocType: await this.docTypeService.getDocTypeByName(docType)
+        DocType: await this.docTypeService.getDocTypeByName(docType),
       });
       await createdDoc.save();
-      return { fileId: createdDoc._id, viewLink: createdDoc.viewLink }
+      return { fileId: createdDoc._id, viewLink: createdDoc.viewLink };
     } catch (error) {
-      console.error('Error uploading file:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error uploading file:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to upload file');
     }
   }
+
   async generateViewLink(fileId: string): Promise<string> {
     try {
       const response = await this.drive.files.get({
@@ -75,7 +95,10 @@ export class GoogleDriveService {
       });
       return response.data.webViewLink;
     } catch (error) {
-      console.error('Error generating view link:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error generating view link:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to generate view link');
     }
   }
@@ -89,7 +112,9 @@ export class GoogleDriveService {
         fields: 'files(id, name)',
       });
 
-      const folder = response.data.files.find((file) => file.name === folderName);
+      const folder = response.data.files.find(
+        (file) => file.name === folderName
+      );
       if (folder) {
         return folder.id;
       } else {
@@ -107,7 +132,10 @@ export class GoogleDriveService {
         return folderResponse.data.id;
       }
     } catch (error) {
-      console.error('Error in folder creation:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error in folder creation:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to get or create folder');
     }
   }
@@ -119,12 +147,15 @@ export class GoogleDriveService {
         fields: 'mimeType, name',
       });
 
-      const fileStream = await this.drive.files.get({
-        fileId: fileId,
-        alt: 'media',
-      }, {
-        responseType: 'stream'
-      });
+      const fileStream = await this.drive.files.get(
+        {
+          fileId: fileId,
+          alt: 'media',
+        },
+        {
+          responseType: 'stream',
+        }
+      );
 
       return {
         stream: fileStream.data,
@@ -132,7 +163,10 @@ export class GoogleDriveService {
         name: fileResponse.data.name,
       };
     } catch (error) {
-      console.error('Error fetching file:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error fetching file:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to fetch file');
     }
   }
@@ -145,24 +179,40 @@ export class GoogleDriveService {
       );
       return Buffer.from(response.data);
     } catch (error) {
-      console.error('Error downloading file:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error downloading file:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to download file');
     }
   }
+  
   async getLink(clientId: string, fileName: string) {
-    const file = await this.docModel.findOne({ client: clientId, name: fileName }).select('viewLink -_id').lean().exec();
+    const file = await this.docModel
+      .findOne({ client: clientId, name: fileName })
+      .select('viewLink -_id')
+      .lean()
+      .exec();
     if (!file) {
       throw new ValidationException('file not found');
     }
-    return file
+    return file;
   }
+
   async getAllFiles(clientId: string) {
     const file = await this.docModel.find({ client: clientId }).exec();
     if (!file) {
       throw new ValidationException('there is no files for this client');
     }
-    return file
+    return file;
   }
+  async setFilePermissionForAllUsers(fileId: string) {
+    const users = await this.userService.findAll();
+    users.forEach((user) => {
+      this.setFilePermissions(fileId, user.email);
+    });
+  }
+
   async setFilePermissions(fileId: string, userEmail: string): Promise<void> {
     try {
       await this.drive.permissions.create({
@@ -174,16 +224,24 @@ export class GoogleDriveService {
         },
       });
     } catch (error) {
-      console.error('Error setting file permissions:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error setting file permissions:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to set file permissions');
     }
   }
+
   async deleteFile(fileId: string): Promise<void> {
     try {
       await this.drive.files.delete({ fileId });
       await this.docModel.deleteOne({ _id: fileId });
+      console.log(`File with ID ${fileId} deleted successfully.`);
     } catch (error) {
-      console.error('Error deleting file:', error.response ? error.response.data : error.message);
+      console.error(
+        'Error deleting file:',
+        error.response ? error.response.data : error.message
+      );
       throw new Error('Failed to delete file');
     }
   }

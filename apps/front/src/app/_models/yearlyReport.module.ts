@@ -4,7 +4,7 @@ import { StepField } from "./stepField.module";
 export interface YearlyReport {
   _id?: string;
   idClient: string;
-  assignee?: string[];
+  assignee: string[];
   idEmploye: string;
   yearReport: string;
   dateTime: Date;

@@ -44,6 +44,8 @@ export class PaymentDetailsService {
       "dateFinish": dateFinish,
       "description": description
     }
+    console.log(paymentDetails);
+
     return this.http.post(this.apiUrl + "/update", paymentDetails);
   }
 

@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { CreateSensitiveDataDto } from '../../../../../server/src/Models/dto/sensitiveData.dto';
+import { CreateSensitiveDataDto } from '../../../../../server/src/Models/dto/sensitiveData.dto'; // Update the path according to the location of your model
+// import { SENSITIVE_DATA_ENDPOINT } from '../api-urls';
+
 @Injectable({
   providedIn: 'root'
 })

@@ -2,6 +2,7 @@ import { GoogleTaskService } from './../_services/google-task.service';
 import { PriorityService } from './../_services/priority.service';
 import { Priority } from './../_models/priority.module';
 import {
+  AfterViewInit,
   Component,
   Input,
   OnInit,
@@ -18,8 +19,10 @@ import { TaskService } from '../_services/task.service';
 import { Task } from '../_models/task.module';
 import { Tag } from '../_models/tag.module';
 import { DropdownModule } from 'primeng/dropdown';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import * as FileSaver from 'file-saver';
 import { Status } from '../_models/status.module';
+
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -44,6 +47,7 @@ import { EditorModule } from 'primeng/editor';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
 import { StatusService } from '../_services/status.service';
+import { GoogleAuthService } from '../_services/google-calendar.service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DividerModule } from 'primeng/divider';
 import { MenuItem, SelectItem, SelectItemGroup } from 'primeng/api';
@@ -101,6 +105,7 @@ import { ActivatedRoute } from '@angular/router';
     SubTaskComponent,
     DialogModule,
     TimerComponent,
+
   ],
   providers: [DocumentService],
 })
@@ -116,6 +121,7 @@ export class TaskComponent implements OnInit {
   rangeDates: Date[] = [];
   dueDate: Date | undefined;
   id: string | undefined;
+  clientIds: string [] = [];
   checked: boolean = false;
   text: string | undefined; //description of task
   buttonText: string = '';
@@ -125,7 +131,12 @@ export class TaskComponent implements OnInit {
   tags: Tag[] = [];
   checkList: CheckList[] = [];
   checkListId: string[] | undefined;
-  subTasks: string[] = []
+  subTasks: string[] = [];
+  tags2: Tag[] = [];
+  color: string = '#1976d2';
+  value: string;
+  currentRoute: string;
+
   //
   additionTask: MenuItem[] = [
     { id: '1', label: 'Check List' },
@@ -140,7 +151,7 @@ export class TaskComponent implements OnInit {
   private eventDataSubscription: Subscription;
   public eventId: string;
 
-
+  //
   showStatus: boolean = false;
   showAssignees: boolean = false;
   showClients: boolean = false;
@@ -149,6 +160,8 @@ export class TaskComponent implements OnInit {
   showPriority: boolean = false;
   showDoc: boolean = false;
   showTagsList: boolean = false;
+  showTag2: boolean = false;
+  allClient: boolean = false;
   //
   selectedCity!: any;
   selectedClient!: any;
@@ -158,6 +171,7 @@ export class TaskComponent implements OnInit {
   selectedTags: Tag[] = [];
   selectedPriority!: Priority;
   // array
+  sentClients: Client[] = []
   selectedClients: Client[] = [];
   selectedUsers: User[] = [];
   //
@@ -171,6 +185,8 @@ export class TaskComponent implements OnInit {
   @Input() taskId: string | null = null;
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
   //
+
+  clientIdsParam: string[]
   constructor(
     private userSErvice: UserService,
     private clientService: ClientService,
@@ -182,10 +198,36 @@ export class TaskComponent implements OnInit {
     private socketService: SocketService,
     private googleTask: GoogleTaskService,
     private checkListServise: CheckListService
-  ) { }
+  ) {
+    this.currentRoute = this.route.snapshot.url.join('/');
+    console.log('Current route path:', this.currentRoute);
+  }
 
   newTaskCreated: boolean = false;
   ngOnInit(): void {
+    
+    const clientIdsString = this.route.snapshot.paramMap.get('clientIds');
+    if (clientIdsString) {
+      this.clientIdsParam = clientIdsString.split(',');
+    }
+    this.clientIdsParam.forEach(clientId => {
+      this.clientService.searchClient(clientId).subscribe({
+        next: (client: Client) => {
+          this.selectedClients.push(client);
+        },
+        error: (err) => {
+          console.error('Error loading client:', err);
+        }
+      });
+    });
+  
+
+    if (history.state.client === undefined) {
+      this.allClient = true;
+    }
+    else {
+      this.selectedClient = history.state.client;
+    }
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId)
       this.id = this.taskId;
@@ -198,8 +240,12 @@ export class TaskComponent implements OnInit {
           this.subTasks = this.currentTask.subTasks
           this.selectStatus = this.currentTask.status;
           this.selectedPriority = this.currentTask.priority;
+          // this.selectedClient = this.currentTask.client;
+          // this.selectedUser = this.currentTask.assignedTo;
           this.selectedUsers = this.currentTask.assignedTo;
-          this.selectedClient = this.currentTask.client;
+          if (this.allClient === true) {
+            this.selectedClient = this.currentTask.client;
+          }
           this.rangeDates = [new Date(), new Date()];
           this.rangeDates![0] = new Date(this.currentTask.startDate);
           this.rangeDates![1] = new Date(this.currentTask.deadline);
@@ -226,8 +272,10 @@ export class TaskComponent implements OnInit {
               this.selectedClient = dataClients;
             },
             error: (errClients) => {
+              console.log(errClients);
             },
           });
+
         },
         error: (err) => {
           console.log(err);
@@ -311,6 +359,7 @@ export class TaskComponent implements OnInit {
               items: []
             }
           ];
+          console.log('No checklist data');
           return;
         }
 
@@ -333,6 +382,27 @@ export class TaskComponent implements OnInit {
         console.log('Error getting checklist data:', err);
       }
     });
+
+    // socket
+    // Listen for tasks that are not assigned to anyone
+    // this.socketService.onTaskNotAssigned().subscribe((task) => {
+    //   this.taskNotAssigned = task;
+    // });
+
+    // // Listen for tasks assigned to the current client
+    // this.socketService.onTaskAssignedToYou().subscribe((task) => {
+    //   // Show notification or handle task assignment to the current user
+    //   console.log('Task assigned to you:', task);
+    // });
+
+    // Listen for tasks assigned to someone else
+    // this.socketService.onTaskAssigned().subscribe((data) => {
+    //   const { taskId, assignedTo } = data;
+    //   // Handle UI updates or notifications for tasks assigned to others
+    //   console.log(`Task ${taskId} assigned to ${assignedTo}`);
+    // });
+
+    // alert(this.id)
   }
 
   notInThisTask(id: string) {
@@ -342,6 +412,7 @@ export class TaskComponent implements OnInit {
     })
     return true
   }
+
 
   showDialog() {
     if (this.id == 'create' || this.parent) {
@@ -357,21 +428,115 @@ export class TaskComponent implements OnInit {
     this.save();
   }
 
+
+  // createGoogleTask() {
+  //   this.visible = false;
+  //   // if (!this.taskTitle.trim()) {
+  //   //   alert('Please enter a task title');
+  //   //   return;
+  //   // }
+  //   const taskDetails = {
+  //     title: 'Task Tzipi2',
+  //     notes: 'Task Notes',
+  //     dueTime: '2024-07-18T10:00:00Z', // תאריך ושעה בפורמט ISO 8601
+  //   };
+
+  //   this.googleTask.createSimpleTask(taskDetails);
+
+  //   this.subscribeToEventData();
+  //   console.log(this.eventId);
+
+  //   this.save();
+  // }
+
+  // createGoogleTask() {
+  //   this.visible = false;
+
+  //   const taskDetails = {
+  //     title: this.taskName,
+  //     notes: 'Task Notes',
+  //     dueTime: this.rangeDates[1], // תאריך ושעה בפורמט ISO 8601
+  //   };
+
+  //   // Create Google event and return a promise
+  //   const createTaskPromise =
+  //     this.googleTask.createSimpleTask(taskDetails);
+
+  //   // After creating event, save the meeting
+  //   createTaskPromise
+  //     .then(() => {
+  //       // debugger;
+  //       // alert('הפגישה נוספה בהצלחה');
+  //       this.subscribeToEventData();
+  //       console.log(this.eventId);
+  //       setTimeout(() => {
+  //         this.save();
+  //       }, 1000); // המתנה 1 שניות, כדי לוודא שההרשמות הושלמו בצורה נכונה
+
+  //       // this.save(); // Save meeting details
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error creating Google event:', error);
+  //     });
+
+  //   // this.googleTask
+  //   //   .createSimpleTask(taskDetails)
+  //   //   .then(() => {
+  //   //     this.subscribeToEventData();
+  //   //     console.log(this.eventId);
+  //   //     this.save();
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     console.error('Error creating task:', error);
+  //   //   });
+  // }
+
+  // createGoogleTask() {
+  //   this.visible = false;
+
+  //   const taskDetails = {
+  //     title: this.taskName,
+  //     notes: 'Task Notes',
+  //     dueTime: this.rangeDates[1], // תאריך ושעה בפורמט ISO 8601
+  //   };
+
+  //   // Create Google task and return a promise
+  //   this.googleTask.createSimpleTask(taskDetails)
+  //     .then(() => {
+  //       return this.subscribeToEventData(); // wait for this to finish
+  //     })
+  //     .then(() => {
+  //       console.log(this.eventId);
+  //       this.save(); // call save after everything is done
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error creating Google event:', error);
+  //     });
+  // }
+
+  // 2
   createGoogleTask() {
     this.visible = false;
+
     const taskDetails = {
       title: this.taskName,
       notes: 'Task Notes',
-      dueTime: this.rangeDates[1]
+      dueTime: this.rangeDates[1], // תאריך ושעה בפורמט ISO 8601
     };
+
+
     const createEventPromise = this.googleTask.createSimpleTask(taskDetails);
+
     // After creating event, save the meeting
     createEventPromise
       .then(() => {
+        // alert('הפגישה נוספה בהצלחה');
         this.subscribeToEventData();
         setTimeout(() => {
           this.save();
-        }, 1000);
+        }, 1000); // המתנה 1 שניות, כדי לוודא שההרשמות הושלמו בצורה נכונה
+
+        // this.save(); // Save meeting details
       })
       .catch((error) => {
         console.error('Error creating Google event:', error);
@@ -380,11 +545,24 @@ export class TaskComponent implements OnInit {
 
   //functions
   save() {
-    //create task
+
     const newTask: Task = {
+      // client: this.selectedClient,
+      // client: this.selectedClients,
+      // description: this.htmlContent,
+      // status: this.selectStatus,
+      // tags: this.buttons,
+      // // assignedTo: this.selectedUser,
+      // assignedTo: this.selectedUsers,
+      // taskName: this.taskName,
+      // deadline: this.rangeDates[1]!,
+      // startDate: this.rangeDates[0]!,
+      // images: this.images,
+      // priority: this.selectedPriority,
+      // dueDate: this.currentTask.dueDate!,
     };
 
-    if (this.selectedClient) newTask.client = this.selectedClient;
+    if (this.selectedClients) newTask.client = this.selectedClient;
     if (this.htmlContent) newTask.description = this.htmlContent;
     if (this.selectStatus) newTask.status = this.selectStatus;
     if (this.buttons) newTask.tags = this.buttons;
@@ -397,9 +575,12 @@ export class TaskComponent implements OnInit {
     if (this.dueDate) newTask.dueDate = this.dueDate;
     if (this.eventId) newTask.googleId = this.eventId;
     if (this.parent) newTask.parent = this.parent;
-    if (this.id == 'create' || (this.create == null || this.create == true)) {
+    console.log(this.eventId);
+
+    if (this.id == 'create' || this.clientIdsParam || this.create == true) {
       this.tasksService.createTask(newTask).subscribe({
         next: (task) => {
+          console.log(task);
           if (this.parent) {
             this.tasksService.searchTask(this.parent).subscribe({
               next: (parentTask) => {
@@ -409,9 +590,11 @@ export class TaskComponent implements OnInit {
 
                   },
                   error: (err) => {
+                    console.log(err);
                     alert("ההוספה נכשלה, נא נסה שנית")
                   }
                 })
+
               },
               error: (err) => {
                 console.log(err);
@@ -426,23 +609,28 @@ export class TaskComponent implements OnInit {
           console.log(errClients);
         },
       });
+      this.closeModal.emit();
     } else
       if (this.id != 'create') {
+        alert(false)
+        newTask.checkList = this.checkList.map(c => c._id);
+
         this.tasksService.updateTask(this.id!, newTask).subscribe({
           next: (data) => {
-            alert("ok")
-            alert(data)
-            window.location.reload()
             // Task updated
             if (this.eventId) this.updateTask();
             if (this.taskId) this.closeModal.emit();
+            window.location.reload()
+
           },
           error: (err) => {
+            console.log(err);
             alert("העדכון נכשל")
           },
         });
       }
     window.history.back();
+    // window.location.reload();
   }
 
   updateTask() {
@@ -450,14 +638,17 @@ export class TaskComponent implements OnInit {
       title: this.taskName,
       notes: 'Task Notes',
       dueDate: this.rangeDates[1],
-      id: this.eventId
+      id: this.eventId, // תאריך ושעה בפורמט ISO 8601
     };
+
     this.googleTask.updateGoogleTask(taskDetails);
   }
 
-
+  //
   cancel() {
-    window.history.back();
+    //return to last page
+    // window.history.back();
+    window.location.reload();
   }
   //
   changeStatus() {
@@ -468,7 +659,7 @@ export class TaskComponent implements OnInit {
       }
     }
   }
-  
+  //
   createTag() {
     this.showTags = !this.showTags;
     if (this.buttonText && this.selectedColor) {
@@ -476,17 +667,24 @@ export class TaskComponent implements OnInit {
         .createTag({ color: this.selectedColor, text: this.buttonText })
         .subscribe({
           next: (dataTag) => {
+            console.log(dataTag);
             this.selectedTags.push({
+              // this.selectedTags.push({
+              //   color: dataTag.color,
+              //   text: dataTag.text,
+              //   _id: dataTag._id!,
+              // });
+              // this.buttons.push({
+              //   color: this.selectedColor,
+              //   text: this.buttonText,
+              //   id: dataTag._id!,
+              // });
+              // this.tags2.push({
               color: dataTag.color,
               text: dataTag.text,
               _id: dataTag._id!,
             });
-            this.buttons.push({
-              color: this.selectedColor,
-              text: this.buttonText,
-              id: dataTag._id!,
-            });
-            this.buttonText = '';
+            this.value = '';
           },
           error: (errTag) => {
             console.log(errTag);
@@ -494,7 +692,7 @@ export class TaskComponent implements OnInit {
         });
     }
   }
-
+  //
   removeButton(button: any) {
     const index = this.buttons.indexOf(button);
     if (index !== -1) {
@@ -505,24 +703,27 @@ export class TaskComponent implements OnInit {
   status(s: Status) {
     if (s.name === 'COMPLETE') this.dueDate = new Date();
     this.selectStatus = s;
+    console.log(this.selectStatus);
+    console.log(this.dueDate);
   }
 
   priority(s: Priority) {
     this.selectedPriority = s;
+    console.log(this.selectedPriority);
   }
-
   tag(s: Tag) {
     this.selectedTags.push(s);
     this.buttons.push({ color: s.color, text: s.text, id: s._id! });
     this.showTagsList = !this.showTagsList;
   }
-
   // date
   onDateSelect(event: any) {
     if (event.data) {
       this.rangeDates[0] = event.data[0];
       this.rangeDates[1] = event.data[1];
     }
+    console.log(this.rangeDates);
+    console.log(event.data);
   }
   // images
   // ===================================================
@@ -531,28 +732,29 @@ export class TaskComponent implements OnInit {
     FileSaver.saveAs(imageUrl, 'ttt.png');
   }
 
+
   //checkList
   newList: boolean = false;
   selectedList: string | undefined
   groupedLists: SelectItemGroup[] = []
   newListName: string | null
-  selectPlaceholder = 'בחר רשימה'
+
+  selectPlaceholder = 'הוספת רשימה'
 
   addNewList() {
     this.newList = false;
     if (this.newListName) {
       let l: CheckList = { name: this.newListName, items: [] }
       this.checkListServise.createCheckList(l).subscribe({
-        next
-          : (newList) => {
-            this.currentTask.checkList.push(newList._id)
-            this.checkList.push(newList)
-            this.save()
-          },
-        error
-          : (err) => {
-            alert("ההוספה נכשלה, אנא נסה שנית")
-          },
+        next: (newList) => {
+          this.currentTask.checkList.push(newList._id)
+          this.checkList.push(newList)
+          this.save()
+        },
+        error: (err) => {
+          console.log(err);
+          alert("ההוספה נכשלה, אנא נסה שנית")
+        },
       })
     }
     else {
@@ -576,6 +778,7 @@ export class TaskComponent implements OnInit {
               },
             error
               : (err) => {
+                console.log(err);
                 alert("ההוספה נכשלה, אנא נסה שנית")
               },
           })
@@ -593,10 +796,12 @@ export class TaskComponent implements OnInit {
     if (list._id) {
       this.checkListServise.updateCheckList(list).subscribe({
         next: (newList) => {
+          console.log(newList);
           let prev = this.checkList.findIndex(c => c._id === newList._id)
           this.checkList[prev] = newList
         },
         error: (err) => {
+          console.log(err);
           alert("העדכון נכשל, אנא נסה שנית")
         },
       })
@@ -614,6 +819,7 @@ export class TaskComponent implements OnInit {
         next: (data) => {
         },
         error: (err) => {
+          console.log(err);
           this.currentTask.checkList.push(a[0])//delete from current-task.checklist
           this.checkList.push(b[0])//delete from checklist
           this.groupedLists[1].items.push(c[0])
@@ -627,17 +833,21 @@ export class TaskComponent implements OnInit {
   response: any;
   handleResponse(event: any) {
     this.response = event;
+    console.log(this.response);
     this.images.push(this.response.viewLink);
-  }
-  onContentChange(content: string) {
-    this.htmlContent = content;
+    console.log(this.images);
   }
 
+  onContentChange(content: string) {
+    this.htmlContent = content;
+    console.log(this.htmlContent); // או כל פעולה אחרת שתרצה לבצע עם התוכן
+  }
   @ViewChild(EditorComponent) editorComponent!: EditorComponent;
 
   updateEditorContent(newContent: string) {
     this.editorComponent.initialContent = newContent;
   }
+
   try() {
     console.log(this.activeItem);
   }
@@ -645,19 +855,63 @@ export class TaskComponent implements OnInit {
   onActiveItemChange(event: MenuItem) {
     this.activeItem = event;
   }
-
   // google task
   subscribeToEventData() {
     alert('se1');
     this.eventDataSubscription = this.googleTask.eventData$.subscribe(
       (eventData) => {
         if (eventData) {
-          alert('se2');
+          console.log(eventData);
           this.eventId = eventData.eventId;
+          console.log('this.eventId' + this.eventId);
         }
       }
     );
   }
+
+  // subscribeToEventData(): Promise<void> {
+  //   return new Promise((resolve) => {
+  //     // some async operations
+  //     setTimeout(() => {
+  //       // this.eventId = 'someEventId'; // example assignment
+  //       this.googleCalendarService.eventData$.subscribe((eventData) => {
+  //         if (eventData) {
+  //           // alert('se2')
+  //           console.log(eventData);
+  //           this.eventId = eventData.eventId;
+  //         }
+  //       });
+  //       resolve();
+  //     }, 1000); // simulate async operation
+  //   });
+  // }
+
+  // subscribeToEventData(): Promise<void> {
+  //   return new Promise((resolve, reject) => {
+  //     // נרשם לאירועים מהשירות
+  //     const subscription = this.googleCalendarService.eventData$.subscribe(
+  //       (eventData) => {
+  //         if (eventData) {
+  //           console.log(eventData);
+  //           this.eventId = eventData.eventId;
+  //           subscription.unsubscribe(); // לבטל את ההרשמה לאחר קבלת הנתונים
+  //           resolve();
+  //         } else {
+  //           reject('No event data received');
+  //         }
+  //       },
+  //       (error) => {
+  //         console.error('Error subscribing to event data:', error);
+  //         reject(error);
+  //       }
+  //     );
+
+  //     // אם אנחנו רוצים לוודא שהפונקציה לא נתקעת לנצח, אפשר להוסיף timeout
+  //     setTimeout(() => {
+  //       reject('Timeout waiting for event data');
+  //     }, 5000); // 5 שניות המתנה לדוגמה
+  //   });
+  // }
 
   unsubscribeFromEventData() {
     if (this.eventDataSubscription) {

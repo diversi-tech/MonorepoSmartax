@@ -14,7 +14,9 @@ constructor(private http: HttpClient) {}
 
 getWorkLogs(employeeId?: string): Observable<WorkLog[]> {
   let url = this.apiUrl;
-  if (employeeId) {    
+  if (employeeId) {
+    console.log("etty");
+    
     url += `/findByEmployeeId/${employeeId}`;
   }
   url += '/findAll';
