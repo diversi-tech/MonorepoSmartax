@@ -1,75 +1,90 @@
 <div class="container">
-  <button routerLink="/favoritesClientsList" routerLinkActive="active" pButton type="button" label="לקוחות מועדפים"
-    class="p-button-text p-button-raised p-button-rounded"></button>
-  <button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" pButton type="button" label="מיין לפי"
-    class="p-button-text p-button-raised p-button-rounded"></button>
-  <button *ngIf="isSelected == 2" (click)="onSelectionChange(1)" pButton type="button" label="ללא מיון"
-    class="p-button-text p-button-raised p-button-rounded"></button>
-  <button routerLink="/clientTypes" routerLinkActive="active" pButton type="button" label="סוגי לקוח"
-    class="p-button-text p-button-raised p-button-rounded"></button>
-  <button (click)="addNewClient()" pButton type="button" label="הוספת לקוח חדש"
-    class="p-button-text p-button-raised p-button-rounded"></button>
+  <!-- <div class="p-col-12">
+        <div class="p-grid p-fluid">
+          <p-autoComplete [(ngModel)]="selectedClient" [suggestions]="filteredClients"
+            (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
+            [minLength]="1" placeholder="חיפוש שם או שם חברה" field="name" [dropdown]="true" [forceSelection]="false">
+            <ng-template let-client pTemplate="item">
+              שם - {{ client.firstName+" "+client.lastName }} | שם חברה - {{ client.companyName }}
+            </ng-template>
+          </p-autoComplete>
+        </div>
+      </div> -->
+  <!-- <h1 (click)="onSelectionChange(1)">רשימת לקוחות</h1> -->
+
+  <button routerLink="/favoritesClientsList" routerLinkActive="active" pButton type="button" label="לקוחות מועדפים" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="isSelected != 2" (click)="onSelectionChange(2)" pButton type="button" label="מיין לפי" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="isSelected == 2" (click)="onSelectionChange(1)" pButton type="button" label="ללא מיון" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button routerLink="/clientTypes" routerLinkActive="active" pButton type="button" label="סוגי לקוח" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button (click)="addNewClient()" pButton type="button" label="הוספת לקוח חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
   <app-import-client></app-import-client>
+
 
   <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" key="delete">
     <p-footer>
-      <button type="button" pButton icon="pi pi-times" label="ביטול" class="p-button-text"
+      <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text"
         (click)="cancelDelete()"></button>
-      <button type="button" pButton icon="pi pi-check" label="מחיקה" class="p-button-text"
+      <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text"
         (click)="confirmDelete()"></button>
     </p-footer>
   </p-confirmDialog>
 
-  <button *ngIf="this.choosedClients.length > 0" (click)="addFavoritesClient()" icon="pi pi-star"
-     pButton type="button" label="להוספה למועדפים" class= "p-button-text p-button-raised p-button-rounded"></button>
-  <button *ngIf="this.choosedClients.length > 0" (click)="showConfirmationDelete()" icon="pi pi-trash"
-     pButton type="button" label="מחיקה" class= "p-button-danger p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="this.choosedClients.length > 0" (click)="addFavoritesClient()" icon="pi pi-star" pButton type="button" label="להוספה למועדפים" class= "p-button-text p-button-raised p-button-rounded"></button>
+  <button *ngIf="this.choosedClients.length > 0" (click)="showConfirmationDelete()" icon="pi pi-trash" pButton type="button" label="מחיקה" class= "p-button-danger p-button-text p-button-raised p-button-rounded"></button>
    
+  <!--<button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-star" label="להוספה למועדפים"
+    (click)="$event.stopPropagation(); addFavoritesClient()"></button> -->
+  <!-- <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-trash" label="מחיקה"
+    class= p-button-danger" (click)=" $event.stopPropagation(); showConfirmationDelete()"></button> -->
+
   <p-table dir="rtl" [value]="isSelected != 1 && isSelected != 0 ? filteredClients : clients">
 
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th>
-          <button *ngIf="isChoosedAllClient" (click)="removeAllClients()" pButton type="button"
-           label="הסר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
-          <button *ngIf="!isChoosedAllClient" (click)="$event.stopPropagation(); chooseAllClients()"
-           pButton type="button" label="בחר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
+          <button *ngIf="isChoosedAllClient" (click)="removeAllClients()" pButton type="button" label="הסר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
+          <button *ngIf="!isChoosedAllClient" (click)="$event.stopPropagation(); chooseAllClients()" pButton type="button" label="בחר הכל" class= "p-button-text p-button-raised p-button-rounded"></button>
         </th>
         <th></th>
         <th></th>
-        <th>
+        <th> 
           <span (click)="onSelectionChange(4)">שם חברה</span>
           <div>
             <input *ngIf="isSelected == 2" type="text" placeholder="שם חברה" [(ngModel)]="filternamecom"
-              (input)="filterClientsBynamecom()" pInputText />
+              (input)="filterClientsBynamecom()" pInputText/>
           </div>
         </th>
         <th>שם פרטי ומשפחה
-          <i class="pi pi-caret-up" style="cursor: pointer; margin-left: 5px;" pTooltip="מיון לפי א' עד ת'"
-            tooltipPosition="bottom" (click)="sortClientsByNameAsc()"></i>
-          <i class="pi pi-caret-down" style="cursor: pointer; margin-left: 5px;" pTooltip="מיון לפי ת' עד א'"
-            tooltipPosition="bottom" (click)="sortClientsByNameDesc()"></i>
-          <div>
-            <p-autoComplete *ngIf="isSelected == 2" [(ngModel)]="selectedClient" [suggestions]="filteredClients"
-              (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
-              [minLength]="1" placeholder="חיפוש שם או שם חברה" field="name" [dropdown]="true" [forceSelection]="false">
-              <ng-template let-client pTemplate="item">
-                שם - {{ client.firstName+" "+client.lastName }}
-              </ng-template>
-            </p-autoComplete>
-          </div>
+          <i class="pi pi-caret-up" 
+          style="cursor: pointer; margin-left: 5px;"
+          pTooltip="מיון לפי א' עד ת'"
+          tooltipPosition="bottom"
+          (click)="sortClientsByNameAsc()"></i>
+       <i class="pi pi-caret-down" 
+          style="cursor: pointer; margin-left: 5px;"
+          pTooltip="מיון לפי ת' עד א'"
+          tooltipPosition="bottom"
+          (click)="sortClientsByNameDesc()"></i>
+           <div>
+          <p-autoComplete *ngIf="isSelected == 2" [(ngModel)]="selectedClient" [suggestions]="filteredClients"
+            (completeMethod)="filterClientsByNameAndBusinessName($event.query)" (onSelect)="selectClient($event)"
+            [minLength]="1" placeholder="חיפוש שם או שם חברה" field="name" [dropdown]="true" [forceSelection]="false">
+            <ng-template let-client pTemplate="item">
+              שם - {{ client.firstName+" "+client.lastName }} | שם חברה - {{ client.companyName }}
+            </ng-template>
+          </p-autoComplete>
+        </div>
         </th>
         <th>
           <span (click)="onSelectionChange(3)">תעודות זהות</span>
           <div>
-            <input *ngIf="isSelected == 2" type="text" placeholder="תעודות זהות" [(ngModel)]="filterTZ"
-              (input)="filterClientsByTZ()" pInputText />
+            <input *ngIf="isSelected == 2" type="text" placeholder="תעודות זהות" [(ngModel)]="filterTZ" (input)="filterClientsByTZ()" pInputText/>
           </div>
         </th>
         <th> <span (click)="onSelectionChange(2)">טלפון</span>
           <div>
-            <input *ngIf="isSelected == 2" type="text" placeholder="טלפון" [(ngModel)]="filterNumber" pInputText
-              (input)="filterClientsByNumber()" />
+            <input *ngIf="isSelected == 2" type="text" placeholder="טלפון" [(ngModel)]="filterNumber"
+            pInputText (input)="filterClientsByNumber()" />
           </div>
         </th>
         <th></th>
@@ -85,7 +100,8 @@
         </td>
         <td>
           <i [style.color]="isFavoriteClient(client) ? 'yellow' : '#000'"
-            [ngClass]="'isFavoriteClient(client)' ? 'pi pi-star-fill' : ''" class="pi pi-star" (click)="$event.stopPropagation(); isFavoriteClient(client)?removeFromFavorite(client):
+            [ngClass]="'isFavoriteClient(client)' ? 'pi pi-star-fill' : ''" class="pi pi-star"
+            (click)="$event.stopPropagation(); isFavoriteClient(client)?removeFromFavorite(client):
             addToFavorite(client)"></i>
         </td>
         <td><i class="pi pi-tag" [style.color]="client.tag?.color || '#000'"></i></td>
@@ -112,3 +128,4 @@
 
   <router-outlet></router-outlet>
 </div>
+

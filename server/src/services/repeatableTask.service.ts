@@ -1,5 +1,5 @@
 import { RepeatableTask } from './../Models/repeatableTask.model';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ValidationException } from '../common/exceptions/validation.exception';
@@ -13,7 +13,7 @@ export class repeatableTaskService {
   constructor(
     @InjectModel('RepeatableTask')
     private readonly repeatableTask: Model<RepeatableTask>
-  ) { }
+  ) {}
 
   async create(
     createTaskDto: CreaterepeatableTaskDto
@@ -31,6 +31,11 @@ export class repeatableTaskService {
       active,
       virtual,
     } = createTaskDto;
+    // const task = new this.taskModel(createTaskDto);
+    // return task.save()
+    // if (!client || !assignedTo) {
+    //   throw new ValidationException('Missing required fields');
+    // }
 
     const createTask = new this.repeatableTask({
       client,

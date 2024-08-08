@@ -53,27 +53,30 @@ export class ClientTypeTagComponent implements OnInit {
   ) {
     this.form = this.fb.group({});
   }
-
+  
   ngOnInit() {
     this.getAllClientTypes();
     this.ar.params.subscribe(
-      data => {
-        this.id = data['id'];
-        this.clientService.searchClient(this.id).subscribe(
-          suc => {
-            this.thisClient = suc
-          })
-      }
-    )
+          data => {
+            this.id = data['id'];
+            this.clientService.searchClient(this.id).subscribe(
+              suc => {
+                this.thisClient = suc,
+                console.log(this.thisClient)
+              })
+            }
+          )
   }
 
   getAllClientTypes(): void {
     this.clientTypeService.getAllClientTypes().subscribe({
       next: (data) => {
+        console.log(data);
         this.clientTypes = data;
         this.createTag();
       },
       error: (err) => {
+        console.log(err);
       },
     });
 
@@ -81,10 +84,10 @@ export class ClientTypeTagComponent implements OnInit {
 
   clientT(ct: ClientType) {
     this.ClientTypesselected.push(ct);
-    this.buttons.push({ text: ct.name, id: ct._id });
+    this.buttons.push({ text: ct.name,id: ct._id });
     this.showClientTypesList = !this.showClientTypesList;
   }
-
+  
   createTag(): void {
     this.showClientTypes = !this.showClientTypes;
     this.buttons = this.clientTypes.map((type: ClientType) => ({
@@ -92,10 +95,10 @@ export class ClientTypeTagComponent implements OnInit {
       id: type._id!,
     }));
   }
-
+  
   getColor(name: string): string {
     if (!name) {
-      return '#000';
+      return '#000'; 
     }
     const hash = name
       .split('')
@@ -108,14 +111,20 @@ export class ClientTypeTagComponent implements OnInit {
       .join('')}`;
     return color;
   }
-
+  
   removeButton(tag: any) {
+    console.log(this.buttons);
+    console.log(this.ClientTypesselected);
+    
     const index = this.ClientTypesselected.indexOf(tag);
     if (index !== -1) {
       this.ClientTypesselected.splice(index, 1);
     }
   }
-}
 
+
+ 
+}
+ 
 
 

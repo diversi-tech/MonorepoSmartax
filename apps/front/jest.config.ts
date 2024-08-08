@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default {
   displayName: 'front',
-  preset: '../../../MonorepoSmartax/jest.preset.js',
+  preset: '../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../coverage/apps/front',
   transform: {

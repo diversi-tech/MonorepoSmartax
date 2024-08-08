@@ -2,25 +2,25 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { CreateSensitiveDataDto } from '../../../../../server/src/Models/dto/sensitiveData.dto';
-import { SENSITIVE_DATA } from '../api-urls';
+import { CreateSensitiveDataDto } from '../../../../../server/src/Models/dto/sensitiveData.dto'; // Update the path according to the location of your model
+// import { SENSITIVE_DATA_ENDPOINT } from '../api-urls';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class SensitiveDataService {
-  private apiUrl = SENSITIVE_DATA; // Base URL for the Sensitive Data API
+
+  private apiUrl = 'http://localhost:8080/SensitiveData'; // Base URL for the Sensitive Data API
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }), // Define headers for HTTP requests
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }) // Define headers for HTTP requests
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Get sensitive data by ID
   getSensitiveData(id: string): Observable<CreateSensitiveDataDto> {
-    return this.http
-      .get<CreateSensitiveDataDto>(`${this.apiUrl}/${id}`, this.httpOptions)
+    return this.http.get<CreateSensitiveDataDto>(`${this.apiUrl}/${id}`, this.httpOptions)
       .pipe(
         catchError(this.handleError<CreateSensitiveDataDto>('getSensitiveData'))
       );

@@ -39,12 +39,12 @@ import { ClientTypeService } from '../../../_services/clientType.service';
   styleUrl: './type-client-create.component.css',
 })
 export class TypeClientCreateComponent implements OnInit, OnChanges {
-
   @Input() type: ClientType | undefined;
   @Input() isNew: boolean = false;
   @Output() closeDialog: EventEmitter<void> = new EventEmitter<void>();
   @Output() dataUpdated = new EventEmitter<void>();
 
+  // @Input() create: string | undefined;
   tasks: Task[] = [];
   selectedTask: Task[] = [];
   selectedField: Field[] = [];
@@ -57,40 +57,58 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     private fieldService: FieldService,
     private r: Router,
     private clientTypeService: ClientTypeService
-  ) { }
+  ) {}
 
   updateSelectedType(): void {
     if (this.type) {
       this.value = this.type.name;
-      this.selectedField = [];
-      this.selectedTask = [];
+      this.selectedField = []; // Make sure to create a new array
+      this.selectedTask = []; // Clear the selectedTask array
+
       if (this.type.fields) {
         for (const fieldId of this.type.fields) {
           this.selectedField.push(fieldId);
         }
+        console.log(this.selectedField);
       }
       if (this.type.tasks) {
         for (const taskId of this.type.tasks) {
           this.taskService.searchTask(taskId).subscribe({
             next: (data) => {
               this.selectedTask.push(data);
+              console.log(this.selectedTask);
             },
             error: (err) => {
               console.log(err);
             },
           });
         }
+        console.log(this.selectedTask);
       }
     }
   }
 
+  // createType() {
+  //   this.value = '';
+  //   this.selectedField = []; // Make sure to create a new array
+  //   this.selectedTask = [];
+  // }
+
   ngOnChanges(changes: SimpleChanges): void {
+    // if (changes['type'] && changes['type'].currentValue) {
+    //   this.updateSelectedType();
+    // }
+
     if (changes['type'] && changes['type'].currentValue) {
       this.initializeFormWithType();
     }
+
     if (this.isNew) {
       this.initializeFormForNewType();
     }
+
+    // else
+    //   this.createType();
   }
 
   private initializeFormWithType(): void {
@@ -98,6 +116,7 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
       this.value = this.type.name;
       this.selectedTask = [];
       this.selectedField = [...this.type.fields];
+
       if (this.type.tasks) {
         this.type.tasks.forEach((taskId) => {
           this.taskService.searchTask(taskId).subscribe({
@@ -115,8 +134,38 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     this.selectedField = [];
   }
   ngOnInit(): void {
+    console.log('client type', this.type);
+
+    // if (this.type) {
+    //   this.value = this.type.name;
+    //   // this.selectedTask=this.type.tasks
+    //   // this.selectedField=this.type.fields
+    //   this.type.fields.forEach((element) => {
+    //     this.selectedField.push(element);
+    //   });
+    //   console.log(this.type.fields);
+    //   console.log(this.type.tasks);
+    //   if (this.type.tasks) {
+    //     for (const taskId of this.type.tasks) {
+    //       this.taskService.searchTask(taskId).subscribe({
+    //         next: (data) => {
+    //           console.log(data);
+    //           this.selectedTask.push(data);
+    //           this.selectedTask = this.selectedTask;
+    //         },
+    //         error: (err) => {
+    //           console.log(err);
+    //         },
+    //       });
+    //     }
+    //   }
+    // }
+    // else
+    //   this.createType();
+
     this.taskService.getAllTasks().subscribe({
       next: (data) => {
+        console.log(data);
         this.tasks = data;
       },
       error: (err) => {
@@ -126,13 +175,23 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     //
     this.fieldService.getAllField().subscribe({
       next: (data) => {
+        console.log(data);
         this.fields = data;
       },
       error: (err) => {
         console.log(err);
       },
     });
+    //
   }
+
+  // addTask() {
+  //   this.r.navigate(['taskSpe/create']);
+  // }
+
+  // addField() {
+  //   this.r.navigate(['taskSpe/create']);
+  // }
 
   save() {
     this.selectedTask.forEach((element) => {
@@ -172,6 +231,9 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     this.dataUpdated.emit();
     this.closeDialog.emit();
   }
+  // cancel() {
+  //   this.closeDialogInner();
+  // }
 
   closeDialogInner() {
     this.closeDialog.emit();

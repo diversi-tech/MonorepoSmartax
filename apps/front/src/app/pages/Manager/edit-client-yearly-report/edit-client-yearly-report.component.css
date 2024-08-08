@@ -1,18 +1,2 @@
 @import '../../../../styles.css';
 
-p-table{
-    text-align: right;
-    background-color: azure;
-}
-*{
-    text-align: right;
-}
-.p-dropdown {
-    max-height: auto; /* גובה מרבי לתפריט */
-    overflow-y: auto; /* אפשר גלילה אם יש יותר פריטים */
-  }
-  
-  .p-dialog .p-dialog-content {
-    overflow: auto; /* אפשר גלילה בתוכן הדיאלוג אם צריך */
-  }
-  

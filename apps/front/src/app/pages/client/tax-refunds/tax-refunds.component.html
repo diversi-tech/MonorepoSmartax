@@ -1,4 +1,4 @@
-<button pButton *ngIf="currentRoute==='taxRefunds'" (click)="createReprtTag()" label="יצירת דוח  חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
+<!-- <p-button (click)="createReprtTag()" label="יצירת דוח  חדש" /> -->
 
 <p-table [value]="allTaxRefunds" [tableStyle]="{ 'max-width': '50rem' }">
   <ng-template pTemplate="header">
@@ -6,9 +6,9 @@
       <th></th>
       <th>סטטוס</th>
       <th>ישות</th>
+      <th>מחיר</th>
       <th>יתרה לתשלום</th>
       <th>סכום ששולם</th>
-      <th>מחיר</th>
       <th>עובד מטפל</th>
       <th>תאריך יצירה</th>
       <th pSortableColumn="taxRefunds" class="sort">
@@ -21,19 +21,15 @@
   <ng-template pTemplate="body" let-task>
     <tr (click)="selectTaxRefunds(task)" [ngClass]="{ 'highlight': currentTaxRefunds === task }">
       <td >
-           <button *ngIf="currentTaxRefunds === task" pButton 
+        <button *ngIf="currentTaxRefunds === task" pButton
           class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
-          style="cursor: pointer; margin-left: 5px;"
-          pTooltip="עריכת שלבי הדוח"
-          tooltipPosition="bottom"
-          (click)="goToSteps(task)">
-         </button>
+          (click)="goToSteps(task)"></button>
       </td>
       <td class="{{task.status[0].color}}">{{task.status[0].name}}</td>
       <td>{{task.entityType}}</td>
+      <td>{{ task.price }}</td>
       <td>{{ task.balanceDue }}</td>
       <td>{{ task.paymentAmountPaid }}</td>
-      <td>{{ task.price }}</td>
       <td>{{ getEmployeName(task.idEmploye)?.userName }}</td>
       <td>{{ task.date | date : 'dd/MM/yyyy' }}</td>
       <td>{{ task.year }}</td>

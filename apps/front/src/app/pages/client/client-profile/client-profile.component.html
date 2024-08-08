@@ -1,22 +1,26 @@
-    <h1 class="header-icons">
+<div class="container">
+
+
+    <div class="header-icons">
         <!-- Existing profile icon -->
         {{ client?.firstName }} {{ client?.lastName }}
 
-        <app-icon-profile [userName]="client?.firstName +' '+ client?.lastName" style="width: 50px;">
+        <app-icon-profile [userName]="client?.firstName && client?.lastName" style="width: 50px;">
         </app-icon-profile>
-    </h1>
 
-    <button pButton type="button" class="p-button-text p-button-raised p-button-rounded"
+    </div>
+    <button pButton type="button" class= "p-button-text p-button-raised p-button-rounded"
         (click)="sidebarVisible2 = true" (click)="showDetails = true"> לכל הפרטים</button>
- <div class="allDetails">
-<p-sidebar [(visible)]="sidebarVisible2" position="left" [modal]="false" class="mySidebar" [style]="{ 'width': '20%' }">
-  
+</div>
+
+
+<p-sidebar [(visible)]="sidebarVisible2" position="right" [modal]="false">
     <div class="sidebar-header">
         <!-- Move pin icon to the right of the close p-button-->
         <!-- <i class="pi pi-thumbtack pin-icon" ></i> -->
         {{ client?.firstName }} {{ client?.lastName }}
 
-        <app-icon-profile [userName]="client?.firstName +' '+ client?.lastName">
+        <app-icon-profile [userName]="client?.firstName && client?.lastName">
         </app-icon-profile>
 
     </div>
@@ -30,8 +34,7 @@
                     פרטים אישיים
                 </h4>
                 <ng-container *ngIf="showPersonalDetails">
-                    <p class="card-text"> {{ client?.firstName }} {{ client?.lastName }} <i class="pi pi-user"></i>
-                    </p>
+                    <p class="card-text"> {{ client?.firstName }} {{ client?.lastName }} <i class="pi pi-user"></i></p>
                     <p class="card-text"> {{ client?.tz }} <i class="pi pi-id-card"></i></p>
                     <p class="card-text"> {{ client?.phone }} <i class="pi pi-phone"></i></p>
                     <p class="card-text"> {{ client?.whatsapp }} <i class="pi pi-whatsapp"></i></p>
@@ -78,10 +81,9 @@
 
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" key="delete">
     <p-footer>
-        <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-text"
+        <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text"
             (click)="cancelDelete()"></button>
-        <button type="button" pButton icon="pi pi-check" label="Delete" class="p-button-text"
+        <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text"
             (click)="confirmDelete()"></button>
     </p-footer>
 </p-confirmDialog>
- </div>

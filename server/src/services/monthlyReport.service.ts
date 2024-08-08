@@ -64,14 +64,18 @@ export class MonthlyReportService {
     return updatedMonthlyReport.save();
   }
 
-  async deleteMonthlyReport(id: string): Promise<void> {
-    const result = await this.MonthlyReportModel.findByIdAndDelete(id).exec();
-    if (!result) {
-      throw new NotFoundException('monthly reportnot found');
+    async deleteMonthlyReport(id: string): Promise<void> {
+      const result = await this.MonthlyReportModel.findByIdAndDelete(id).exec();
+      if (!result) {
+        throw new NotFoundException('monthly reportnot found');
+      }
     }
-  }
 
-  async getAllMonthlyReport(): Promise<MonthlyReport[]> {
-    return this.MonthlyReportModel.find().exec();
-  }
+    async getAllMonthlyReport(): Promise<MonthlyReport[]> {
+      debugger
+      console.log( "monthly",this.MonthlyReportModel.find().exec())
+      return this.MonthlyReportModel.find().exec();
+    }
+
+
 }

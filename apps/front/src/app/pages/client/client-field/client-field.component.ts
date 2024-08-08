@@ -13,28 +13,17 @@ import { ClientFieldService } from '../../../_services/clientField.service';
   selector: 'app-client-field',
   template: '',
   standalone: true,
-  imports: [
-    CommonModule,
-    InputTextModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CardModule,
-    ButtonModule
-  ],
+  imports: [CommonModule,InputTextModule,FormsModule,ReactiveFormsModule,CardModule,ButtonModule],
   templateUrl: './client-field.component.html',
   styleUrl: './client-field.component.css',
 })
-
 export class ClientFieldComponent {
 
   @Input() field: Field;
 
   form: FormGroup;
 
-  constructor(
-    private fb: FormBuilder, 
-    private clientFieldService: ClientFieldService
-  ) {}
+  constructor(private fb: FormBuilder, private clientFieldService: ClientFieldService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -47,6 +36,7 @@ export class ClientFieldComponent {
       field: this.field,
       value: this.form.get(this.field.key)?.value || ''
     };
+    console.log(clientField);
     
     this.clientFieldService.createClientField(clientField).subscribe(
       response => {
@@ -56,5 +46,6 @@ export class ClientFieldComponent {
         console.error('Error saving client field:', error);
       }
     );
+    // console.log('Submitted client field:', clientField);
   }
 }
