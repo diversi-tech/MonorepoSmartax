@@ -16,7 +16,7 @@ export class PaymentDetails extends Document {
     @Prop({ default: () => new Date() })
     dateStart: Date;
 
-    @Prop({ default: () => new Date() })
+    @Prop({default: null  })
     dateFinish: Date;
 
     @Prop()

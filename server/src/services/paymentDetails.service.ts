@@ -12,7 +12,7 @@ export class PaymentDetailsService {
 
     async createPaymentDetails(createPaymentDetailsDto: CreatePaymentDetailsDto): Promise<PaymentDetails> {
         const { sumForMonth,maxHours,frequency, dateStart, dateFinish, description } = createPaymentDetailsDto;      
-        if (!sumForMonth || !dateStart) {
+        if (!sumForMonth || !dateStart ||!maxHours ||!frequency) {
           throw new ValidationException('Missing required fields');
         }
 

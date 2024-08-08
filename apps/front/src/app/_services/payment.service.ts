@@ -43,7 +43,10 @@ export class PaymentService {
       "paymentHistory": [],
       "billingHistory": []
     }
-    return this.http.post<Payment>(this.apiUrl, newPayment);
+    const r=this.http.post<Payment>(this.apiUrl, newPayment);
+    console.log("newPayment: ", r);
+    
+    return r
   }
 
   updatePayment(_id: string,

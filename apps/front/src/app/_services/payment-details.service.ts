@@ -15,7 +15,7 @@ export class PaymentDetailsService {
 
   constructor(private http: HttpClient) { }
 
-  createPaymentDetails(sumForMonth, maxHours, frequency, dateStart, dateFinish, description): Observable<PaymentDetails> {
+  createPaymentDetails(sumForMonth, maxHours, frequency, dateStart,description, dateFinish?): Observable<PaymentDetails> {
     const newPaymentDetails = {
       "sumForMonth": sumForMonth,
       "maxHours": maxHours,

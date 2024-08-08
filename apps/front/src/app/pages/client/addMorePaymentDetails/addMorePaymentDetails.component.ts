@@ -24,7 +24,7 @@ export class AddMorePaymentDetailsComponent implements OnInit {
     maxHours: '',
     frequancy: '',
     dateStart: '',
-    dateFinish: '',
+    dateFinish: null,
     description: '',
   }
   @Output() submitEvent = new EventEmitter<void>();
@@ -48,6 +48,7 @@ export class AddMorePaymentDetailsComponent implements OnInit {
   }
 
   onSubmit() {
+
     this.paymentService.addMorePaymentDetails(this.thisPayment._id,
       this.paymentDetails.sumForMonth,
       this.paymentDetails.maxHours,
