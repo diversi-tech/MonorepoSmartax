@@ -23,7 +23,7 @@ export class CreatePaymentDetailsDto {
     @IsDateString()
     dateStart: string;
 
-    @ApiProperty({ type: String, format: 'date-time' })
+    @ApiProperty({ type: String, format: 'date-time' ,required: false,default: null})
     @IsOptional()
     @IsDateString()
     dateFinish?: string;

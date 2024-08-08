@@ -43,14 +43,17 @@ export class PaymentService {
 
   createPayment(mainPaymentDetails, totalPayment, paymentMethod): Observable<Payment> {
     const newPayment = {
-      mainPaymentDetails: mainPaymentDetails,
-      morePaymentDetails: [],
-      totalPayment: totalPayment,
-      paymentMethod: paymentMethod,
-      paymentHistory: [],
-      billingHistory: [],
-    };
-    return this.http.post<Payment>(this.apiUrl, newPayment);
+      "mainPaymentDetails": mainPaymentDetails,
+      "morePaymentDetails": [],
+      "totalPayment": totalPayment,
+      "paymentMethod": paymentMethod,
+      "paymentHistory": [],
+      "billingHistory": []
+    }
+    const r=this.http.post<Payment>(this.apiUrl, newPayment);
+    console.log("newPayment: ", r);
+    
+    return r
   }
 
   updatePayment(

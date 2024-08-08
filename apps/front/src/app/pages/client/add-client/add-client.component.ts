@@ -9,6 +9,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { FrequencyService } from '../../../_services/frequency.service';
+import { Frequency } from '../../../_models/frequency.module';
+import { DropdownModule } from 'primeng/dropdown';
+import { PaymentMethod } from '../../../_models/paymentMethod.module';
+import { PaymentMethodService } from '../../../_services/payment-method.service';
+import { PaymentService } from '../../../_services/payment.service';
+import { PaymentDetailsService } from '../../../_services/payment-details.service';
 
 @Component({
   selector: 'app-add-client',
@@ -44,7 +51,8 @@ import Swal from 'sweetalert2';
     FormsModule,
     ReactiveFormsModule,
     NgIf,
-    ButtonModule
+    ButtonModule,
+    DropdownModule
   ],
 })
 export class AddClientComponent implements OnInit {
@@ -94,6 +102,20 @@ export class AddClientComponent implements OnInit {
   isWorkData: boolean = false;
   form: FormGroup;
   editingClient: Client | null = null;
+  allFrequencies: Frequency[];
+  allPaymentMethods: PaymentMethod[];
+  payment: any = {
+    paymentDetails: {
+      sumForMonth: '',
+      maxHours: '',
+      frequency: '',
+      dateStart: '',
+      dateFinish: '',
+      description: ''
+    },
+    totalPayment: 0,
+    paymentMethod: ''
+  }
   get VATFileNumber() { return this.form.get('VATFileNumber'); }
 
 
@@ -102,9 +124,30 @@ export class AddClientComponent implements OnInit {
     private clientService: ClientService,
     private tokenService: TokenService,
     private router: Router,
+    private frequancyService: FrequencyService,
+    private paymentMethodService: PaymentMethodService,
+    private paymentService: PaymentService,
+    private paymentDetailsService: PaymentDetailsService,
   ) { }
 
   ngOnInit() {
+    this.frequancyService.getAllFrequencys().subscribe(
+      success => {
+        this.allFrequencies = success;
+        this.paymentMethodService.getAllPaymentMethod().subscribe(
+          suc => {
+            this.allPaymentMethods = suc;
+          },
+          err => {
+            console.log(err);
+          }
+        )
+      },
+      error => {
+        console.log(error);
+      }
+    )
+
     this.contactForm = this.formBuilder.group({
       companyName: ['', [Validators.maxLength(20)]],
       firstName: [
@@ -150,7 +193,16 @@ export class AddClientComponent implements OnInit {
       joinDate: [''],
       isAccounter: [false],
       isOpenAccountWithUs: [false],
-      isPreferWhatsapp: [false]
+      isPreferWhatsapp: [false],
+      maxHours: [''],
+      sumForMonth: [''],
+      frequency: [''],
+      dateStart: [''],
+      description:  [''],
+      paymentMethod: [''],
+      totalPayment: [''],
+
+
     });
     if (history.state.client) {
       this.editingClient = history.state.client
@@ -193,7 +245,14 @@ export class AddClientComponent implements OnInit {
       joinDate: client.joinDate,
       isAccounter: client.isAccounter,
       isOpenAccountWithUs: client.isOpenAccountWithUs,
-      isPreferWhatsapp: client.isPreferWhatsapp
+      isPreferWhatsapp: client.isPreferWhatsapp,
+      maxHours: this.payment.paymentDetails.maxHours,
+      sumForMonth: this.payment.paymentDetails.sumForMonth,
+      frequency: this.payment.paymentDetails.frequency,
+      dateStart: this.payment.paymentDetails.dateStart,
+      description: this.payment.paymentDetails.description,
+      paymentMethod: this.payment.paymentMethod,
+      totalPayment: this.payment.totalPayment,
     });
   }
 
@@ -246,11 +305,60 @@ export class AddClientComponent implements OnInit {
           this.newClient.joinDate = this.contactForm.value.joinDate,
           this.newClient.isAccounter = this.contactForm.value.isAccounter,
           this.newClient.isOpenAccountWithUs = this.contactForm.value.isOpenAccountWithUs,
-          this.newClient.isPreferWhatsapp = this.contactForm.value.isPreferWhatsapp
+          this.newClient.isPreferWhatsapp = this.contactForm.value.isPreferWhatsapp,
+          //
+          this.payment.paymentDetails.maxHours = this.contactForm.value.maxHours,
+          this.payment.paymentDetails.sumForMonth = this.contactForm.value.sumForMonth,
+          this.payment.paymentDetails.frequancy = this.contactForm.value.frequancy,
+          this.payment.paymentDetails.dateStart = this.contactForm.value.dateStart,
+          this.payment.paymentDetails.description = this.contactForm.value.description,
+          this.payment.totalPayment = this.contactForm.value.totalPayment,
+          this.payment.paymentMethods = this.contactForm.value.paymentMethods
+        console.log("payment:", this.payment);
+        console.log(this.contactForm.value.maxHours,"maxHours");
+        console.log(this.contactForm.value.sumForMonth,"sumForMonth");
+        console.log(this.contactForm.value.frequancy,"frequancy");
+        console.log("all: ",this.contactForm);
+        
+
+        
+
+
+
         this.clientService.createClient(this.newClient).subscribe(
           response => {
             if (response) {
               console.log('Client created successfully:', response);
+              const mainPaymentD = {
+                sumForMonth: this.payment.paymentDetails.sumForMonth,
+                maxHours: this.payment.paymentDetails.maxHours,
+                frequency: this.payment.paymentDetails.frequancy,
+                dateStart: this.payment.paymentDetails.dateStart,
+                description: this.payment.paymentDetails.description
+              }
+              this.paymentDetailsService.createPaymentDetails(this.payment.paymentDetails.sumForMonth,
+                this.payment.paymentDetails.maxHours,
+                this.payment.paymentDetails.frequancy,
+                this.payment.paymentDetails.dateStart,
+                this.payment.paymentDetails.description).subscribe(
+                  s => {
+                    debugger
+                    this.paymentService.createPayment(s, this.payment.totalPayment, this.payment.paymentMethods).subscribe(
+                      suc => {
+                        debugger
+                        console.log('suc:', suc);
+
+                        response.payment = suc._id;
+                      },
+                      err => {
+                        console.log(err);
+
+                      }
+                    )
+                  }
+                )
+
+
               Swal.fire('Success', 'לקוח נוצר בהצלחה', 'success');
             }
             this.close.emit();
