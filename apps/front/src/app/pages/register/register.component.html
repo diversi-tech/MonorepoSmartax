@@ -14,7 +14,7 @@
         @if (username.errors && f.submitted) {
         <div class="invalid-feedback">
           @if (username.errors['required']) {
-          <div>Username is required</div>
+          <div>נדרש שם משתמש</div>
           }
           @if (username.errors['minlength']) {
           <div>Username must be at least 3 characters</div>
@@ -35,7 +35,7 @@
           <div>Email is required</div>
           }
           @if (email.errors['email']) {
-          <div>Email must be a valid email address</div>
+          <div>חייב להיות כתובת אימייל חוקית</div>
           }
         </div>
         }

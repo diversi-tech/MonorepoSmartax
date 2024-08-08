@@ -56,11 +56,11 @@
         <div class="p-field">
           <label for="tags">תגיות</label>
           <p-multiSelect id="tags" [(ngModel)]="filter.tags" [options]="tagSuggestions" optionLabel="text"
-            placeholder="Select Tags" display="chip" [showClear]="true">
+            placeholder="בחר תגים" display="chip" [showClear]="true">
           </p-multiSelect>
         </div>
 
-        <button pButton  label="Apply Filter" (click)="applyFilter()" class= "p-button-text p-button-raised p-button-rounded"></button >
+        <button pButton  label="מסנן" (click)="applyFilter()" class= "p-button-text p-button-raised p-button-rounded"></button >
       </div>
     </div>
   </div>

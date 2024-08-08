@@ -41,7 +41,7 @@ export class UserController {
 
     } catch (error) {
       throw new HttpException(
-        'Failed to create user',
+        'יצירת המשתמש נכשלה',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
