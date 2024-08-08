@@ -20,8 +20,8 @@
     height: 100%;
   } */
 
-  /* 2 */
-  /* .background-section {
+/* 2 */
+/* .background-section {
     width: 100%;
     background: url('../../../assets/image/office-desktop-with-laptop-calculator.jpg') no-repeat center center;
     background-size: cover;
@@ -82,8 +82,8 @@
   
    */
 
-   /* 3 */
-   /* .background-section {
+/* 3 */
+/* .background-section {
     position: relative;
     width: 100%;
     height: 100vh;
@@ -160,101 +160,103 @@
   .footer-section a {
     margin: 2%;
   } */
-  /* 4 */
+/* 4 */
 
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-  }
-  
-  .background-section {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    color: white;
-    text-align: right;
-    overflow: hidden;
-  }
-  
-  .background-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('../../../assets/image/office-desktop-with-laptop-calculator.jpg') no-repeat left center;
-    background-size: cover;
-    clip-path: polygon(0 0, 50% 0, 100% 100%, 0 100%);
-  }
-  
-  .text-container {
-    position: relative;
-    z-index: 1;
-    width: 50%;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.5); 
-  }
-  
-  .about-section {
-    background-color: #f9f9f9;
-    padding: 3% 5%;
-  }
-  
-  .about-text {
-    float: right;
-  }
-  
-  .about-image {
-    margin-top: 3%;
-  }
-  
-  .cards-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  .card-image {
-    width: 100%;
-    height: 200px;
-  }
-  
-  .contact-section {
-    display: flex;
-    justify-content: space-between;
-    padding: 3%;
-    background-color: #f9f9f9;
-  }
-  
-  .contact-form {
-    width: 50%;
-  }
-  
-  .footer-section {
-    /* background-color: white; */
-    color: black;
-    text-align: center;
-    padding: 10% 0;
-    background-color: #f9f9f9;
-  }
-  
-  .footer-section a {
-    margin: 2%;
-  }
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  .chip-spacing {
-    margin-right: 8px; /* Adjust the value as needed */
-  }
-  
-  
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.background-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: white;
+  text-align: right;
+  overflow: hidden;
+}
+
+.background-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../../../assets/image/office-desktop-with-laptop-calculator.jpg')
+    no-repeat left center;
+  background-size: cover;
+  clip-path: polygon(0 0, 50% 0, 100% 100%, 0 100%);
+}
+
+.text-container {
+  position: relative;
+  z-index: 1;
+  width: 50%;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: right;
+  text-align: justify;
+}
+
+.about-section {
+  background-color: #f9f9f9;
+  padding: 3% 5%;
+}
+
+.about-text {
+  float: right;
+}
+
+.about-image {
+  margin-top: 3%;
+}
+
+.cards-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+}
+
+.contact-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 3%;
+  background-color: #f9f9f9;
+}
+
+.contact-form {
+  width: 50%;
+}
+
+.footer-section {
+  /* background-color: white; */
+  color: black;
+  text-align: center;
+  padding: 10% 0;
+  background-color: #f9f9f9;
+}
+
+.footer-section a {
+  margin: 2%;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.chip-spacing {
+  margin-right: 8px; /* Adjust the value as needed */
+}

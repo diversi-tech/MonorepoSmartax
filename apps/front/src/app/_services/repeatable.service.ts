@@ -5,17 +5,16 @@ import { RepeatableTask } from '../_models/repeatable.module';
 import { REPEATABLE_ENDPOINT } from '../api-urls';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RepeatableTaskService {
-
-  private apiUrl = REPEATABLE_ENDPOINT // Base URL for the Client API
+  private apiUrl = REPEATABLE_ENDPOINT; // Base URL for the Client API
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }) // Define headers for HTTP requests
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }), // Define headers for HTTP requests
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // Create a new RepeatableTask
   createRepeatableTask(RepeatableTask: RepeatableTask): Observable<RepeatableTask> {
@@ -29,7 +28,9 @@ export class RepeatableTaskService {
   getAllRepeatableTasks(): Observable<RepeatableTask[]> {
     return this.http.get<RepeatableTask[]>(`${this.apiUrl + '/findAll'}`)
       .pipe(
-        catchError(this.handleError<RepeatableTask[]>('getAllRepeatableTasks', []))
+        catchError(
+          this.handleError<RepeatableTask[]>('getAllRepeatableTasks', [])
+        )
       );
   }
 
@@ -51,7 +52,8 @@ export class RepeatableTaskService {
 
   // Delete a RepeatableTask by ID
   deleteRepeatableTask(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
+    return this.http
+      .delete<boolean>(`${this.apiUrl}`, { ...this.httpOptions, body: { id } })
       .pipe(
         catchError(this.handleError<boolean>('deleteRepeatableTask', false))
       );
