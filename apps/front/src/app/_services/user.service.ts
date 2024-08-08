@@ -26,22 +26,49 @@ export class UserService {
 
   private apiUrl = USER_ENDPOINT;
 
-  register(username: string, email: string, role: Role): Observable<any> {
-    const passwordHash = this.hashService.encryptPassword('Aa123456');
+  // register(username: string, email: string, role: Role): Observable<any> {
+  //   const passwordHash = this.hashService.encryptPassword('Aa123456');
+  //   const newUser = {
+  //     userName: username,
+  //     passwordHash: passwordHash,
+  //     role: role,
+  //     email: email,
+  //   };
+  //   return this.http.put(this.apiUrl + '/create', newUser, httpOptions);
+  // }
+
+  register(
+    username: string,
+    email: string,
+    role: Role,
+    favoritesClient: Client[]
+  ): Observable<any> {
+    const passwordHash = this.hashService.encryptPassword('Aa123456'); // יצירת הסיסמה המוצפנת
     const newUser = {
       userName: username,
-      passwordHash: passwordHash,
-      role: role,
       email: email,
+      passwordHash:passwordHash,
+      // passwordHash: 'Aa123456',
+
+      role: role,
+      favoritesClient: favoritesClient, // הוספת רשימת הלקוחות המועדפים
     };
-    return this.http.put(this.apiUrl + '/create', newUser, httpOptions);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    return this.http.post(`${this.apiUrl}/create`, newUser, httpOptions);
   }
+
   update(
     id: string,
     userName: string,
     email: string,
     passwordHash: string,
-    role: string,
+    role: Role,
     favoritesClient: Client[]
   ) {
     const user = {
@@ -52,8 +79,6 @@ export class UserService {
       email: email,
       favoritesClient: favoritesClient,
     };
-    console.log(user);
-
     return this.http.post(this.apiUrl + '/update', user, httpOptions);
   }
 

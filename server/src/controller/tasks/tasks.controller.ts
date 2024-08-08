@@ -18,25 +18,18 @@ import { CreateTaskDto, UpdateTaskDto } from 'server/src/Models/dto/task.dto';
 import { Task } from 'server/src/Models/task.model';
 // import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
-import { hashPasswordService } from 'server/src/services/hash-password';
-import { TokenService } from 'server/src/services/jwt.service';
 import { TaskService } from 'server/src/services/task.service';
-//
 import { UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import * as fs from 'fs';
 import * as path from 'path';
 
 @ApiTags('tasks')
 @UseFilters(HttpErrorFilter)
-// @UseFilters(ValidationException)
 @Controller('tasks')
 export class TasksController {
   constructor(
-    private readonly taskService: TaskService,
-    private jwtToken: TokenService,
-    private hashService: hashPasswordService
-  ) {}
+    private readonly taskService: TaskService
+  ) { }
 
   @Post('create')
   @ApiOperation({ summary: 'Create a new task' })
@@ -47,9 +40,9 @@ export class TasksController {
       return newTask;
     } catch (error) {
       console.log(error);
-      throw new HttpException(
-        error.message!, error.status!
-      );
+      const status = error.status || HttpStatus.INTERNAL_SERVER_ERROR;
+      const message = error.message || 'An unexpected error occurred';
+      throw new HttpException(message, status);
     }
   }
 
@@ -59,6 +52,8 @@ export class TasksController {
   async findAll(): Promise<Task[]> {
     try {
       const tasks = await this.taskService.findAll();
+      console.log(tasks);
+      
       return tasks;
     } catch (error) {
       throw new HttpException(
@@ -81,18 +76,18 @@ export class TasksController {
   @Post('by-client')
   @ApiOperation({ summary: 'Get communications by Client ID' })
   @ApiBody({
-      schema: {
-          type: 'object',
-          properties: {
-              clientId: {
-                  type: 'string',
-                  example: '123456789'
-              }
-          }
+    schema: {
+      type: 'object',
+      properties: {
+        clientId: {
+          type: 'string',
+          example: '123456789'
+        }
       }
+    }
   })
   async getTasksByClientId(@Body() body: { clientId: string }): Promise<Task[]> {
-      return this.taskService.getTasksByClientId(body.clientId);
+    return this.taskService.getTasksByClientId(body.clientId);
   }
 
 
@@ -137,19 +132,5 @@ export class TasksController {
       '../../../uploads',
       image.originalname
     );
-    console.log(destinationPath);
-
-    // fs.writeFileSync(destinationPath, image.buffer);
-    console.log(`התמונה נשמרה ב: ${destinationPath}`);
   }
-
-  // @Get(':filename')
-  // async getImage(@Param('filename') filename: string, @Res() res: Response) {
-  //   const imagePath = path.join(__dirname, '../../../uploads', filename);
-  //   if (fs.existsSync(imagePath)) {
-  //     res.sendFile(imagePath);
-  //   } else {
-  //     res.status(404).send('Image not found');
-  //   }
-  // }
 }

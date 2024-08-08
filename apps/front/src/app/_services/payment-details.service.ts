@@ -42,16 +42,14 @@ export class PaymentDetailsService {
     description: string
   ) {
     const paymentDetails = {
-      _id: _id,
-      sumForMonth: sumForMonth,
-      maxHours: maxHours,
-      frequency: frequency,
-      dateStart: dateStart,
-      dateFinish: dateFinish,
-      description: description,
-    };
-    console.log(paymentDetails);
-
-    return this.http.post(this.apiUrl + '/update', paymentDetails);
+      "_id": _id,
+      "sumForMonth": sumForMonth,
+      "maxHours": maxHours,
+      "frequency": frequency,
+      "dateStart": dateStart,
+      "dateFinish": dateFinish,
+      "description": description
+    }
+    return this.http.post(this.apiUrl + "/update", paymentDetails);
   }
 }

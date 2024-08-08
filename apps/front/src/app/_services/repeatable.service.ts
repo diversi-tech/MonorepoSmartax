@@ -17,22 +17,16 @@ export class RepeatableTaskService {
   constructor(private http: HttpClient) {}
 
   // Create a new RepeatableTask
-  createRepeatableTask(
-    RepeatableTask: RepeatableTask
-  ): Observable<RepeatableTask> {
-    return this.http
-      .post<RepeatableTask>(
-        this.apiUrl + '/create',
-        RepeatableTask,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError<RepeatableTask>('createClient')));
+  createRepeatableTask(RepeatableTask: RepeatableTask): Observable<RepeatableTask> {
+    return this.http.post<RepeatableTask>(this.apiUrl + '/create', RepeatableTask, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<RepeatableTask>('createClient'))
+      );
   }
 
   // Get all RepeatableTasks
   getAllRepeatableTasks(): Observable<RepeatableTask[]> {
-    return this.http
-      .get<RepeatableTask[]>(`${this.apiUrl + '/findAll'}`)
+    return this.http.get<RepeatableTask[]>(`${this.apiUrl + '/findAll'}`)
       .pipe(
         catchError(
           this.handleError<RepeatableTask[]>('getAllRepeatableTasks', [])
@@ -42,24 +36,15 @@ export class RepeatableTaskService {
 
   // Search for a Client by ID
   searchRepeatableTask(id: string): Observable<RepeatableTask> {
-    console.log('id in FE' + id);
-
-    return this.http
-      .post<RepeatableTask>(`${this.apiUrl}/findOne`, { id }, this.httpOptions)
-      .pipe(catchError(this.handleError<RepeatableTask>('findOne')));
+    return this.http.post<RepeatableTask>(`${this.apiUrl}/findOne`, { id }, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<RepeatableTask>('findOne'))
+      );
   }
 
   // Update an existing Client
-  updateRepeatableTask(
-    id: string,
-    RepeatableTask: RepeatableTask
-  ): Observable<RepeatableTask> {
-    return this.http
-      .put<RepeatableTask>(
-        `${this.apiUrl}/update/${id}`,
-        RepeatableTask,
-        this.httpOptions
-      )
+  updateRepeatableTask(id: string, RepeatableTask: RepeatableTask): Observable<RepeatableTask> {
+    return this.http.put<RepeatableTask>(`${this.apiUrl}/update/${id}`, RepeatableTask, this.httpOptions)
       .pipe(
         catchError(this.handleError<RepeatableTask>('updateRepeatableTask'))
       );
@@ -81,6 +66,4 @@ export class RepeatableTaskService {
       return of(result as T); // Return default result to keep the app running
     };
   }
-
-  //
 }

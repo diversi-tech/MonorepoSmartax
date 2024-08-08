@@ -10,7 +10,7 @@ import {
 } from '@angular/common';
 import { TaskComponent } from '../../task/task.component';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Footer, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
@@ -32,7 +32,6 @@ import { Button, ButtonDirective } from 'primeng/button';
     ConfirmDialogModule,
     RouterLink,
     RouterOutlet,
-    // TaskComponent,
     DialogModule,
     Footer,
     ButtonDirective,
@@ -59,25 +58,26 @@ import { Button, ButtonDirective } from 'primeng/button';
   templateUrl: './pop-app.component.html',
   styleUrl: './pop-app.component.css',
 })
+
 export class PopAppComponent implements OnInit {
   id: string | null;
   @Input() parent: string | null = null;
 
   visible: boolean = true;
+  show = true
+
 
   create = false;
-  constructor(private route: ActivatedRoute, private location: Location) {}
+  constructor(private route: ActivatedRoute, private location: Location,private router: Router) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
-
     if (this.id == 'create') {
-      // alert("יצירה בפופאפ")
-      this.id == null;
-      this.create = true;
-    } else {
-      alert('עריכה בפופאפ');
-      this.create = false;
+      this.id == null
+      this.create = true
+    }
+    else {
+      this.create = false
     }
 
     this.route.queryParams.subscribe((params) => {
@@ -88,10 +88,13 @@ export class PopAppComponent implements OnInit {
   showDialog() {
     this.visible = true;
   }
-  show = true;
 
   onHide() {
     console.log('The dialog has been closed.');
     this.location.back();
+  }
+  onDialogClose() {
+    this.visible = false;
+    this.router.navigate([`/taskSpe/${this.parent}`]);
   }
 }

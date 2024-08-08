@@ -28,14 +28,12 @@ import { RouterOutlet } from '@angular/router';
   ],
 })
 export class ReportsComponent implements OnInit{
-    constructor(private paymentsReportsService:PaymentsReportsService) { }
-    items=[
 
-    
+    constructor(private paymentsReportsService:PaymentsReportsService) { }
+  
+    items=[
     ]
     ngOnInit(): void {
-       this.items = this.paymentsReportsService.getReportslist()
-        console.log(this.items);
-        
+       this.items = this.paymentsReportsService.getReportslist()        
     }
 }

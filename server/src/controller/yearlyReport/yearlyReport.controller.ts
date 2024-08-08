@@ -15,14 +15,26 @@ export class YearlyReportController{
   @ApiOperation({ summary: 'Create a new yearly report' })
   @ApiBody({ type: CreateYearlyReportDto })
   async create(@Body() createYearlyReportDto: CreateYearlyReportDto): Promise<YearlyReport> {
+    try {
     return this.yearlyReportService.createYearlyReport(createYearlyReportDto);
+    }
+    catch (error) {
+      console.log(error);
+      throw new Error(error);
+    }
   }
 
   @Post('update/:id')
   @ApiOperation({ summary: 'Update a yearly report by ID' })
   @ApiBody({ type: UpdateYearlyReportDto })
   async update(@Param('id') id: string, @Body() updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
-    return this.yearlyReportService.updateYearlyReport(id, updateYearlyReportDto);
+    try {
+      return this.yearlyReportService.updateYearlyReport(id, updateYearlyReportDto);
+    }
+      catch (error) {
+        console.log(error);
+        throw new Error(error);
+      }
   } 
 
   @Post('delete')

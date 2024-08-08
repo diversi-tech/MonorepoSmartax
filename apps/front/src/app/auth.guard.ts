@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable, map, catchError, of } from 'rxjs';
 import { AuthService } from './_services/auth.service';
-import { StorageService } from './_services/storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private storageServise: StorageService,private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService, 
+    private router: Router
+  ) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -23,17 +25,12 @@ export class AuthGuard implements CanActivate {
       }),
       catchError(error => {
         if (error.status === 401) {
-          console.log(error);
-          this.router.navigate(['/home']);
-          // this.reloadPage();
-          
+          this.router.navigate(['/home']);          
           return of(false);
         } else if (error.status === 403) {
-          console.log(error);
           this.router.navigate(['/home']);
           return of(false);
         } else {
-          console.log(error);
           this.router.navigate(['/home']);
           return of(false);
         } 

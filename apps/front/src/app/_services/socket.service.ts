@@ -29,14 +29,12 @@ export class SocketService {
 
   onTaskCreated(callback: (task: any) => void) {
     this.socket.on('taskCreated', (task) => {
-      console.log('אירוע taskCreated התקבל:', task);
       callback(task);
     });
   }
 
   onTaskConfirmed(callback: (taskId: string) => void) {
     this.socket.on('taskConfirmed', (taskId) => {
-      console.log('אירוע taskConfirmed התקבל:', taskId);
       callback(taskId);
     });
   }

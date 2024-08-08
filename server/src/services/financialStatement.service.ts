@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { CreateFinancialStatementDto } from '../Models/dto/financialStatement.dto';
 import { FinancialStatement } from '../Models/financialStatement.model';
 import { StepField } from '../Models/stepField.model';
@@ -10,18 +9,19 @@ import { UpdateFinancialStatementDto } from '../Models/dto/financialStatement.dt
 @Injectable()
 export class FinancialStatementService {
 
-    constructor(@InjectModel('FinancialStatement') private readonly FinancialStatementModel: Model<FinancialStatement>,
-                 @InjectModel('StepField') private readonly stepFieldModel: Model<StepField>) {}
+    constructor(
+        @InjectModel('FinancialStatement') private readonly FinancialStatementModel: Model<FinancialStatement>,
+        @InjectModel('StepField') private readonly stepFieldModel: Model<StepField>
+    ) { }
 
     async createFinancialStatement(createFinancialStatementDto: CreateFinancialStatementDto): Promise<FinancialStatement> {
         const allStepFields = await this.stepFieldModel.find().exec();
         const filteredStepFields = allStepFields.filter(stepField => stepField.type === 'financial-statement');
-                  
+
         const createdFinancialStatement = new this.FinancialStatementModel({
-             ...createFinancialStatementDto,
-             stepsList: filteredStepFields,
+            ...createFinancialStatementDto,
+            stepsList: filteredStepFields,
         });
-                  
         return createdFinancialStatement.save();
     }
 
@@ -29,13 +29,11 @@ export class FinancialStatementService {
         const updatedFinancialStatement = await this.FinancialStatementModel.findByIdAndUpdate(
             id,
             updateFinancialStatementDto,
-            // { new: true }
         ).exec();
 
         if (!updatedFinancialStatement) {
             throw new NotFoundException('Financial Statement not found');
         }
-
         return updatedFinancialStatement.save();
     }
 

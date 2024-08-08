@@ -1,16 +1,54 @@
-<router-outlet></router-outlet>
-<p-button (click)="createReprtTag()" label="יצירת דוח חודשי חדש" />
 
+<button pButton label="שמור שינויים" (click)="update()" class= "p-button-text p-button-raised p-button-rounded"></button>
+<button pButton *ngIf="currentRoute==='monthlyReport'" (click)="showDialog()" label="חדש" class= "p-button-text p-button-raised p-button-rounded"></button>
 
-
+<p-dialog header="יצירת דוח חדש" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="flex align-items-center gap-3 mb-3">
+     <div class="p-field p-mb-3" dir="rtl">
+    <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2"
+      (completeMethod)="filterByyear($event.query)" [minLength]="1"
+      placeholder="בחירת שנה"  field="yearNum" [dropdown]="true" (onSelect)="select($event)"
+      [style]="{width: '27%'}" required  (onChange)="changeDate()"  [forceSelection]="false" >
+      <ng-template let-yearname pTemplate="item" >
+        <div   class="p-d-flex p-ai-center" >
+          שנת  {{ yearname.yearNum}}
+          <ng-container *ngIf="is" >
+            <button type="button" pButton class= "p-button-text p-button-raised p-button-rounded" (click)="add()">רוצה להוסיף שנה </button>
+          </ng-container>
+        </div>
+      </ng-template>
+    </p-autoComplete>
+     </div>
+    </div>
+    <div class="flex align-items-center gap-3 mb-5">
+        <p-dropdown
+        [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="months"
+        [(ngModel)]="createdMonth"
+        placeholder="בחירת חודש"
+          [editable]="true"
+           ></p-dropdown>
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <button pButton label="ביטול" severity="secondary" (onClick)="visible = false" class= "p-button-text p-button-raised p-button-rounded"></button>
+        <button pButton label="שמור" (onClick)="visible = false;onSubmit()" class= "p-button-text p-button-raised p-button-rounded"></button>
+    </div>
+</p-dialog>
+<div class="p-field p-mb-3" dir="rtl">
+    <p-autoComplete [(ngModel)]="selectedyear" [suggestions]="yearList2"
+      (completeMethod)="filterByyear($event.query)" [minLength]="1"
+      placeholder="בחירת שנה"  field="yearNum" [dropdown]="true" (onSelect)="select($event)"
+      [style]="{width: '27%'}" required  (onChange)="changeDate()"  [forceSelection]="false" >
+      <ng-template let-yearname pTemplate="item" >
+        <div   class="p-d-flex p-ai-center" >
+          שנת  {{ yearname.yearNum}}
+          <ng-container *ngIf="is" >
+            <button type="button" pButton class= "p-button-text p-button-raised p-button-rounded" (click)="add()">רוצה להוסיף שנה </button>
+          </ng-container>
+        </div>
+      </ng-template>
+    </p-autoComplete>
+  </div>
 <div >
-    <p-dropdown [options]="years"
-     [(ngModel)]="selectedYear"
-     placeholder="בחירת שנה"
-       [editable]="true"
-        optionLabel="yearNum"
-        (onChange)="changeDate()"  />
-</div>
 <div >
     <p-dropdown [options]="months"
      [(ngModel)]="selectedMonth"
@@ -39,8 +77,8 @@
         </ng-template>
         <ng-template pTemplate="body" let-fieldBymonth>
             <th><div class="text-center">{{fieldBymonth.value}}</div>
-                <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" value="{{fieldBymonth.content}}" />
-                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" />
+                <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" [(ngModel)]="fieldBymonth.content" />
+                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" (change)="fieldBymonth.content === 'לא בוצע'?fieldBymonth.content = 'בוצע':fieldBymonth.content = 'לא בוצע'"/>
             </th>
         </ng-template>
 </p-table>
@@ -49,4 +87,67 @@
 
 
 
+    <!-- <form [formGroup]="yearlyReportForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <p-dropdown id="year" formControlName="year"
+          [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown" [options]="years"
+          [(ngModel)]="selectedYear"
+          placeholder="בחירת שנה"
+            [editable]="true"
+             optionLabel="yearNum"
+             ></p-dropdown>
+         <div *ngIf="yearlyReportForm.get('type').invalid && yearlyReportForm.get('type').touched" class="error">
+          This field is required.
+        </div> -->
+      <!-- </div> -->
+  
+      <!-- <div class="form-group"> -->
+        
+        <!-- <div *ngIf="yearlyReportForm.get('year').invalid && yearlyReportForm.get('year').touched" class="error">
+          This field is required.
+        </div> -->
+      <!-- </div> -->
+  
+      
+  
+      <!-- <div class="form-group">
+        <label for="price">מחיר:</label>
+        <input type="number" id="price" formControlName="price" class="form-control" placeholder="מחיר">
+        <div *ngIf="yearlyReportForm.get('price').invalid && yearlyReportForm.get('price').touched" class="error">
+          This field is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="paymentAmountPaid">סכום ששולם:</label>
+        <input type="number" id="paymentAmountPaid" formControlName="paymentAmountPaid" class="form-control"
+          placeholder="סכום ששולם">
+        <div *ngIf="yearlyReportForm.get('paymentAmountPaid').invalid && yearlyReportForm.get('paymentAmountPaid').touched"
+          class="error">
+          This field is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="balanceDue">יתרה לתשלום:</label>
+        <input type="number" id="balanceDue" formControlName="balanceDue" class="form-control" placeholder="יתרה לתשלום">
+        <div *ngIf="yearlyReportForm.get('balanceDue').invalid && yearlyReportForm.get('balanceDue').touched" class="error">
+          This field is required.
+        </div>
+      </div>
+   
+      <button type="submit" pButton label="אישור" class="custom-button"></button>
+    </form>
+  </div> -->
+  
 
+<!-- <div >
+    <p-dropdown [options]="years"
+     [(ngModel)]="selectedYear"
+     placeholder="בחירת שנה"
+       [editable]="true"
+        optionLabel="yearNum"
+        (onChange)="changeDate()"  />
+</div> -->
+
+  

@@ -7,14 +7,16 @@ import { Status } from '../_models/status.module';
 @Injectable({
   providedIn: 'root',
 })
+
 export class StatusService {
+
   private apiUrl = STATUS_ENDPOINT;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }), // Define headers for HTTP requests
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Search for a Client by ID
   searchStatus(id: string): Observable<Status[]> {
