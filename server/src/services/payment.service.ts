@@ -123,14 +123,14 @@ export class PaymentService {
     async deleteOldPaymendDetails() {
         const allPayments = await this.getAllPayments();
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // לאפס את השעה כדי להתייחס רק לתאריך
+        today.setHours(0, 0, 0, 0); 
         for (const payment of allPayments) {
             const updatedMorePaymentDetails = payment.morePaymentDetails.filter((detail: PaymentDetails) => {
                 if (detail.dateFinish && new Date(detail.dateFinish) < today) {
                     payment.paymentHistory.push(detail);
-                    return false; // מסיר מהמערך
+                    return false; 
                 }
-                return true; // שומר במערך
+                return true; 
             });
             payment.morePaymentDetails = updatedMorePaymentDetails;
             await payment.save();

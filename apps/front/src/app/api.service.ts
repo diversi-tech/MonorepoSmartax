@@ -12,12 +12,10 @@ export class ApiService {
   constructor(private http: HttpClient) {}
   private apiUrl = API_URL;
   
-  // דוגמה לפונקציה שמבצעת קריאת GET
   getItems(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/items`);
   }
 
-  // דוגמה לפונקציה שמבצעת קריאת POST
   addItem(item: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/items`, item);
   }

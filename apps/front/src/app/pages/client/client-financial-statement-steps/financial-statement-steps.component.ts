@@ -37,7 +37,7 @@ export class FinancialStatementStepsComponent {
   responseData: any;
   allStep: StepField[] = [];
   stepsByNumber: { [key: number]: StepField[] } = {};
-  activeStep = 0; // מתחיל בשלב הראשון
+  activeStep = 0;
   changes: { [key: string]: boolean } = {};
   client: Client;
   activeIndex: number = 0;
@@ -70,7 +70,6 @@ export class FinancialStatementStepsComponent {
   }
 
   groupSteps() {
-    // console.log("task",history.state.task)
     this.allStep.forEach((step) => {
       const stepNumber = step.stepNumber; // Assuming stepNumber is the property you want to group by
       if (!this.stepsByNumber[stepNumber]) {

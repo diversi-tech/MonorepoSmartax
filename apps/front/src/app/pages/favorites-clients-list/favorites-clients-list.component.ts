@@ -69,7 +69,6 @@ export class FavoritesClientsListComponent implements OnInit {
         this.user.passwordHash,
         this.user.role,
         []
-        // this.user.favoritesClient
       )
       .subscribe({
         next: (response: any) => {
@@ -95,7 +94,7 @@ export class FavoritesClientsListComponent implements OnInit {
 
   showConfirmationDelete(): void {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this clients?',
+      message: 'האם אתה בטוח שברצונך למחוק את הלקוחות האלה?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       key: "delete"

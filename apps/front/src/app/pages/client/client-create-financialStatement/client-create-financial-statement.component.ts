@@ -117,12 +117,10 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
 
   ngOnInit(): void {
     this.financialStatementForm = this.fb.group({
-      // type: ['', Validators.required],
       year: ['', Validators.required],
       price: ['', Validators.required],
       paymentAmountPaid: ['', Validators.required],
       balanceDue: ['', Validators.required],
-      // status: ['', Validators.required],
     });
     if (this.statementToUpdate) {
       this.financialStatementForm.patchValue({
@@ -150,12 +148,9 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger
     this.formSubmitted = true;
     if (this.financialStatementForm.valid) {
-      const financialStatement = this.financialStatementForm.value;
-      // const status =  this.determineStatus();
-
+      const financialStatement = this.financialStatementForm.value; 
       if (this.statementToUpdate) {
         const status = this.determineStatus();
         this.updatefinancialStatement(financialStatement, status);
@@ -163,9 +158,7 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
         this.createfinancialStatement(financialStatement);
       }
     }
-    this.hideModalDialog(); //
-    // this.location.back();
-    debugger
+    this.hideModalDialog(); 
   }
 
   determineStatus(): Status {

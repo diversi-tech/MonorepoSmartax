@@ -161,7 +161,6 @@ export class EditClientYearlyReportComponent implements OnInit {
       cancelButtonText: 'ביטול',
     }).then((result) => {
       if (result.isConfirmed) {
-        // כאן תוכל לקרוא לפונקציה למחיקה
         this.delete(id);
       }
     });

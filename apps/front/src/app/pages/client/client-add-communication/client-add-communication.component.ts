@@ -166,7 +166,6 @@ export class ClientAddCommunicationComponent implements OnInit {
     this.calltopicservice.createCallTopic(this.newcallTopicSchema).subscribe(response => {
       this.callTopics.push(response); 
       alert( response.name+" "+"נוסף בהצלחה")
-       // הוספת הנושא החדש לרשימה המקומית
     });
   }
 

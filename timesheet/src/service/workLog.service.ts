@@ -134,52 +134,49 @@ export class WorkLogService {
     return Buffer.from(buffer);
   }
   private addSummaryToWorksheet(worksheet: ExcelJS.Worksheet, workLogs: any[]) {
-    // חישוב סך השעות ומספר הימים בחודש
     let totalHoursWorked = 0;
-    const daysWorked = new Set(); // Set כדי למנוע ימים כפולים חישוב מספר הימים שעבד העובד
-
+    const daysWorked = new Set();
     workLogs.forEach((log) => {
       log.timeEntries.forEach((entry) => {
         totalHoursWorked += entry.hoursWorked;
         daysWorked.add(log.date.getDate());
       });
     });
-    const summaryRow = worksheet.addRow({ 
+    const summaryRow = worksheet.addRow({
       employeeId: 'כלל השעות שעבד העובד בחודש',
       date: '',
       checkIn: '',
       checkOut: '',
-      hoursWorked: totalHoursWorked.toFixed(2), // מעגל את המשתנה
+      hoursWorked: totalHoursWorked.toFixed(2),
     });
 
-    // סגנון עבור שורת הסיכום
     summaryRow.eachCell((cell) => {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'FFFF00' }, // צבע צהוב
+        fgColor: { argb: 'FFFF00' },
       };
       cell.font = {
-        bold: true, // טקסט מודגש
+        bold: true,
       };
     });
 
-    const summaryRow2 = worksheet.addRow({ 
+    const summaryRow2 = worksheet.addRow({
       employeeId: 'מספר הימים שעבד העובד בחודש',
       date: '',
       checkIn: '',
       checkOut: '',
-      hoursWorked: daysWorked.size, // עבודה הוא עבד
-    }); 
+      hoursWorked: daysWorked.size,
+    });
     summaryRow2.eachCell((cell) => {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'FFFF00' }, // צבע צהוב
+        fgColor: { argb: 'FFFF00' },
       };
       cell.font = {
-        bold: true, // טקסט מודגש
+        bold: true,
       };
-    }); 
-      }
+    });
+  }
 }

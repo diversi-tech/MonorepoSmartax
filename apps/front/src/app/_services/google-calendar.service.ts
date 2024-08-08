@@ -32,7 +32,6 @@ export class GoogleAuthService {
   }
 
 
-  // Subject להעברת המידע לקומפוננטות
   private eventDataSubject = new BehaviorSubject<any>(null);
   public eventData$ = this.eventDataSubject.asObservable();
 

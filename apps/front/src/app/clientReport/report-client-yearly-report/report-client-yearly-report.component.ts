@@ -169,7 +169,6 @@ showDeleteConfirmation(id:string): void {
     cancelButtonText: 'ביטול',
   }).then((result) => {
     if (result.isConfirmed) {
-      // כאן תוכל לקרוא לפונקציה למחיקה
       this.delete(id);
     }
   });
