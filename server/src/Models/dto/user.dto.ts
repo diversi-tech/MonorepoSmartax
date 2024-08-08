@@ -81,7 +81,7 @@ export class CreateUserDto {
 
     @ApiProperty({ description: 'The hashed password' })
     @IsNotEmpty()
-    // @IsString()
+    @IsString()
     // @MinLength(8)
     // @MaxLength(20)
     // @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
@@ -118,11 +118,11 @@ export class UpdateUserDto {
     @ApiProperty({ description: 'The hashed password', required: false })
     @IsOptional()
     @IsString()
-    @MinLength(8)
-    @MaxLength(20)
-    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
-        message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
-    })
+    // @MinLength(8)
+    // @MaxLength(20)
+    // @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
+    //     message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+    // })
     passwordHash?: string;
 
     @ApiProperty({ description: 'The role of the user', required: false })
