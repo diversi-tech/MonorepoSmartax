@@ -1,133 +1,240 @@
-<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
-  <p-footer>
-    <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text p-button-raised p-button-rounded"
-      (click)="cancelDelete()"></button>
-    <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text p-button-raised p-button-rounded"
-      (click)="confirmDelete()"></button>
-  </p-footer>
-</p-confirmDialog>
+<div id="mainContainer">
 
-<p-sidebar [(visible)]="display" position="left" style="width: 800px; max-width: 100vw;">
-  <!-- Filter Form -->
-  <div *ngIf="showFilter" style="margin-top: 10px">
-    <div class="filter-panel">
-      <div class="filter-container">
-        <div>
-          <label for="deadlineRange">דדליין</label>
-          <p-calendar id="deadlineRange" [(ngModel)]="filter.deadlineRange" selectionMode="range"></p-calendar>
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
+    <p-footer>
+      <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text p-button-raised p-button-rounded"
+        (click)="cancelDelete()"></button>
+      <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text p-button-raised p-button-rounded"
+        (click)="confirmDelete()"></button>
+    </p-footer>
+  </p-confirmDialog>
+  
+  <p-sidebar [(visible)]="display" position="left" style="width: 800px; max-width: 100vw;">
+    <!-- Filter Form -->
+    <div *ngIf="showFilter" style="margin-top: 10px">
+      <div class="filter-panel">
+        <div class="filter-container">
+          <div>
+            <label for="deadlineRange">דדליין</label>
+            <p-calendar id="deadlineRange" [(ngModel)]="filter.deadlineRange" selectionMode="range"></p-calendar>
+          </div>
+          <div>
+            <label for="client">לקוח</label>
+            <p-autoComplete id="client" [(ngModel)]="filter.client" [suggestions]="clientSuggestions"
+              (completeMethod)="searchClients($event)" field="firstName">
+              <ng-template let-client pTemplate="item">
+                <div class="client-item">
+                  <app-icon-profile [userName]="client.firstName" [email]="client.email"></app-icon-profile>
+                  <span>{{ client.name }}</span>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+          </div>
+          <div>
+            <label for="user">עובד</label>
+            <p-autoComplete id="user" [(ngModel)]="filter.user" [suggestions]="userSuggestions"
+              (completeMethod)="searchUsers($event)" field="userName">
+              <ng-template let-user pTemplate="item">
+                <div class="user-item">
+                  <app-icon-profile [userName]="user.userName" [email]="user.email"></app-icon-profile>
+                  <span>{{ user.userName }}</span>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+          </div>
+  
+          <!--  -->
+          <div>
+            <label for="taskName">משימה</label>
+            <p-autoComplete id="taskName" [(ngModel)]="filter.task" [suggestions]="taskSuggestions"
+              (completeMethod)="searchTasks($event)" field="taskName">
+              <ng-template let-task pTemplate="item">
+                <div class="task-item">
+                  <span>{{ task.taskName }}</span>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+          </div>
+          <div class="p-field">
+            <label for="tags">תגיות</label>
+            <p-multiSelect id="tags" [(ngModel)]="filter.tags" [options]="tagSuggestions" optionLabel="text"
+              placeholder="Select Tags" display="chip" [showClear]="true">
+            </p-multiSelect>
+          </div>
+  
+          <button pButton  label="Apply Filter" (click)="applyFilter()" class= "p-button-text p-button-raised p-button-rounded"></button >
         </div>
-        <div>
-          <label for="client">לקוח</label>
-          <p-autoComplete id="client" [(ngModel)]="filter.client" [suggestions]="clientSuggestions"
-            (completeMethod)="searchClients($event)" field="firstName">
-            <ng-template let-client pTemplate="item">
-              <div class="client-item">
-                <app-icon-profile [userName]="client.firstName" [email]="client.email"></app-icon-profile>
-                <span>{{ client.firstName }}</span>
-              </div>
-            </ng-template>
-          </p-autoComplete>
-        </div>
-        <div>
-          <label for="user">עובד</label>
-          <p-autoComplete id="user" [(ngModel)]="filter.user" [suggestions]="userSuggestions"
-            (completeMethod)="searchUsers($event)" field="userName">
-            <ng-template let-user pTemplate="item">
-              <div class="user-item">
-                <app-icon-profile [userName]="user.userName" [email]="user.email"></app-icon-profile>
-                <span>{{ user.userName }}</span>
-              </div>
-            </ng-template>
-          </p-autoComplete>
-        </div>
-
-        <!--  -->
-        <div>
-          <label for="taskName">משימה</label>
-          <p-autoComplete id="taskName" [(ngModel)]="filter.task" [suggestions]="taskSuggestions"
-            (completeMethod)="searchTasks($event)" field="taskName">
-            <ng-template let-task pTemplate="item">
-              <div class="task-item">
-                <span>{{ task.taskName }}</span>
-              </div>
-            </ng-template>
-          </p-autoComplete>
-        </div>
-        <div class="p-field">
-          <label for="tags">תגיות</label>
-          <p-multiSelect id="tags" [(ngModel)]="filter.tags" [options]="tagSuggestions" optionLabel="text"
-            placeholder="Select Tags" display="chip" [showClear]="true">
-          </p-multiSelect>
-        </div>
-
-        <button pButton  label="Apply Filter" (click)="applyFilter()" class= "p-button-text p-button-raised p-button-rounded"></button >
       </div>
     </div>
-  </div>
-  <div *ngIf="filteredTasks.length === 0 && !filterFirstStatus">
-    <p>אין תוצאות</p>
-  </div>
-</p-sidebar>
-
-<div class="p-grid">
-  <div>
-    <div class="content-container">
-      <button pButton  class= "p-button-text p-button-raised p-button-rounded" [routerLink]="['/taskSpe', 'create']" id="addBtn" type="button" icon="pi pi-plus"
-        label="הוסף משימה"></button >
-
-      <button pButton  class= "p-button-text p-button-raised p-button-rounded" type="text" (click)="display = true" (click)="toggleFilter()" icon="pi pi-filter"
-        label="סינון"></button >
-
-      <input class="buttons" id="float-input" pInputText type="text" placeholder="חיפוש משימה" (change)="searchTask()"
-        [(ngModel)]="searchTerm" />
+    <div *ngIf="filteredTasks.length === 0 && !filterFirstStatus">
+      <p>אין תוצאות</p>
     </div>
-  </div>
+  </p-sidebar>
+  
+  <div class="p-grid" style="display: flex; flex-direction: column; align-items: center;">
 
-  <div class="p-col-8" style="text-align: right; align-items: right">
-    <div class="content-container">
-      <div>
-        <div *ngIf="filteredTasks.length == 0">
-          <div *ngFor="let status of statuses">
-            <p-panel header="{{ status.name }}">
-              <p-table [value]="categorizeTasks(status)">
+    <div class="content-container" style="padding-bottom: 2%;">
+        <button pButton  class= "p-button-text p-button-raised p-button-rounded" [routerLink]="['/taskSpe', 'create']" id="addBtn" type="button" icon="pi pi-plus"
+          label="הוסף משימה"></button >
+  
+        <button pButton  class= "p-button-text p-button-raised p-button-rounded" type="text" (click)="display = true" (click)="toggleFilter()" icon="pi pi-filter"
+          label="סינון"></button >
+  
+        <input class="buttons" id="float-input" pInputText type="text" placeholder="חיפוש משימה" (change)="searchTask()"
+          [(ngModel)]="searchTerm" />
+      </div>
+  
+    <div style="text-align: right; align-items: right; width: 100%;">
+      <div class="content-container">
+        <div>
+          <div *ngIf="filteredTasks.length == 0">
+            <div *ngFor="let status of statuses">
+              <p-panel header="{{ status.name }}">
+                <p-table [value]="categorizeTasks(status)">
+                  <ng-template pTemplate="header">
+                    <tr style="height: 50px">
+                      <th style="width: auto; height: 50px">
+                        שם
+                        <i class="pi pi-caret-up" (click)="sortTasks('taskName', tasks, false)"
+                          style="cursor: pointer; margin-left: 5px"></i>
+                        <i class="pi pi-caret-down" (click)="sortTasks('taskName', tasks,true)"
+                          style="cursor: pointer; margin-left: 5px"></i>
+                      </th>
+                      <th style="width: auto; height: 50px">
+                        משוייך ל
+                        <i class="pi pi-caret-up" (click)="sortTasks('assignedTo', tasks, false)"
+                          style="cursor: pointer; margin-left: 5px"></i>
+                        <i class="pi pi-caret-down" (click)="sortTasks('assignedTo', tasks,true)"
+                          style="cursor: pointer; margin-left: 5px"></i>
+                      </th>
+                      <th style="width: auto">
+                        טווח זמנים
+                        <i class="pi pi-caret-up" (click)="sortTasks('dueDate', tasks, false)"
+                          style="cursor: pointer; margin-left: 5px"></i>
+                        <i class="pi pi-caret-down" (click)="sortTasks('dueDate', tasks,true)"
+                          style="cursor: pointer; margin-left: 5px"></i>
+                      </th>
+                      <th style="width: auto">
+                        תגיות
+                        <i class="pi pi-caret-up" (click)="sortTasks('tags', tasks, false)"
+                          style="cursor: pointer; margin-left: 5px"></i>
+                        <i class="pi pi-caret-down" (click)="sortTasks('tags', tasks,true)"
+                          style="cursor: pointer; margin-left: 5px"></i>
+                      </th>
+                      <th></th>
+                    </tr>
+                  </ng-template>
+  
+                  <ng-template pTemplate="body" let-task>
+                    <tr (click)="selectCurrentTask(task)" [ngClass]="{ 'highlight': currentTask === task }">
+                      <td>{{ task.taskName }}</td>
+  
+                      <td>
+                        <div style="display: flex; align-items: center">
+                          <ng-container *ngFor="let u of task.assignedTo">
+                            <div style="margin-left: 10px">
+                              <app-icon-profile [userName]="u.userName" [email]="u.email"></app-icon-profile>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </td>
+  
+                      <td>{{ task.deadline | date : 'shortDate' }}</td>
+  
+                      <td>
+                        <button *ngFor="let tag of task.tags; let i = index" [ngStyle]="{
+                            backgroundColor: tag.color,
+                            color: 'white'
+                          }" class="custom-button">
+                          {{ tag.text }}
+                        </button>
+                      </td>
+                      <!-- <td>
+                        <button
+                          [routerLink]="['/taskSpe', task._id]"
+                          pButton
+                          icon="pi pi-pencil"
+                          label="Edit"
+                        ></button>
+                        <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil"
+                          style="color: blue;cursor: pointer;"></i>
+                      </td> -->
+                      <!-- <td>
+                        <button
+                          pButton
+                          type="button"
+                          icon="pi pi-trash"
+                          label="Delete"
+                          class= p-button-danger"
+                          (click)="showConfirmation(task)"
+                        ></button>
+                        <i (click)="showConfirmation(task)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
+                      </td> -->
+                      <td><button *ngIf="currentTask === task" pButton
+                          class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
+                          (click)="editTask()"></button>
+                        <button *ngIf="currentTask === task" pButton
+                          class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
+                          (click)="showConfirmation()"></button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </p-panel>
+            </div>
+          </div>
+  
+          <div *ngIf="filteredTasks.length > 0">
+            <p-panel header="Filtered Tasks">
+              <p-table [value]="filteredTasks">
+                <!-- <ng-template pTemplate="header">
+                  <tr>
+                    <th>Name</th>
+                    <th>assignedTo</th>
+                    <th>Deadline </th>
+                    <th>Tags</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                  </tr>
+                </ng-template> -->
+  
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">
                     <th style="width: auto; height: 50px">
-                      שם
+                      Name
                       <i class="pi pi-caret-up" (click)="sortTasks('taskName', tasks, false)"
                         style="cursor: pointer; margin-left: 5px"></i>
                       <i class="pi pi-caret-down" (click)="sortTasks('taskName', tasks,true)"
                         style="cursor: pointer; margin-left: 5px"></i>
                     </th>
                     <th style="width: auto; height: 50px">
-                      משוייך ל
+                      assignedTo
                       <i class="pi pi-caret-up" (click)="sortTasks('assignedTo', tasks, false)"
                         style="cursor: pointer; margin-left: 5px"></i>
                       <i class="pi pi-caret-down" (click)="sortTasks('assignedTo', tasks,true)"
                         style="cursor: pointer; margin-left: 5px"></i>
                     </th>
                     <th style="width: auto">
-                      טווח זמנים
+                      Due Date
                       <i class="pi pi-caret-up" (click)="sortTasks('dueDate', tasks, false)"
                         style="cursor: pointer; margin-left: 5px"></i>
                       <i class="pi pi-caret-down" (click)="sortTasks('dueDate', tasks,true)"
                         style="cursor: pointer; margin-left: 5px"></i>
                     </th>
                     <th style="width: auto">
-                      תגיות
+                      Tags
                       <i class="pi pi-caret-up" (click)="sortTasks('tags', tasks, false)"
                         style="cursor: pointer; margin-left: 5px"></i>
                       <i class="pi pi-caret-down" (click)="sortTasks('tags', tasks,true)"
                         style="cursor: pointer; margin-left: 5px"></i>
                     </th>
-                    <th></th>
+                    <th style="width: auto">Edit</th>
+                    <th style="width: auto">Delete</th>
                   </tr>
                 </ng-template>
-
                 <ng-template pTemplate="body" let-task>
-                  <tr (click)="selectCurrentTask(task)" [ngClass]="{ 'highlight': currentTask === task }">
+                  <tr>
                     <td>{{ task.taskName }}</td>
-
                     <td>
                       <div style="display: flex; align-items: center">
                         <ng-container *ngFor="let u of task.assignedTo">
@@ -137,149 +244,44 @@
                         </ng-container>
                       </div>
                     </td>
-
-                    <td>{{ task.deadline | date : 'shortDate' }}</td>
-
+                    <td>{{ task.dueDate | date : 'shortDate' }}</td>
                     <td>
-                      <button *ngFor="let tag of task.tags; let i = index" [ngStyle]="{
-                          backgroundColor: tag.color,
-                          color: 'white'
-                        }" class="custom-button">
+                      <button *ngFor="let tag of task.tags; let i = index"
+                        [ngStyle]="{ backgroundColor: tag.color, color: 'white' }" class="custom-button">
                         {{ tag.text }}
+                        <span [ngClass]="{
+                            bounce: task.tags && i < task.tags.length - 1
+                          }" class="delete-button">
+                          x
+                        </span>
                       </button>
                     </td>
-                    <!-- <td>
-                      <button
+                    <td>
+                      <!-- <button
                         [routerLink]="['/taskSpe', task._id]"
                         pButton
                         icon="pi pi-pencil"
                         label="Edit"
-                      ></button>
+                      ></button> -->
                       <i [routerLink]="['/taskSpe', task._id]" class="pi pi-pencil"
                         style="color: blue;cursor: pointer;"></i>
-                    </td> -->
-                    <!-- <td>
-                      <button
+                    </td>
+                    <td>
+                      <!-- <button
                         pButton
                         type="button"
                         icon="pi pi-trash"
                         label="Delete"
                         class= p-button-danger"
                         (click)="showConfirmation(task)"
-                      ></button>
+                      ></button> -->
                       <i (click)="showConfirmation(task)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
-                    </td> -->
-                    <td><button *ngIf="currentTask === task" pButton
-                        class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
-                        (click)="editTask()"></button>
-                      <button *ngIf="currentTask === task" pButton
-                        class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
-                        (click)="showConfirmation()"></button>
                     </td>
                   </tr>
                 </ng-template>
               </p-table>
             </p-panel>
           </div>
-        </div>
-
-        <div *ngIf="filteredTasks.length > 0">
-          <p-panel header="Filtered Tasks">
-            <p-table [value]="filteredTasks">
-              <!-- <ng-template pTemplate="header">
-                <tr>
-                  <th>Name</th>
-                  <th>assignedTo</th>
-                  <th>Deadline </th>
-                  <th>Tags</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </ng-template> -->
-
-              <ng-template pTemplate="header">
-                <tr style="height: 50px">
-                  <th style="width: auto; height: 50px">
-                    Name
-                    <i class="pi pi-caret-up" (click)="sortTasks('taskName', tasks, false)"
-                      style="cursor: pointer; margin-left: 5px"></i>
-                    <i class="pi pi-caret-down" (click)="sortTasks('taskName', tasks,true)"
-                      style="cursor: pointer; margin-left: 5px"></i>
-                  </th>
-                  <th style="width: auto; height: 50px">
-                    assignedTo
-                    <i class="pi pi-caret-up" (click)="sortTasks('assignedTo', tasks, false)"
-                      style="cursor: pointer; margin-left: 5px"></i>
-                    <i class="pi pi-caret-down" (click)="sortTasks('assignedTo', tasks,true)"
-                      style="cursor: pointer; margin-left: 5px"></i>
-                  </th>
-                  <th style="width: auto">
-                    Due Date
-                    <i class="pi pi-caret-up" (click)="sortTasks('dueDate', tasks, false)"
-                      style="cursor: pointer; margin-left: 5px"></i>
-                    <i class="pi pi-caret-down" (click)="sortTasks('dueDate', tasks,true)"
-                      style="cursor: pointer; margin-left: 5px"></i>
-                  </th>
-                  <th style="width: auto">
-                    Tags
-                    <i class="pi pi-caret-up" (click)="sortTasks('tags', tasks, false)"
-                      style="cursor: pointer; margin-left: 5px"></i>
-                    <i class="pi pi-caret-down" (click)="sortTasks('tags', tasks,true)"
-                      style="cursor: pointer; margin-left: 5px"></i>
-                  </th>
-                  <th style="width: auto">Edit</th>
-                  <th style="width: auto">Delete</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-task>
-                <tr>
-                  <td>{{ task.taskName }}</td>
-                  <td>
-                    <div style="display: flex; align-items: center">
-                      <ng-container *ngFor="let u of task.assignedTo">
-                        <div style="margin-left: 10px">
-                          <app-icon-profile [userName]="u.userName" [email]="u.email"></app-icon-profile>
-                        </div>
-                      </ng-container>
-                    </div>
-                  </td>
-                  <td>{{ task.dueDate | date : 'shortDate' }}</td>
-                  <td>
-                    <button *ngFor="let tag of task.tags; let i = index"
-                      [ngStyle]="{ backgroundColor: tag.color, color: 'white' }" class="custom-button">
-                      {{ tag.text }}
-                      <span [ngClass]="{
-                          bounce: task.tags && i < task.tags.length - 1
-                        }" class="delete-button">
-                        x
-                      </span>
-                    </button>
-                  </td>
-                  <td>
-                    <!-- <button
-                      [routerLink]="['/taskSpe', task._id]"
-                      pButton
-                      icon="pi pi-pencil"
-                      label="Edit"
-                    ></button> -->
-                    <i [routerLink]="['/taskSpe', task._id ]" class="pi pi-pencil"
-                      style="color: blue;cursor: pointer;"></i>
-                  </td>
-                  <td>
-                    <!-- <button
-                      pButton
-                      type="button"
-                      icon="pi pi-trash"
-                      label="Delete"
-                      class= p-button-danger"
-                      (click)="showConfirmation(task)"
-                    ></button> -->
-                    <i (click)="showConfirmation(task)" class="pi pi-trash" style="color: red;cursor: pointer;"></i>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </p-panel>
         </div>
       </div>
     </div>

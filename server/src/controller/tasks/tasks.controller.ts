@@ -13,7 +13,7 @@ import {
   ValidationPipe,
   Res,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTaskDto, UpdateTaskDto } from 'server/src/Models/dto/task.dto';
 import { Task } from 'server/src/Models/task.model';
 import { ValidationException } from 'server/src/common/exceptions/validation.exception';
@@ -31,6 +31,7 @@ import * as path from 'path';
 @UseFilters(HttpErrorFilter)
 @UseFilters(ValidationException)
 @Controller('tasks')
+@ApiBearerAuth()
 export class TasksController {
   constructor(
     private readonly taskService: TaskService,

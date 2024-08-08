@@ -18,6 +18,7 @@ import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-client-tasks',
@@ -33,6 +34,7 @@ import { Router } from '@angular/router';
     PanelModule,
     TableModule,
     NgTemplateOutlet,
+    InputTextModule,
   ],
 })
 export class ClientTasksComponent implements OnInit {
@@ -101,9 +103,9 @@ editTask(){
   this.router.navigate(['/taskSpe', this.currentTask._id]);
 }
 
-createTask(){
-  this.router.navigate(['/taskSpe', 'create']);
-}
+  createTask() {
+    this.router.navigate(['/taskSpe', 'create'],{ state: { client: this.client}});
+  }
 
 
   getTasks(): void {
@@ -131,18 +133,36 @@ createTask(){
     });
   }
 
+
   searchTask(): void {
     console.log(typeof this.searchTerm);
 
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
+      alert("לחיפוש משימה אנא הקלידו את שם המשימה")
     } else {
-      this.filteredTasks = this.tasks.filter((task) =>
-        task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-      console.log('filter: ', this.filteredTasks);
+      this.filteredTasks = [];
+      this.searchTerm.trim()
+      this.searchTerm.toLowerCase()
+      this.tasks.forEach(t => {
+        if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
+          this.filteredTasks.push(t);
+      });
+      if (this.filteredTasks.length == 0) {
+        alert("לא נמצאות משימות בשם זה")
+      }
     }
   }
+
+  // searchTask(): void {
+  //   if (this.searchTerm.trim() === '') {
+  //     this.filteredTasks = [];
+  //   } else {
+  //     this.filteredTasks = this.tasks.filter((task) =>
+  //       task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //     );
+  //   }
+  // }
 
   showConfirmation(): void {
     this.confirmationService.confirm({
@@ -220,16 +240,21 @@ createTask(){
   }
 
   applyFilter() {
+    this.filteredTasks = []
     this.filteredTasks = this.tasks.filter((task) => {
       this.filterFirstStatus = false;
 
       const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
-
-      const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
+      
+      let clientMatch = false
+      this.clientService.searchClient(task.client).subscribe((response) => {
+        !this.filter.client || response.firstName.includes(this.filter.client.firstName);
+      })
 
       const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
 
       const taskNameMatch = !this.filter.task || task.taskName.includes(this.filter.task.taskName);
+      
       let tagsMatch = true;
       if (this.filter.tags && this.filter.tags.length > 0) {
         tagsMatch = this.filter.tags.every((filterTag) => {
@@ -238,11 +263,10 @@ createTask(){
           );
         });
       }
-
-      console.log(deadlineMatch, clientMatch, userMatch, taskNameMatch, tagsMatch);
+      // console.log(deadlineMatch, clientMatch, userMatch, taskNameMatch, tagsMatch);
 
       return (
-        deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
+        (deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch)
       );
     });
   }

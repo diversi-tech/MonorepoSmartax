@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseFilters } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
 import { CheckList } from "server/src/Models/checkList.model";
 import { CreateCheckListDto, UpdateCheckListDto } from "server/src/Models/dto/checkList.dto";
@@ -13,26 +13,18 @@ import { UserService } from "server/src/services/user.service";
 @ApiTags('checkList')
 @Controller('checkList')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class CheckListController {
   constructor(private checkListService: CheckListService) { }
 
   @Post()
   async create(@Body() createCheckListDto: CreateCheckListDto): Promise<CheckList> {
-    try{
-      console.log(createCheckListDto);
-      createCheckListDto.items!.forEach(element => {
-        console.log(element);
-        
-      })
-      
+    try {
       return this.checkListService.create(createCheckListDto);
-    }catch(err){
+    } catch (err) {
       console.log(err);
-      
     }
-  
-  
-    }
+  }
 
   @Get()
   async findAll(): Promise<CheckList[]> {
@@ -65,9 +57,7 @@ export class CheckListController {
     }
     catch (err) {
       console.log(err);
-
     }
   }
-
 
 }

@@ -1,33 +1,39 @@
-# שלב הבנייה
-FROM node:18-alpine AS build
-# הגדרת ספריית העבודה
+# # Use a Node.js base image for building the Angular app
+# FROM node:20.16.0-alpine as build
+# # Set the working directory inside the Docker container
+# WORKDIR /app/front
+# # Copy package.json and package-lock.json to the working directory
+# COPY ../../package*.json ./
+# # Install dependencies
+# RUN npm install
+# # Copy the entire Angular project to the working directory
+# COPY . .
+# # Build the Angular project (ensure you have a build script defined in package.json)
+# RUN npm run build --prod
+# # Use Nginx to serve the Angular app
+# FROM nginx:alpine
+# # Copy the built Angular app from the previous stage
+# COPY --from=build /app/front/dist/front /usr/share/nginx/html
+# # Expose port 80
+# EXPOSE 80
+
+# Use a Node.js base image for building the Angular app
+FROM node:20.16.0-alpine as build
+# Set the working directory inside the Docker container
 WORKDIR /app/front
-# התקנת Python וכלים נוספים שנדרשים ל-node-gyp
-RUN apk add --no-cache python3 make g++
-# העתקת קבצי package.json ו-package-lock.json לספריית העבודה
+# Copy package.json and package-lock.json to the working directory
 COPY ../../package*.json ./
-# עדכון npm לגרסה האחרונה
-RUN npm install -g npm@latest
-# התקנת תלויות
-RUN npm install --legacy-peer-deps --no-optional --ignore-scripts
-# התקנת nx גלובלית
-RUN npm install -g @nrwl/cli
-# התקנת @nrwl/workspace
-RUN npm install @nrwl/workspace --legacy-peer-deps
-# העתקת הפרויקט כולו לספריית העבודה
+# Install dependencies
+RUN npm install
+# Copy the entire Angular project to the working directory
 COPY . .
-RUN npx nx reset || true
-# בניית הפרויקט Angular (וודא שיש לך סקריפט build מוגדר ב-package.json)
-RUN npx nx build front --prod
-# שלב השרת
+# Build the Angular project (ensure you have a build script defined in package.json)
+RUN npm run build --prod
+# Use Nginx to serve the Angular app
 FROM nginx:alpine
-# העתקת הפרויקט הבנוי מהשלב הקודם
+# Copy the built Angular app from the previous stage
 COPY --from=build /app/front/dist/front /usr/share/nginx/html
-# חשיפת פורט 80
+# Expose port 80
 EXPOSE 80
-# הרצת Nginx
+# Run Nginx
 CMD ["nginx", "-g", "daemon off;"]
-
-
-
-

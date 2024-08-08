@@ -43,7 +43,12 @@ export class StepFieldMonthService{
       async getAllStepFieldsMonth(): Promise<StepFieldMonth[]> {
         return this.StepFieldMonthModel.find().exec();
       }
-
+      async getAllTypes(): Promise<string[]> {
+        const types=await this.StepFieldMonthModel.find().distinct('type').exec();
+        return types
+      } async getAllValuesForType(type:string): Promise<string[]> {
+        return this.StepFieldMonthModel.find({type:type}).distinct('value').exec();
+      }
 }
 
 

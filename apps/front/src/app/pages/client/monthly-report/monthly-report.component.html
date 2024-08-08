@@ -1,52 +1,63 @@
-<router-outlet></router-outlet>
-<p-button (click)="createReprtTag()" label="יצירת דוח חודשי חדש" />
-
-
-
-<div >
-    <p-dropdown [options]="years"
-     [(ngModel)]="selectedYear"
-     placeholder="בחירת שנה"
-       [editable]="true"
-        optionLabel="yearNum"
-        (onChange)="changeDate()"  />
-</div>
-<div >
-    <p-dropdown [options]="months"
-     [(ngModel)]="selectedMonth"
-     placeholder="בחירת חודש"
-       [editable]="true"
-        (onChange)="changeDate()" />
-</div>
-
-
-
-
- <p-table
- [value]="fieldBymonths" 
-  sortField="type"
-    sortMode="single" 
-    dataKey="type" 
-    rowGroupMode="subheader" 
-    groupRowsBy="type" 
-    [tableStyle]="{'min-width': '70rem'}">
-        <ng-template pTemplate="groupheader" let-fieldBymonth let-rowIndex="rowIndex" let-expanded="expanded">
-            <tr>
-                <td colspan="5">
-                    <h4 class="font-bold ml-2">{{fieldBymonth.type}}</h4>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-fieldBymonth>
-            <th><div class="text-center">{{fieldBymonth.value}}</div>
-                <input *ngIf="fieldBymonth.content != 'לא בוצע' && fieldBymonth.content != 'בוצע'" type="text" value="{{fieldBymonth.content}}" />
-                <input *ngIf="fieldBymonth.content === 'לא בוצע' || fieldBymonth.content === 'בוצע'" type="checkbox" [checked]="fieldBymonth.content === 'בוצע'" />
-            </th>
-        </ng-template>
-</p-table>
-
-
-
-
-
-
+<p-button *ngIf="currentRoute === 'monthlyReport'" (onClick)="showDialog()" label="חדש" />
+<p-dialog header="יצירת דוח חדש" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-dropdown
+            [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown"
+            [options]="years" [(ngModel)]="createdYear" placeholder="בחירת שנה"
+            [editable]="true" optionLabel="yearNum">
+        </p-dropdown>
+    </div>
+    <div class="flex align-items-center gap-3 mb-5">
+        <p-dropdown
+            [style]="{ width: '80%' }" panelStyleClass="custom-dropdown-panel" styleClass="custom-dropdown"
+            [options]="months" [(ngModel)]="createdMonth" placeholder="בחירת חודש"
+            [editable]="true">
+        </p-dropdown>
+    </div>
+    <div *ngIf="exist">קיים דו"ח לחודש זה</div>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="ביטול" severity="secondary" (onClick)="visible = false" />
+        <p-button label="שמור" (onClick)="onSubmit()" />
+      </div>
+    </p-dialog>
+    <div>
+      <p-dropdown [options]="years" [(ngModel)]="selectedYear" placeholder="בחירת שנה" [editable]="true" optionLabel="yearNum" (onChange)="changeDate()"></p-dropdown>
+    </div>
+    <div>
+      <p-dropdown [options]="months" [(ngModel)]="selectedMonth" placeholder="בחירת חודש" [editable]="true" (onChange)="changeDate()"></p-dropdown>
+    </div>
+    
+    <div *ngFor="let type of types">
+      <div class="table-header">
+        <h3>{{ type }}</h3>
+      </div>
+            <table dir="rtl">
+        <thead>
+          <tr>
+            <th *ngIf="currentRoute === 'allClientMonthlyReport'">שם לקוח</th>
+            <th *ngFor="let value of getValuesForType(type)">{{ value }}</th>
+            <th *ngIf="currentRoute === 'monthlyReport'"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let clientId of getClientsForType(type)">
+            <td *ngIf="currentRoute === 'allClientMonthlyReport'">{{ findClientName(clientId) }}</td>
+            <td *ngFor="let value of getValuesForType(type)">
+              <ng-container *ngIf="getClientData(type, clientId, value) === 'בוצע'">
+                <input type="checkbox" class="p-checkbox" (change)="handleCheckboxChange(type, clientId, value, $event)" [checked]="true">
+              </ng-container>
+              <ng-container *ngIf="getClientData(type, clientId, value) === 'לא בוצע'">
+                <input type="checkbox" class="p-checkbox" (change)="handleCheckboxChange(type, clientId, value, $event)" [checked]="false">
+              </ng-container>
+              <ng-container *ngIf="getClientData(type, clientId, value) !== 'בוצע' && getClientData(type, clientId, value) !== 'לא בוצע'">
+                <input type="text" pInputText [value]="getClientData(type, clientId, value)" (input)="handleInputChange(type, clientId, value, $event)">
+              </ng-container>
+            </td>
+            <td *ngIf="currentRoute === 'monthlyReport'"><button (click)="saveChanges(type)">שמור שינויים</button>
+           </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+ 

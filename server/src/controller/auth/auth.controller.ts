@@ -1,5 +1,5 @@
-import { Body, Controller, Get, HttpException, Request, HttpStatus, Post, UseFilters, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpException, Request, HttpStatus, Post, UseFilters, UseGuards, Delete } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
 import { User } from 'server/src/Models/user.model';
 import { hashPasswordService } from 'server/src/services/hash-password';
@@ -50,9 +50,10 @@ export class AuthController {
     }
   }
 
-  @Post('signout')
+  @Delete('signout')
   @ApiResponse({ status: 200, description: 'signout success' })
   async signout(@Request() req) {
+    
     return new HttpException('signout success', HttpStatus.OK);
   }
 
@@ -74,18 +75,18 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'the token is valid and policy is current' })
   @ApiResponse({ status: 401, description: 'the token is invalid' })
   @ApiResponse({ status: 403, description: 'the policy is not current' })
-  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async validateRole(@Body() body: { role: number }, @Request() req) {
-    // const token = req.headers.authorization.split(' ')[1];
-    // const policy = body.policy;
-
+    const token = req.headers!.authorization?.split(' ')![1]!;
+    
+    const policy = body.role;
+    
     try {
-      RoleGuard(body.role)
-      //   const tokenPolicy = await this.jwtToken.getRoleFromToken(token);
+        const tokenPolicy = await this.jwtToken.getRoleFromToken(token);
 
-      //   if (tokenPolicy.level > policy.level) {
-      //     throw new HttpException('Not an admin', HttpStatus.FORBIDDEN);
-      //   }
+        if (tokenPolicy.level > policy) {
+          throw new HttpException('Not an admin', HttpStatus.FORBIDDEN);
+        }
       return { message: 'Token is valid and policy is valid' };
     } catch (error) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);

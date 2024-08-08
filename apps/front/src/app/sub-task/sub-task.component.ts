@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommonModule, DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { Status } from '../_models/status.module';
 import { TagService } from '../_services/tag.service';
@@ -7,7 +7,7 @@ import { StatusService } from '../_services/status.service';
 import { Tag } from '../_models/tag.module';
 import { Task } from "../_models/task.module";
 import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Footer, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonDirective, Button, ButtonModule } from 'primeng/button';
@@ -24,6 +24,8 @@ import { TaskComponent } from '../task/task.component';
 import { DialogModule } from 'primeng/dialog';
 import { setTimeout } from 'timers/promises';
 import { error } from 'console';
+import { PopAppComponent } from '../pop_up/task-pop-app/pop-app.component';
+import { EventInput } from '@fullcalendar/core';
 
 @Component({
   selector: 'app-sub-task',
@@ -51,7 +53,7 @@ import { error } from 'console';
     AutoCompleteModule,
     PrimeTemplate,
     IconProfileComponent,
-    MultiSelectModule
+    MultiSelectModule,
   ],
   templateUrl: './sub-task.component.html',
   styleUrl: './sub-task.component.css',
@@ -62,6 +64,7 @@ export class SubTaskComponent implements OnInit {
   tagSuggestions: Tag[] = [];
   tasks: Task[] = [];
   statuses: Status[] = []
+  showPopup = false;
 
   @Input()
   subTasks: string[] = [];
@@ -72,7 +75,7 @@ export class SubTaskComponent implements OnInit {
   @Input()
   task: Task | null
 
-  constructor(private tagService: TagService, private taskService: TaskService, private statusService: StatusService) { }
+  constructor(private router:Router,private componentFactoryResolver: ComponentFactoryResolver, private tagService: TagService, private taskService: TaskService, private statusService: StatusService) { }
 
   ngOnInit() {
     if (this.parentId)
@@ -101,11 +104,8 @@ export class SubTaskComponent implements OnInit {
         },
         error: (err) => {
           console.log(err);
-          alert(err)
         }
       })
-
-
   }
 
   confirmDelete(task: Task) {
@@ -189,4 +189,53 @@ export class SubTaskComponent implements OnInit {
       return 0;
     });
   }
+
+  editSubTask(task) {
+    this.showDialog(false, task._id)
+  }
+
+  addNewSubTask() {
+    this.showDialog(true)
+  }
+
+  //modal to add new sub-task
+  eventsPromise: Promise<EventInput[]> = Promise.resolve([]);
+  eventsTasksPromise: Promise<EventInput[]> = Promise.resolve([]);
+
+  modal: boolean = false;
+  selectedEvent: EventInput | null = null;
+  @ViewChild('modalContent', { read: ViewContainerRef }) modalContent: ViewContainerRef | undefined;
+
+
+  hideDialog() {
+    this.modal = false;
+    this.router.navigate(['/taskSpe', this.parentId]);
+  }
+
+  loadEvents() {
+    this.eventsPromise = new Promise(resolve => {
+    })
+  }
+
+  showDialog(create: boolean, taskId: string="craete") {
+    this.modal = true;
+    if (this.modalContent) {
+      this.modalContent.clear();
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TaskComponent);
+      const componentRef = this.modalContent.createComponent(componentFactory);
+      componentRef.instance.parent = this.parentId;
+      componentRef.instance.create = create;
+      componentRef.instance.id = taskId;
+      taskId!="create"? componentRef.instance.taskId = taskId:false;
+
+      componentRef.instance.closeModal.subscribe(() => {
+        this.hideDialog()
+      });
+    }
+
+  }
+
+  // onDialogClose() {
+  //   window.history.back();
+  // }
 }

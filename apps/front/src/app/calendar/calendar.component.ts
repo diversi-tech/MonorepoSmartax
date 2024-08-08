@@ -102,7 +102,8 @@ export class CalendarComponent {
     if(type=='task')
         this.loadTaskComponent('create');
       
-      this.showDialog();
+      // this.showDialog();
+      this.modal=true
       this.add = false
 
   }

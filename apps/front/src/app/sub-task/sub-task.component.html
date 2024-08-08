@@ -1,10 +1,11 @@
-<a [routerLink]="['/popup', 'create']" [queryParams]="{ parent: parentId }">+</a>
+<a (click)="addNewSubTask()">+</a>
 
 <div style="text-align: right; align-items: right" *ngIf="tasks.length!=0">
     <div class="content-container">
         <div *ngFor="let status of statuses">
             <p-panel header="{{ status.name }}">
                 <p-table [value]="categorizeTasks(status)">
+
                     <ng-template pTemplate="header">
                         <tr style="height: 50px">
                             <th style="width: auto; height: 50px">
@@ -39,6 +40,7 @@
                             <th style="width: auto">מחיקה</th>
                         </tr>
                     </ng-template>
+
                     <ng-template pTemplate="body" let-task>
                         <tr>
                             <td>{{ task.taskName }}</td>
@@ -63,7 +65,7 @@
                                     tag.text }} </button>
                             </td>
                             <td>
-                                <i [routerLink]="['/popup', task._id]" [queryParams]="{ parent: parentId }"
+                                <i (click)="editSubTask(task)"
                                     class="pi pi-pencil" style="color: blue;cursor: pointer;"></i>
                             </td>
                             <td>
@@ -79,3 +81,14 @@
 </div>
 
 <p *ngIf="tasks.length==0">אין משימות משניות</p>
+
+<!-- modal for add new sub-task -->
+<div class="card flex justify-content-center">
+    <p-dialog [modal]="true" header="המשימה שלך" [(visible)]="modal" [style]="{ width: '53rem' }"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+      <span class="p-text-secondary block mb-5">צור וערוך את תת המשימה שלך</span>
+  
+      <ng-template #modalContent></ng-template>
+  
+    </p-dialog>
+  </div>
