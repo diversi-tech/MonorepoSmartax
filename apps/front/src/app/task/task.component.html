@@ -385,10 +385,9 @@
           </ng-template>
         </p-multiSelect> -->
         
-      </div>
-      <!-- מינויים -->
+       <!-- מינויים -->
        
-      <div class="card flex justify-content-center" *ngIf="selectedClient">
+       <div class="card flex justify-content-center" >
         <!-- <h1>{{paymentD[1]}}</h1> -->
         <p-dropdown
           [style]="{ width: '150%', direction: 'rtl' }"
@@ -810,8 +809,29 @@
                 </div>
               </ng-template>
             </p-dropdown>
+            
+            <div *ngIf="v">
+            <p>
+              <b> מנויים </b>
+              <!-- <span class="pi pi-users"></span> -->
+            </p>
+            <div class="card flex justify-content-center">
+              <p-dropdown
+              [style]="{ width: '100%', direction: 'rtl' }"
+              [options]="payments"
+              [(ngModel)]="selectedpayment"
+              optionLabel="name"
+              
+              placeholder="מינויים"
+              
+            >
+             
+            </p-dropdown>
+            </div>
+            </div>
           </div>
         </div>
+        
         <div class="item">
           <p>
             <b> תגיות </b>

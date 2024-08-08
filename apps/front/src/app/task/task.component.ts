@@ -116,6 +116,8 @@ export class TaskComponent implements OnInit {
   payments: payment[]=[{name:'מענקי קורונה'},{name:'דוחות חודשיים'}]
   selectedpayment:string
   users: User[] = [];
+  v:boolean=true;
+  sC:Client;
   clients: Client[] = [];
   listStatus: Status[] = [];
   listPriority: Priority[] = [];
@@ -202,7 +204,8 @@ export class TaskComponent implements OnInit {
     
   newTaskCreated: boolean = false;
   ngOnInit(): void {
-    console.log("clientSe")
+    
+    
     this.id = this.route.snapshot.paramMap.get('id')!;
     if (this.taskId)
       this.id = this.taskId;
@@ -373,7 +376,16 @@ export class TaskComponent implements OnInit {
       }
   };
   
- 
+  getAllFields(): void {
+    this.clientService.searchClient("6697841dd9f8280b6e000639").subscribe(
+      (c: Client) => {
+        this.sC = c;
+        console.log('CLIENT pulled')
+      },
+      (error) => {
+        console.error('There was an error!', error);
+      }
+    );}
   notInThisTask(id: string) {
     this.currentTask.checkList.forEach((item) => {
       if (item === id) return false;
