@@ -18,6 +18,7 @@ import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-client-tasks',
@@ -33,6 +34,7 @@ import { Router } from '@angular/router';
     PanelModule,
     TableModule,
     NgTemplateOutlet,
+    InputTextModule,
   ],
 })
 
@@ -122,15 +124,34 @@ export class ClientTasksComponent implements OnInit {
     });
   }
 
+
   searchTask(): void {
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
+      alert("לחיפוש משימה אנא הקלידו את שם המשימה")
     } else {
-      this.filteredTasks = this.tasks.filter((task) =>
-        task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
+      this.filteredTasks = [];
+      this.searchTerm.trim()
+      this.searchTerm.toLowerCase()
+      this.tasks.forEach(t => {
+        if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
+          this.filteredTasks.push(t);
+      });
+      if (this.filteredTasks.length == 0) {
+        alert("לא נמצאות משימות בשם זה")
+      }
     }
   }
+
+  // searchTask(): void {
+  //   if (this.searchTerm.trim() === '') {
+  //     this.filteredTasks = [];
+  //   } else {
+  //     this.filteredTasks = this.tasks.filter((task) =>
+  //       task.taskName.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //     );
+  //   }
+  // }
 
   showConfirmation(): void {
     this.confirmationService.confirm({
