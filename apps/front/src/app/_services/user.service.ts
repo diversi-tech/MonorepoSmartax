@@ -47,7 +47,7 @@ export class UserService {
     const newUser = {
       userName: username,
       email: email,
-      passwordHash: passwordHash,
+      passwordHash:String(passwordHash),
       // passwordHash: 'Aa123456',
 
       role: role,
