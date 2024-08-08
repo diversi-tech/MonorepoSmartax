@@ -17,6 +17,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormControl, FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
+import { Role } from '../../../_models/role.module';
 
 @Component({
   selector: 'app-client-search',
@@ -207,7 +208,10 @@ export class ClientSearchComponent implements OnInit {
   }
 
   isFavoriteClient(client: Client) {
-    return this.user.favoritesClient.find(c => c=== client._id) != undefined;
+    return this.user.favoritesClient.find(c => c === client._id) != undefined;
+    // return this.user.favoritesClient.find(c => c._id === client._id) != undefined;
+
+
   }
 
   addFavoritesClient() {
@@ -217,18 +221,19 @@ export class ClientSearchComponent implements OnInit {
   }
 
   updateFavorite() {
-    this.userService
-      .update(this.user._id, this.user.userName, this.user.email, this.user.passwordHash,
-        this.user.role, this.user.favoritesClient
-      )
-      .subscribe({
-        next: (response: any) => {
-          console.log(response);
-        },
-        error: (err) => {
-          console.error('Error add to favorite', err);
-        },
-      });
+    // this.userService
+    //   .update(this.user._id, this.user.userName, this.user.email, this.user.passwordHash,
+    //     this.user.role , []
+    //     // this.user.favoritesClient
+    //   )
+    //   .subscribe({
+    //     next: (response: any) => {
+    //       console.log(response);
+    //     },
+    //     error: (err) => {
+    //       console.error('Error add to favorite', err);
+    //     },
+    //   });
   }
 
   removeFromFavorite(client: Client) {

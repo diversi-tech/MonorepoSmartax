@@ -25,36 +25,60 @@ export class UserService {
 
   private apiUrl = USER_ENDPOINT;
 
-  register(username: string, email: string, role: Role): Observable<any> {
-    const passwordHash = this.hashService.encryptPassword('Aa123456')
-    const newUser = {
-      "userName": username,
-      "passwordHash": passwordHash,
-      "role": role,
-      "email": email
-    }
-    return this.http.put(
-      this.apiUrl + "/create",
-      newUser,
-      httpOptions
-    );
-  }
-  update(id: string, userName: string, email: string, passwordHash: string, role: string,favoritesClient:string[]) {
-    const user = {
-      "id": id,
-      "userName": userName,
-      "passwordHash": passwordHash,
-      "role": role,
-      "email": email,
-      "favoritesClient":favoritesClient
-    }
-    console.log(user);
+  // register(username: string, email: string, role: Role): Observable<any> {
+  //   const passwordHash = this.hashService.encryptPassword('Aa123456');
+  //   const newUser = {
+  //     userName: username,
+  //     passwordHash: passwordHash,
+  //     role: role,
+  //     email: email,
+  //   };
+  //   return this.http.put(this.apiUrl + '/create', newUser, httpOptions);
+  // }
 
-    return this.http.post(
-      this.apiUrl + "/update",
-      user,
-      httpOptions
-    );
+  register(
+    username: string,
+    email: string,
+    role: Role,
+    favoritesClient: Client[]
+  ): Observable<any> {
+    const passwordHash = this.hashService.encryptPassword('Aa123456'); // יצירת הסיסמה המוצפנת
+    const newUser = {
+      userName: username,
+      email: email,
+      passwordHash:passwordHash,
+      // passwordHash: 'Aa123456',
+
+      role: role,
+      favoritesClient: favoritesClient, // הוספת רשימת הלקוחות המועדפים
+    };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    return this.http.post(`${this.apiUrl}/create`, newUser, httpOptions);
+  }
+
+  update(
+    id: string,
+    userName: string,
+    email: string,
+    passwordHash: string,
+    role: Role,
+    favoritesClient: Client[]
+  ) {
+    const user = {
+      id: id,
+      userName: userName,
+      passwordHash: passwordHash,
+      role: role,
+      email: email,
+      favoritesClient: favoritesClient,
+    };
+    return this.http.post(this.apiUrl + '/update', user, httpOptions);
   }
 
   getPublicContent(): Observable<any> {

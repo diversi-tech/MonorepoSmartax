@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
     const { username, email, role } = this.form;
     console.log(username, email);
     if (this.type === 'register') {
-      this.userService.register(username, email, role).subscribe({
+      this.userService.register(username, email, role,[]).subscribe({
         next: data => {
           console.log(data);
           this.isSuccessful = true;

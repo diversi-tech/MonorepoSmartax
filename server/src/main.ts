@@ -2,17 +2,27 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 // import { DbService } from './services/db.service';
 import { ValidationPipe } from '@nestjs/common';
-import { IoAdapter } from '@nestjs/platform-socket.io';
-import * as socketIo from 'socket.io';
-import cors = require('cors');
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // const dbService = app.get(DbService);
+  const config = new DocumentBuilder()
+    .setTitle('Your API Title')
+    .setDescription('API description')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .addTag('yourTag')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   // Enable CORS
   app.enableCors({
-    origin: 'http://localhost:4200', // Allow requests from this origin
+    // origin: process.env.PATH_FRONT,
+    origin: [
+      'http://localhost:4200',
+      'https://monoreposmartax-fronted.onrender.com',
+    ], // Allow requests from this origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });

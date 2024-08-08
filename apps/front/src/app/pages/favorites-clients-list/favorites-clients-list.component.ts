@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { ClientService } from '../../_services/client.service';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { Role } from '../../_models/role.module';
 
 @Component({
   selector: 'app-favorites-clients-list',
@@ -62,23 +63,25 @@ export class FavoritesClientsListComponent implements OnInit {
   }
   
   updateFavorite() {
-    this.userService
-      .update(
-        this.user._id,
-        this.user.userName,
-        this.user.email,
-        this.user.passwordHash,
-        this.user.role,
-        this.user.favoritesClient
-      )
-      .subscribe({
-        next: (response: any) => {
-          console.log(response);
-        },
-        error: (err) => {
-          console.error('Error add to favorite', err);
-        },
-      });
+    // const r= new Role('','','',)
+    // this.userService
+    //   .update(
+    //     this.user._id,
+    //     this.user.userName,
+    //     this.user.email,
+    //     this.user.passwordHash,
+    //     this.user.role,
+    //     []
+    //     // this.user.favoritesClient
+    //   )
+    //   .subscribe({
+    //     next: (response: any) => {
+    //       console.log(response);
+    //     },
+    //     error: (err) => {
+    //       console.error('Error add to favorite', err);
+    //     },
+    //   });
   }
 
   removeFromFavorite(client: Client) {
