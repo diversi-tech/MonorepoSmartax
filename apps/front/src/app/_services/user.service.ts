@@ -68,7 +68,7 @@ export class UserService {
     userName: string,
     email: string,
     passwordHash: string,
-    role: string,
+    role: Role,
     favoritesClient: Client[]
   ) {
     const user = {
