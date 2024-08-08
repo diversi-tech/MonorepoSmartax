@@ -1,4 +1,4 @@
-import { Component, OnInit,Injectable } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { stepFieldMonth } from '../../../_models/stepFieldMonth.module';
 import { stepFieldMonthService } from '../../../_services/stepFiledMonth.service';
@@ -9,11 +9,12 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
+import { StepField } from 'src/app/_models/stepField.module';
 
 @Component({
   selector: 'app-edit-monthly-report',
   standalone: true,
-  imports: [CommonModule, ToastModule,DialogModule,FormsModule, ReactiveFormsModule, TableModule,ButtonModule,InputTextModule,DropdownModule],
+  imports: [CommonModule, ToastModule, DialogModule, FormsModule, ReactiveFormsModule, TableModule, ButtonModule, InputTextModule, DropdownModule],
   templateUrl: './edit-monthly-report.component.html',
   styleUrl: './edit-monthly-report.component.css',
 })
@@ -23,32 +24,32 @@ import { DropdownModule } from 'primeng/dropdown';
 export class EditMonthlyReportComponent implements OnInit {
   allStepFields: stepFieldMonth[] = [];
   filteredStepFields: stepFieldMonth[] = [];
-  allStepTypes:string[] = [];
+  allStepTypes: string[] = [];
   displayAddDialog: boolean = false;
   newStepValue: string = '';
   newStepType: string = '';
-  newStepContent: string ='';
-  uniqueSelectedSteps:string[] =[];
+  newStepContent: string = '';
+  uniqueSelectedSteps: string[] = [];
   currentStepField: stepFieldMonth;
   constructor(private stepFieldMonthService: stepFieldMonthService) { }
 
   ngOnInit(): void {
     this.stepFieldMonthService.getAllstepFieldMonth().subscribe(
-    (types) => {
-      this.allStepTypes = types.map(type => type.type);
-      this.uniqueSelectedSteps = this.allStepTypes.filter((value, index, self) => self.indexOf(value) === index);
+      (types) => {
+        this.allStepTypes = types.map(type => type.type);
+        this.uniqueSelectedSteps = this.allStepTypes.filter((value, index, self) => self.indexOf(value) === index);
 
-    },
+      },
 
-    (error) =>{
-      console.error('Error', error);
-    }
-   )
+      (error) => {
+        console.error('Error', error);
+      }
+    )
     this.stepFieldMonthService.getAllstepFieldMonth().subscribe(
       (stepFields) => {
         this.allStepFields = stepFields
         // filter(x => x.type === "החזרי מס");
-         this.filteredStepFields = [...this.allStepFields];
+        this.filteredStepFields = [...this.allStepFields];
         console.log('all', this.allStepFields)
       },
       (error) => {
@@ -58,21 +59,22 @@ export class EditMonthlyReportComponent implements OnInit {
   }
 
   filterByDescription(description: string): void {
-debugger
+
     this.filteredStepFields = this.allStepFields.filter(step =>
       step.value.toLowerCase().includes(description.toLowerCase())
     );
   }
-filterByType(type: string): void {
-  debugger
-  if (type) {
-    this.filteredStepFields = this.allStepFields.filter(step =>
-      step.type === type
-    );
-  } else {
-    this.filteredStepFields = [...this.allStepFields];
+
+  filterByType(type: string): void {
+    
+    if (type) {
+      this.filteredStepFields = this.allStepFields.filter(step =>
+        step.type === type
+      );
+    } else {
+      this.filteredStepFields = [...this.allStepFields];
+    }
   }
-}
 
   showAddDialog(): void {
     this.displayAddDialog = true;
@@ -86,13 +88,13 @@ filterByType(type: string): void {
   }
 
   addStep(): void {
-    debugger
-    if(this.newStepContent === '' )
-      this.newStepContent ="לא בוצע"
-else{this.newStepContent = ''}
+    
+    if (this.newStepContent === '')
+      this.newStepContent = "לא בוצע"
+    else { this.newStepContent = '' }
     const newStep = {
       value: this.newStepValue,
-      content:this.newStepContent,
+      content: this.newStepContent,
       type: this.newStepType,
     };
 

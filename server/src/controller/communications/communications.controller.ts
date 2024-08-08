@@ -1,5 +1,5 @@
 import { Controller, Post, Body, UseFilters, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CommunicationsService } from '../../services/communication.service';
 import { CreateCommunicationDto, UpdateCommunicationDto } from '../../Models/dto/communication.dto';
 import { Communication } from '../../Models/communication.model';
@@ -11,6 +11,7 @@ import { AuthGuard } from 'server/src/guards/auth.guard';
 @ApiTags('communications')
 @Controller('communications')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class CommunicationsController {
     constructor(private readonly communicationsService: CommunicationsService) { }
     // @UseGuards(AuthGuard, RoleGuard(3))

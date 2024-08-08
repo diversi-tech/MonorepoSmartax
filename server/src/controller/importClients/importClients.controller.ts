@@ -11,8 +11,10 @@ import { SensitiveData } from '../../Models/sensitiveData.model';
 import { Tag } from '../../Models/tag.model';
 import { User } from '../../Models/user.model';
 import * as ExcelJS from 'exceljs';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('importClients')
+@ApiBearerAuth()
 export class importClientsController {
   constructor(
     @InjectModel(Client.name) private readonly clientModel: Model<Client>,

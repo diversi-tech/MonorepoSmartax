@@ -16,6 +16,7 @@ import { ValidationException } from 'server/src/common/exceptions/validation.exc
 @Controller('users')
 // @UseFilters(HttpErrorFilter)
 //@UseFilters(ValidationException)
+@ApiBearerAuth()
 export class UserController {
 
   constructor(private readonly userService: UserService, private jwtToken: TokenService, private hashService: hashPasswordService) { }

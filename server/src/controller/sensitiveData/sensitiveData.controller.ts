@@ -2,10 +2,11 @@ import { Controller, Post, Param, Body, Get } from '@nestjs/common';
 import { SensitiveData } from '../../Models/sensitiveData.model';
 import { Client } from 'server/src/Models/client.model';
 import { SensitiveDataService } from 'server/src/services/sensitiveData.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateSensitiveDataDto } from 'server/src/Models/dto/sensitiveData.dto';
 @ApiTags('SensitiveData')
 @Controller('SensitiveData')
+@ApiBearerAuth()
 export class SensitiveDataController {
   constructor(private readonly SensitiveDataService: SensitiveDataService) {}
   @Post(':id/add-encrypted-password')

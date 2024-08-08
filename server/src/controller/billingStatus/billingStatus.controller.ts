@@ -1,5 +1,5 @@
 import { Controller, Post, Body, UseFilters, Put, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { HttpErrorFilter } from '../../common/filters/http-error.filter';
 import { BillingStatusService } from 'server/src/services/billingStatus';
 import { CreateBillingStatusDto, UpdateBillingStatusDto} from '../../Models/dto/biliingStatus.dto'
@@ -8,6 +8,7 @@ import { BillingStatus } from 'server/src/Models/billingStatus.model';
 @ApiTags('billingStatus')
 @Controller('billingStatus')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class BillingStatusController {
     constructor(private readonly billingStatusService: BillingStatusService) { }
 

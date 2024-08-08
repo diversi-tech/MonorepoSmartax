@@ -13,7 +13,7 @@ import {
   ValidationPipe,
   Res,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTaskDto, UpdateTaskDto } from 'server/src/Models/dto/task.dto';
 import { Task } from 'server/src/Models/task.model';
 import { ValidationException } from 'server/src/common/exceptions/validation.exception';
@@ -37,6 +37,7 @@ import { RepeatableTask } from 'server/src/Models/repeatableTask.model';
 @UseFilters(HttpErrorFilter)
 @UseFilters(ValidationException)
 @Controller('repeatableTask')
+@ApiBearerAuth()
 export class RepeatableTaskController {
   constructor(
     private readonly taskRService: repeatableTaskService,

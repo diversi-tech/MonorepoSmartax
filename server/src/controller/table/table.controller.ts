@@ -1,11 +1,12 @@
 import { Body, Controller, Get, Post, UseFilters } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'server/src/common/filters/http-exception.filter';
 import { TableService } from 'server/src/services/table.service';
 
 @ApiTags('tables')
 @Controller('tables')
 @UseFilters(HttpExceptionFilter) 
+@ApiBearerAuth()
 export class TableController {
   constructor(private readonly tableService: TableService) {}
 

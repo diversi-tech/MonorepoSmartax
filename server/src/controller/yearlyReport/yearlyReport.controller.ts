@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put, UseFilters } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
 import { CreateYearlyReportDto, UpdateYearlyReportDto } from "server/src/Models/dto/yearlyReport.dbo";
 import { YearlyReport, YearlyReportstModel } from "server/src/Models/yearlyReports.model";
@@ -8,6 +8,7 @@ import { YearlyReportService } from "server/src/services/yearlyReport.service";
 @ApiTags('yearly-reports')
 @Controller('yearly-reports')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class YearlyReportController{
     constructor(private readonly yearlyReportService: YearlyReportService) {}
 

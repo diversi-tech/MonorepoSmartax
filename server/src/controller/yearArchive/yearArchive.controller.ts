@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Post, Put, UseFilters, ValidationPipe } from "@nestjs/common";
 import { Schema } from "@nestjs/mongoose";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpExceptionFilter } from "server/src/common/filters/http-exception.filter";
 import { createYearArchiveDto, updateYearArchiveDto } from "server/src/Models/dto/yearArchive.dto";
 import { Task } from "server/src/Models/task.model";
@@ -11,6 +11,7 @@ import { YearArchiveService } from "server/src/services/yearArchive.service";
 @ApiTags('yearsArchive')
 @Controller('yearsArchive')
 @UseFilters(HttpExceptionFilter) 
+@ApiBearerAuth()
 export class YearArchiveController {
 
     constructor(private readonly yearArchiveService: YearArchiveService ) { }

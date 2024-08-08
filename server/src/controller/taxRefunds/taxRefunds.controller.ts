@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put, UseFilters } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
 import { CreateTaxRefundsDto, UpdateTaxRefundsDto } from "server/src/Models/dto/taxRefunds.dto";
 import { TaxRefunds} from "server/src/Models/taxRefunds.model";
@@ -8,6 +8,7 @@ import { TaxRefundsService } from "server/src/services/taxRefunds.service";
 @ApiTags('tax-refunds')
 @Controller('tax-refunds')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class TaxRefundsController{
     constructor(private readonly TaxRefundsService: TaxRefundsService) {}
 

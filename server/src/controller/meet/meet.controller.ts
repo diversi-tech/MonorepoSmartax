@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Post, Put, UseFilters, ValidationPipe } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CreateMeetDto, UpdateMeetDto } from "server/src/Models/dto/meet .dto";
 import { Meet } from "server/src/Models/meet.model";
 import { HttpExceptionFilter } from "server/src/common/filters/http-exception.filter";
@@ -8,6 +8,7 @@ import { MeetService } from "server/src/services/meet.service";
 @ApiTags('meet')
 @Controller('meet')
 @UseFilters(HttpExceptionFilter) 
+@ApiBearerAuth()
 export class MeetController {
 
     constructor(private readonly meetService: MeetService) { }

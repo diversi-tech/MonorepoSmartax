@@ -2,10 +2,11 @@ import { Controller, Post, Body, Get, ValidationPipe } from '@nestjs/common';
 import { CallTopicService } from 'server/src/services/callTopicSchema.service';
 import { callTopicSchemaDto } from 'server/src/Models/dto/callTopicSchema.dto';
 import { callTopicSchema } from 'server/src/Models/callTopicSchema.model';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('CallTopicController')
 @Controller('CallTopicController')
+@ApiBearerAuth()
 export class CallTopicController {
   constructor(private readonly callTopicService: CallTopicService) {}
 
