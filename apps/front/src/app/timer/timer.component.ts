@@ -154,7 +154,6 @@ updateTotalTime(timer: Timer): void {
     this.updateFormattedTotalTime();
   }
 
-
   getUserNameById(userId: string): string {
     if (!this.userNames[userId]) {
       this.userService.findOne(userId).subscribe(
