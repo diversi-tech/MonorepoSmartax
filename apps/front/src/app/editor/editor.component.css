@@ -1,22 +1,8 @@
 .demo {
-  direction: rtl;
-}
-
-#editor {
-  height: 200px;
-  border-bottom-left-radius: 10px !important ;
-  border-bottom-right-radius: 10px !important ;
-}
-.ql-toolbar.ql-snow {
-  display: flex;
-  flex-wrap: wrap;
-  background-color: #f0f0f0; /* צבע אפור */
-  border-radius: 10px; /* דוגמה להוספת עיצוב נוסף */
-}
-:host ::ng-deep .ql-toolbar.ql-snow {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  background-color: #f8f8f8 !important; /* צבע אפור */
-  border-top-left-radius: 10px !important ;
-  border-top-right-radius: 10px !important ;
-}
+    margin: 20px;
+  }
+  
+  #editor {
+    height: 400px;
+  }
+  

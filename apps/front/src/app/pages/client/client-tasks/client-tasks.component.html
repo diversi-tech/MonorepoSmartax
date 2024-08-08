@@ -83,7 +83,7 @@
         label="Filter"></button > -->
 
         <input *ngIf="tasks.length != 0" class="buttons" id="float-input" pInputText type="text"
-          placeholder="Search Task" (change)="searchTask()" [(ngModel)]="searchTerm" />
+          placeholder="חיפוש משימה" (change)="searchTask()" [(ngModel)]="searchTerm" />
     </div>
   </div>
 
@@ -92,11 +92,10 @@
   <div class="p-col-8" style="text-align: right; align-items: right">
     <div class="content-container">
       <div>
-        <div *ngIf="filteredTasks.length == 0">
           <div *ngFor="let status of statuses">
             <p-panel *ngIf="categorizeTasks(status).length != 0" header="{{ status.name }}">
               <p-table *ngIf="categorizeTasks(status).length != 0"
-                [value]="categorizeTasks(status).length != 0 ? categorizeTasks(status) : filteredTasks ">
+                [value]="filteredTasks.length == 0 ? categorizeTasks(status) : filteredTasks ">
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">
                     <th style="width: auto; height: 50px">
@@ -166,7 +165,6 @@
               </p-table>
             </p-panel>
           </div>
-        </div>
       </div>
     </div>
   </div>

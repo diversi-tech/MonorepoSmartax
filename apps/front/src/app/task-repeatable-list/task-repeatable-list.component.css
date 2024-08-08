@@ -85,22 +85,4 @@
     justify-content: center;
     align-items: center;
 }
-  /*  */
- /* הסתרת האיקונים כברירת מחדל */
-.table-icon {
-  display: none;
-}
-
-/* הצגת האיקונים כאשר העכבר מעל השורה */
-.p-table tbody tr:hover .table-icon {
-  display: inline;
-}
-
-
-/*  */
-.highlight {
-  background-color: #edecec;
-}
-.p-button-rounded {
-  border-radius: 20%;
-}
+  

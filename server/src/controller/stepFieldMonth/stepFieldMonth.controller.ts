@@ -58,5 +58,14 @@ export class StepFieldMonthController{
   async getAllStepFieldsMonth(): Promise<StepFieldMonth[]> {
     return this.stepFieldMonthService.getAllStepFieldsMonth();
   }
-
+  @Get('types')
+  @ApiOperation({ summary: 'Get all step fields month' })
+  async getAllTypes(): Promise<string[]> {
+    return this.stepFieldMonthService.getAllTypes();
+  }
+  @Get('values/:type')
+  @ApiOperation({ summary: 'Get all step fields month' })
+  async getAllValues(@Param('type') type:string): Promise<string[]> {
+    return this.stepFieldMonthService.getAllValuesForType(type);
+  }
 }

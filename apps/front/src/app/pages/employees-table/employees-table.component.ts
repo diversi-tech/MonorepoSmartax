@@ -25,24 +25,14 @@ interface Product {
   templateUrl: './employees-table.component.html',
   styleUrl: './employees-table.component.css',
   standalone: true,
-  imports: [
-    ConfirmDialogModule,
-    Footer,
-    ButtonDirective,
-    TableModule,
-    PrimeTemplate,
-    Button,
-    NgIf,
-    NgClass
-  ]
+  imports: [ConfirmDialogModule, Footer, ButtonDirective, TableModule, PrimeTemplate, Button, NgIf, NgClass]
 })
-
 export class EmployeesTableComponent implements OnInit {
 
   users: User[] = [];
   allRoles: Role[] = [];
   selectedUser!: User;
-  confirmationKey: string = 'deleteConfirmation';
+  confirmationKey: string = 'deleteConfirmation'; // מפתח לאישור המחיקה
   currentUser: User;
 
 
@@ -83,14 +73,16 @@ export class EmployeesTableComponent implements OnInit {
 
   showConfirmation(): void {
     this.confirmationService.confirm({
-      message: 'האם אתה בטוח שברצונך למחוק משתמש זה?',
+      message: 'Are you sure you want to delete this user?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        console.log('delete start');
         this.deleteUser()
       },
       reject: () => {
         console.log('cancel start');
+        // Add the code to close the pop-up here
       }
     })
   }
@@ -105,11 +97,14 @@ export class EmployeesTableComponent implements OnInit {
   }
 
   deleteUser(): void {
+    console.log(this.currentUser);
+
     this.userService.deleteUser(this.currentUser._id).subscribe(
       () => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User deleted successfully.' });
         this.loadUsers(); // Reload users after deletion
         this.confirmationService.close()
+
       },
       (error) => {
         console.log('Failed to delete user:', error);

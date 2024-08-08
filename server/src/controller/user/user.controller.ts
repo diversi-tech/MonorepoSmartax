@@ -4,7 +4,10 @@ import { ApiTags, ApiOperation, ApiBody, ApiQuery, ApiResponse } from '@nestjs/s
 import { UserService } from '../../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../../Models/dto/user.dto';
 import { User } from 'server/src/Models/user.model';
+// import { HttpErrorFilter } from '../../common/filters/http-error.filter';
+
 import { TokenService } from 'server/src/services/jwt.service';
+import { equals } from 'class-validator';
 import { hashPasswordService } from 'server/src/services/hash-password';
 import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
@@ -14,13 +17,11 @@ import { AuthGuard } from 'server/src/guards/auth.guard';
 @UseFilters(HttpErrorFilter)
 @ApiTags('users')
 @Controller('users')
+// @UseFilters(HttpErrorFilter)
+//@UseFilters(ValidationException)
 export class UserController {
 
-  constructor(
-    private readonly userService: UserService,
-    private jwtToken: TokenService,
-    private hashService: hashPasswordService
-  ) { }
+  constructor(private readonly userService: UserService, private jwtToken: TokenService, private hashService: hashPasswordService) { }
 
   // @Put('create')
   // @ApiOperation({ summary: 'Create a new user' })
@@ -94,6 +95,7 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
   @ApiResponse({ status: 200, description: 'Return the user.' })
   @ApiResponse({ status: 404, description: 'User not found.' })
   async findOne(@Query('id') id: string): Promise<User> {
+
     try {
       const user = await this.userService.findOne(id);
       if (!user) {
@@ -165,6 +167,7 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiQuery({ name: 'id', required: true, description: 'The ID of the user to find' })
   async delete(@Query('id') id: string): Promise<User> {
+
     try {
       const deletedUser = await this.userService.deleteUser(id);
       if (!deletedUser) {
@@ -204,6 +207,7 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
       favoritesClient: user.favoritesClient
     };
     await this.userService.updateUser(user.id, userDto)
+
     try {
       return {
         status: HttpStatus.OK,
@@ -215,5 +219,6 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
   }
+
 }
 

@@ -16,9 +16,9 @@ import { RouterOutlet } from '@angular/router';
 import { AddClientComponent } from '../add-client/add-client.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
-import { ClientAddCommunicationComponent } from "../client-add-communication/client-add-communication.component";
 
 @Component({
+  // standalone:true,
   selector: 'app-client-communication-logs',
   templateUrl: './all-communication.component.html',
   styleUrl: './all-communication.component.css',
@@ -40,8 +40,6 @@ import { ClientAddCommunicationComponent } from "../client-add-communication/cli
     NgClass,
     ConfirmDialogModule,
     InputTextModule,
-    ClientAddCommunicationComponent,
-
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -53,14 +51,14 @@ export class AllCommunicationComponent {
   currentCommunication: Communication;
   communications: Communication[] = [];
   users: SelectItem[] = [];
-  selectedCommunication: Communication | null = null;
+  selectedCommunication: Communication | null = null; // for editing
   filtername: string = "";
   filterdate: string = "";
   filterstatus: string = "";
   filterCallTopic: string = "";
   callTopics: callTopicSchema[] = [];
   selectedCallTopic: string = '';
-  selectedCallStatus: string = "";
+  selectedCallStatus: string ="";
   selectedCallTopic2: callTopicSchema | null = null;
   filteredCallTopic: callTopicSchema[] = [];
   callTopics2: callTopicSchema[] = [{ name: "לא נמצא" }]
@@ -68,7 +66,6 @@ export class AllCommunicationComponent {
   newcallTopicSchema: callTopicSchema = { name: "" };
   thisSubject = "";
   thisSubject2 = "";
-  displayDialog: boolean = false;
 
   constructor(
     private communicationService: CommunicationService,
@@ -87,8 +84,8 @@ export class AllCommunicationComponent {
     this.callTopicService.getAll().subscribe(callTopic => {
       this.callTopics = callTopic;
     });
-  }
 
+  }
   getAllCommunications(): void {
     this.communicationService.getAllCommunications()
       .subscribe(communications => {
@@ -96,20 +93,18 @@ export class AllCommunicationComponent {
         this.filteredCommunicatio = communications
         this.sortCommunicatioByDate();
       });
-  }
 
+  }
   sortCommunicatioByDate(): void {
     this.filteredCommunicatio.sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
   }
-
   sortCommunicatioByDate2(): void {
     this.filteredCommunicatio.sort((a, b) => {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
+      return new Date(a.date).getTime() - new Date(b.date).getTime(); // מהישן לחדש
     });
   }
-
   selectCommunication(communication: Communication): void {
     this.selectedCommunication = { ...communication }; // Clone the communication for editing
   }
@@ -124,6 +119,7 @@ export class AllCommunicationComponent {
           if (index !== -1) {
             this.communications[index] = updatedCommunication;
           }
+
           this.selectedCommunication = null;
         });
     }
@@ -147,7 +143,6 @@ export class AllCommunicationComponent {
         }));
       });
   }
-
   sortCommunicatioBySubjectAsc(): void {
     this.filteredCommunicatio.sort((a, b) => a.Subject.localeCompare(b.Subject));
   }
@@ -155,8 +150,7 @@ export class AllCommunicationComponent {
   sortCommunicatioBySubjectDesc(): void {
     this.filteredCommunicatio.sort((a, b) => b.Subject.localeCompare(a.Subject));
   }
-
-  onSelectionChange(a: any) {
+  onSelectionChange(a : any) {
     this.isSelected = Number(a);
     this.filteredCommunicatio = this.communications;
   }
@@ -177,9 +171,9 @@ export class AllCommunicationComponent {
     else
       this.filteredCommunicatio = this.communications;
   }
-  filterByStatus(event: Event): void {
+  filterByStatus(event: Event): void { 
     this.filteredCommunicatio = this.communications;
-    this.filterstatus = (event.target as HTMLSelectElement).value
+    this.filterstatus=(event.target as HTMLSelectElement).value
     if (this.filterstatus == "ליד")
       this.filterBySTtetus2('true');
     else if (this.filterstatus == "מעקב")
@@ -189,18 +183,26 @@ export class AllCommunicationComponent {
   }
 
   filterBySTtetus2(status): void {
+    
     this.filteredCommunicatio = this.communications.filter(communication => communication.Status === status);
   }
 
   filterByDate(): void {
     this.filteredCommunicatio = this.communications;
     if (this.filterdate) {
+      // המרת התאריך ממחרוזת לאובייקט Date
       const selectedDate = new Date(this.filterdate);
+
+      // סינון התקשורות לפי התאריך הנבחר
       this.filteredCommunicatio = this.communications.filter(communication => {
+        // המרת תאריך התקשורת לאובייקט Date
         const communicationDate = new Date(communication.date);
+
+        // ביצוע השוואה בין התאריכים
         return communicationDate.toDateString() === selectedDate.toDateString();
       });
     } else {
+      // אם אין תאריך נבחר, הצג את כל התקשורות
       this.filteredCommunicatio = this.communications;
     }
   }
@@ -217,6 +219,7 @@ export class AllCommunicationComponent {
         this.filteredCallTopic = this.callTopics2
         this.thisSubject2 = value
         this.is = true;
+
       }
     }
     else {
@@ -224,6 +227,7 @@ export class AllCommunicationComponent {
       this.filteredCallTopic = this.callTopics;
     }
     this.selectedCallTopic2 = null;
+
   }
 
   select(event: AutoCompleteSelectEvent): void {
@@ -231,11 +235,12 @@ export class AllCommunicationComponent {
     const callTopic = event.value as callTopicSchema;
     this.thisSubject = callTopic.name
   }
-
+  
   add() {
     this.newcallTopicSchema.name = this.thisSubject2
     this.callTopicService.createCallTopic(this.newcallTopicSchema).subscribe(response => {
       this.callTopics.push(response);
+      // הוספת הנושא החדש לרשימה המקומית
     });
   }
 

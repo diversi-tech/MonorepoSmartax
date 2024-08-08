@@ -4,6 +4,7 @@ import { Type } from "class-transformer";
 import { PaymentDetails } from "../paymentDetails.model";
 import { PaymentMethod } from "../paymentMethod.model";
 import { Billing } from "../billing.model";
+import { ObjectId } from "typeorm";
 import { Types } from "mongoose";
 
 export class CreatePaymentDto {
@@ -12,6 +13,10 @@ export class CreatePaymentDto {
     @ValidateNested()
     @Type(() => PaymentDetails)
     mainPaymentDetails: PaymentDetails;
+
+    // @ApiProperty({ type: PaymentDetails , default: []})
+    // @ValidateNested()
+    // @Type(() => PaymentDetails)
     @ApiProperty({ required: false, default: [] })
     @IsArray()
     @IsOptional()
@@ -54,6 +59,10 @@ export class UpdatePaymentDto {
     @Type(() => PaymentDetails)
     mainPaymentDetails?: PaymentDetails;
 
+    // @ApiProperty({ type: PaymentDetails })
+    // @IsOptional()
+    // @ValidateNested()
+    // @Type(() => PaymentDetails)
     @ApiProperty({ required: false, default: [] })
     @IsOptional()
     @IsArray()

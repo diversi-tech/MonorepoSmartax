@@ -1,5 +1,5 @@
 import { Controller, Post, Body, UseFilters, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { CommunicationsService } from '../../services/communication.service';
 import {
   CreateCommunicationDto,
@@ -7,6 +7,7 @@ import {
 } from '../../Models/dto/communication.dto';
 import { Communication } from '../../Models/communication.model';
 import { HttpErrorFilter } from '../../common/filters/http-error.filter';
+import { CommunicationArchive } from 'server/src/Models/communicationArchive.model';
 import { RoleGuard } from 'server/src/guards/role.guard';
 import { AuthGuard } from 'server/src/guards/auth.guard';
 

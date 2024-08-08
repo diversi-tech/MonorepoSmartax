@@ -10,7 +10,7 @@ export interface Task {
   _id?: string;
   parent?: string,
   subTasks?: string[],
-  client?: Client;
+  client?: string;
   taskName?: string;
   description?: string;
   dueDate?: Date;

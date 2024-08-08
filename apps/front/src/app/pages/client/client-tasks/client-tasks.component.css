@@ -10,18 +10,11 @@
   margin: 0 10px;
 }
 
-.custom-button {
-  margin: 5px;
-  padding: 5px 10px;
-  /* Smaller padding */
-  border: none;
-  border-radius: 5px;
-  position: relative;
-  display: inline-block;
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  /* Smaller font size */
-  line-height: 1.2;
-  /* Adjust line height if needed */
+.filter-container>div {
+  margin-bottom: 10px;
+}
+
+.filter-container label {
+  display: block;
+  margin-bottom: 5px;
 }

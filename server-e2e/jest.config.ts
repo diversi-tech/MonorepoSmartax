@@ -4,7 +4,7 @@ export default {
   preset: '../jest.preset.js',
   globalSetup: '<rootDir>/src/support/global-setup.ts',
   globalTeardown: '<rootDir>/src/support/global-teardown.ts',
-  setupFiles: ['<rootDir>MonorepoSmartax/server-e2e/src/support/test-setup.ts'],
+  setupFiles: ['<rootDir>/src/support/test-setup.ts'],
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': [

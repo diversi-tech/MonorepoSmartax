@@ -4,6 +4,7 @@ import { SensitiveData } from './sensitiveData.model';
 import { User } from './user.model';
 import { decrypt } from '../services/encrypt.service';
 import { Tag } from './tag.model';
+import { ClientType } from './clientType.model';
 
 export enum ReportType {
   Monthly = 'מדווח חודשי',
@@ -14,6 +15,10 @@ export enum ReportType {
 
 @Schema()
 export class Client extends Document {
+  
+  // @Prop()
+  // _id?:string
+  
   @Prop()
   companyName: string;
 
@@ -104,5 +109,12 @@ export class Client extends Document {
   isOpenAccountWithUs: boolean;
   @Prop()
   tag: Tag;
+
+  @Prop()
+  clientTypes: ClientType[];
+  
+  // @Prop({ type: [{ type: Types.ObjectId, ref: 'ClientField' }] })
+  @Prop()
+  clientFields: string []
 }
 export const ClientModel = SchemaFactory.createForClass(Client);

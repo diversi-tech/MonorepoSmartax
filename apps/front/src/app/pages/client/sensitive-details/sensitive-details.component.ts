@@ -3,9 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { ClientService } from '../../../_services/client.service';
+import { SensitiveDataService } from '../../../_services/sensitive-data.service';
+import { ClientService } from '../../../_services/client.service'; // Make sure this path is correct
 import { CreateSensitiveDataDto } from '../../../../../../../server/src/Models/dto/sensitiveData.dto';
-import { Client } from '../../../../../../../server/src/Models/client.model';
+import { Client } from '../../../../../../../server/src/Models/client.model'; // Make sure this path is correct
+import { log } from 'console';
 import { Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 
@@ -23,19 +25,21 @@ import { InputTextModule } from 'primeng/inputtext';
   ],
 })
 export class SensitiveDetailsComponent implements OnInit {
-
   passwordForm: FormGroup;
   sensitiveDataVisible = false;
   sensitiveDataList: CreateSensitiveDataDto[] = [];
   timer: any;
   client: Client | null = null;
-  clientId: string | null = null;
-  showSensitiveDetails: boolean = false;
+  clientId: string | null = null; 
+   showSensitiveDetails: boolean = false;
   formShow: boolean = true;
 
+
+
   constructor(
-    private fb: FormBuilder,
-    private clientService: ClientService
+    private fb: FormBuilder, 
+    private clientService: ClientService,
+    private router: Router
   ) {
     this.passwordForm = this.fb.group({
       password: ['', [Validators.required]]
@@ -47,17 +51,24 @@ export class SensitiveDetailsComponent implements OnInit {
     if (!this.client) {
       console.log("client not fouund"); // Redirect to client search if no client is found in state
     }
-    else {
+    else
+    {
       this.clientId = (this.client._id as unknown) as string;
+      console.log(this.client);
+      console.log(this.clientId);
+      
     }
+       
+    // this.clientId=this.client._id;
+    
   }
 
   onSubmit(): void {
     const password = this.passwordForm.get('password')?.value;
     if (password === '123456') {
       this.fetchClientSensitiveData();
-      this.formShow = false;
-      this.showSensitiveDetails = true;
+      this.formShow=false;
+      this.showSensitiveDetails=true;
     } else {
       alert('סיסמא שגויה');
     }
@@ -89,7 +100,6 @@ export class SensitiveDetailsComponent implements OnInit {
       clearTimeout(this.timer);
     }
   }
-
   sensitiveDataShow() {
     this.showSensitiveDetails = !this.showSensitiveDetails;
   }

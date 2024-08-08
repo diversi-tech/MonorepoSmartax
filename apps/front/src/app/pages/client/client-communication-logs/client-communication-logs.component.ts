@@ -4,8 +4,9 @@ import { Client } from '../../../_models/client.module';
 import { DropdownModule } from 'primeng/dropdown';
 import { NgFor, NgIf, DatePipe, NgClass } from '@angular/common';
 import { TableModule } from 'primeng/table';
+import { TokenService } from '../../../_services/token.service';
 import { CommunicationService } from '../../../_services/communicaton.service';
-import { ClientAddCommunicationComponent } from '../client-add-communication/client-add-communication.component';
+import { ClientAddCommunicationComponent } from "../client-add-communication/client-add-communication.component";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, SelectItem } from 'primeng/api';
 import { UserService } from '../../../_services/user.service';
@@ -47,11 +48,13 @@ export class ClientCommunicationLogsComponent {
   constructor(
     private router: Router,
     private communicationService: CommunicationService,
+    private tokenService: TokenService,
     private confirmationService: ConfirmationService,
     private userService: UserService,
   ) { }
 
   ngOnInit(): void {
+    debugger
     this.client = history.state.client;
     this.getCommunications();
     this.loadUsers();
@@ -83,6 +86,7 @@ export class ClientCommunicationLogsComponent {
   }
 
   showConfirmationEdit(): void {
+    debugger
     this.confirmationService.confirm({
       header: 'עריכת שיחה',
       icon: 'pi pi-pencil',
@@ -91,6 +95,7 @@ export class ClientCommunicationLogsComponent {
   }
 
   selectCommunication(communication: Communication): void {
+    debugger
     this.selectedCommunication = { ...communication }; // Clone the communication for editing
   }
 
@@ -104,6 +109,7 @@ export class ClientCommunicationLogsComponent {
           if (index !== -1) {
             this.communications[index] = updatedCommunication;
           }
+
           this.selectedCommunication = null;
         });
     }
@@ -111,6 +117,7 @@ export class ClientCommunicationLogsComponent {
   }
 
   deleteCommunication(): void {
+    debugger
     this.communicationService.deleteCommunication(this.currentCommunication._id)
       .subscribe(() => {
         this.communications = this.communications.filter(c => c._id !== this.currentCommunication._id);
@@ -124,6 +131,7 @@ export class ClientCommunicationLogsComponent {
   }
 
   showConfirmationDelete(): void {
+    debugger
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this communication?',
       header: 'Confirmation',
