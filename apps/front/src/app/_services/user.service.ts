@@ -47,8 +47,8 @@ export class UserService {
     const newUser = {
       userName: username,
       email: email,
-      // passwordHash: passwordHash,
-      passwordHash: 'Aa123456',
+      passwordHash: String(passwordHash),
+      // passwordHash: 'Aa123456',
 
       role: role,
       favoritesClient: favoritesClient, // הוספת רשימת הלקוחות המועדפים
