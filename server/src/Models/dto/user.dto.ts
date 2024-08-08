@@ -127,15 +127,15 @@ export class UpdateUserDto {
 
     @ApiProperty({ description: 'The role of the user', required: false })
     @IsOptional()
-    @ValidateNested()
-    @Type(() => Role) // מתאר את סוג האובייקט של role
+    // @ValidateNested()
+    // @Type(() => Role) // מתאר את סוג האובייקט של role
     role?: Role;
 
     @ApiProperty({ description: 'The list of favorite clients', required: false })
     @IsOptional()
     @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => Client) // מתאר את סוג האובייקט של favoritesClient
+    // @ValidateNested({ each: true })
+    // @Type(() => Client) // מתאר את סוג האובייקט של favoritesClient
     favoritesClient?: Client[];
 }
 

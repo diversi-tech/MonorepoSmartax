@@ -150,12 +150,13 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
   @Post('update')
   @ApiOperation({ summary: 'Update a user by ID' })
   @ApiBody({ type: UpdateUserDto })
+  //  // @Body('id') id: string,
   async update(
-    @Body('id') id: string,
+   
     @Body() updateUserDto: UpdateUserDto
   ): Promise<User> {
     return this.userService.updateUser(
-      id,
+      updateUserDto.id,
       updateUserDto
     );
   }
