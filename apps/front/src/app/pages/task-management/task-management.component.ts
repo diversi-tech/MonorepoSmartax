@@ -233,7 +233,7 @@ export class TaskManagementComponent implements OnInit {
       this.filterFirstStatus = false;
       const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
 
-      const clientMatch = !this.filter.client || (task.client &&task.client == this.filter.client._id)
+      const clientMatch = !this.filter.client || (task.client &&task.client[0] == this.filter.client._id)
 
 
       let userMatch = !this.filter.user

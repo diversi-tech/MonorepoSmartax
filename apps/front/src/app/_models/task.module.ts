@@ -10,13 +10,12 @@ export interface Task {
   _id?: string;
   parent?: string,
   subTasks?: string[],
-  client?: string;
+  client?: string[];
   taskName?: string;
   description?: string;
   dueDate?: Date;
   deadline?: Date;
   startDate?:Date;
-  
   status?: Status;
   assignedTo?: User[];
   tags?: Tag[];
