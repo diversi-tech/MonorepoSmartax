@@ -16,7 +16,7 @@ import {
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTaskDto, UpdateTaskDto } from 'server/src/Models/dto/task.dto';
 import { Task } from 'server/src/Models/task.model';
-import { ValidationException } from 'server/src/common/exceptions/validation.exception';
+// import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
 import { hashPasswordService } from 'server/src/services/hash-password';
 import { TokenService } from 'server/src/services/jwt.service';
@@ -29,7 +29,7 @@ import * as path from 'path';
 
 @ApiTags('tasks')
 @UseFilters(HttpErrorFilter)
-@UseFilters(ValidationException)
+// @UseFilters(ValidationException)
 @Controller('tasks')
 @ApiBearerAuth()
 export class TasksController {
@@ -42,7 +42,7 @@ export class TasksController {
   @Post('create')
   @ApiOperation({ summary: 'Create a new task' })
   @ApiBody({ type: CreateTaskDto })
-  async create(@Body() createTaskDto: CreateTaskDto): Promise<Task[]> {
+  async create(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
     try {
       const newTasks = await this.taskService.createTask(createTaskDto);
       return newTasks;
