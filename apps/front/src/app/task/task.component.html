@@ -237,34 +237,37 @@
         לקוחות
       </p>
       <div style="margin-left: 85px; width: 32%">
-        <p-inputGroup class="w-full" [style]="{ height: '20px' }">
-          <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"><span
-              (click)="showClients = !showClients" class="pi pi-user"></span></p-inputGroupAddon>
+        <!-- <p-inputGroup class="w-full" [style]="{ height: '20px' }">
+          <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"
+            ><span
+              (click)="showClients = !showClients"
+              class="pi pi-user"
+            ></span
+          ></p-inputGroupAddon>
           <div (click)="showClients = !showClients">
             <app-icon-profile *ngIf="selectedClient"
               [userName]="selectedClient.firstName && selectedClient.firstName"></app-icon-profile>
           </div>
-        </p-inputGroup>
-        <!-- <p-multiSelect
+        </p-inputGroup> -->
+        <p-multiSelect
           [options]="clients"
           [(ngModel)]="selectedClients"
           name="selectedClients"
           defaultLabel="Select Clients"
           optionLabel="name"
           [style]="{ height: '50px', width: '100%' }"
-          (onChange)="onUserChange($event)"
-        >
+        >        
           <ng-template let-client pTemplate="item">
             <div class="avatar-item">
               <app-icon-profile
                 class="avatar"
-                [userName]="client.name"
+                [userName]="client.firstName"
               ></app-icon-profile>
-              <span>{{ client.name }}</span>
+              <span>{{ client.firstName }}</span>
             </div>
           </ng-template>
-          <ng-template let-client pTemplate="selectedItems">
-            <div class="selected-items-container">
+          <ng-template style="display: flex" let-user pTemplate="selectedItems">
+            <div class="selected-items-container" style="display: flex">
               <div
                 *ngFor="let selectedClient of selectedClients"
                 class="selected-item"
@@ -272,12 +275,12 @@
               >
                 <app-icon-profile
                   class="avatar"
-                  [userName]="selectedClient.name"
+                  [userName]="selectedClient.firstName"
                 ></app-icon-profile>
               </div>
             </div>
           </ng-template>
-        </p-multiSelect> -->
+        </p-multiSelect>
       </div>
     </div>
 
@@ -288,9 +291,12 @@
         optionLabel="name" [style]="{ width: '15rem' }" [listStyle]="{ 'max-height': '400px' }"
         (onChange)="showClients = !showClients">
         <ng-template let-client pTemplate="item">
+          <div class="selected-items-container" style="display: flex">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-              <app-icon-profile [userName]="client.firstName" [email]="client.email"></app-icon-profile>
+              <app-icon-profile
+                [userName]="client.firstName"
+                [email]="client.email"
+              ></app-icon-profile>
               <span style="margin-left: 5%">{{
                 client.firstName && client.firstName
                 }}</span>

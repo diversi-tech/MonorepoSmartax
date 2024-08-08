@@ -1,11 +1,14 @@
 import { Component, Inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClientTypeTagComponent } from '../client-type-tag/client-type-tag.component';
-import { ClientFieldComponent} from '../client-field/client-field.component';
+import { ClientFieldComponent } from '../client-field/client-field.component';
 import { ClientTypeService } from '../../../_services/clientType.service';
 import { ClientType } from '../../../_models/clientType.module';
 import { Field } from '../../../_models/field.module';
 import { FieldService } from '../../../_services/field.service';
+import { Client } from '../../../_models/client.module';
+import { ClientField } from '../../../_models/clientField.module';
+import { ClientFieldService } from '../../../_services/clientField.service';
 
 @Component({
   selector: 'app-client-type-tab',
@@ -16,58 +19,70 @@ import { FieldService } from '../../../_services/field.service';
 })
 export class ClientTypeTabComponent {
 
-  constructor(@Inject(ClientTypeService) private clientTypeService: ClientTypeService,
-         @Inject(FieldService) private fieldService: FieldService
-){}
+  constructor(private clientFieldService: ClientFieldService, @Inject(ClientTypeService) private clientTypeService: ClientTypeService,
+    @Inject(FieldService) private fieldService: FieldService
+  ) { }
 
   selectedButton: string;
   clientTypes: ClientType[] = [];
-  fields: Field[] = [];
-  
+  thisClient: Client;
+  clientFieldId: string[] = []
+  CFields: ClientField[] = [];
+
   ngOnInit() {
-    
-    this.getAllClientTypes();
-    this.getAllFields();
+
+    this.thisClient = history.state.client;
+    console.log('stateData:', this.thisClient);
+
+    this.getAllCFields()
+
+    if (this.thisClient && this.thisClient.clientTypes) {
+      this.getAllClientTypes();
+    }
   }
 
   getAllClientTypes(): void {
     this.clientTypeService.getAllClientTypes().subscribe(types => {
       this.clientTypes = types;
-      // this.createTag();
       console.log(this.clientTypes);
-
     });
   }
 
-  getAllFields(): void{
-    console.log("in getAllFields function");
+
+
+  onClientSelected(client: Client): void {
+    console.log('Selected Client:', client);
+    this.thisClient = client
+    this.getAllCFields();
+
+  }
+
+  getAllCFields(): void {
+    console.log(this.thisClient);
     
-    this.fieldService.getAllField().subscribe(fields => {
-      this.fields = fields;
-      console.log(this.fields );
+    this.clientFieldId = this.thisClient.clientFields
 
+    this.clientFieldId.forEach(cf => {
+      console.log("in foreach: " + cf);
+      if (cf != null){
+      this.clientFieldService.searchClientField(cf).subscribe(
+        {
+          next: (data) => {
+              this.CFields.push(data)
+              console.log(this.CFields);
+            
+          }
+        }
+      )}
     });
   }
+
 
   receiveSelectedButton(buttonId: string) {
-    // debugger
     console.log("recived");
     this.selectedButton = buttonId;
-    // this.getFields(this.selectedButton);
   }
 
 
-// getFields(buttonId: string) {
-//   const clientType = this.clientTypes.find(ct => ct._id === buttonId);
-//   if (clientType) {
-//     this.selectedFields = clientType.fields.map(field => ({
-//       // id: field._id,
-//       key: field.key,
-//       type: field.type
-//     }));
-//     console.log(this.selectedFields);
-    
-//   }
-// }
 
 }

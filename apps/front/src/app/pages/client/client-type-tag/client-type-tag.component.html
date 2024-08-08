@@ -27,7 +27,34 @@
   <button pButton  (click)="addClientType()">הוספת תגית</button >
 
 </div> -->
-
+<p-dialog
+    header="?האם למחוק"
+    [(visible)]="displayDeleteDialog"
+    modal="true"
+    [style]="{ width: '400px' }"
+  >
+    <p>האם אתה בטוח שברצונך למחוק את {{ selectedDeleteType?.name }}</p>
+    <p-footer>
+      <button
+        pButton
+        type="button"
+        label="ביטול"
+        icon="pi pi-times"
+        class="p-button-secondary"
+        (click)="cancelDelete()"
+        style="margin-right: 0.5em"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="מחק"
+        icon="pi pi-trash"
+        class="p-button-danger"
+        (click)="deleteType()"
+        style="margin-left: 0.5em"
+      ></button>
+    </p-footer>
+  </p-dialog>
 
   <!-- buttons -->
   <div style="margin-left: 100px">
@@ -42,18 +69,18 @@
       </button >
       <!--  -->
       <button
-      *ngFor="let ct of ClientTypesselected; let i = index"
+      *ngFor="let ct of thisClient.clientTypes ; let i = index"
         [style]="{
-          'background-color': getColor(ct.text),
+          'background-color': getColor(ct.name),
           color: '#fff'
         }"        
         class="custom-button"
        
       >
-        {{ ct.text }}
+        {{ ct.name }}
         <span
-        (click)="removeButton(index)"
-          (click)="ClientTypesselected.splice(i, 1)"
+        (click)="confirmDelete(ct)"
+        (click)="ClientTypesselected.splice(i, 1)"
           [ngClass]="{ bounce: i < ClientTypesselected.length - 1 }"
           class="delete-button"
         >
@@ -64,7 +91,7 @@
   </div>
   <form *ngIf="showClientTypesList">
     <p-listbox
-      [options]="buttons!"
+      [options]="clientTypes!"
       [filter]="true"
       optionLabel="text"
       [style]="{ width: '15rem' }"
@@ -75,7 +102,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
           <span
-            [style]="{ color: getColor(button.text)}"
+            [style]="{ color: getColor(button.name)}"
             class="pi pi-stop-circle"
           ></span>
           <span
@@ -86,7 +113,7 @@
               'font-size': '12px',
               'margin-left': '5%'
             }"
-            >{{ button.text }}</span
+            >{{ button.name }}</span
           >
           <!-- <span style="margin-left: 5%">{{ button.text }}</span> -->
         </div>

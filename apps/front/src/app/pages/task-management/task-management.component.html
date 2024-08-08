@@ -1,4 +1,4 @@
-
+<div id="mainContainer">
   <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
     <p-footer>
       <button type="button" pButton icon="pi pi-times" label="Cancel"
@@ -24,7 +24,7 @@
               <ng-template let-client pTemplate="item">
                 <div class="client-item">
                   <app-icon-profile [userName]="client.firstName" [email]="client.email"></app-icon-profile>
-                  <span>{{ client.name }}</span>
+                  <span>{{ client.firstName }}</span>
                 </div>
               </ng-template>
             </p-autoComplete>
@@ -72,17 +72,17 @@
   </p-sidebar>
 
   <div class="p-grid">
-
     <!-- top buttons -->
     <div id="buttons">
-      <input class="buttons" id="float-input" pInputText type="text" placeholder="חיפוש משימה" (change)="searchTask()"
-        [(ngModel)]="searchTerm" />
 
       <button pButton class="p-button-text p-button-raised p-button-rounded" [routerLink]="['/taskSpe', 'create']"
         id="addBtn" type="button" icon="pi pi-plus" label="הוסף משימה"></button>
 
       <button pButton class="p-button-text p-button-raised p-button-rounded" type="text" (click)="display = true"
         icon="pi pi-filter" label="סינון"></button>
+        
+      <input class="buttons" id="float-input" pInputText type="text" placeholder="חיפוש משימה" (change)="searchTask()"
+        [(ngModel)]="searchTerm" />
 
     </div>
 
@@ -289,3 +289,4 @@
       </div>
     </div>
   </div>
+</div>
