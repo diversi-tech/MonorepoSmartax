@@ -22,21 +22,54 @@ export class UserController {
     private hashService: hashPasswordService
   ) { }
 
-  @Put('create')
-  @ApiOperation({ summary: 'Create a new user' })
-  @ApiBody({ type: CreateUserDto })
-  async create(@Body() createUserDto: CreateUserDto): Promise<any> {
-    try {
-      createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
-      const user = await this.userService.createUser(createUserDto);
-      return  user;
-    } catch (error) {
+  // @Put('create')
+  // @ApiOperation({ summary: 'Create a new user' })
+  // @ApiBody({ type: CreateUserDto })
+  // async create(@Body() createUserDto: CreateUserDto): Promise<any> {
+  //   try {
+  //     createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
+  //     const user = await this.userService.createUser(createUserDto);
+  //     return  user;
+  //   } catch (error) {
+  //     throw new HttpException(
+  //       'Failed to create user',
+  //       HttpStatus.INTERNAL_SERVER_ERROR,
+  //     );
+  //   }
+  // }
+
+@Post('create')
+@ApiOperation({ summary: 'Create a new user' })
+@ApiBody({ type: CreateUserDto })
+@ApiResponse({ status: 201, description: 'User successfully created.' })
+@ApiResponse({ status: 400, description: 'Bad Request. Validation failed.' })
+@ApiResponse({ status: 500, description: 'Internal Server Error.' })
+async create(@Body() createUserDto: CreateUserDto): Promise<any> {
+  try {
+    // ביצוע גיבוב לסיסמה
+    createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
+    
+    // יצירת משתמש
+    const user = await this.userService.createUser(createUserDto);
+    
+    // החזרת משתמש שנוצר עם סטטוס 201
+    return { status: 201, message: 'User successfully created', user };
+  } catch (error) {
+    // טיפול בשגיאה ספציפית יותר, אם יש
+    if (error.name === 'ValidationError') {
       throw new HttpException(
-        'Failed to create user',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        'Validation failed: ' + error.message,
+        HttpStatus.BAD_REQUEST,
       );
     }
+    
+    // טיפול בשגיאה כללית
+    throw new HttpException(
+      'Failed to create user: ' + error.message,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
+}
 
   @Get('findAll')
   @ApiOperation({ summary: 'Get all users' })
