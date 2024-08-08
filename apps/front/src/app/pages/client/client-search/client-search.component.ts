@@ -17,6 +17,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormControl, FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
+import { Role } from 'src/app/_models/role.module';
 
 @Component({
   selector: 'app-client-search',
@@ -196,94 +197,94 @@ export class ClientSearchComponent implements OnInit {
     return this.choosedClients.includes(client);
   }
 
-  // isFavoriteClient(client: Client) {
-  //   return this.user.favoritesClient.find(c => c === client._id) != undefined;
-  //   // return this.user.favoritesClient.find(c => c._id === client._id) != undefined;
+  isFavoriteClient(client: Client) {
+    return this.user.favoritesClient.find(c => c === client._id) != undefined;
+    // return this.user.favoritesClient.find(c => c._id === client._id) != undefined;
 
 
-  // }
+  }
 
-  // addFavoritesClient() {
-  //   this.user.favoritesClient.push(...this.choosedClients
-  //     .filter(c => !this.isFavoriteClient(c)).map(c => c._id));
-  //   this.updateFavorite();
-  // }
+  addFavoritesClient() {
+    this.user.favoritesClient.push(...this.choosedClients
+      .filter(c => !this.isFavoriteClient(c)).map(c => c._id));
+    this.updateFavorite();
+  }
 
-  // updateFavorite() {
-  //   this.userService
-  //     .update(this.user._id, this.user.userName, this.user.email, this.user.passwordHash,
-  //       this.user.role, []
-  //       // this.user.favoritesClient
-  //     )
-  //     .subscribe({
-  //       next: (response: any) => {
-  //         console.log(response);
-  //       },
-  //       error: (err) => {
-  //         console.error('Error add to favorite', err);
-  //       },
-  //     });
-  // }
+  updateFavorite() {
+    // this.userService
+    //   .update(this.user._id, this.user.userName, this.user.email, this.user.passwordHash,
+    //     this.user.role , []
+    //     // this.user.favoritesClient
+    //   )
+    //   .subscribe({
+    //     next: (response: any) => {
+    //       console.log(response);
+    //     },
+    //     error: (err) => {
+    //       console.error('Error add to favorite', err);
+    //     },
+    //   });
+  }
 
-  // removeFromFavorite(client: Client) {
-  //   this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
-  //   this.updateFavorite();
-  // }
+  removeFromFavorite(client: Client) {
+    this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
+    this.updateFavorite();
+  }
 
-  // addToFavorite(client: Client) {
-  //   this.user.favoritesClient.push(client._id);
-  //   this.updateFavorite();
-  // }
+  addToFavorite(client: Client) {
+    this.user.favoritesClient.push(client._id);
+    this.updateFavorite();
+  }
 
-  // showConfirmationDelete(): void {
-  //   this.confirmationService.confirm({
-  //     message: '?האם אתה בטוח שברצונך למחוק לקוח זה',
-  //     header: 'Confirmation',
-  //     icon: 'pi pi-exclamation-triangle',
-  //     key: "delete"
-  //   });
-  // }
+  showConfirmationDelete(): void {
+    this.confirmationService.confirm({
+      message: '?האם אתה בטוח שברצונך למחוק לקוח זה',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      key: "delete"
+    });
+  }
 
-  // confirmDelete(): void {
-  //   this.deleteClient();
-  // }
+  confirmDelete(): void {
+    this.deleteClient();
+  }
 
-  // deleteClient(): void {
-  //   if (this.choosedClients.length > 0) {
-  //     this.choosedClients.forEach((c) => {
-  //       this.clientService.deleteClient(c._id).subscribe({
-  //         next: () => {
-  //           window.location.reload();
-  //         },
-  //         error: (err) => console.error('Error deleting client: ', err),
-  //       });
-  //     });
-  //   }
-  //   else {
-  //     this.clientService.deleteClient(this.currentClient._id).subscribe({
-  //       next: () => {
-  //         window.location.reload();
-  //       },
-  //       error: (err) => console.error('Error deleting client: ', err),
-  //     });
-  //   }
-  // }
+  deleteClient(): void {
+    if (this.choosedClients.length > 0) {
+      this.choosedClients.forEach((c) => {
+        this.clientService.deleteClient(c._id).subscribe({
+          next: () => {
+            window.location.reload();
+          },
+          error: (err) => console.error('Error deleting client: ', err),
+        });
+      });
+    }
+    else {
+      this.clientService.deleteClient(this.currentClient._id).subscribe({
+        next: () => {
+          window.location.reload();
+        },
+        error: (err) => console.error('Error deleting client: ', err),
+      });
+    }
+  }
 
-  // cancelDelete(): void {
-  //   this.confirmationService.close();
-  // }
+  cancelDelete(): void {
+    this.confirmationService.close();
+  }
 
-  // editClient() {
-  //   this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
-  // }
+  editClient() {
+    this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
+  }
 
-  // @HostListener('document:click')
-  // onDocumentClick() {
-  //   this.choosedClients = [];
-  //   this.isChoosedAllClient = false;
-  // }
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.choosedClients = [];
+    this.isChoosedAllClient = false;
+  }
 
-  // selectCurrentClient(client: Client) {
-  //   this.currentClient = client;
-  // }
+  selectCurrentClient(client: Client) {
+    this.currentClient = client;
+  }
 }
