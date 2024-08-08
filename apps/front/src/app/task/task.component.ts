@@ -562,7 +562,7 @@ export class TaskComponent implements OnInit {
       // dueDate: this.currentTask.dueDate!,
     };
 
-    if (this.selectedClients) newTask.client[0] = this.selectedClients;
+    if (this.selectedClients) newTask.client = this.selectedClient;
     if (this.htmlContent) newTask.description = this.htmlContent;
     if (this.selectStatus) newTask.status = this.selectStatus;
     if (this.buttons) newTask.tags = this.buttons;
