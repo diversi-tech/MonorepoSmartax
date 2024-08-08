@@ -17,7 +17,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormControl, FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
-import { Role } from 'src/app/_models/role.module';
+import { Role } from '../../../_models/role.module';
 
 @Component({
   selector: 'app-client-search',
