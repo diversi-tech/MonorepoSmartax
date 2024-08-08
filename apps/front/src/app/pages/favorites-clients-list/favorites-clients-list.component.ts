@@ -68,7 +68,8 @@ export class FavoritesClientsListComponent implements OnInit {
         this.user.email,
         this.user.passwordHash,
         this.user.role,
-        this.user.favoritesClient
+        []
+        // this.user.favoritesClient
       )
       .subscribe({
         next: (response: any) => {

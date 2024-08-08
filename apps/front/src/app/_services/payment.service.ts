@@ -11,19 +11,26 @@ import { Frequency } from '../_models/frequency.module';
 import { Client } from '../_models/client.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PaymentService {
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
   private apiUrl = PAYMENT_ENDPOINT;
-  private clientSource = new BehaviorSubject<Client>(null); currentClient = this.clientSource.asObservable(); changeClient(client: Client) { this.clientSource.next(client); }
+  private clientSource = new BehaviorSubject<Client>(null);
+  currentClient = this.clientSource.asObservable();
+  changeClient(client: Client) {
+    this.clientSource.next(client);
+  }
 
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   searchPayment(id: string): Observable<Payment> {
-    return this.http.post<Payment>(`${this.apiUrl}/searchPayment`, { id }, this.httpOptions);
+    return this.http.post<Payment>(
+      `${this.apiUrl}/searchPayment`,
+      { id },
+      this.httpOptions
+    );
   }
 
   getPayment(id: string): Observable<Payment> {
@@ -49,13 +56,15 @@ export class PaymentService {
     return r
   }
 
-  updatePayment(_id: string,
+  updatePayment(
+    _id: string,
     mainPaymentDetails: PaymentDetails,
     morePaymentDetails: PaymentDetails[],
     totalPayment: number,
     paymentMethod: PaymentMethod,
     paymentHistory: PaymentDetails[],
-    billingHistory: Billing) {
+    billingHistory: Billing
+  ) {
     const payment = {
       "_id": _id,
       "mainPaymentDetails": mainPaymentDetails,
@@ -76,7 +85,7 @@ export class PaymentService {
       "assignedTo": assignedTo
     }
 
-    return this.http.post(this.apiUrl + "/" + _id + "/billing", newBilling)
+    return this.http.post(this.apiUrl + '/' + _id + '/billing', newBilling);
   }
   changeMainPayment(_id: string, sumForMonth: number, maxHours: number, frequency: Frequency, description: string) {
     const newPaymentDetails = {

@@ -9,10 +9,10 @@ import { FREQUENCY_ENDPOINT } from '../api-urls';
   providedIn: 'root',
 })
 export class FrequencyService {
-  private apiUrl = FREQUENCY_ENDPOINT; // Base URL for the Client API
+  private apiUrl = FREQUENCY_ENDPOINT;
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }), // Define headers for HTTP requests
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   constructor(private http: HttpClient) {}
