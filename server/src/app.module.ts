@@ -318,8 +318,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   app.enableCors({
     // origin: process.env.PATH_FRONT,
-    // origin: 'http://localhost:4200',
-    origin: 'https://monoreposmartax-fronted.onrender.com',
+    origin: 'http://localhost:4200',
+    // origin: 'https://monoreposmartax-fronted.onrender.com',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     allowedHeaders: 'Authorization, Content-Type',
