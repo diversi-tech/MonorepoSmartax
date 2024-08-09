@@ -136,7 +136,8 @@ export class CreateClientDto {
     isOpenAccountWithUs: boolean;
 
     @ApiProperty({ type: CreateTagDto, example: {text:"aaaa",color:"red"},required: true  })
-    @IsNotEmpty()
+    // @IsNotEmpty()
+    @IsOptional()
     @ValidateNested()
     @Type(() => CreateTagDto)
     tag: CreateTagDto;
