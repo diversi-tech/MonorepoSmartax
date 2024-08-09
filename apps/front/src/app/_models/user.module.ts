@@ -13,12 +13,10 @@ import { Client } from './client.module';
 import { Role } from './role.module';
 
 export interface User {
-  _id: string;
+  _id?: string;
   userName: string;
   email: string;
   passwordHash: string;
-  role: Role;
-  favoritesClient: string[];
-  // role: Role; // התייחסות לאובייקט Role ולא למחרוזת
-  // favoritesClient: Client[]; // התייחסות למערך של אובייקטים מסוג Client
+  role: string;
+  favoritesClient?:string[];
 }

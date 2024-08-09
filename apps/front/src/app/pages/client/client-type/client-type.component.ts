@@ -16,8 +16,6 @@ import { AvatarModule } from 'primeng/avatar';
 import { RouterLink } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import Swal from 'sweetalert2';
-import { RepeatableTask } from '../../../_models/repeatable.module';
-import { RepeatableTaskService } from '../../../_services/repeatable.service';
 
 @Component({
   selector: 'app-client-type',
@@ -42,27 +40,25 @@ import { RepeatableTaskService } from '../../../_services/repeatable.service';
 export class ClientTypeComponent implements OnInit {
   clientTypes: ClientType[] = [];
   selectedClientType: ClientType; // No need to initialize here
-  tasks: RepeatableTask[] = [];
-  selectedTasks: RepeatableTask[] = [];
+  tasks: Task[] = [];
+  selectedTasks: Task[] = [];
 
   constructor(
     private clientTypeService: ClientTypeService,
     private primengConfig: PrimeNGConfig,
-    private taskService: RepeatableTaskService,
+    private taskService: TaskService,
     private confirmationService: ConfirmationService // private location:Location
-  ) {}
+  ) { }
 
   displayDialog: boolean = false;
   selectedType: ClientType | null = null;
   displayDeleteDialog: boolean = false;
   selectedDeleteType: ClientType | null = null;
-  // newClient: ClientType;
   newC: boolean = false;
-  create : boolean = false;
+  create: boolean = false;
 
   showDialog(type: ClientType) {
     this.selectedType = type;
-    console.log(this.selectedType);
     this.newC = !type;
     this.displayDialog = true;
   }
@@ -78,14 +74,12 @@ export class ClientTypeComponent implements OnInit {
         .deleteClientType(this.selectedDeleteType?._id)
         .subscribe({
           next: (data) => {
-            console.log(data);
             Swal.fire('הסוג נמחק בהצלחה', '', 'success');
           },
           error: (err) => {
             console.log(err);
           },
         });
-      // this.loadAllClientTypes();
       const index = this.clientTypes.indexOf(this.selectedDeleteType);
       if (index !== -1) {
         this.clientTypes.splice(index, 1);
@@ -102,23 +96,17 @@ export class ClientTypeComponent implements OnInit {
     this.primengConfig.ripple = true; // Enable Ripple effect globally
     this.loadAllClientTypes();
     this.loadAllTasks();
-    //init new client
-    // this.newClient.name = '';
-    // this.newClient.tasks = [];
-    // this.newClient.fields = [];
   }
 
   loadAllClientTypes(): void {
     this.clientTypeService.getAllClientTypes().subscribe((clientTypes) => {
       this.clientTypes = clientTypes;
     });
-    
   }
 
   loadAllTasks(): void {
-    this.taskService.getAllRepeatableTasks().subscribe((tasks) => {
+    this.taskService.getAllTasks().subscribe((tasks) => {
       this.tasks = tasks;
-      console.log(JSON.stringify(this.tasks));
     });
   }
 
@@ -133,17 +121,13 @@ export class ClientTypeComponent implements OnInit {
     this.selectedTasks = []; // Clear existing tasks
     if (this.selectedClientType && this.selectedClientType.tasks) {
       for (const taskId of this.selectedClientType.tasks) {
-        this.filterTask(taskId._id);
+        this.filterTask(taskId);
       }
     }
-    console.log(JSON.stringify(this.selectedTasks));
   }
 
   onAvatarClick() {
-    console.log('Avatar clicked');
-    // כאן תוכל להוסיף את הפעולה הרצויה בעת לחיצה על ה-avatar
     this.newC = true;
-    // this.create = true;
     this.displayDialog = true;
   }
 
@@ -154,5 +138,4 @@ export class ClientTypeComponent implements OnInit {
   handleDataUpdated() {
     this.loadAllClientTypes();
   }
-  
 }

@@ -42,7 +42,6 @@ export class CheckListItemComponent implements OnInit {
       this.update.emit(this.item)
       this.edit = false
     } catch (err) {
-      console.log(err);
       alert("העדכון נכשל")
     }
   }
@@ -51,7 +50,6 @@ export class CheckListItemComponent implements OnInit {
     try {
       this.delete.emit(null);
     } catch (err) {
-      console.log(err);
       alert("המחיקה נכשלה")
     }
   }
@@ -85,5 +83,4 @@ export class CheckListItemComponent implements OnInit {
       this.editDescription()
     }
   }
-
 }

@@ -1,128 +1,121 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsDateString, IsString, MaxLength, IsBoolean } from 'class-validator';
-import { Types } from 'mongoose'; // Import Types from mongoose
+import { IsNotEmpty, IsDateString, IsString, isNumber, IsNumber, ValidateNested, IsOptional } from 'class-validator';
 import { StepField } from '../stepField.model';
 import { Status } from '../status.model';
+import { Index } from 'typeorm';
+import { Type } from 'class-transformer';
 
 @Schema()
-export class CreateYearlyReportDto  {
-    
-    @Prop()
-    @ApiProperty({ example: 'user_id_example' })
+export class CreateYearlyReportDto {
+
+    @ApiProperty({ example: 'user_id_example', required: true })
     @IsNotEmpty()
+    @IsString()
     idClient: string;
 
-    @Prop()
-    @ApiProperty({ type: [String], example: ['assignee1', 'assignee2'] })
-    @IsNotEmpty()
+    @ApiProperty({ example: ['assignee1', 'assignee2'], required: false })
+    @IsString({ each: true })
     assignee: string[];
 
-    @Prop()
-    @ApiProperty({ example: 'employee_id_example' })
+    @ApiProperty({ example: 'employee_id_example', required: true })
     @IsNotEmpty()
+    @IsString()
     idEmploye: string;
 
-    @Prop()
-    @ApiProperty({ example: '2023' })
+    @ApiProperty({ example: '2023', required: true })
     @IsNotEmpty()
     yearReport: string;
 
-    @Prop()
-    @ApiProperty({ example: new Date() })
+    @ApiProperty({ example: new Date() , required: true})
     @IsNotEmpty()
     @IsDateString()
     dateTime: Date;
 
-    @Prop()
-    @ApiProperty({ example: 100 })
+    @ApiProperty({ example: 100 , required: true})
     @IsNotEmpty()
+    @IsNumber()
     price: number;
 
-    @Prop()
-    @ApiProperty({ example: 50 })
+    @ApiProperty({ example: 50, required: true})
     @IsNotEmpty()
+    @IsNumber()
     paymentAmountPaid: number;
 
-    @Prop()
-    @ApiProperty({ example: 50 })
+    @ApiProperty({ example: 50,required: true })
     @IsNotEmpty()
+    @IsNumber()
     balanceDue: number;
 
-    @Prop([StepField])
-    @ApiProperty({ type: [StepField] })
+    @ApiProperty({ type: [StepField],required: true })
     @IsNotEmpty()
+    @ValidateNested({ each: true })
+    @Type(() => StepField)
     stepsList: StepField[];
 
-    @Prop()
-    @ApiProperty()
+    @ApiProperty({required: true})
     @IsNotEmpty()
     @IsString()
     entityType: string;
 
-    @Prop()
-    @ApiProperty()
+    @ApiProperty({required: true})
     @IsNotEmpty()
     status: Status;
-
 }
 
-export class UpdateYearlyReportDto  {
-    
-    @Prop()
-    @ApiProperty({ example: 'user_id_example' })
-    @IsNotEmpty()
-    idClient: string;
+export class UpdateYearlyReportDto {
 
-    @Prop()
-    @ApiProperty({ type: [String], example: ['assignee1', 'assignee2'] })
-    @IsNotEmpty()
-    assignee: string[];
+    @ApiProperty({ example: 'user_id_example', required: false })
+    @IsOptional()
+    @IsString()
+    idClient?: string;
 
-    @Prop()
-    @ApiProperty({ example: 'employee_id_example' })
-    @IsNotEmpty()
-    idEmploye: string;
+    @ApiProperty({ example: ['assignee1', 'assignee2'], required: false })
+    @IsOptional()
+    @IsString({ each: true })
+    assignee?: string[];
 
-    @Prop()
-    @ApiProperty({ example: '2023' })
-    @IsNotEmpty()
-    yearReport: string;
+    @ApiProperty({ example: 'employee_id_example', required: false })
+    @IsOptional()
+    @IsString()
+    idEmploye?: string;
 
-    @Prop()
-    @ApiProperty({ example: new Date() })
-    @IsNotEmpty()
+    @ApiProperty({ example: '2023', required: false })
+    @IsOptional()
+    yearReport?: string;
+
+    @ApiProperty({ example: new Date() , required: false})
+    @IsOptional()
     @IsDateString()
-    dateTime: Date;
+    dateTime?: Date;
 
-    @Prop()
-    @ApiProperty({ example: 100 })
-    @IsNotEmpty()
-    price: number;
+    @ApiProperty({ example: 100 , required: false})
+    @IsOptional()
+    @IsNumber()
+    price?: number;
 
-    @Prop()
-    @ApiProperty({ example: 50 })
-    @IsNotEmpty()
-    paymentAmountPaid: number;
+    @ApiProperty({ example: 50, required: false})
+    @IsOptional()
+    @IsNumber()
+    paymentAmountPaid?: number;
 
-    @Prop()
-    @ApiProperty({ example: 50 })
-    @IsNotEmpty()
-    balanceDue: number;
+    @ApiProperty({ example: 50,required: false })
+    @IsOptional()
+    @IsNumber()
+    balanceDue?: number;
 
-    @Prop([StepField])
-    @ApiProperty({ type: [StepField] })
-    @IsNotEmpty()
-    stepsList: StepField[];
+    @ApiProperty({ type: [StepField],required: false })
+    @IsOptional()
+    @ValidateNested({ each: true })
+    @Type(() => StepField)
+    stepsList?: StepField[];
 
-    @Prop()
-    @ApiProperty()
-    @IsNotEmpty()
-    entityType: string;
+    @ApiProperty({required: false})
+    @IsOptional()
+    @IsString()
+    entityType?: string;
 
-    @Prop()
-    @ApiProperty()
-    @IsNotEmpty()
-    status: Status;
+    @ApiProperty({required: false})
+    @IsOptional()
+    status?: Status;
 }

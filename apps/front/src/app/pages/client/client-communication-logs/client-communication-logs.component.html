@@ -1,5 +1,5 @@
 <button pButton label="להוספת שיחה" (click)="displayDialog = true" class= "p-button-text p-button-raised p-button-rounded"></button>
-<p-table [value]="communications" [tableStyle]="{'min-width': '80rem'}">
+<p-table [value]="communications">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th></th>
@@ -34,31 +34,31 @@
     <div *ngIf="selectedCommunication" class="p-grid">
       <form (ngSubmit)="updateCommunication()" class="form-background">
         <div class="p-field">
-          <label for="editClientName">Client Name</label>
+          <label for="editClientName">שם לקוח</label>
           <input type="text" class="p-inputtext" id="editClientName" [(ngModel)]="selectedCommunication.client"
             name="editClientName" required>
         </div>
         <div class="p-field">
-          <label for="editDate">Date</label>
+          <label for="editDate">תאריך</label>
           <input type="date" class="p-inputtext" id="editDate" [(ngModel)]="selectedCommunication.date" name="editDate"
             required>
         </div>
         <div class="p-field">
-          <label for="editSubject">Subject</label>
+          <label for="editSubject">נושא</label>
           <input type="text" class="p-inputtext" id="editSubject" [(ngModel)]="selectedCommunication.Subject"
             name="editSubject" required>
         </div>
         <div class="p-field">
-          <label for="editSummary">Summary</label>
+          <label for="editSummary">סיכום</label>
           <textarea class="p-textarea" id="editSummary" [(ngModel)]="selectedCommunication.summary" name="editSummary"
             rows="3" required></textarea>
         </div>
         <div class="p-field">
-          <label for="editAssignedTo">Assigned To</label>
+          <label for="editAssignedTo">משוייך ל</label>
           <p-dropdown [options]="users" [(ngModel)]="selectedCommunication.assignedTo" name="editAssignedTo"
             optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
         </div>
-        <button type="submit" class= "p-button">Update Communication</button>
+        <button type="submit" class="p-button">עדכון שיחה</button>
       </form>
     </div>
   </p-footer>
@@ -66,9 +66,9 @@
 
 <p-confirmDialog header="Confirmation" key="delete">
   <p-footer>
-    <button type="button" pButton icon="pi pi-times" label="Cancel" class= "p-button-text"
+    <button type="button" pButton icon="pi pi-times" label="ביטול" class="p-button-text"
       (click)="cancelDelete()"></button>
-    <button type="button" pButton icon="pi pi-check" label="Delete" class= "p-button-text"
+    <button type="button" pButton icon="pi pi-check" label="מחיקה" class="p-button-text"
       (click)="confirmDelete()"></button>
   </p-footer>
 </p-confirmDialog>

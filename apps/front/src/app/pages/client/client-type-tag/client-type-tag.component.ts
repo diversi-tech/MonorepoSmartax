@@ -13,12 +13,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ListboxModule } from 'primeng/listbox';
 import { Client } from '../../../_models/client.module';
 import { ClientService } from '../../../_services/client.service';
-import Swal from 'sweetalert2';
-import { DialogModule } from 'primeng/dialog';
-import { TaskService } from '../../../_services/task.service';
-import { Task } from '../../../_models/task.module'
-import { RepeatableTaskService } from '../../../_services/repeatable.service';
-import { ClientFieldService } from '../../../_services/clientField.service';
 
 @Component({
   selector: 'app-client-type-tag',
@@ -29,13 +23,13 @@ import { ClientFieldService } from '../../../_services/clientField.service';
     InputGroupModule,
     ButtonModule,
     CarouselModule,
-    ListboxModule,
-    DialogModule
+    ListboxModule
   ],
   templateUrl: './client-type-tag.component.html',
   styleUrls: ['./client-type-tag.component.css'],
 })
 export class ClientTypeTagComponent implements OnInit {
+  @Input() tagName: string | undefined;
 
   showTags: boolean = false;
   clientTypes: ClientType[] = [];
@@ -43,121 +37,61 @@ export class ClientTypeTagComponent implements OnInit {
   selectedClientType: ClientType | null = null;
   selectedFields: Field[] = [];
   form: FormGroup;
-  showClientTypesList: boolean = false;
+  showClientTypesList: boolean = false
   showClientTypes: boolean = false;
   ClientTypesselected: ClientType[] = [];
   id: string = "";
   thisClient: Client;
-  selectedClients: Client[] = [];
-  clients: Client[] = [];
-  clientIdsParam: string[] = [];
-  selectedDeleteType: ClientType | null = null;
-  displayDialog: boolean = false;
-  displayDeleteDialog: boolean = false;
-  index: number = 0;
-  tasks: Task[] = [];
-  @Output() clientSelected: EventEmitter<Client> = new EventEmitter<Client>();
 
   constructor(
     @Inject(ClientTypeService) private clientTypeService: ClientTypeService,
     @Inject(ClientService) private clientService: ClientService,
-    @Inject(ClientFieldService) private clientFieldService: ClientFieldService,
-    @Inject(RepeatableTaskService) private repeatableTaskService: RepeatableTaskService,
     @Inject(Router) private router: Router,
     private fb: FormBuilder,
     public ar: ActivatedRoute
+
   ) {
     this.form = this.fb.group({});
   }
 
   ngOnInit() {
     this.getAllClientTypes();
-    this.thisClient = history.state.client;
-    console.log('stateData:', this.thisClient);
-    console.log(this.thisClient.clientTypes);
+    this.ar.params.subscribe(
+      data => {
+        this.id = data['id'];
+        this.clientService.searchClient(this.id).subscribe(
+          suc => {
+            this.thisClient = suc
+          })
+      }
+    )
   }
 
   getAllClientTypes(): void {
     this.clientTypeService.getAllClientTypes().subscribe({
       next: (data) => {
-        console.log(data);
         this.clientTypes = data;
-        this.showClientTypes = !this.showClientTypes;
+        this.createTag();
       },
       error: (err) => {
-        console.log(err);
       },
     });
+
   }
 
   clientT(ct: ClientType) {
     this.ClientTypesselected.push(ct);
-    console.log(this.ClientTypesselected);
+    this.buttons.push({ text: ct.name, id: ct._id });
     this.showClientTypesList = !this.showClientTypesList;
-  
-    if (!this.thisClient.clientTypes) {
-      this.thisClient.clientTypes = [];
-    }
-  
-    this.thisClient.clientTypes.push(ct);
-    console.log(this.thisClient.clientTypes);
-  
-    // קריאה לפונקציה שיוצרת ClientFields לפי ClientType בשרת
-    this.clientFieldService.createClientFieldsByClientType(ct._id, this.thisClient._id).subscribe({
-      next: (response) => {
-        console.log(this.thisClient);
-        console.log(this.thisClient._id);
-        console.log('ClientFields created by ClientType:', response);
-        
-        const taskPromises = ct.tasks.map((tId) => {
-          return new Promise<void>((resolve, reject) => {
-            console.log('Processing task:', tId);
-            this.repeatableTaskService.searchRepeatableTask(String(tId)).subscribe({
-              next: (repeatableTask) => {
-                console.log('repeatableTask: ', repeatableTask);
-                const newRtask = { ...repeatableTask, client: this.thisClient }; // יצירת אובייקט חדש עם client מעודכן
-                this.repeatableTaskService.createRepeatableTask(newRtask).subscribe({
-                  next: (newRepeatableTask) => {
-                    console.log('newRepeatableTask created: ', newRepeatableTask);
-                    resolve();
-                  },
-                  error: (err) => {
-                    console.error('Failed to create new repeatable task:', err);
-                    reject(err);
-                  }
-                });
-              },
-              error: (err) => {
-                console.error('Failed to search repeatable task:', err);
-                reject(err);
-              }
-            });
-          });
-        });
-  
-        Promise.all(taskPromises)
-          .then(() => {
-            console.log('All tasks processed successfully');
-            this.clientService.updateClient(this.thisClient).subscribe({
-              next: (updatedClient) => {
-                console.log('Client updated:', updatedClient);
-                this.clientSelected.emit(updatedClient);
-              },
-              error: (err) => {
-                console.error('Failed to update client:', err);
-              }
-            });
-          })
-          .catch((err) => {
-            console.error('Failed to process tasks:', err);
-          });
-      },
-      error: (err) => {
-        console.error('Failed to create ClientFields by ClientType:', err);
-      }
-    });
   }
-  
+
+  createTag(): void {
+    this.showClientTypes = !this.showClientTypes;
+    this.buttons = this.clientTypes.map((type: ClientType) => ({
+      text: type.name,
+      id: type._id!,
+    }));
+  }
 
   getColor(name: string): string {
     if (!name) {
@@ -175,33 +109,13 @@ export class ClientTypeTagComponent implements OnInit {
     return color;
   }
 
-  confirmDelete(type: ClientType) {
-    this.selectedDeleteType = type;
-    this.displayDeleteDialog = true;
-  }
-
-  deleteType() {
-    console.log(this.selectedDeleteType);
-    if (this.selectedDeleteType) {
-      console.log(this.selectedDeleteType);
-      this.index = this.thisClient.clientTypes.findIndex(ct => ct._id === this.selectedDeleteType._id);
-      if (this.index !== -1) {
-        this.thisClient.clientTypes.splice(this.index, 1);
-        this.clientService.updateClient(this.thisClient).subscribe({
-          next: (updatedClient) => {
-            console.log('Client updated with new clientType:', updatedClient.clientTypes);
-          },
-          error: (err) => {
-            console.error('Failed to update client:', err);
-          }
-        });
-      }
+  removeButton(tag: any) {
+    const index = this.ClientTypesselected.indexOf(tag);
+    if (index !== -1) {
+      this.ClientTypesselected.splice(index, 1);
     }
-    this.cancelDelete();
-  }
-
-  cancelDelete() {
-    this.displayDeleteDialog = false;
-    this.selectedDeleteType = null;
   }
 }
+
+
+

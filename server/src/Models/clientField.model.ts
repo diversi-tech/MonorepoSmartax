@@ -4,9 +4,6 @@ import { Field } from './field.model';
 
 @Schema()
 export class ClientField extends Document {
-    // @Prop()
-    // _id: string
-    
     @Prop()
     field: Field;
     

@@ -1,6 +1,5 @@
 export interface Role {
-    name:string
-    level:number
-    __v?: number; // שדה אופציונלי
-    _id?: string;
-  }
+  _id?: string;
+  name: string;
+  level: number;
+}

@@ -1,20 +1,19 @@
-import { Controller, Post, Body, Param, Inject, Get, Put, Delete, Query, Res, HttpStatus } from '@nestjs/common';
+
+import { Controller, Post, Body, Param, Inject, Get, Put, Delete, Res, HttpStatus } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Response } from 'express'; // ייבוא Response מ-express
+import { Response } from 'express';
+
 @Controller('api')
 export class ApiGatewayController {
   constructor(
-    @Inject('TIMESHEET') private readonly workLogService: ClientProxy,
-    // @Inject('OTHER_SERVICE') private readonly otherService: ClientProxy, // הוסף כאן שירותים נוספים לפי הצורך
-  ) { }
+    @Inject('TIMESHEET') private readonly workLogService: ClientProxy
+  ) // @Inject('OTHER_SERVICE') private readonly otherService: ClientProxy,
+  {}
 
   private getClientProxy(service: string): ClientProxy {
     switch (service) {
       case 'worklogs':
         return this.workLogService;
-      // case 'otherService':
-      // return this.otherService;
-      // הוסף כאן שירותים נוספים לפי הצורך
       default:
         throw new Error('Unknown service');
     }
@@ -27,11 +26,7 @@ export class ApiGatewayController {
     @Param('id') id?: string
   ) {
     const client = this.getClientProxy(service);
-    console.log('handleRequestGet called with:', { service, cmd, id });
-
     const requestPayload = id ? { employeeId: id } : {};
-    console.log('Request Payload:', requestPayload);
-
     return client.send({ cmd }, requestPayload).toPromise();
   }
 
@@ -44,7 +39,9 @@ export class ApiGatewayController {
     const client = this.getClientProxy(service);
     return client.send({ cmd }, data).toPromise();
   }
- 
+
+
+
   @Get(':service/export/:month/:year')
   async exportWorkLogs(
     @Param('service') service: string,
@@ -53,23 +50,32 @@ export class ApiGatewayController {
     @Res() res: Response
   ): Promise<void> {
     const client = this.getClientProxy(service);
-    console.log(`Received request to export work logs for month: ${month}, year: ${year}`);
+    console.log(
+      `Received request to export work logs for month: ${month}, year: ${year}`
+    );
     try {
-      const result = await client.send<{ type: string; data: number[] }>({ cmd: 'export' }, { month, year }).toPromise();
+      const result = await client
+        .send<{ type: string; data: number[] }>(
+          { cmd: 'export' },
+          { month, year }
+        )
+        .toPromise();
       if (!result || !result.data) {
         throw new Error('Buffer is undefined');
       }
       const buffer = Buffer.from(result.data);
-      console.log('Buffer received:', buffer);
       res.set({
-        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Type':
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'Content-Disposition': 'attachment; filename=worklogs.xlsx',
         'Content-Length': buffer.length.toString(),
       });
       res.status(HttpStatus.OK).send(buffer);
     } catch (error) {
       console.error('Error exporting work logs:', error);
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs');
+      res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .send('Error exporting work logs');
     }
   }
 
@@ -82,23 +88,32 @@ export class ApiGatewayController {
     @Res() res: Response
   ): Promise<void> {
     const client = this.getClientProxy(service);
-    console.log(`Received request to export work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`);
+    console.log(
+      `Received request to export work logs for employeeId: ${employeeId}, month: ${month}, year: ${year}`
+    );
     try {
-      const result = await client.send<{ type: string; data: number[] }>({ cmd: 'exportForEmployee' }, { employeeId, month, year }).toPromise();
+      const result = await client
+        .send<{ type: string; data: number[] }>(
+          { cmd: 'exportForEmployee' },
+          { employeeId, month, year }
+        )
+        .toPromise();
       if (!result || !result.data) {
         throw new Error('Buffer is undefined');
       }
       const buffer = Buffer.from(result.data);
-      console.log('Buffer received:', buffer);
       res.set({
-        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Type':
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'Content-Disposition': 'attachment; filename=worklogs.xlsx',
         'Content-Length': buffer.length.toString(),
       });
       res.status(HttpStatus.OK).send(buffer);
     } catch (error) {
       console.error('Error exporting work logs for employee:', error);
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Error exporting work logs for employee');
+      res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .send('Error exporting work logs for employee');
     }
   }
   @Put(':service/:cmd/:id?')
@@ -111,8 +126,6 @@ export class ApiGatewayController {
     const client = this.getClientProxy(service);
     return client.send({ cmd }, id ? { id, ...data } : data).toPromise();
   }
-
-
 
   @Delete(':service/:cmd/:id')
   async handleRequestDelete(

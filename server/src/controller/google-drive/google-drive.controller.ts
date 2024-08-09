@@ -15,7 +15,10 @@ import { DocType } from 'server/src/Models/docType.model';
 @UseFilters(HttpErrorFilter) 
 @ApiBearerAuth()
 export class GoogleDriveController {
-  constructor(private readonly googleDriveService: GoogleDriveService) { }
+
+  constructor(
+    private readonly googleDriveService: GoogleDriveService
+  ) { }
   @Post()
   @ApiOperation({ summary: 'Upload a file' })
   @ApiResponse({ status: 201, description: 'File uploaded successfully' })
@@ -36,11 +39,6 @@ export class GoogleDriveController {
     })
   }))
   async uploadFile(@UploadedFile(new ValidationPipe()) file: Express.Multer.File, @Body('clientId',new ValidationPipe()) clientId: string, @Body('docType',new ValidationPipe())docType:string, @Res() res: Response) {
-
-    console.log(file);
-    console.log(clientId);
-    
-    
     try {
       const response = await this.googleDriveService.uploadFile(file, clientId,docType);
       return res.json(response);

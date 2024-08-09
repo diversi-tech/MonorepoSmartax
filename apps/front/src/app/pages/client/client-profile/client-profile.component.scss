@@ -1,1 +1,31 @@
 @import '../../../../styles.css';
+
+.nav{
+    width: 10rem;
+    height: 10rem;
+}
+
+.p{
+    direction: rtl;
+}
+.container{
+    margin-left: 0rem; 
+  padding-left: 1rem;
+  margin-right: 0rem;
+  padding-right: 0rem;
+  text-align: right;
+}
+.card-body{
+    text-align: right;
+    
+}
+.sidebar-header{
+    font-size: large;
+}
+.mySidebar{
+    width: 80%;
+    background-color: aqua;
+}
+.allDetails{
+    background-color: blueviolet;
+   }

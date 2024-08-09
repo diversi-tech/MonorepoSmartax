@@ -81,6 +81,7 @@ export class AppComponent {
   ) {
     this.employeeId = this.tokenService.getCurrentDetail('_id');
   }
+  
 
   ngOnInit(): void {
     this.isLoggedIn = this.storageService.isLoggedIn();
@@ -135,13 +136,14 @@ export class AppComponent {
   //   console.log('showNotification called with:', task);
   //   this.cdr.detectChanges();  // Force change detection
   // }
+  
   logout(): void {
     try {
       this.authService.logout().subscribe(
-        (status: any) => { 
+        (status: number) => { 
           console.log('Logout successful. Status:', status);
           this.storageService.clean();
-          window.location.reload()
+          this.ngOnInit();
           this.router.navigate(['/home']);    
         },
         (error: any) => {
@@ -152,7 +154,7 @@ export class AppComponent {
     } catch (err) {
       console.error('Logout failed. Error:', err);
       alert('ארעה שגיאה בתהליך היציאה, אנא נסה שנית');
-    }
+    } 
   }
 
   options(label: string) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseFilters } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
 import { CreateYearlyReportDto, UpdateYearlyReportDto } from "server/src/Models/dto/yearlyReport.dbo";
@@ -16,31 +16,33 @@ export class YearlyReportController{
   @ApiOperation({ summary: 'Create a new yearly report' })
   @ApiBody({ type: CreateYearlyReportDto })
   async create(@Body() createYearlyReportDto: CreateYearlyReportDto): Promise<YearlyReport> {
+    try {
     return this.yearlyReportService.createYearlyReport(createYearlyReportDto);
+    }
+    catch (error) {
+      console.log(error);
+      throw new Error(error);
+    }
   }
 
   @Post('update/:id')
   @ApiOperation({ summary: 'Update a yearly report by ID' })
   @ApiBody({ type: UpdateYearlyReportDto })
   async update(@Param('id') id: string, @Body() updateYearlyReportDto: UpdateYearlyReportDto): Promise<YearlyReport> {
-    return this.yearlyReportService.updateYearlyReport(id, updateYearlyReportDto);
+    try {
+      return this.yearlyReportService.updateYearlyReport(id, updateYearlyReportDto);
+    }
+      catch (error) {
+        console.log(error);
+        throw new Error(error);
+      }
   } 
 
-  @Post('delete')
+  @Delete('delete/:id')
   @ApiOperation({ summary: 'Delete a yearly report by ID' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'string',
-          example: '667211d6c'
-        }
-      }
-    }
-  })
-  async delete(@Body() body: { id: string }): Promise<void> {
-    return this.yearlyReportService.deleteYearlyReport(body.id);
+ 
+  async delete(@Param('id') id: string): Promise<void> {
+    return this.yearlyReportService.deleteYearlyReport(id);
   }
 
   

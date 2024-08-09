@@ -1,19 +1,16 @@
-<!-- <p-dialog header="המשימה שלך" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }" (onHide)="onDialogClose()">
-    <span class="p-text-secondary block mb-5">צור וערוך את תת המשימה שלך</span>
-    <div class="flex align-items-center gap-3 mb-3">
-        <ng-template #modalContent></ng-template>
-    </div>
-</p-dialog> -->
-
-    <!-- <app-task [parent]= "parent" [taskId]="id" [create]="create"(closeModal)="onDialogClose()"></app-task> -->
-    <!-- <p-button label="משימה" class="taskBtn" (click)="addType()" /> -->
-
-<div class="card flex justify-content-center">
-    <p-dialog [modal]="true" header="המשימה שלך" [(visible)]="modal" [style]="{ width: '53rem' }"
-      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" (onHide)="onDialogClose()">
-      <span class="p-text-secondary block mb-5">צור וערוך את תת המשימה שלך</span>
-  
-      <ng-template #modalContent></ng-template>
-  
-    </p-dialog>
+<p-dialog
+  header=" תת משימה"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '50rem' }"
+  (onHide)="onHide()"
+>
+  <span class="p-text-secondary block mb-5">צור וערוך את תת המשימה שלך</span>
+  <div class="flex align-items-center gap-3 mb-3">
+    <app-task [parent]="parent" [taskId]="id" [create]="create"></app-task>
   </div>
+  <!-- <div class="flex justify-content-end gap-2">
+        <p-button label="ביטול" severity="secondary" />
+        <p-button label="אישור" />
+    </div> -->
+</p-dialog>

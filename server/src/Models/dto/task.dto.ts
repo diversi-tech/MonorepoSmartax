@@ -8,17 +8,17 @@ import { Status } from '../status.model';
 import { CheckList } from '../checkList.model';
 
 export class CreateTaskDto {
-  @IsOptional()
-  client: Client[];
+    @IsNotEmpty()
+    client: Client;
+    
+    @ApiProperty({ description: 'The task parent ID' })
+    @IsString()
+    parent: string;
 
-  @ApiProperty({ description: 'The task parent ID' })
-  @IsString()
-  parent: string;
+    @ApiProperty({ description: 'The subTasks ID array' })
+    @IsString()
+    subTasks: string[];
 
-  @ApiProperty({ description: 'The subTasks ID array' })
-  @IsString()
-  subTasks: string[];
-  
     @IsNotEmpty()
     @IsString()
     taskName: string;
@@ -60,7 +60,6 @@ export class CreateTaskDto {
     
     @IsOptional()
     checkList: CheckList[];
-  createTaskDto: Promise<Client>;
 }
 
 export class UpdateTaskDto {

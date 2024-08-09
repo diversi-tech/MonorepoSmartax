@@ -1,5 +1,5 @@
-import { Controller, Post, Body, UseFilters, Put, HttpStatus, HttpException, Get, Query, Delete } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiResponse, ApiQuery, ApiBearerAuth} from '@nestjs/swagger';
+import { Controller, Post, Body, UseFilters, Put, Get, Query, Delete } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBody, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { CreateBillingDto, UpdateBillingDto } from '../../Models/dto/billing.dto';
 import { Billing } from '../../Models/billing.model';
 import { HttpErrorFilter } from '../../common/filters/http-error.filter';
@@ -25,15 +25,6 @@ export class BillingController {
     async getAllBillings(): Promise<Billing[]> {
         return await this.billingsService.getAllBillings();
     }
-
-    // @Get('by-client')
-    // @ApiOperation({ summary: 'Get billings by Client ID' })
-    // @ApiQuery({ name: 'id', required: true, description: 'The Client ID of the billings to find' })
-    // @ApiResponse({ status: 200, description: 'Return the billings .' })
-    // @ApiResponse({ status: 404, description: 'Billings not found.' })
-    // async getBillingsByClientId(@Query('id') id: string): Promise<Billing[]> {
-    //     return await this.billingsService.getBillingsByClientId(id);
-    // }
 
     @Put('update')
     @ApiOperation({ summary: 'Update a billing by ID' })

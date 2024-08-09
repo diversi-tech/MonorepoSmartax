@@ -8,19 +8,29 @@ import { FormsModule } from '@angular/forms';
 import { TaxRefundsService } from '../../../_services/taxRefunds.service';
 import { Status } from '../../../_models/status.module';
 import { StatusService } from '../../../_services/status.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tax-refunds-steps',
   standalone: true,
-  imports: [CommonModule, StepperModule, ButtonModule, FormsModule],
+  imports: [
+    CommonModule,
+    StepperModule,
+    ButtonModule,
+    FormsModule
+  ],
   templateUrl: './tax-refunds-steps.component.html',
   styleUrl: './tax-refunds-steps.component.css',
 })
+
 export class TaxRefundsStepsComponent {
   constructor(private taxRefundsService: TaxRefundsService,
     private location: Location,
-    private statusService: StatusService,
+    private statusService: StatusService,  
+      private router: Router,
+
   ) { }
+
   tasksStep: StepField[] = [];
   responseData: any;
   allSteps: StepField[] = [];
@@ -29,7 +39,8 @@ export class TaxRefundsStepsComponent {
   changes: { [key: string]: boolean } = {};
   client: Client;
   stepNumbers: number[] = [];
-  statusList:Status[]=[];
+  statusList: Status[] = [];
+
   ngOnInit() {
     this.responseData = history.state.data;
     this.client = history.state.client;
@@ -54,7 +65,6 @@ export class TaxRefundsStepsComponent {
       this.stepsByNumber[stepNumber].push(step);
     });
     this.stepNumbers = this.getStepNumbers();
-
   }
 
   getStepByNumber(stepNumber: number) {
@@ -67,6 +77,7 @@ export class TaxRefundsStepsComponent {
   isStepComplete(stepNumber: number): boolean {
     return this.getStepByNumber(stepNumber).every((task) => task.isCompleted == true);
   }
+
   isStepBeginned(stepNumber: number): boolean {
     return (
       this.getStepByNumber(stepNumber).some((task) => task.isCompleted) &&
@@ -85,10 +96,8 @@ export class TaxRefundsStepsComponent {
   }
   determineStatus(): Status {
     const stepsList = this.responseData.stepsList;
-
     const allCompleted = stepsList.every(step => step.isCompleted);
     const someCompleted = stepsList.some(step => step.isCompleted);
-
     if (allCompleted) {
       return this.statusList.find(s => s.name == 'COMPLETE') || null;
       ;
@@ -102,8 +111,6 @@ export class TaxRefundsStepsComponent {
     return this.statusList.find(s => s.name === statusName) || null;
   }
   async submitChanges() {
-    console.log('Submitting changes:', this.changes);
-
     for (const taskId in this.changes) {
       const taskIndex = this.responseData.stepsList.findIndex(
         (t) => t._id === taskId
@@ -125,16 +132,18 @@ export class TaxRefundsStepsComponent {
         this.responseData._id,
         this.responseData
       );
-      console.log('response from server', response);
+      alert('Successful update response');
       this.responseData = response;
       this.changes = {};
     } catch (error) {
       console.log(error);
     }
-    
+
   }
   goBack() {
     this.location.back();
   }
-
+  goToUpdate() {
+      this.router.navigate(['/clientSearch/clientManagement/clientNavbar/createTaxRefunds'], { state: { client: this.client, responseData: this.responseData } });
+  }
 }
