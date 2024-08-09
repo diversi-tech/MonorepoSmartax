@@ -1,10 +1,13 @@
 
-import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, Request, UseFilters, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, UseFilters, Request } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBody, ApiQuery, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from '../../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../../Models/dto/user.dto';
 import { User } from 'server/src/Models/user.model';
+// import { HttpErrorFilter } from '../../common/filters/http-error.filter';
+
 import { TokenService } from 'server/src/services/jwt.service';
+import { equals } from 'class-validator';
 import { hashPasswordService } from 'server/src/services/hash-password';
 import { ValidationException } from 'server/src/common/exceptions/validation.exception';
 import { HttpErrorFilter } from 'server/src/common/filters/http-error.filter';
@@ -14,62 +17,31 @@ import { AuthGuard } from 'server/src/guards/auth.guard';
 @UseFilters(HttpErrorFilter)
 @ApiTags('users')
 @Controller('users')
+// @UseFilters(HttpErrorFilter)
+//@UseFilters(ValidationException)
+@ApiBearerAuth()
 export class UserController {
 
-  constructor(
-    private readonly userService: UserService,
-    private jwtToken: TokenService,
-    private hashService: hashPasswordService
-  ) { }
+  constructor(private readonly userService: UserService, private jwtToken: TokenService, private hashService: hashPasswordService) { }
 
-  // @Put('create')
-  // @ApiOperation({ summary: 'Create a new user' })
-  // @ApiBody({ type: CreateUserDto })
-  // async create(@Body() createUserDto: CreateUserDto): Promise<any> {
-  //   try {
-  //     createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
-  //     const user = await this.userService.createUser(createUserDto);
-  //     return  user;
-  //   } catch (error) {
-  //     throw new HttpException(
-  //       'Failed to create user',
-  //       HttpStatus.INTERNAL_SERVER_ERROR,
-  //     );
-  //   }
-  // }
+  @Put('create')
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiBody({ type: CreateUserDto })
+  async create(@Body() createUserDto: CreateUserDto): Promise<any> {
 
-@Post('create')
-@ApiOperation({ summary: 'Create a new user' })
-@ApiBody({ type: CreateUserDto })
-@ApiResponse({ status: 201, description: 'User successfully created.' })
-@ApiResponse({ status: 400, description: 'Bad Request. Validation failed.' })
-@ApiResponse({ status: 500, description: 'Internal Server Error.' })
-async create(@Body() createUserDto: CreateUserDto): Promise<any> {
-  try {
-    // ביצוע גיבוב לסיסמה
-    createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
-    
-    // יצירת משתמש
-    const user = await this.userService.createUser(createUserDto);
-    
-    // החזרת משתמש שנוצר עם סטטוס 201
-    return { status: 201, message: 'User successfully created', user };
-  } catch (error) {
-    // טיפול בשגיאה ספציפית יותר, אם יש
-    if (error.name === 'ValidationError') {
+    try {
+      createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
+      const user = await this.userService.createUser(createUserDto);
+      return user;
+
+    } catch (error) {
       throw new HttpException(
-        'Validation failed: ' + error.message,
-        HttpStatus.BAD_REQUEST,
+        'Failed to create user: ' + error.message,
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    
-    // טיפול בשגיאה כללית
-    throw new HttpException(
-      'Failed to create user: ' + error.message,
-      HttpStatus.INTERNAL_SERVER_ERROR,
-    );
   }
-}
+
 
   @Get('findAll')
   @ApiOperation({ summary: 'Get all users' })
@@ -83,7 +55,7 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
     } catch (error) {
       throw new HttpException(
         'Failed to fetch users',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        error.status!,
       );
     }
   }
@@ -94,6 +66,7 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
   @ApiResponse({ status: 200, description: 'Return the user.' })
   @ApiResponse({ status: 404, description: 'User not found.' })
   async findOne(@Query('id') id: string): Promise<User> {
+
     try {
       const user = await this.userService.findOne(id);
       if (!user) {
@@ -150,21 +123,31 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
   @Post('update')
   @ApiOperation({ summary: 'Update a user by ID' })
   @ApiBody({ type: UpdateUserDto })
-  //  // @Body('id') id: string,
-  async update(
-   
-    @Body() updateUserDto: UpdateUserDto
-  ): Promise<User> {
-    return this.userService.updateUser(
-      updateUserDto.id,
-      updateUserDto
-    );
+  async update(@Body() updateUserDto: UpdateUserDto): Promise<User> {
+    try {
+      console.log(updateUserDto);
+      console.log(updateUserDto.id);
+      
+      const updatedUser = await this.userService.updateUser(updateUserDto.id, updateUserDto);
+      if (!updatedUser) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+      return updatedUser;
+    } catch (error) {
+      console.log(error);
+      
+      throw new HttpException(
+        error.message,
+        error.status?error.status:HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   @Delete('delete')
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiQuery({ name: 'id', required: true, description: 'The ID of the user to find' })
   async delete(@Query('id') id: string): Promise<User> {
+
     try {
       const deletedUser = await this.userService.deleteUser(id);
       if (!deletedUser) {
@@ -204,6 +187,7 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
       favoritesClient: user.favoritesClient
     };
     await this.userService.updateUser(user.id, userDto)
+
     try {
       return {
         status: HttpStatus.OK,
@@ -215,5 +199,6 @@ async create(@Body() createUserDto: CreateUserDto): Promise<any> {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
   }
+
 }
 

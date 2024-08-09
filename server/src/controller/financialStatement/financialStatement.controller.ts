@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put, UseFilters } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
 import { CreateFinancialStatementDto, UpdateFinancialStatementDto } from "server/src/Models/dto/financialStatement.dto";
 import { FinancialStatement, FinancialStatementModel } from "server/src/Models/financialStatement.model";
@@ -8,6 +8,7 @@ import { FinancialStatementService } from "server/src/services/financialStatemen
 @ApiTags('financial-statements')
 @Controller('financial-statements')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class FinancialStatementController {
     constructor(private readonly financialStatementService: FinancialStatementService) {}
 

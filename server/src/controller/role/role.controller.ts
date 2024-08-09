@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Post, Put, UseFilters, ValidationPipe } from "@nestjs/common";
-import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
 import { CreateRoleDto, UpdateRoleDto } from "server/src/Models/dto/role.dto";
 import { Role } from "../../Models/role.modle";
 import { HttpExceptionFilter } from "server/src/common/filters/http-exception.filter";
@@ -8,6 +8,7 @@ import { RoleService } from "server/src/services/role.service";
 @ApiTags('role')
 @Controller('role')
 @UseFilters(HttpExceptionFilter) 
+@ApiBearerAuth()
 export class RoleController {
 
     constructor(private readonly roleService: RoleService) { }

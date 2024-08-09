@@ -12,27 +12,20 @@
 @import "primeng/resources/primeng.css"; */
 
 .highlight {
-  background-color: #edecec;
+    background-color: #edecec;
 }
 
-th,
-td {
-  text-align: center;
+th, td {
+    text-align: center;
 }
 
 .p-button-rounded {
-  border-radius: 20%;
-  margin: 1%;
+    border-radius: 20%;
+    margin: 1%;
 }
 
-/* .p-fileUpload{
+.p-fileUpload{
     
-} */
-body {
-  background-color: #f5f5f5;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  /* styles.css */
 }
+
+

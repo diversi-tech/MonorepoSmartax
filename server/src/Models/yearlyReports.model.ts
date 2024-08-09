@@ -3,9 +3,8 @@ import { Document } from 'mongoose';
 
 import { stepFieldModel, StepField } from './stepField.model';
 import { Status } from './status.model';
-import { Index } from 'typeorm/decorator/Index';
-@Schema(  
-)
+
+@Schema()
 export class YearlyReport extends Document {
     
     @Prop()
@@ -41,10 +40,7 @@ export class YearlyReport extends Document {
 
     @Prop()
     status: Status;
-
-
    
 }
 
-export const YearlyReportstModel = SchemaFactory.createForClass(YearlyReport).index({ idClient: 1, yearReport: 1 }, { unique: true });
-
+export const YearlyReportstModel = SchemaFactory.createForClass(YearlyReport);

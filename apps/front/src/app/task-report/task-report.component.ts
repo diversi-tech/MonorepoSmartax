@@ -29,14 +29,32 @@ export class TaskReportComponent implements OnInit {
     usersSort: undefined | null | number [];
 
 
-    constructor(
-        private taskService: TaskService, 
-        private userService: UserService
-    ) {}
+    constructor(private taskService: TaskService, private userService: UserService) { }
 
     ngOnInit() {
         this.taskService.getAllTasks()?.subscribe(tasks => {
             this.tasks = tasks;
+            console.log(tasks)
+
+            // //sort task by befor or after ded-line
+            // this.dataOfStatus = {
+            //     labels: ['before ded-line', 'after ded-line'],
+            //     datasets: [
+            //         {
+            //             data: [tasks.filter((obj) => obj.status && obj.status.name == "complete" && obj.dueDate>).length, 
+            //                     tasks.filter((obj) =>obj.status && obj.status.name != "complete").length],
+            //             backgroundColor: [
+            //                 "#42A5F5",
+            //                 "#66BB6A"
+            //             ],
+            //             hoverBackgroundColor: [
+            //                 "#64B5F6",
+            //                 "#81C784"
+            //             ]
+            //         }
+            //     ]
+            // };
+
             // sort task by status
             this.dataOfStatus = {
                 labels: ['complete', 'to do'],
@@ -55,8 +73,21 @@ export class TaskReportComponent implements OnInit {
                     }
                 ]
             };
+            // this.userService.getAllUsers()?.subscribe(users =>{
+            //     debugger
+            //     this.users = users;
+            //     this.users.map((user, i) => {
+            //         console.log(user, i)
+            //         console.log(this.tasks)
+            //         this.usersSort [i] =  this.tasks.filter((task) => user = task.assignedTo).length
+            //     })
+            //     // this.dataOfStatusAndEmp = 
+            // })
+
             this.userService.getAllUsers()
         });
+
+        
     }
 }
 

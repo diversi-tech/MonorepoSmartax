@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Frequency } from '../_models/frequency.module';
+import { Frequency } from '../_models/frequency.module'; // Update the path according to the location of your model
 
 import { Observable, catchError, of } from 'rxjs';
 import { FREQUENCY_ENDPOINT } from '../api-urls';
@@ -9,10 +9,10 @@ import { FREQUENCY_ENDPOINT } from '../api-urls';
   providedIn: 'root',
 })
 export class FrequencyService {
-  private apiUrl = FREQUENCY_ENDPOINT;
+  private apiUrl = FREQUENCY_ENDPOINT; // Base URL for the Client API
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }), // Define headers for HTTP requests
   };
 
   constructor(private http: HttpClient) {}

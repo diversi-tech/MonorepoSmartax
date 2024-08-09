@@ -1,4 +1,4 @@
-<button pButton (click)="goBack()" label="חזור" class= "p-button-text p-button-raised p-button-rounded"></button>
+<p-button (click)="goBack()" label="חזור"></p-button>
 
 <div class="form-container">
   <div class="icon-container">
@@ -10,6 +10,7 @@
     <p class="highlight">מקדמה ששולמה: <span class="value">{{ responseData.paymentAmountPaid }}</span></p>
     <p class="highlight">יתרה לתשלום: <span class="value">{{ responseData.balanceDue }}</span></p>
     <p class="highlight">מחיר: <span class="value">{{ responseData.price }}</span></p>
+    <p class="highlight">עבור: <span class="value">{{ responseData.entityType }}</span></p>
   </div>
 
   <p-stepper dir="rtl" [(activeStep)]="active">
@@ -77,8 +78,8 @@
    -->
 
   <div class="buttons-container">
-    <button pButton (click)="submitChanges()" label="שלח שינויים" class= "p-button-text p-button-raised p-button-rounded"></button>
-    <button pButton (click)="goToUpdate()" label="עריכת פרטי דוח בסיסי" class= "p-button-text p-button-raised p-button-rounded"></button>
+    <p-button (click)="submitChanges()" label="שלח שינויים"></p-button>
+    <p-button (click)="goToUpdate()" label="עריכת פרטי דוח בסיסי"></p-button>
   </div>
 </div>
 

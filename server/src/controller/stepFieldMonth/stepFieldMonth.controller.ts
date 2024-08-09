@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, UseFilters } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
 import { CreateStepFieldMonthDto, UpdateStepFieldMonthDto } from "server/src/Models/dto/stepFieldMonth.dto";
 import { StepFieldMonth, stepFieldMonthModel} from "server/src/Models/stepFieldMonth.model";
@@ -11,6 +11,7 @@ import { StepFieldMonthService } from "server/src/services/stepFieldMonth.servic
 @ApiTags('step-field-month')
 @Controller('step-field-month')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class StepFieldMonthController{
     constructor(private readonly stepFieldMonthService: StepFieldMonthService) { }
 
@@ -58,5 +59,14 @@ export class StepFieldMonthController{
   async getAllStepFieldsMonth(): Promise<StepFieldMonth[]> {
     return this.stepFieldMonthService.getAllStepFieldsMonth();
   }
-
+  @Get('types')
+  @ApiOperation({ summary: 'Get all step fields month' })
+  async getAllTypes(): Promise<string[]> {
+    return this.stepFieldMonthService.getAllTypes();
+  }
+  @Get('values/:type')
+  @ApiOperation({ summary: 'Get all step fields month' })
+  async getAllValues(@Param('type') type:string): Promise<string[]> {
+    return this.stepFieldMonthService.getAllValuesForType(type);
+  }
 }

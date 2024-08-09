@@ -28,7 +28,7 @@ import { Role } from '../../_models/role.module';
 export class FavoritesClientsListComponent implements OnInit {
 
   user: User;
-  favoriteClients: Client[] = [];
+  favoriteClients: Client[]=[];
   currentClient: Client | null = null;
 
 
@@ -46,46 +46,45 @@ export class FavoritesClientsListComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.user = response;
-          this.user.favoritesClient.forEach(c => {
-            this.clientService.searchClient(c).subscribe
-              ({
-                next: (favoriteClients) => {
-                  this.favoriteClients.push(favoriteClients);
-                }
-              })
-          })
+          console.log(this.user);
+          this.user.favoritesClient.forEach(c => {this.clientService.searchClient(c).subscribe
+            ({
+              next:(favoriteClients)=>{
+                console.log(favoriteClients);
+                
+                this.favoriteClients.push(favoriteClients);
+              }
+          })})
         },
         error: (err) => {
           console.error('Error get current user', err);
         },
       });
   }
-
+  
   updateFavorite() {
-    // const r= new Role('','','',)
-    // this.userService
-    //   .update(
-    //     this.user._id,
-    //     this.user.userName,
-    //     this.user.email,
-    //     this.user.passwordHash,
-    //     this.user.role,
-    //     []
-    //     // this.user.favoritesClient
-    //   )
-    //   .subscribe({
-    //     next: (response: any) => {
-    //       console.log(response);
-    //     },
-    //     error: (err) => {
-    //       console.error('Error add to favorite', err);
-    //     },
-    //   });
+    this.userService
+      .update(
+        this.user._id,
+        this.user.userName,
+        this.user.email,
+        this.user.passwordHash,
+        this.user.role,
+        this.user.favoritesClient
+      )
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+        },
+        error: (err) => {
+          console.error('Error add to favorite', err);
+        },
+      });
   }
 
   removeFromFavorite(client: Client) {
     this.user.favoritesClient = this.user.favoritesClient.filter(c => c != client._id);
-    this.favoriteClients = this.favoriteClients.filter(c => c._id != client._id);
+    this.favoriteClients= this.favoriteClients.filter(c=> c._id!= client._id);
     this.updateFavorite();
   }
 
@@ -109,21 +108,21 @@ export class FavoritesClientsListComponent implements OnInit {
   }
 
   deleteClient(): void {
-    this.clientService.deleteClient(this.currentClient._id).subscribe({
-      next: () => {
-        window.location.reload();
-      },
-      error: (err) => console.error('Error deleting client: ', err),
-    });
+      this.clientService.deleteClient(this.currentClient._id).subscribe({
+        next: () => {
+          window.location.reload();
+        },
+        error: (err) => console.error('Error deleting client: ', err),
+      });
   }
 
   cancelDelete(): void {
     this.confirmationService.close();
   }
 
-  editClient() {
+  editClient(){
     this.router.navigate(['/addClient'], { state: { client: this.currentClient } });
-  }
+}
   selectCurrentClient(client: Client) {
     this.currentClient = client;
   }

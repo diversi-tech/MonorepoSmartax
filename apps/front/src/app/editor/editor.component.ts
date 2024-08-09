@@ -1,20 +1,14 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  Output,
-  EventEmitter,
-  Input,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import Quill from 'quill';
 
 @Component({
   selector: 'app-editor',
-  standalone: true,
-  imports: [],
+    standalone: true,
+  imports: [
+
+  ],
   templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css'],
+  styleUrls: ['./editor.component.css']
 })
 export class EditorComponent implements OnInit {
   @ViewChild('editor', { static: true }) editor: ElementRef | undefined;
@@ -29,17 +23,21 @@ export class EditorComponent implements OnInit {
       theme: 'snow',
       modules: {
         toolbar: [
-          // First row
-          [{ header: [1, 2, false] }, { font: [] }, { align: [] }],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          [{ indent: '-1' }, { indent: '+1' }, { direction: 'rtl' }],
-
-          // Second row
-          ['bold', 'italic', 'underline', 'link'],
-          [{ color: [] }, { background: [] }],
-          ['clean', 'image', 'code-block'],
-        ],
-      },
+          [{ 'header': [1, 2, false] }],
+          ['bold', 'italic', 'underline'],
+          ['image', 'code-block'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          ['link', 'blockquote', 'code-block', 'image'],
+          [{ 'script': 'sub'}, { 'script': 'super' }],
+          [{ 'indent': '-1'}, { 'indent': '+1' }],
+          [{ 'direction': 'rtl' }],
+          [{ 'size': ['small', false, 'large', 'huge'] }],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'font': [] }],
+          [{ 'align': [] }],
+          ['clean']
+        ]
+      }
     });
 
     if (this.initialContent) {
@@ -47,27 +45,12 @@ export class EditorComponent implements OnInit {
     }
 
     this.quill.on('text-change', () => {
-      const html =
-        this.editor!.nativeElement.querySelector('.ql-editor').innerHTML;
+      const html = this.editor!.nativeElement.querySelector('.ql-editor').innerHTML;
       this.contentChange.emit(html);
-      this.addBorderHighlight();
-    });
-
-    this.quill.on('selection-change', (range: any) => {
-      if (!range) {
-        this.removeBorderHighlight();
-      }
     });
   }
   getContents() {
     this.htmlContent = this.quill!.root.innerHTML;
   }
-  // 
-  addBorderHighlight() {
-    this.editor!.nativeElement.classList.add('active');
-  }
-
-  removeBorderHighlight() {
-    this.editor!.nativeElement.classList.remove('active');
-  }
 }
+

@@ -16,9 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class CheckListItemComponent implements OnInit {
 
-
   ngOnInit(): void {
-    this.prevItem = this.item
+    this.prevItem = {_id:this.item._id, isDone:this.item.isDone, description:this.item.description}
     if (this.newItem) {
       this.edit = true
     }
@@ -31,7 +30,7 @@ export class CheckListItemComponent implements OnInit {
   @Output() update = new EventEmitter<CheckListItem>()
 
   @Input()
-  item: CheckListItem = { description: ' משימה חדשה', isDone: false }
+  item: CheckListItem = { description: 'משימה חדשה', isDone: false }
 
   @Input()
   newItem: boolean = false
@@ -43,6 +42,7 @@ export class CheckListItemComponent implements OnInit {
       this.update.emit(this.item)
       this.edit = false
     } catch (err) {
+      console.log(err);
       alert("העדכון נכשל")
     }
   }
@@ -51,6 +51,7 @@ export class CheckListItemComponent implements OnInit {
     try {
       this.delete.emit(null);
     } catch (err) {
+      console.log(err);
       alert("המחיקה נכשלה")
     }
   }
@@ -62,8 +63,6 @@ export class CheckListItemComponent implements OnInit {
   editDescription(): void {
     this.edit = !this.edit
   }
-
-
 
   saveDescription(): void {
     if (this.item.description.length != 0) {
@@ -86,4 +85,5 @@ export class CheckListItemComponent implements OnInit {
       this.editDescription()
     }
   }
+
 }

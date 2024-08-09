@@ -15,12 +15,13 @@ import {
   UpdateClientTypeDto,
 } from 'server/src/Models/dto/clientType.dto';
 import { ClientTypeService } from 'server/src/services/clientType.service';
-import { ApiOperation, ApiBody, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiBody, ApiProperty, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ClientType } from 'server/src/Models/clientType.model';
 
 @ApiTags('clientTypes')
 @Controller('clientTypes')
 @UseFilters(HttpExceptionFilter)
+@ApiBearerAuth()
 export class ClientTypeController {
   constructor(private readonly clientTypeService: ClientTypeService) {}
 

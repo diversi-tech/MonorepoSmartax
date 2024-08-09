@@ -11,19 +11,25 @@ import { CHECKLISTITEM_ENDPOINT } from '../api-urls';
 export class CheckListItemService {
     constructor(private http: HttpClient) {}
 
+    // פונקציה להוספת נתונים
     createCheckListItem(checkListItem: CheckListItem): Observable<CheckListItem> {
         return this.http.post<CheckListItem>(`${CHECKLISTITEM_ENDPOINT}`, checkListItem);
     }
 
+    // פונקציה לקריאת כל הנתונים
     getCheckListItems(): Observable<CheckListItem[]> {
         return this.http.get<CheckListItem[]>(`${CHECKLISTITEM_ENDPOINT}`);
     }
 
+    // פונקציה לעדכון נתונים
     updateCheckListItem(checkListItem: CheckListItem): Observable<CheckListItem> {
         return this.http.put<CheckListItem>(`${CHECKLISTITEM_ENDPOINT}}`, checkListItem);
     }
 
+    // פונקציה למחיקת נתונים
     deleteCheckListItem(id: string): Observable<CheckListItem> {
         return this.http.delete<CheckListItem>(`${CHECKLISTITEM_ENDPOINT}/${id}`);
     }
+
+    
 }

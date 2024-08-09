@@ -17,7 +17,7 @@ export interface User {
   userName: string;
   email: string;
   passwordHash: string;
-  role: string;
+  role: Role;
   favoritesClient: string[];
   // role: Role; // התייחסות לאובייקט Role ולא למחרוזת
   // favoritesClient: Client[]; // התייחסות למערך של אובייקטים מסוג Client

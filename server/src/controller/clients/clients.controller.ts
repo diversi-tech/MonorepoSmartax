@@ -1,27 +1,27 @@
-import { Controller, Get, Post, Put, Delete, Body, UseFilters, ValidationPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, NotFoundException, UseFilters, ValidationPipe, UseGuards } from '@nestjs/common';
 import { HttpExceptionFilter } from 'server/src/common/filters/http-exception.filter';
 import { Client } from 'server/src/Models/client.model';
 import { CreateClientDto, UpdateClientDto } from 'server/src/Models/dto/client.dto';
 import { ClientService } from 'server/src/services/client.service';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiBody, ApiProperty, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Tag } from '../../Models/tag.model';
 import { AuthGuard } from 'server/src/guards/auth.guard';
 import { RoleGuard } from 'server/src/guards/role.guard';
 
 @ApiTags('clients')
 @Controller('clients')
 @UseFilters(HttpExceptionFilter)
+@ApiBearerAuth()
 export class ClientController {
 
-    constructor(
-        private readonly clientService: ClientService
-    ) { }
-
+    constructor(private readonly clientService: ClientService) { }
     // @UseGuards(AuthGuard, RoleGuard(3))
     
     // @UseGuards(AuthGuard, RoleGuard(3))
     @Get()
     async getAllClients(): Promise<Client[]> {
-        return await this.clientService.getAllClients();
+        const clients:Client[] =  await this.clientService.getAllClients();
+        return clients
     }
     // @UseGuards(AuthGuard, RoleGuard(3))
     @ApiBody({ schema: { type: 'object', properties: { id: { type: 'string' } } } })

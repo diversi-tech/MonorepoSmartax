@@ -1,7 +1,7 @@
 <h1 *ngIf="user.favoritesClient.length == 0">אין לקוחות מועדפים</h1>
-<h2 *ngIf="user.favoritesClient.length > 0">לקוחות מועדפים</h2>
+<!-- <h3 *ngIf="user.favoritesClient.length > 0">לקוחות מועדפים</h3> -->
 
-<p-table dir="rtl" *ngIf="user.favoritesClient.length > 0" [value]="favoriteClients">
+<p-table dir="rtl" *ngIf="user.favoritesClient.length > 0" [value]="favoriteClients" [tableStyle]="{ 'min-width': '80rem' }">
     <h3>favorite clients List</h3>
     <ng-template pTemplate="header" let-columns>
         <tr>

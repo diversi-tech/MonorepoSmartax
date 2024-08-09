@@ -1,24 +1,27 @@
 import { Body, Controller, Get, Param, Post, UseFilters } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpErrorFilter } from "server/src/common/filters/http-error.filter";
 import { CreateStepFieldDto, UpdateStepFieldDto } from "server/src/Models/dto/stepField.dto";
-import { StepField} from "server/src/Models/stepField.model";
+import { StepField, stepFieldModel} from "server/src/Models/stepField.model";
 import { StepFieldService } from "server/src/services/stepField.service";
+
+
+
 
 @ApiTags('step-field')
 @Controller('step-field')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class StepFieldController{
-
     constructor(private readonly stepFieldService: StepFieldService) { }
 
   @Post('create')
   @ApiOperation({ summary: 'Create a new step field' })
   @ApiBody({ type: CreateStepFieldDto })
-
   async create(@Body() createStepFieldDto: CreateStepFieldDto): Promise<StepField> {
     return this.stepFieldService.createStep(createStepFieldDto);
   }
+
    
   @Post('update/:id')
   @ApiOperation({ summary: 'Update a step field by ID' })
@@ -27,6 +30,13 @@ export class StepFieldController{
     return this.stepFieldService.updateStepFieldDto(id, updateStepFieldDto);
   }
 
+ 
+
+  // @Post('delete')
+  // @ApiOperation({ summary: 'Delete a step field by ID' })
+  // async delete(@Body('id') body: { id: string }): Promise<void> {
+  //   return this.stepFieldService.deleteStepField(body.id);
+  // }
   @Post('delete')
   @ApiOperation({ summary: 'Delete a yearly report by ID' })
   @ApiBody({
@@ -40,7 +50,6 @@ export class StepFieldController{
       }
     }
   })
-
   async delete(@Body() body: { id: string }): Promise<void> {
     return this.stepFieldService.deleteStepField(body.id);
   }
@@ -50,4 +59,5 @@ export class StepFieldController{
   async getAllStepFields(): Promise<StepField[]> {
     return this.stepFieldService.getAllStepFields();
   }
+
 }

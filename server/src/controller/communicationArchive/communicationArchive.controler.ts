@@ -1,6 +1,6 @@
 
 import { Controller,UseFilters, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth} from '@nestjs/swagger';
 import { HttpErrorFilter } from '../../common/filters/http-error.filter';
 import { CommunicationArchiveService } from 'server/src/services/communicationArchive.service';
 import { CommunicationArchive } from 'server/src/Models/communicationArchive.model';
@@ -8,6 +8,7 @@ import { CommunicationArchive } from 'server/src/Models/communicationArchive.mod
 @ApiTags('communicationArchive')
 @Controller('communicationArchive')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class CommunicationArchiveController {
     
     constructor(private readonly communicationArchivesService: CommunicationArchiveService) { }

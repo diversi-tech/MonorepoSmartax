@@ -1,5 +1,5 @@
 import { Controller, Post, Body, UseFilters, Put, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { HttpErrorFilter } from '../../common/filters/http-error.filter';
 import { CreateDocTypeDto, UpdateDocTypeDto } from '../../Models/dto/docTypes.dto';
 import { DocType } from 'server/src/Models/docType.model';
@@ -8,6 +8,7 @@ import { DocTypeService } from 'server/src/services/docTypes.service';
 @ApiTags('DocTypes')
 @Controller('DocTypes')
 @UseFilters(HttpErrorFilter)
+@ApiBearerAuth()
 export class DocTypeController {
     constructor(private readonly DocTypeService: DocTypeService) { }
 

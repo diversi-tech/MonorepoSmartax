@@ -5,12 +5,14 @@ import { Observable } from 'rxjs';
 import { PaymentMethod } from '../_models/paymentMethod.module';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class PaymentMethodService {
+
   private apiUrl = PAYMENT_METHOD_ENDPOINT;
 
-  constructor(private http: HttpClient) {}
+
+  constructor(private http: HttpClient) { }
 
   getAllPaymentMethod(): Observable<PaymentMethod[]> {
     return this.http.get<PaymentMethod[]>(`${this.apiUrl}`);

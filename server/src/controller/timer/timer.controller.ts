@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Post, Put, UseFilters, ValidationPipe } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { HttpExceptionFilter } from "server/src/common/filters/http-exception.filter";
 import { CreateTimerDto, UpdateTimerDto } from "server/src/Models/dto/timer.dto";
 import { Timer } from "server/src/Models/timer.model";
@@ -8,6 +8,7 @@ import { TimerService } from "server/src/services/timer.service";
 @ApiTags('Timer')
 @Controller('timer')
 @UseFilters(HttpExceptionFilter) 
+@ApiBearerAuth()
 export class TimerController {
 
     constructor(private readonly timerService: TimerService) { }

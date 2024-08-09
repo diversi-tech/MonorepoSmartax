@@ -4,7 +4,7 @@ import { HttpExceptionFilter } from '../../common/filters/http-exception.filter'
 import { Client } from 'server/src/Models/client.model';
 import { CreateClientDto, UpdateClientDto } from 'server/src/Models/dto/client.dto';
 import { ClientService } from 'server/src/services/client.service';
-import {  ApiOperation ,ApiBody, ApiProperty, ApiTags} from '@nestjs/swagger';
+import {  ApiOperation ,ApiBody, ApiProperty, ApiTags, ApiBearerAuth} from '@nestjs/swagger';
 import { TagService } from 'server/src/services/tag.service';
 import { CreateTagDto, UpdateTagDto } from 'server/src/Models/dto/tag.dto';
 import { Tag } from 'server/src/Models/tag.model';
@@ -12,6 +12,7 @@ import { Tag } from 'server/src/Models/tag.model';
 @ApiTags('tags')
 @Controller('tags')
 @UseFilters(HttpExceptionFilter) 
+@ApiBearerAuth()
 export class TagController {
 
     constructor(private readonly tagService: TagService) { }
