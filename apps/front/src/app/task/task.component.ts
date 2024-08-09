@@ -194,8 +194,6 @@ export class TaskComponent implements OnInit {
     private googleTask: GoogleTaskService,
     private checkListServise: CheckListService
   ) {
-    this.currentRoute = this.route.snapshot.url.join('/');
-    console.log('Current route path:', this.currentRoute);
   }
 
   newTaskCreated: boolean = false;
