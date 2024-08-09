@@ -10,8 +10,6 @@ import { Task } from '../Models/task.model';
 import { CreateTaskDto, UpdateTaskDto } from '../Models/dto/task.dto';
 import { TasksGateway } from './socket/socket.gateway';
 import { YearArchiveService } from './yearArchive.service';
-import { ClientService } from './client.service';
-
 
 @Injectable()
 export class TaskService {
@@ -19,44 +17,61 @@ export class TaskService {
     @InjectModel('Task') private readonly taskModel: Model<Task>,
     private yearArchiveService:YearArchiveService,
     private jwtToken: TokenService,
-    private clientService: ClientService,
     private readonly tasksGateway: TasksGateway
   ) { }
 
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task[]> {
-    const { client, taskName, description, dueDate, status, assignedTo, tags, deadline, priority, images, googleId, startDate, parent,subTasks } = createTaskDto;
-    const tasks: Task[] = [];
-    if (client.length){
-      for (const singleClient of client) {
-        const createTask = new this.taskModel({ 
-          client: singleClient, 
-          taskName, 
-          description, 
-          dueDate, 
-          status, 
-          assignedTo, 
-          tags, 
-          priority, 
-          images, 
-          googleId, 
-          deadline, 
-          startDate,
-          parent,
-          subTasks
-        });
-        const savedTask = await createTask.save();
-        tasks.push(savedTask);
-      }
-    }else
-    {
-      const createTask = new this.taskModel({ client, taskName, description, dueDate, status, assignedTo, tags, deadline, priority, images, googleId, startDate ,parent,subTasks})
-      const savedTask = await createTask.save();
-      tasks.push(savedTask);
-    }
-  
-    return tasks;
+  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    const {
+      client,
+      taskName,
+      description,
+      dueDate,
+      status,
+      assignedTo,
+      tags,
+      deadline,
+      priority,
+      images,
+      googleId,
+      startDate,
+      parent,
+      subTasks
+    } = createTaskDto;
+    // const task = new this.taskModel(createTaskDto);
+    // return task.save()
+    // if (!client || !assignedTo) {
+    //   throw new ValidationException('Missing required fields');
+    // }
+
+    // הודעה ללקוחות על יצירת משימה חדשה
+    // if(!assignedTo || assignedTo.length === 0) {
+    //   console.log("מממממלא משויכת לאף אחד");
+
+    //   this.tasksGateway.handleTaskCreated(createTaskDto);
+
+    // }
+
+    const createTask = new this.taskModel({
+      client,
+      taskName,
+      description,
+      dueDate,
+      status,
+      assignedTo,
+      tags,
+      priority,
+      images,
+      googleId,
+      deadline,
+      startDate,
+      parent,
+      subTasks
+    });
+    console.log(createTask);
+
+    return await createTask.save();
   }
-  
+
   async findAll(): Promise<Task[]> {
     return await this.taskModel.find().exec();
   }

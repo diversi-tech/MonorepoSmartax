@@ -1,7 +1,7 @@
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateClientTypeDto, UpdateClientTypeDto } from '../Models/dto/clientType.dto';
 import { ValidationException } from '../common/exceptions/validation.exception';
 import { ClientType } from '../Models/clientType.model';
@@ -16,13 +16,7 @@ export class ClientTypeService {
         if (!name || !fields || !tasks ) {
           throw new ValidationException('Missing required fields');
         }
-        const RtasksObjectIds = tasks.map(id => new Types.ObjectId(id));
-
-        const createdClientType = new this.clientTypeModel({
-             name,
-             fields,
-             tasks : RtasksObjectIds 
-            });
+        const createdClientType = new this.clientTypeModel({ name,fields,tasks });
         return await createdClientType.save();
     }
 

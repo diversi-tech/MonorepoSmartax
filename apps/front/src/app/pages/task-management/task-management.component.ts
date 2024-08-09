@@ -7,7 +7,7 @@ import { TagService } from '../../_services/tag.service';
 import { User } from '../../_models/user.module';
 import { Client } from '../../_models/client.module';
 import { Tag } from '../../_models/tag.module';
-import { ConfirmationService, MessageService, Footer, PrimeTemplate, } from 'primeng/api';
+import { ConfirmationService, Footer, PrimeTemplate, } from 'primeng/api';
 import { Status } from '../../_models/status.module';
 import { StatusService } from '../../_services/status.service';
 import { ToastModule } from 'primeng/toast';
@@ -193,7 +193,7 @@ export class TaskManagementComponent implements OnInit {
   }
 
   searchClients(event: any): void {
-    this.clientService.getAllClients().subscribe((clients: any[]) => {
+    this.clientService.getAllClients().subscribe((clients: Client[]) => {
       this.clientSuggestions = clients.filter(client => client.firstName && client["firstName"].toLowerCase().includes(event.query.toLowerCase()));
     });
   }
@@ -249,6 +249,7 @@ export class TaskManagementComponent implements OnInit {
           );
         });
       }
+
       if (deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch)
         this.filteredTasks.push(task);
     });

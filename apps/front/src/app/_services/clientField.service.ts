@@ -19,15 +19,11 @@ export class ClientFieldService {
   constructor(private http: HttpClient) { }
 
   // Create a new ClientField
-  createClientField(clientField: ClientField, CId: string): Observable<ClientField> {
-    return this.http.post<ClientField>(this.apiUrl, { clientField, CId }, this.httpOptions)
+  createClientField(clientField: ClientField): Observable<ClientField> {
+    return this.http.post<ClientField>(this.apiUrl, clientField, this.httpOptions)
       .pipe(
         catchError(this.handleError<ClientField>('createClientField'))
       );
-  }
-
-  createClientFieldsByClientType( clientTypeId: string , clientId: string): Observable<ClientField[]> {
-    return this.http.post<ClientField[]>(`${this.apiUrl}/createByClientType`, {clientTypeId , clientId});
   }
 
   // Get all ClientFields
@@ -39,22 +35,20 @@ export class ClientFieldService {
   }
 
   // Search for a ClientField by ID
-  searchClientField(id: string): Observable<ClientField> {
-    return this.http.post<ClientField>(`${this.apiUrl}/searchClientField`, { id }, this.httpOptions)
+  searchClientField(id: string): Observable<ClientField[]> {
+    return this.http.post<ClientField[]>(`${this.apiUrl}/searchClientField`, { id }, this.httpOptions)
       .pipe(
-        catchError(this.handleError<ClientField>('searchClientField'))
+        catchError(this.handleError<ClientField[]>('searchClientField', []))
       );
   }
 
   // Update an existing ClientField
   updateClientField(clientField: ClientField): Observable<ClientField> {
-    try {
-        const res = this.http.put<ClientField>(`${this.apiUrl}/${clientField._id}`, clientField)
-        return res
-    } catch (err) {
-        console.log(err);
-    }
-}
+    return this.http.put<ClientField>(`${this.apiUrl}`, clientField, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<ClientField>('updateClientField'))
+      );
+  }
 
   // Delete a ClientField by ID
   deleteClientField(id: string): Observable<boolean> {

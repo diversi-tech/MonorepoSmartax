@@ -28,7 +28,7 @@
         (click)="confirmDelete()"></button>
     </p-footer>
   </p-confirmDialog>
-  <button *ngIf="this.choosedClients.length > 0" pButton type="button" icon="pi pi-plus" label="להוספת משימה" (click)=" $event.stopPropagation(); navigateWithClientIds()"  class= "p-button-text p-button-raised p-button-rounded"></button>
+
   <button *ngIf="this.choosedClients.length > 0" (click)="addFavoritesClient()" icon="pi pi-star" pButton type="button" label="להוספה למועדפים" class= "p-button-text p-button-raised p-button-rounded"></button>
   <button *ngIf="this.choosedClients.length > 0" (click)="showConfirmationDelete()" icon="pi pi-trash" pButton type="button" label="מחיקה" class= "p-button-danger p-button-text p-button-raised p-button-rounded"></button>
    
