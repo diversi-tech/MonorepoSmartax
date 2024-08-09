@@ -89,7 +89,6 @@ export class CalendarComponent {
     })
   }
 
-  // בעת לחיצה על יום 
   handleDateClick(arg: any) {
     this.add = true;
     this.currentDate=arg.dateStr
@@ -102,13 +101,11 @@ export class CalendarComponent {
     if(type=='task')
         this.loadTaskComponent('create');
       
-      // this.showDialog();
-      this.modal=true
+      this.showDialog();
       this.add = false
 
   }
 
-  // בעת לחיצה על אירוע
   handleEventClick(arg: any) {
     if(arg.event.title==='meeting')
       this.loadMeetComponent(arg.event.id);
@@ -156,8 +153,7 @@ export class CalendarComponent {
 
   getAdjustedTime(date: Date): string {
     const adjustedTime = new Date(date);
-    adjustedTime.setHours(adjustedTime.getHours() - 3); // מוריד 3 שעות מהזמן המקורי רק בתצוגה
+    adjustedTime.setHours(adjustedTime.getHours() - 3); 
     return adjustedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
-
 }

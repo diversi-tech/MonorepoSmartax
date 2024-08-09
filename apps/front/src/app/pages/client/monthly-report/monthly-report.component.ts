@@ -1,28 +1,20 @@
-
-import { Component, Inject, numberAttribute } from '@angular/core';
-import { Injectable, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import { Component, OnInit } from '@angular/core';
 import { MonthlyReportService } from '../../../_services/monthlyReport.service';
 import { YearService } from '../../../_services/year.service';
 import { TokenService } from '../../../_services/token.service';
 import { MonthlyReport } from '../../../_models/monthlyReport.module';
 import { stepFieldMonth } from '../../../_models/stepFieldMonth.module';
 import { Year } from '../../../_models/year.module';
-import { ActivatedRoute } from '@angular/router';
-import { Router,RouterOutlet } from '@angular/router';
-import { DialogModule } from 'primeng/dialog';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputOtpModule } from 'primeng/inputotp';
-import { Status } from '../../../_models/status.module';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { User } from '../../../../../../../server/src/Models/user.model';
-import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
-import Swal from 'sweetalert2';
+import { DropdownModule } from 'primeng/dropdown';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { ClientService } from '../../../_services/client.service';
-import { Client } from '../../../../../../../server/src/Models/client.model';
+import { Client } from '../../../_models/client.module';
+
 @Component({
   selector: 'app-monthly-report',
   templateUrl: './monthly-report.component.html',
@@ -34,8 +26,8 @@ import { Client } from '../../../../../../../server/src/Models/client.model';
     ButtonModule,
     RouterOutlet,
     DropdownModule,
+    ReactiveFormsModule,
     DialogModule,
-    RouterOutlet
   ],
 })
 export class MonthlyReportComponent implements OnInit {
@@ -75,11 +67,9 @@ export class MonthlyReportComponent implements OnInit {
   constructor(
     private monthlyReportService: MonthlyReportService,
     private yearService: YearService,
-    private route: ActivatedRoute,
-     private router: Router,
     private tokenService: TokenService,
-    private clientService: ClientService
-
+    private clientService: ClientService,
+    private route: ActivatedRoute
   ) {
     this.currentRoute = this.route.snapshot.url.join('/');
     console.log('Current route path:', this.currentRoute);
@@ -384,7 +374,7 @@ export class MonthlyReportComponent implements OnInit {
     this.clientService.getAllClients()
       .subscribe((clients: any[]) => {
         this.clients = clients.map((client:Client) => ({
-          label: client._id+"",
+          label: client._id,
           value: `${client.firstName} ${client.lastName}`
         }));
       }); 
