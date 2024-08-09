@@ -1,14 +1,18 @@
 
-import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, Request } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, HttpStatus, Get, Delete, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { UserService } from '../../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../../Models/dto/user.dto';
 import { User } from 'server/src/Models/user.model';
 // import { HttpErrorFilter } from '../../common/filters/http-error.filter';
 
-import { TokenService } from '../../services/jwt.service';
 // import { equals } from 'class-validator';
-import { hashPasswordService } from '../../services/hash-password';
+// import { ValidationException } from 'server/src/common/exceptions/validation.exception';
+import { TokenService } from 'server/src/services/jwt.service';
+import { hashPasswordService } from 'server/src/services/hash-password';
+import { ValidationException } from 'server/src/common/exceptions/validation.exception';
+import { AuthGuard } from 'server/src/guards/auth.guard';
+import { RoleGuard } from 'server/src/guards/role.guard';
 
 
 @ApiTags('users')
@@ -19,30 +23,56 @@ export class UserController {
     private readonly userService: UserService,
     private jwtToken: TokenService,
     private hashService: hashPasswordService
-  ) {}
+  ) { }
 
+  // @Put('create')
+  // @ApiOperation({ summary: 'Create a new user' })
+  // @ApiBody({ type: CreateUserDto })
+  // async create(@Body() createUserDto: CreateUserDto): Promise<any> {
+  //   console.log('Received createUserDto:', createUserDto); // הוסף לוג כדי לראות מה נשלח
+
+  //   try {
+  //     createUserDto.passwordHash = await this.hashService.hashPassword(
+  //       createUserDto.passwordHash
+  //     );
+
+  //     createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
+  //     const user = await this.userService.createUser(createUserDto);
+  //     return;
+  //   } catch (error) {
+  //     throw new HttpException(
+  //       'Failed to create user',
+  //       HttpStatus.INTERNAL_SERVER_ERROR
+  //     );
+  //   }
+  // }
   @Put('create')
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
   async create(@Body() createUserDto: CreateUserDto): Promise<any> {
-    console.log('Received createUserDto:', createUserDto); // הוסף לוג כדי לראות מה נשלח
 
     try {
-      createUserDto.passwordHash = await this.hashService.hashPassword(
-        createUserDto.passwordHash
-      );
-
       createUserDto.passwordHash = await this.hashService.hashPassword(createUserDto.passwordHash);
+
       const user = await this.userService.createUser(createUserDto);
+
+      // const response = {
+      //   _id: user._id,
+      //   userName: user.userName,
+      //   email: user.email,
+      //   role: user.role.name
+      // }
+
       return;
+
+      
     } catch (error) {
       throw new HttpException(
         'Failed to create user',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
-
   @Get('findAll')
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'Return all users.' })
@@ -113,6 +143,7 @@ export class UserController {
     try {
       console.log(updateUserDto);
       console.log(updateUserDto.id);
+
       const updatedUser = await this.userService.updateUser(updateUserDto.id, updateUserDto);
       if (!updatedUser) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -152,6 +183,7 @@ export class UserController {
   }
 
   @Put('ChangePassword')
+  @UseGuards(AuthGuard, RoleGuard(3))
   @ApiOperation({ summary: 'Update new password' })
   @ApiResponse({ status: 200, description: 'Password changed successfully' })
   @ApiResponse({ status: 401, description: 'Invalid token' })
@@ -177,8 +209,6 @@ export class UserController {
       role: user.role,
       favoritesClient: user.favoritesClient,
     };
-    await this.userService.updateUser(user.id, userDto);
-
     await this.userService.updateUser(user.id, userDto)
     try {
       return {

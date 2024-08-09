@@ -7,8 +7,11 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: ['https://monoreposmartax-fronted.onrender.com','http://localhost:4200'],
-    // origin: 'http://localhost:4200',
+    origin: [
+      'https://monoreposmartax-fronted.onrender.com',
+      'https://monoreposmartax.onrender.com',
+      'http://localhost:4200'
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
@@ -22,6 +25,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3002);
+  await app.listen(3002,'0.0.0.0');
 }
 bootstrap();

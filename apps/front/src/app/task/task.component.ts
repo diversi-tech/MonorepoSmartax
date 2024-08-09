@@ -131,7 +131,7 @@ export class TaskComponent implements OnInit {
   checkListId: string[] | undefined;
   subTasks: string[] = [];
   tags2: Tag[] = [];
-  color: string = '#1976d2';
+  color: string ='#1976d2';
   value: string;
   currentRoute: string;
 
@@ -197,6 +197,7 @@ export class TaskComponent implements OnInit {
     this.currentRoute = this.route.snapshot.url.join('/');
     console.log('Current route path:', this.currentRoute);
   }
+  
 
   newTaskCreated: boolean = false;
   ngOnInit(): void {
@@ -219,10 +220,6 @@ export class TaskComponent implements OnInit {
           console.log(this.currentTask.priority);
 
           this.selectedPriority = this.currentTask.priority;
-          console.log(this.selectedPriority);
-
-          // this.selectedClient = this.currentTask.client;
-          // this.selectedUser = this.currentTask.assignedTo;
           this.selectedUsers = this.currentTask.assignedTo;
           if (this.allClient === true) {
             this.selectedClient = this.currentTask.client;
@@ -393,93 +390,6 @@ export class TaskComponent implements OnInit {
     this.save();
   }
 
-
-  // createGoogleTask() {
-  //   this.visible = false;
-  //   // if (!this.taskTitle.trim()) {
-  //   //   alert('Please enter a task title');
-  //   //   return;
-  //   // }
-  //   const taskDetails = {
-  //     title: 'Task Tzipi2',
-  //     notes: 'Task Notes',
-  //     dueTime: '2024-07-18T10:00:00Z', // תאריך ושעה בפורמט ISO 8601
-  //   };
-
-  //   this.googleTask.createSimpleTask(taskDetails);
-
-  //   this.subscribeToEventData();
-  //   console.log(this.eventId);
-
-  //   this.save();
-  // }
-
-  // createGoogleTask() {
-  //   this.visible = false;
-
-  //   const taskDetails = {
-  //     title: this.taskName,
-  //     notes: 'Task Notes',
-  //     dueTime: this.rangeDates[1], // תאריך ושעה בפורמט ISO 8601
-  //   };
-
-  //   // Create Google event and return a promise
-  //   const createTaskPromise =
-  //     this.googleTask.createSimpleTask(taskDetails);
-
-  //   // After creating event, save the meeting
-  //   createTaskPromise
-  //     .then(() => {
-  //       // debugger;
-  //       // alert('הפגישה נוספה בהצלחה');
-  //       this.subscribeToEventData();
-  //       console.log(this.eventId);
-  //       setTimeout(() => {
-  //         this.save();
-  //       }, 1000); // המתנה 1 שניות, כדי לוודא שההרשמות הושלמו בצורה נכונה
-
-  //       // this.save(); // Save meeting details
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error creating Google event:', error);
-  //     });
-
-  //   // this.googleTask
-  //   //   .createSimpleTask(taskDetails)
-  //   //   .then(() => {
-  //   //     this.subscribeToEventData();
-  //   //     console.log(this.eventId);
-  //   //     this.save();
-  //   //   })
-  //   //   .catch((error) => {
-  //   //     console.error('Error creating task:', error);
-  //   //   });
-  // }
-
-  // createGoogleTask() {
-  //   this.visible = false;
-
-  //   const taskDetails = {
-  //     title: this.taskName,
-  //     notes: 'Task Notes',
-  //     dueTime: this.rangeDates[1], // תאריך ושעה בפורמט ISO 8601
-  //   };
-
-  //   // Create Google task and return a promise
-  //   this.googleTask.createSimpleTask(taskDetails)
-  //     .then(() => {
-  //       return this.subscribeToEventData(); // wait for this to finish
-  //     })
-  //     .then(() => {
-  //       console.log(this.eventId);
-  //       this.save(); // call save after everything is done
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error creating Google event:', error);
-  //     });
-  // }
-
-  // 2
   createGoogleTask() {
     this.visible = false;
     const taskDetails = {
@@ -487,7 +397,6 @@ export class TaskComponent implements OnInit {
       notes: 'Task Notes',
       dueTime: this.rangeDates[1]
     };
-
     const createEventPromise = this.googleTask.createSimpleTask(taskDetails);
     // After creating event, save the meeting
     createEventPromise
@@ -582,7 +491,6 @@ export class TaskComponent implements OnInit {
   }
 
   //
-
   cancel() {
     window.history.back();
   }
@@ -597,6 +505,7 @@ export class TaskComponent implements OnInit {
   }
 
 
+  
   //
   // createTag() {
   //   this.showTags = !this.showTags;
@@ -661,8 +570,6 @@ export class TaskComponent implements OnInit {
         });
     }
   }
-
-
   //
   // removeButton(button: any) {
   //   const index = this.buttons.indexOf(button);
@@ -740,7 +647,6 @@ export class TaskComponent implements OnInit {
     }
     else {
       alert("יש להזין שם")
-      alert('יש להזין שם');
     }
   }
 
@@ -748,33 +654,30 @@ export class TaskComponent implements OnInit {
   createList(i: any) {
     this.selectedList = i.value
     if (this.selectedList && this.selectedList != "new") {
-      this.selectedList = i.value
-      if (this.selectedList && this.selectedList != "new") {
-        this.selectedList = i.value;
-        this.checkListServise.getCheckLists(this.selectedList).subscribe({
-          next: (copylist) => {
-            let l: CheckList = { name: copylist.name, items: copylist.items };
-            this.checkListServise.createCheckList(l).subscribe({
-              next
-                : (newList) => {
-                  this.currentTask.checkList.push(newList._id)
-                  this.checkList.push(newList)
-                  this.save()
-                },
-              error
-                : (err) => {
-                  alert("ההוספה נכשלה, אנא נסה שנית")
-                },
-            })
-          }
-        })
-      }
-      else {
-        this.newList = true;
-      }
-      this.selectedList = undefined;
+      this.checkListServise.getCheckLists(this.selectedList).subscribe({
+        next: (copylist) => {
+          let l: CheckList = { name: copylist.name, items: copylist.items };
+          this.checkListServise.createCheckList(l).subscribe({
+            next
+              : (newList) => {
+                this.currentTask.checkList.push(newList._id)
+                this.checkList.push(newList)
+                this.save()
+              },
+            error
+              : (err) => {
+                alert("ההוספה נכשלה, אנא נסה שנית")
+              },
+          })
+        }
+      })
     }
+    else {
+      this.newList = true;
+    }
+    this.selectedList = undefined;
   }
+
   //update list
   updateList(list: CheckList) {
     if (list._id) {
@@ -799,7 +702,7 @@ export class TaskComponent implements OnInit {
       const c = this.groupedLists[1].items!.splice(i, 1); //delete from group options
       this.save();
       this.checkListServise.deleteCheckList(_id).subscribe({
-        next: (data) => { },
+        next: (data) => {},
         error: (err) => {
           this.currentTask.checkList.push(a[0])//delete from current-task.checklist
           this.checkList.push(b[0])//delete from checklist

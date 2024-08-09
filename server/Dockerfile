@@ -1,51 +1,61 @@
-
-# Step 1: Installing the dependencies and building the NestJS code
+# שלב 1: התקנת התלויות ובניית הקוד של NestJS
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copying the configuration files and packages
+# העתקת קבצי הקונפיגורציה והחבילות
 COPY nx.json tsconfig.base.json package*.json ./
 COPY apps ./apps
 COPY server ./server
+COPY timesheet ./timesheet
+COPY api-gateway ./api-gateway
 
-# Copy ESLint configuration files
+# העתקת קבצי הקונפיגורציה של ESLint
 COPY .eslintrc.json ./
 COPY apps/front/.eslintrc.json ./apps/front/.eslintrc.json
 COPY server/.eslintrc.json ./server/.eslintrc.json
-# COPY .eslintignore ./
+COPY timesheet/.eslintrc.json ./timesheet/.eslintrc.json
+COPY api-gateway/.eslintrc.json ./api-gateway/.eslintrc.json
 
-# Install the dependencies
+# התקנת התלויות
 RUN npm install
 
-# Clear Nx cache
+# ניקוי קאש של Nx
 RUN npx nx reset
 
-# Building the NestJS code
+# בניית הקוד של NestJS לכל השירותים
 RUN npx nx build server --prod --verbose
+RUN npx nx build timesheet --prod --verbose
+RUN npx nx build api-gateway --prod --verbose
 
-# Check if /app/dist exists after building for debugging
+# בדיקה אם /app/dist קיים לאחר הבנייה לצורך דיבוג
 RUN ls -la /app/dist 
 
-# Step 2: Launching the application
+# שלב 2: הפעלת האפליקציה
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Global nx installation
+# התקנה גלובלית של nx
 RUN npm install -g @nrwl/cli
 
-# Install @nrwl/workspace (if required)
+# התקנת @nrwl/workspace (אם נדרש)
 RUN npm install @nrwl/workspace --legacy-peer-deps
 
-# Copying the products from the previous step
+# העתקת המוצרים מהשלב הקודם
 COPY --from=builder /app/dist /app/dist 
- # Ensure we copy the entire dist folder
 
-# Copy the packages required for production only
+# העתקת החבילות הדרושות רק לפרודקשן
 COPY package*.json ./
 RUN npm install --only=production
 
-# Starting the application
-CMD ["node", "dist/server/main.js"] 
- # Updated path to main.js
+# חשיפת הפורטים שבהם האפליקציות מאזינות
+EXPOSE 3000  
+# פורט של server
+EXPOSE 3001 
+ # פורט של timesheet
+EXPOSE 3002  
+# פורט של api-gateway
+
+# הפעלת השירותים
+CMD ["sh", "-c", "node dist/server/main.js & node dist/timesheet/main.js & node dist/api-gateway/main.js"]
