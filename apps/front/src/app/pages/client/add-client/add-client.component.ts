@@ -87,7 +87,7 @@ export class AddClientComponent implements OnInit {
     joinDate: new Date(),
     isAccounter: false,
     isOpenAccountWithUs: false,
-    tag: { color: '', text: '' },
+    tag: { color: 'black', text: 'default' },
     payment: '',
     isPreferWhatsapp: false
   };
