@@ -1,9 +1,6 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
-
 import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
-// import { FullCalendarModule } from '@fullcalendar/angular';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { CommonModule } from '@angular/common';
@@ -14,7 +11,6 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { EditorModule } from 'primeng/editor';
 import { DividerModule } from 'primeng/divider';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { CheckboxModule } from 'primeng/checkbox';
 import { MessagesModule } from 'primeng/messages';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -39,7 +35,7 @@ import { CardModule } from 'primeng/card';
 import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app/app-routing.module';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { BrowserModule, bootstrapApplication, provideClientHydration } from '@angular/platform-browser';
+import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { DropdownModule } from 'primeng/dropdown';
 import { ChipModule } from 'primeng/chip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -49,33 +45,16 @@ import { TagService } from './app/_services/tag.service';
 import { ClientService } from './app/_services/client.service';
 import { CommunicationService } from './app/_services/communicaton.service';
 import { httpInterceptorProviders } from './app/_helpers/http.interceptor';
-// import { GoogleLoginProvider, SocialAuthServiceConfig } from 'angularx-social-login';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 bootstrapApplication(AppComponent, {
     providers: [
         importProvidersFrom(AutoCompleteModule, FormsModule, ChipModule, DropdownModule, AppRoutingModule, FormsModule, ReactiveFormsModule, CardModule, PanelModule, ButtonModule, ReactiveFormsModule, InputTextareaModule, TableModule, TagModule, RatingModule, MenuModule, DialogModule, AvatarModule, SidebarModule, MultiSelectModule, BadgeModule, MenuModule, RippleModule, ListboxModule, CalendarModule, ConfirmDialogModule, ChipsModule, InputGroupAddonModule, InputGroupModule, MessagesModule, BrowserModule
-        // Message ,
-        ,CheckboxModule, 
-        // OrderListModule,
-        RadioButtonModule, DividerModule, EditorModule, SelectButtonModule, FileUploadModule, ButtonModule, BadgeModule, ProgressBarModule, ToastModule, CommonModule, ColorPickerModule, DropdownModule, TabMenuModule),
-        // provideClientHydration(),
-        // {
-        //     provide: 'SocialAuthServiceConfig',
-        //     useValue: {
-        //         autoLogin: false,
-        //         providers: [
-        //             {
-        //                 id: GoogleLoginProvider.PROVIDER_ID,
-        //                 provider: new GoogleLoginProvider("450626878965-7r8nl14gj5eh5h4lfb1qs2d4kfkvq15l.apps.googleusercontent.com")
-        //             },
-        //         ],
-        //         callback: 'initGoogleOneTap',
-        //         onError: (err: any) => {
-        //             console.error(err);
-        //         }
-        //     } as SocialAuthServiceConfig,
-        // },
+            // Message ,
+            , CheckboxModule,
+            // OrderListModule,
+            RadioButtonModule, DividerModule, EditorModule, SelectButtonModule, FileUploadModule, ButtonModule, BadgeModule, ProgressBarModule, ToastModule, CommonModule, ColorPickerModule, DropdownModule, TabMenuModule),
         httpInterceptorProviders,
         CommunicationService,
         ClientService,
@@ -89,6 +68,5 @@ bootstrapApplication(AppComponent, {
         provideHttpClient(withInterceptorsFromDi())
     ]
 })
-  .catch(err => console.error(err));
-  //
-  
+    .catch(err => console.error(err));
+//

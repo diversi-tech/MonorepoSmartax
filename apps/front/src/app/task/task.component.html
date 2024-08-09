@@ -1,12 +1,16 @@
 <!-- ===================== -->
-<div style="margin-top: 10%" id="container">
-  <p-card header="משימה" subheader="ליצור ולערוך משימות" [style]="{ width: '800px' }">
+<!-- <div style="margin-top: 10%" id="container">
+  <p-card
+    header="משימה"
+    subheader="ליצור ולערוך משימות"
+    [style]="{ width: '800px' }"
+  >
     <app-timer *ngIf="id != 'create'" [taskId]="id"></app-timer>
     <ng-template pTemplate="header">
       <div style="height: 50px; background-color: rgb(180, 180, 180)"></div>
-    </ng-template>
-    <!-- Task Name -->
-    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+    </ng-template> -->
+<!-- Task Name -->
+<!-- <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-clipboard"></span>
         שם המשימה
@@ -17,16 +21,19 @@
         </p-inputGroup>
       </div>
     </div>
-    <br />
-    <!--  -->
-    <!-- Select User -->
-    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+    <br /> -->
+<!--  -->
+<!-- Select User -->
+<!-- <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%">
         <span class="pi pi-user-plus"></span>
         בחר משתמשים
       </p>
       <div style="margin-left: 60px">
-        <p-inputGroup class="w-full" [style]="{ height: '20px', marginLeft: '20px' }">
+        <p-inputGroup
+          class="w-full"
+          [style]="{ height: '20px', marginLeft: '20px' }"
+        >
         </p-inputGroup>
       </div>
       <ng-template let-user pTemplate="item">
@@ -34,207 +41,316 @@
           <app-icon-profile [userName]="user.userName"></app-icon-profile>
           <span>{{ user.userName }}</span>
         </div>
-      </ng-template>
+      </ng-template> -->
 
-      <!-- pop -->
-      <p-multiSelect [options]="users" [(ngModel)]="selectedUsers" required name="selectedUsers"
-        placeholder="Select Users" defaultLabel="Select Users" [style]="{ height: '50px', width: '15rem' }">
+<!-- pop -->
+<!-- <p-multiSelect
+        [options]="users"
+        [(ngModel)]="selectedUsers"
+        required
+        name="selectedUsers"
+        placeholder="Select Users"
+        defaultLabel="Select Users"
+        [style]="{ height: '50px', width: '15rem' }"
+      >
         <ng-template let-user pTemplate="item">
           <div class="avatar-item">
-            <app-icon-profile class="avatar" [userName]="user.userName"></app-icon-profile>
+            <app-icon-profile
+              class="avatar"
+              [userName]="user.userName"
+            ></app-icon-profile>
             <span>{{ user.userName }}</span>
           </div>
         </ng-template>
         <ng-template style="display: flex" let-user pTemplate="selectedItems">
           <div class="selected-items-container" style="display: flex">
-            <div *ngFor="let selectedUser of selectedUsers" class="selected-item" style="margin-right: 10px">
-              <app-icon-profile class="avatar" [userName]="selectedUser.userName"></app-icon-profile>
+            <div
+              *ngFor="let selectedUser of selectedUsers"
+              class="selected-item"
+              style="margin-right: 10px"
+            >
+              <app-icon-profile
+                class="avatar"
+                [userName]="selectedUser.userName"
+              ></app-icon-profile>
             </div>
           </div>
         </ng-template>
       </p-multiSelect>
-    </div>
-
-    <br />
-    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+    </div> -->
+<!-- Status  -->
+<!-- <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-spinner-dotted"></span>
         סטטוס
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
-          <button pButton [style]="{ height: '20px' }" label="{{ selectStatus ? selectStatus.name : 'NOT_STARTED' }}"
-            [outlined]="true" severity="secondary" (click)="showStatus = !showStatus"></button>
-          <p-inputGroupAddon><i class="pi pi-angle-right"></i></p-inputGroupAddon>
+          <p-button
+            [style]="{ height: '20px' }"
+            label="{{ selectStatus ? selectStatus.name : 'NOT_STARTED' }}"
+            [outlined]="true"
+            severity="secondary"
+            (click)="showStatus = !showStatus"
+          ></p-button>
+          <p-inputGroupAddon
+            ><i class="pi pi-angle-right"></i
+          ></p-inputGroupAddon>
           <p-inputGroupAddon>
             <div class="card flex justify-content-center">
-              <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary" (onChange)="changeStatus()"
-                [ngStyle]="{ color: 'green' }"></p-checkbox>
+              <p-checkbox
+                [(ngModel)]="checked"
+                [binary]="true"
+                inputId="binary"
+                (onChange)="changeStatus()"
+                [ngStyle]="{ color: 'green' }"
+              ></p-checkbox>
             </div>
           </p-inputGroupAddon>
           <p style="height: 20px">
-            {{ dueDate && dueDate | date : 'yyyy/MM/dd' }}
+            {{ dueDate && dueDate | date: 'yyyy/MM/dd' }}
           </p>
         </p-inputGroup>
       </div>
-    </div>
-    <!-- pop -->
-    <form [formGroup]="formGroupStatus" *ngIf="showStatus">
+    </div> -->
+<!-- pop -->
+<!-- <form [formGroup]="formGroupStatus" *ngIf="showStatus">
       <br /><br />
       <div style="width: 170px" class="card flex justify-content-center">
         <p-menu [model]="listStatus" styleClass="w-full md:w-5rem">
           <ng-template pTemplate="item" let-item let-i>
-            <div pRipple class="flex align-items-center p-menuitem-link" (click)="showStatus = !showStatus">
-              <span [style]="{ color: item.color }" class="pi pi-stop-circle"></span>
-              <span (click)="status(item)" class="ml-2" [style]="{
+            <div
+              pRipple
+              class="flex align-items-center p-menuitem-link"
+              (click)="showStatus = !showStatus"
+            >
+              <span
+                [style]="{ color: item.color }"
+                class="pi pi-stop-circle"
+              ></span>
+              <span
+                (click)="status(item)"
+                class="ml-2"
+                [style]="{
                   color: 'gray',
                   'font-size': '12px',
                   'margin-left': '5%'
-                }">{{ item.name }}</span>
-              <!-- <span
+                }"
+                >{{ item.name }}</span
+              > -->
+<!-- <span
                 [class]="i%2 != 0 ? 'pi pi-check-circle' : 'pi pi-check'"
                 [style]="{ 'margin-left': '40%' }"
               ></span> -->
-            </div>
+<!-- </div>
           </ng-template>
         </p-menu>
       </div>
     </form>
-    <br />
-    <!-- Priority  -->
-    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+    <br /> -->
+<!-- Priority  -->
+<!-- <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-spinner-dotted"></span>
         עדיפות
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full" [style]="{ height: '20px' }">
-          <p-inputGroupAddon><span (click)="showPriority = !showPriority" class="pi pi-flag"
-              [style]="{ color: selectedPriority && selectedPriority.color }"></span>
+          <p-inputGroupAddon
+            ><span
+              (click)="showPriority = !showPriority"
+              class="pi pi-flag"
+              [style]="{ color: selectedPriority && selectedPriority.color }"
+            ></span>
           </p-inputGroupAddon>
         </p-inputGroup>
       </div>
-    </div>
-    <!-- pop -->
-    <form [formGroup]="formGroupStatus" *ngIf="showPriority">
+    </div> -->
+<!-- pop -->
+<!-- <form [formGroup]="formGroupStatus" *ngIf="showPriority">
       <br /><br />
       <div style="width: 170px" class="card flex justify-content-center">
         <p-menu [model]="listPriority" styleClass="w-full md:w-5rem">
           <ng-template pTemplate="item" let-item let-i>
-            <div pRipple class="flex align-items-center p-menuitem-link" (click)="showPriority = !showPriority">
-              <span [style]="{ color: item.color }" class="pi pi-stop-circle"></span>
-              <span (click)="priority(item)" class="ml-2" [style]="{
+            <div
+              pRipple
+              class="flex align-items-center p-menuitem-link"
+              (click)="showPriority = !showPriority"
+            >
+              <span
+                [style]="{ color: item.color }"
+                class="pi pi-stop-circle"
+              ></span>
+              <span
+                (click)="priority(item)"
+                class="ml-2"
+                [style]="{
                   color: 'gray',
                   'font-size': '12px',
                   'margin-left': '5%'
-                }">{{ item.name }}</span>
+                }"
+                >{{ item.name }}</span
+              >
             </div>
           </ng-template>
         </p-menu>
       </div>
     </form>
-    <br /><br />
-    <!-- Tags -->
-    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+    <br /><br /> -->
+<!-- Tags -->
+<!-- <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-tag"></span>
         תגים
-      </p>
-      <!-- buttons -->
-      <div style="margin-left: 100px">
+      </p> -->
+<!-- buttons -->
+<!-- <div style="margin-left: 100px">
         <p-inputGroup class="w-full md:w-30rem flex-container">
-          <button pButton (click)="showTagsList = !showTagsList"
-            [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }" icon="pi pi-tag" [outlined]="true"
-            severity="secondary">
-          </button>
-          <button pButton (click)="showTags = !showTags"
-            [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }" label="חדש" [outlined]="true"
-            severity="secondary"></button>
-          <!--  -->
-          <button *ngFor="let button of buttons; let i = index"
-            [ngStyle]="{ backgroundColor: button.color, color: 'white' }" class="custom-button"
-            (click)="removeButton(i)">
+          <p-button
+            (click)="showTagsList = !showTagsList"
+            [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
+            icon="pi pi-tag"
+            [outlined]="true"
+            severity="secondary"
+          >
+          </p-button>
+          <p-button
+            (click)="showTags = !showTags"
+            [style]="{ height: '20px', marginRight: '10px', marginTop: '5px' }"
+            label="new"
+            [outlined]="true"
+            severity="secondary"
+          ></p-button> -->
+<!--  -->
+<!-- <button
+            *ngFor="let button of buttons; let i = index"
+            [ngStyle]="{ backgroundColor: button.color, color: 'white' }"
+            class="custom-button"
+            (click)="removeButton(i)"
+          >
             {{ button.text }}
-            <span (click)="buttons.splice(i, 1)" [ngClass]="{ bounce: i < buttons.length - 1 }" class="delete-button">
+            <span
+              (click)="buttons.splice(i, 1)"
+              [ngClass]="{ bounce: i < buttons.length - 1 }"
+              class="delete-button"
+            >
               x
             </span>
           </button>
         </p-inputGroup>
       </div>
-    </div>
-    <br /><br />
-    <!-- pop -->
-    <form [formGroup]="formGroupUser" *ngIf="showTagsList">
-      <p-listbox [options]="tags!" [filter]="true" formControlName="selectedUser" optionLabel="text"
-        [style]="{ width: '15rem' }" [listStyle]="{ 'max-height': '400px' }" (onChange)="showTagsList =!showTagsList">
+    </div> -->
+<!-- <br /><br /> -->
+<!-- pop -->
+<!-- <form [formGroup]="formGroupUser" *ngIf="showTagsList">
+      <p-listbox
+        [options]="tags!"
+        [filter]="true"
+        formControlName="selectedUser"
+        optionLabel="text"
+        [style]="{ width: '15rem' }"
+        [listStyle]="{ 'max-height': '400px' }"
+        (onChange)="showTagsList = !showTagsList"
+      >
         <ng-template let-user pTemplate="item">
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-              <span [style]="{ color: user.color }" class="pi pi-stop-circle"></span>
-              <span (click)="tag(user)" class="ml-2" [style]="{
+              <span
+                [style]="{ color: user.color }"
+                class="pi pi-stop-circle"
+              ></span>
+              <span
+                (click)="tag(user)"
+                class="ml-2"
+                [style]="{
                   color: 'gray',
                   'font-size': '12px',
                   'margin-left': '5%'
-                }">{{ user.text }}</span>
+                }"
+                >{{ user.text }}</span
+              >
               <span style="margin-left: 5%">{{ user.userName }}</span>
             </div>
           </div>
         </ng-template>
       </p-listbox>
-    </form>
-    <!--  -->
-    <div style="width: 40%" *ngIf="showTags">
+    </form> -->
+<!--  -->
+<!-- <div style="width: 40%" *ngIf="showTags">
       <p>בחירת צבע:</p>
-      <p-colorPicker [(ngModel)]="selectedColor" [style]="{ width: '250px' }" [inline]="true"></p-colorPicker>
-      <p-inputGroup>
-        <!-- <p-inputGroupAddon>טקסט</p-inputGroupAddon> -->
-        <!-- <input
+      <p-colorPicker
+        [(ngModel)]="selectedColor"
+        [style]="{ width: '250px' }"
+        [inline]="true"
+      ></p-colorPicker>
+      <p-inputGroup> -->
+<!-- <p-inputGroupAddon>טקסט</p-inputGroupAddon> -->
+<!-- <input
           [style]="{ width: '10%' }"
           type="text"
           pInputText
           placeholder="Example"
           [(ngModel)]="buttonText"
         /> -->
-        <!-- <p-inputGroupAddon>
+<!-- <p-inputGroupAddon>
           <span id="divHover" (click)="createTag()" class="pi pi-check"></span>
         </p-inputGroupAddon> -->
-        <div style="width: 65%">
-          <input type="text" [style]="{ width: '100%', height: '20px' }" pInputText placeholder="Example"
-            (keyup.enter)="createTag()" [(ngModel)]="buttonText" />
+<!-- <div style="width: 65%">
+          <input
+            type="text"
+            [style]="{ width: '100%', height: '20px' }"
+            pInputText
+            placeholder="Example"
+            (keyup.enter)="createTag()"
+            [(ngModel)]="buttonText"
+          />
         </div>
       </p-inputGroup>
-    </div>
-    <!-- Dates -->
-    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+    </div> -->
+<!-- Dates -->
+<!-- <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-calendar-plus"></span>
         תאריכים
       </p>
       <div style="margin-left: 85px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
-          <p-calendar [style]="{ height: '20px', width: '250px' }" [iconDisplay]="'input'" [showIcon]="true"
-            inputId="icondisplay" [(ngModel)]="rangeDates" selectionMode="range" (ngModelChange)="onDateSelect($event)"
-            dateFormat="yy/mm/dd" />
+          <p-calendar
+            [style]="{ height: '20px', width: '250px' }"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            inputId="icondisplay"
+            [(ngModel)]="rangeDates"
+            selectionMode="range"
+            (ngModelChange)="onDateSelect($event)"
+            dateFormat="yy/mm/dd"
+          ></p-calendar>
         </p-inputGroup>
       </div>
     </div>
-    <br /><br />
-    <!-- Client -->
-    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+    <br /><br /> -->
+<!-- Client -->
+<!-- <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-users"></span>
         לקוחות
       </p>
       <div style="margin-left: 85px; width: 32%">
         <p-inputGroup class="w-full" [style]="{ height: '20px' }">
-          <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"><span
-              (click)="showClients = !showClients" class="pi pi-user"></span></p-inputGroupAddon>
+          <p-inputGroupAddon [style]="{ width: '20px' }" *ngIf="!selectedClient"
+            ><span
+              (click)="showClients = !showClients"
+              class="pi pi-user"
+            ></span
+          ></p-inputGroupAddon>
           <div (click)="showClients = !showClients">
-            <app-icon-profile *ngIf="selectedClient"
-              [userName]="selectedClient.firstName && selectedClient.firstName"></app-icon-profile>
+            <app-icon-profile
+              *ngIf="selectedClient"
+              [userName]="selectedClient.firstName && selectedClient.firstName"
+            ></app-icon-profile>
           </div>
-        </p-inputGroup>
-        <!-- <p-multiSelect
+        </p-inputGroup> -->
+<!-- <p-multiSelect
           [options]="clients"
           [(ngModel)]="selectedClients"
           name="selectedClients"
@@ -267,72 +383,100 @@
             </div>
           </ng-template>
         </p-multiSelect> -->
-      </div>
-    </div>
-    <!-- pop -->
-    <form [formGroup]="formGroupClient" *ngIf="showClients">
+<!-- </div>
+    </div> -->
+<!-- pop -->
+<!-- <form [formGroup]="formGroupClient" *ngIf="showClients">
       <br /><br />
-      <p-listbox [options]="clients" [filter]="true" formControlName="selectedClient" [(ngModel)]="selectedClient"
-        optionLabel="name" [style]="{ width: '15rem' }" [listStyle]="{ 'max-height': '400px' }"
-        (onChange)="showClients = !showClients">
+      <p-listbox
+        [options]="clients"
+        [filter]="true"
+        formControlName="selectedClient"
+        [(ngModel)]="selectedClient"
+        optionLabel="name"
+        [style]="{ width: '15rem' }"
+        [listStyle]="{ 'max-height': '400px' }"
+        (onChange)="showClients = !showClients"
+      >
         <ng-template let-client pTemplate="item">
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-              <app-icon-profile [userName]="client.firstName" [email]="client.email"></app-icon-profile>
+              <app-icon-profile
+                [userName]="client.firstName"
+                [email]="client.email"
+              ></app-icon-profile>
               <span style="margin-left: 5%">{{
                 client.firstName && client.firstName
-                }}</span>
+              }}</span>
             </div>
           </div>
         </ng-template>
       </p-listbox>
     </form>
-    <br /><br />
-    <!-- description -->
-    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+    <br /><br /> -->
+<!-- description -->
+<!-- <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-users"></span>
         תיאור
       </p>
       <div style="margin-left: 50px">
         <p-inputGroup class="w-full md:w-30rem" [style]="{ height: '20px' }">
-          <p-inputGroupAddon><span (click)="showDescription = !showDescription"
-              class="pi pi-pencil"></span></p-inputGroupAddon>
+          <p-inputGroupAddon
+            ><span
+              (click)="showDescription = !showDescription"
+              class="pi pi-pencil"
+            ></span
+          ></p-inputGroupAddon>
         </p-inputGroup>
       </div>
     </div>
-    <br /><br />
-    <!-- pop -->
-    <app-editor *ngIf="showDescription && !currentTask" [initialContent]="htmlContent"
-      (contentChange)="onContentChange($event)"></app-editor>
-    <app-editor *ngIf="showDescription && currentTask" [initialContent]="currentTask!.description"
-      (contentChange)="onContentChange($event)"></app-editor>
-    <!-- upload doc -->
-    <div style="display: flex; align-items: center; height: 50px" id="divHover">
+    <br /><br /> -->
+<!-- pop -->
+<!-- <app-editor
+      *ngIf="showDescription && !currentTask"
+      [initialContent]="htmlContent"
+      (contentChange)="onContentChange($event)"
+    ></app-editor>
+    <app-editor
+      *ngIf="showDescription && currentTask"
+      [initialContent]="currentTask!.description"
+      (contentChange)="onContentChange($event)"
+    ></app-editor> -->
+<!-- upload doc -->
+<!-- <div style="display: flex; align-items: center; height: 50px" id="divHover">
       <p style="margin-top: 2%; margin-right: 5%">
         <span class="pi pi-file-o"></span>
         העלאת מסמכים
       </p>
-      <div>
-        <p-inputGroup class="w-full" [style]="{ height: '20px', marginRight: '15%' }">
-          <p-inputGroupAddon><span (click)="showDoc = !showDoc" class="pi pi-file-plus"></span>
+      <div style="margin-right: 10%">
+        <p-inputGroup
+          class="w-full"
+          [style]="{ height: '20px', marginRight: '15%' }"
+        >
+          <p-inputGroupAddon style="margin-right: 10%"
+            ><span (click)="showDoc = !showDoc" class="pi pi-file-plus"></span>
           </p-inputGroupAddon>
         </p-inputGroup>
       </div>
+    </div> -->
+<!-- array id -->
+<!-- <app-upload-doc-task
+      *ngIf="showDoc"
+      [idClient]="selectedClients[0] && selectedClients[0]._id"
+      (responseReceived)="handleResponse($event)"
+    >
+    </app-upload-doc-task> -->
+<!-- drive image -->
+<!-- <div *ngFor="let image of images">
+      <a [href]="image" download="{{ image }}"
+        >{{ image }} -->
+<!-- <button>Download</button> -->
+<!-- </a>
     </div>
-    <!-- array id -->
-    <app-upload-doc-task *ngIf="showDoc" [idClient]="selectedClients[0] && selectedClients[0]._id"
-      (responseReceived)="handleResponse($event)">
-    </app-upload-doc-task>
-    <!-- drive image -->
-    <div *ngFor="let image of images">
-      <a [href]="image" download="{{ image }}">{{ image }}
-        <!-- <button>Download</button> -->
-      </a>
-    </div>
-    <p-divider></p-divider>
-    <!--  -->
-    <!-- <p-tabMenu 
+    <p-divider></p-divider> -->
+<!--  -->
+<!-- <p-tabMenu 
     [model]="additionTask" 
     [activeItem]="activeItem" 
     (activeItemChange)="onActiveItemChange($event)" />
@@ -340,19 +484,423 @@
       <app-task-check-list></app-task-check-list>
     </div> -->
 
-    <!-- checklists and SubTasks-->
-    <div *ngIf="parent==null" class="card">
+<!-- checklists and SubTasks-->
+<!-- <div *ngIf="parent == null" class="card">
       <p-tabView>
         <p-tabPanel header="רשימות">
-          <div *ngFor="let list of checkList" style="padding: 5px;">
-            <app-task-check-list [checkList]=" list" (save)="updateList($event)" (delete)="deleteList($event)">
+          <div *ngFor="let list of checkList" style="padding: 5px">
+            <app-task-check-list
+              [checkList]="list"
+              (save)="updateList($event)"
+              (delete)="deleteList($event)"
+            >
             </app-task-check-list>
           </div>
-          <p *ngIf="checkList.length==0">אין רשימות</p>
+          <p *ngIf="checkList.length == 0">אין רשימות</p> -->
+
+<!-- create new list -->
+<!-- <p-dropdown
+            (onChange)="createList($event)"
+            [options]="groupedLists"
+            [(ngModel)]="selectedList"
+            placeholder="{{ selectPlaceholder }}"
+            [group]="true"
+            ngModel
+            #dropdownModel="ngModel"
+            name="selectedList"
+          >
+            <ng-template let-group pTemplate="group">
+              <div class="flex align-items-center">
+                <div>
+                  <span>{{ group.label }}</span>
+                </div>
+              </div>
+            </ng-template>
+          </p-dropdown> -->
+
+<!-- pop for new list-->
+<!-- <p-dialog
+            header="רשימה חדשה"
+            [modal]="true"
+            [(visible)]="newList"
+            [style]="{ width: '25rem' }"
+          >
+            <span class="p-text-secondary block mb-5">צור את הרשימה שלך</span>
+            <div class="flex align-items-center gap-3 mb-3">
+              <label for="name" class="font-semibold w-6rem">שם הרשימה</label>
+              <input
+                pInputText
+                id="name"
+                [(ngModel)]="newListName"
+                class="flex-auto"
+                autocomplete="off"
+              />
+            </div>
+            <div class="flex justify-content-end gap-2">
+              <p-button
+                label="ביטול"
+                severity="secondary"
+                (onClick)="visible = false"
+              ></p-button>
+              <p-button label="אישור" (onClick)="addNewList()"></p-button>
+            </div>
+          </p-dialog>
+        </p-tabPanel>
+
+        <p-tabPanel header="משימות משניות">
+          <div>
+            <app-sub-task [subTasks]="subTasks" [parentId]="id"></app-sub-task>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+    <ng-template pTemplate="footer">
+      <div class="flex gap-3 mt-1" style="margin-left: 70%">
+        <p-button
+          label="Cancel"
+          icon="pi pi-undo"
+          [text]="true"
+          [raised]="true"
+          severity="danger"
+          (click)="cancel()"
+        ></p-button>
+        <p-button
+          label="Save"
+          icon="pi pi-check"
+          [text]="true"
+          [raised]="true"
+          (click)="showDialog()"
+        ></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</div> -->
+<!--  -->
+<!-- ================================================== -->
+<!-- new style -->
+
+<div class="centered-container new-style-card">
+  <p-card header="משימה" subheader="ליצור ולערוך משימות">
+    <p-divider></p-divider>
+    <!-- Task Name -->
+    <div class="one-one">
+      <p>
+        <b>שם המשימה </b>
+        <!-- <span class="pi pi-clipboard"></span -->
+      </p>
+      <input
+        style="width: 100%"
+        class="input-task-name"
+        type="text"
+        pInputText
+        [(ngModel)]="taskName"
+      />
+    </div>
+
+    <!-- Description -->
+    <div class="one-one">
+      <p>
+        <b> תאור </b>
+        <!-- <span class="pi pi-equals"></span -->
+      </p>
+      <app-editor
+        *ngIf="!currentTask"
+        [initialContent]="htmlContent"
+        (contentChange)="onContentChange($event)"
+      ></app-editor>
+      <app-editor
+        *ngIf="currentTask"
+        [initialContent]="currentTask!.description"
+        (contentChange)="onContentChange($event)"
+      ></app-editor>
+    </div>
+
+    <div class="one-one">
+      <div class="calendar-container">
+        <div class="calendar-item">
+          <p class="p-date">
+            <b> טווח תאריכים </b>
+            <!-- <span class="pi pi-calendar"></span> -->
+          </p>
+          <p-calendar
+            [style]="{ width: '100%' }"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            inputId="icondisplay"
+            [(ngModel)]="rangeDates"
+            selectionMode="range"
+            (ngModelChange)="onDateSelect($event)"
+            dateFormat="yy/mm/dd"
+          ></p-calendar>
+        </div>
+        <div class="calendar-item">
+          <p class="p-date">
+            <b> תאריך ביצוע </b>
+            <!-- <span class="pi pi-calendar"></span> -->
+          </p>
+          <p-calendar
+            [style]="{ width: '100%' }"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            inputId="icondisplay"
+            [(ngModel)]="dueDate"
+            dateFormat="yy/mm/dd"
+          ></p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="one-one">
+      <p>
+        <b> עובדים </b>
+        <!-- <span class="pi pi-user"></span> -->
+      </p>
+      <p-multiSelect
+        [options]="users"
+        [(ngModel)]="selectedUsers"
+        required
+        placeholder="בחר עובדים "
+        [style]="{ height: '50px', width: '100%' }"
+      >
+        <ng-template let-user pTemplate="item">
+          <div class="avatar-item">
+            <app-icon-profile
+              class="avatar"
+              [userName]="user.userName"
+            ></app-icon-profile>
+            <span>{{ user.userName }}</span>
+          </div>
+        </ng-template>
+        <p *ngIf="!selectedUsers || selectedUsers.length < 1">בחר עובדים</p>
+        <ng-template style="display: flex" let-user pTemplate="selectedItems">
+          <div class="selected-items-container" style="display: flex">
+            <div
+              *ngFor="let selectedUser of selectedUsers"
+              class="selected-item"
+              style="margin-right: 10px"
+            >
+              <app-icon-profile
+                class="avatar"
+                [userName]="selectedUser.userName"
+              ></app-icon-profile>
+            </div>
+          </div>
+        </ng-template>
+      </p-multiSelect>
+    </div>
+
+    <div class="one-one">
+      <div class="status-priority-container">
+        <div class="status-item">
+          <p class="status-label">
+            <b> סטטוס </b>
+            <!-- <span class="pi pi-spinner-dotted"></span> -->
+          </p>
+          <p-dropdown
+            [style]="{ width: '100%', direction: 'ltr' }"
+            [options]="listStatus"
+            [(ngModel)]="selectStatus"
+            optionLabel="name"
+            [showClear]="true"
+            placeholder="בחר סטטוס"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="custom-selected-item" *ngIf="selectStatus">
+                <span
+                  [style]="{ color: selectStatus.color }"
+                  class="pi pi-spinner-dotted"
+                ></span>
+                <div>{{ selectStatus.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-s pTemplate="item">
+              <div class="custom-item">
+                <span
+                  [style]="{ color: s.color }"
+                  class="pi pi-spinner-dotted"
+                ></span>
+                <div>{{ s.name }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+        <div class="priority-item">
+          <p class="priority-label">
+            <b> עדיפות </b>
+            <!-- <span class="pi pi-flag"></span> -->
+          </p>
+          <p-dropdown
+            [style]="{ width: '100%', direction: 'ltr' }"
+            [options]="listPriority"
+            [(ngModel)]="selectedPriority"
+            optionLabel="name"
+            [showClear]="true"
+            placeholder="בחר עדיפות"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="custom-selected-item" *ngIf="selectedPriority">
+                <span
+                  [style]="{ color: selectedPriority.color }"
+                  class="pi pi-flag"
+                ></span>
+                <div>{{ selectedPriority.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-s pTemplate="item">
+              <div class="custom-item">
+                <span [style]="{ color: s.color }" class="pi pi-flag"></span>
+                <div>{{ s.name }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="one-one">
+      <div class="one-one-container">
+        <div *ngIf="allClient" class="item">
+          <p>
+            <b> לקוחות </b>
+            <!-- <span class="pi pi-users"></span> -->
+          </p>
+          <div class="card flex justify-content-center">
+            <p-dropdown
+              [style]="{ width: '100%', direction: 'ltr' }"
+              [options]="clients"
+              [(ngModel)]="selectedClient"
+              optionLabel="firstName"
+              [showClear]="true"
+              placeholder="בחר לקוח"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div class="custom-selected-item" *ngIf="selectedClient">
+                  <app-icon-profile
+                    [userName]="selectedClient.firstName"
+                    [email]="selectedClient.email"
+                  ></app-icon-profile>
+                  <div>{{ selectedClient.firstName }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-country pTemplate="item">
+                <div class="custom-item">
+                  <app-icon-profile
+                    [userName]="country.firstName"
+                    [email]="country.email"
+                  ></app-icon-profile>
+                  <div>{{ country.firstName }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="item">
+          <p>
+            <b> תגיות </b>
+            <!-- <span class="pi pi-tag"></span> -->
+          </p>
+          <p-multiSelect
+            [options]="tags"
+            [(ngModel)]="tags2"
+            required
+            placeholder="בחר תגיות"
+            [style]="{ height: '51px', width: '100%' }"
+          >
+            <ng-template let-t pTemplate="item">
+              <div class="avatar-item">
+                <span
+                  [style]="{ color: t.color }"
+                  class="pi pi-stop-circle"
+                ></span>
+                <span>{{ t.text }}</span>
+              </div>
+            </ng-template>
+            <ng-template style="display: flex" let-t pTemplate="selectedItems">
+              <div class="selected-items-container" style="display: flex">
+                <button
+                  *ngFor="let button of tags2; let i = index"
+                  [ngStyle]="{ backgroundColor: button.color, color: 'white' }"
+                  class="custom-button"
+                  (click)="removeButton(i)"
+                >
+                  {{ button.text }}
+                  <span
+                    (click)="removeButton(i, $event)"
+                    [ngClass]="{ bounce: i < tags2.length - 1 }"
+                    class="delete-button"
+                  >
+                    x
+                  </span>
+                </button>
+              </div>
+            </ng-template>
+          </p-multiSelect>
+        </div>
+        <div class="item">
+          <div class="button-container">
+            <p-tag (click)="showTag2 = !showTag2" value="תגית חדשה"></p-tag>
+          </div>
+          <div *ngIf="showTag2" class="color-picker-container">
+            <p-colorPicker
+              [style]="{ width: '30px', height: '30px' }"
+              [(ngModel)]="color"
+            ></p-colorPicker>
+            <input
+              (keyup.enter)="createTag()"
+              type="text"
+              pInputText
+              [(ngModel)]="value"
+              placeholder="הקלד תגיות חדשות"
+              class="input-tag"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      style="
+        background-color: rgb(246, 247, 247);
+        padding: 3%;
+        border-radius: 10px;
+      "
+      class="one-one"
+    >
+      <app-upload-doc-task
+        *ngIf="selectedClient"
+        [idClient]="selectedClient && selectedClients._id"
+        (responseReceived)="handleResponse($event)"
+      >
+      </app-upload-doc-task>
+      <!-- drive image -->
+      <div *ngFor="let image of images">
+        <a [href]="image" download="{{ image }}"
+          >{{ image }}
+          <!-- <button>Download</button> -->
+        </a>
+      </div>
+    </div>
+    <div *ngIf="parent == null" class="card">
+      <p-tabView>
+        <p-tabPanel header="רשימות">
+          <div *ngFor="let list of checkList" style="padding: 5px">
+            <app-task-check-list
+              [checkList]="list"
+              (save)="updateList($event)"
+              (delete)="deleteList($event)"
+            >
+            </app-task-check-list>
+          </div>
+          <p *ngIf="checkList.length == 0">אין רשימות</p>
 
           <!-- create new list -->
-          <p-dropdown (onChange)="createList($event)" [options]="groupedLists" [(ngModel)]="selectedList"
-            placeholder="{{selectPlaceholder}}" [group]="true" ngModel #dropdownModel="ngModel" name="selectedList">
+          <p-dropdown
+            (onChange)="createList($event)"
+            [options]="groupedLists"
+            [(ngModel)]="selectedList"
+            placeholder="{{ selectPlaceholder }}"
+            [group]="true"
+            ngModel
+            #dropdownModel="ngModel"
+            name="selectedList"
+          >
             <ng-template let-group pTemplate="group">
               <div class="flex align-items-center">
                 <div>
@@ -363,18 +911,30 @@
           </p-dropdown>
 
           <!-- pop for new list-->
-          <p-dialog header="רשימה חדשה" [modal]="true" [(visible)]="newList" [style]="{ width: '25rem' }">
+          <p-dialog
+            header="רשימה חדשה"
+            [modal]="true"
+            [(visible)]="newList"
+            [style]="{ width: '25rem' }"
+          >
             <span class="p-text-secondary block mb-5">צור את הרשימה שלך</span>
             <div class="flex align-items-center gap-3 mb-3">
               <label for="name" class="font-semibold w-6rem">שם הרשימה</label>
-              <input pInputText id="name" [(ngModel)]="newListName" class="flex-auto" autocomplete="off" />
+              <input
+                pInputText
+                id="name"
+                [(ngModel)]="newListName"
+                class="flex-auto"
+                autocomplete="off"
+              />
             </div>
             <div class="flex justify-content-end gap-2">
-              <button pButton label="ביטול" icon="pi pi-undo" severity="danger" (click)="visible = false"
-                class="p-button-text p-button-raised p-button-rounded"></button>
-              <button pButton label="אישור" icon="pi pi-check" (click)="addNewList()"
-                class="p-button-text p-button-raised p-button-rounded"></button>
-
+              <p-button
+                label="ביטול"
+                severity="secondary"
+                (onClick)="visible = false"
+              ></p-button>
+              <p-button label="אישור" (onClick)="addNewList()"></p-button>
             </div>
           </p-dialog>
         </p-tabPanel>
@@ -384,35 +944,58 @@
             <app-sub-task [subTasks]="subTasks" [parentId]="id"></app-sub-task>
           </div>
         </p-tabPanel>
-
       </p-tabView>
     </div>
-
-    <!--  -->
-    <!-- footer -->
     <ng-template pTemplate="footer">
-      <div class="flex gap-3 mt-1" style="margin-left: 70%">
-        <button pButton label="ביטול" icon="pi pi-undo" severity="danger" (click)="cancel()"
-          class="p-button-text p-button-raised p-button-rounded"></button>
-        <button pButton label="אישור" icon="pi pi-check" (click)="showDialog()"
-          class="p-button-text p-button-raised p-button-rounded"></button>
+      <div class="one-one">
+        <div>
+          <p-button
+            label="שמור"
+            [raised]="true"
+            class="custom-button"
+            (click)="showDialog()"
+            icon="pi pi-check"
+            [style]="{ borderRadius: '10px' }"
+          ></p-button>
+
+          <p-button
+            label="ביטול"
+            icon="pi pi-undo"
+            [text]="true"
+            [raised]="true"
+            class="custom-button"
+            (click)="cancel()"
+            [style]="{ borderRadius: '10px' }"
+          ></p-button>
+        </div>
       </div>
     </ng-template>
-
-
-
   </p-card>
 </div>
 <!--  -->
 
-<p-dialog header="Google Calendar" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-  <span class="p-text-secondary block mb-5">להוסיף את המשימה הזו ליומן גוגל שלך?</span>
+<p-dialog
+  header="Google Calendar"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <span class="p-text-secondary block mb-5"
+    >להוסיף את המשימה הזו ליומן גוגך שלך?</span
+  >
   <br />
-  <div>
-    <button pButton icon="pi pi-times" label="לא" severity="secondary" (click)="cancelDialog()"
-      class="p-button-text p-button-raised p-button-rounded"></button>
-    <button pButton icon="pi pi-check" label="כן" (click)="createGoogleTask()"
-      class="p-button-text p-button-raised p-button-rounded"></button>
+  <div class="flex justify-content-end gap-2">
+    <p-button
+      icon="pi pi-times"
+      label="לא"
+      severity="secondary"
+      (click)="cancelDialog()"
+    ></p-button>
+    <p-button
+      icon="pi pi-check"
+      label="כן"
+      (click)="createGoogleTask()"
+    ></p-button>
   </div>
 </p-dialog>
 

@@ -36,7 +36,6 @@
 
 :host ::ng-deep .container {
   width: 100%;
-
 }
 
 .search-results li:hover {
@@ -49,11 +48,6 @@
   margin-left: 45%;
 }
 
-/* th,
-td {
-  text-align: center;
-} */
-
 .clickable-text {
   cursor: pointer;
   transition: transform 10s;
@@ -64,50 +58,7 @@ td {
   color: rgb(88, 74, 244);
 }
 
-/* .highlight {
-  background-color: #edecec;
-}
-
-.button -rounded {
-  border-radius: 20%;
-  margin: 1%;
-} */
-
 :host ::ng-deep input {
   width: 8rem;
   height: 2rem;
 }
-
-/* :host ::ng-deep.button :not(:disabled) {
-  color: rgb(233, 35, 35);
-
-} */
-
-/* .button  {
-  margin: 1rem;
-} */
-
-/* .custom-table {
-  background-color: cornflowerblue;
-  color: brown;
-    max-width: 100%; 
-    overflow-x: hidden; 
-} */
-
-/* :host ::ng-deep .p-table {
-  width: 100%;
-  color: chartreuse;
-  background-color: blueviolet;
-}
-
-#c{
-  background-color: coral;
-}
-
-:host ::ng-deep .w{
-  background-color: aqua;
-}
-
-.o{
-  background-color: brown;
-} */

@@ -3,11 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { WorkLogController } from './controller/workLog.controller';
 import { WorkLogService } from './service/workLog.service';
-import { WorkLogModel ,WorkLog } from './model/workLog.model';
+import { WorkLogModel, WorkLog } from './model/workLog.model';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(), // טוען משתני סביבה מקובץ .env
+    ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -20,4 +20,4 @@ import { WorkLogModel ,WorkLog } from './model/workLog.model';
   controllers: [WorkLogController],
   providers: [WorkLogService],
 })
-export class TimesheetModule {}
+export class TimesheetModule { }

@@ -11,10 +11,7 @@ export class PaymentDetailsService {
     constructor(@InjectModel('PaymentDetails') private readonly PaymentDetailsModel: Model<PaymentDetails>) {}
 
     async createPaymentDetails(createPaymentDetailsDto: CreatePaymentDetailsDto): Promise<PaymentDetails> {
-        const { sumForMonth,maxHours,frequency, dateStart, dateFinish, description } = createPaymentDetailsDto;
-        console.log('start create paymentDetails');
-        
-
+        const { sumForMonth,maxHours,frequency, dateStart, dateFinish, description } = createPaymentDetailsDto;      
         if (!sumForMonth || !dateStart) {
           throw new ValidationException('Missing required fields');
         }
@@ -26,10 +23,7 @@ export class PaymentDetailsService {
             dateStart, 
             dateFinish, 
             description 
-        });
-        console.log("createdPaymentDetails",createdPaymentDetails);
-        
-
+        });        
         return await createdPaymentDetails.save();
     }
 
@@ -43,6 +37,18 @@ export class PaymentDetailsService {
             throw new NotFoundException('PaymentDetails not found');
         }
         return paymentDetails;
+    }
+    async getPaymentDetailsById(id: string): Promise<PaymentDetails> {
+        try {
+            const PaymentDetails = await this.PaymentDetailsModel.findById(id).exec();
+            if (!PaymentDetails) {
+                throw new NotFoundException('PaymentDetails not found');
+            }
+            return PaymentDetails;
+        } catch (err) {
+            console.log(err);
+
+        }
     }
 
     async updatePaymentDetails(updatePaymentDetailsDto: UpdatePaymentDetailsDto): Promise<PaymentDetails> {
