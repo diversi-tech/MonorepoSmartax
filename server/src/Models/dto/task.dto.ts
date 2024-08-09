@@ -13,11 +13,13 @@ export class CreateTaskDto {
     
     @ApiProperty({ description: 'The task parent ID' })
     @IsString()
-    parent: string;
+    @IsOptional()
+    parent?: string;
 
+    @IsOptional()
     @ApiProperty({ description: 'The subTasks ID array' })
     @IsString()
-    subTasks: string[];
+    subTasks?: string[];
 
     @IsNotEmpty()
     @IsString()
