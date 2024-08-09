@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, UseFilters, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from 'server/src/common/filters/http-exception.filter';
-import { ApiBody, ApiTags} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags} from '@nestjs/swagger';
 import { FieldService } from 'server/src/services/field.service';
 import { CreateFieldDto, UpdateFieldDto } from 'server/src/Models/dto/field.dto';
 import { Field } from 'server/src/Models/field.model';
@@ -8,7 +8,7 @@ import { Field } from 'server/src/Models/field.model';
 @ApiTags('field')
 @Controller('field')
 @UseFilters(HttpExceptionFilter) 
-// @ApiBearerAuth()
+@ApiBearerAuth()
 export class FieldController {
 
     constructor(private readonly fieldservice: FieldService) { }

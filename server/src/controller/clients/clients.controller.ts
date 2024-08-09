@@ -3,7 +3,7 @@ import { HttpExceptionFilter } from '../../common/filters/http-exception.filter'
 import { Client } from '../../Models/client.model';
 import { CreateClientDto, UpdateClientDto } from '../../Models/dto/client.dto';
 import { ClientService } from '../../services/client.service';
-import { ApiOperation, ApiBody, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiBody, ApiProperty, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Tag } from '../../Models/tag.model';
 import { AuthGuard } from '../../guards/auth.guard';
 import { RoleGuard } from '../../guards/role.guard';
