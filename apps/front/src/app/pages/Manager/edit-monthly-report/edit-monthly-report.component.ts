@@ -9,7 +9,6 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
-import { StepField } from 'src/app/_models/stepField.module';
 
 @Component({
   selector: 'app-edit-monthly-report',
