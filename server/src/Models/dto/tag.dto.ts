@@ -22,8 +22,9 @@ export class CreateTagDto {
 export class UpdateTagDto {
     @ApiProperty()
     @IsNotEmpty()
-    @IsString()
-    id: string;
+    // @IsString()
+    @IsOptional()
+    id?: string;
 
     @ApiProperty({ type: String, required: false })
     @IsOptional()
