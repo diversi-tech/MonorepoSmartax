@@ -21,7 +21,6 @@ const httpOptions = {
 export class AuthService {
   private apiUrl = AUTH_ENDPOINT;
 
-  // פונקציה שתשמש כ-Callback
   private credentialResponseHandler: (email: string, password: string) => void = () => { };
 
   constructor(private http: HttpClient, private hashService: HashPasswordService, private storageService: StorageService, private router: Router
@@ -40,7 +39,7 @@ export class AuthService {
 
   logout(): Observable<number> {
     this.storageService.clean();
-    return new Observable<200>()
+    return new Observable<number>((observer) => observer.next(200));
     //exit from the server
     // try {
     //   return this.http.delete(this.apiUrl + '/signout').pipe(

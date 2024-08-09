@@ -597,7 +597,6 @@ export class TaskComponent implements OnInit {
       this.closeModal.emit();
     } else
       if (this.id != 'create') {
-        alert(false)
         newTask.checkList = this.checkList.map(c => c._id);
 
         this.tasksService.updateTask(this.id!, newTask).subscribe({
@@ -843,7 +842,6 @@ export class TaskComponent implements OnInit {
   }
   // google task
   subscribeToEventData() {
-    alert('se1');
     this.eventDataSubscription = this.googleTask.eventData$.subscribe(
       (eventData) => {
         if (eventData) {

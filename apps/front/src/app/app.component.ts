@@ -138,10 +138,10 @@ export class AppComponent {
   logout(): void {
     try {
       this.authService.logout().subscribe(
-        (status: number) => { 
+        (status: any) => { 
           console.log('Logout successful. Status:', status);
           this.storageService.clean();
-          this.ngOnInit();
+          window.location.reload()
           this.router.navigate(['/home']);    
         },
         (error: any) => {

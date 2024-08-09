@@ -273,7 +273,6 @@ export class ClientCreateTaxRefunds implements OnInit {
       this.thisSubject=year.yearNum
     }
     add(){
-      alert(this.thisSubject2)
       this.newYear.yearNum=this.thisSubject2
       this.yearService.createYear(this.newYear).subscribe(response => {
         this.yearList.push(response); 

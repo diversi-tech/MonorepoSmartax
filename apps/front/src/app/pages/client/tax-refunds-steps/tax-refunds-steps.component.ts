@@ -126,7 +126,6 @@ export class TaxRefundsStepsComponent {
         this.responseData
       );
       console.log('response from server', response);
-      alert('Successful update response');
       this.responseData = response;
       this.changes = {};
     } catch (error) {

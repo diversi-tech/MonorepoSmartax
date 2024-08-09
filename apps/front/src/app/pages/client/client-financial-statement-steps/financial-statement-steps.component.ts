@@ -139,7 +139,6 @@ export class FinancialStatementStepsComponent {
       const response = await this.financialStatementService.updateFinancialStatement(this.responseData._id, this.responseData);
 
       console.log("response from server", response);
-      alert("Successful update response");
       this.responseData = response;
       this.changes = {};
     } catch (error) {
