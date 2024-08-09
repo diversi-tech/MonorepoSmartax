@@ -6,10 +6,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Priority } from '../priority.model';
 import { Status } from '../status.model';
 import { CheckList } from '../checkList.model';
+import { Types } from 'mongoose';
 
 export class CreateTaskDto {
     @IsNotEmpty()
-    client: Client;
+    // client: Client;
+    client:Types.ObjectId
     
     @ApiProperty({ description: 'The task parent ID' })
     @IsString()
@@ -42,7 +44,8 @@ export class CreateTaskDto {
     status: Status;
 
     @IsOptional()
-    assignedTo: User[];
+    // assignedTo: User[];
+    assignedTo: Types.ObjectId
 
     @IsNotEmpty()
     tags: Tag[];
