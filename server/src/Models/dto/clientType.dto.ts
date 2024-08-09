@@ -17,12 +17,9 @@ export class CreateClientTypeDto {
     @IsString()
     name: string;
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsArray()
-    @IsString({ each: true })
-    tasks: string[]
-
+    @ApiProperty({ type: Array<String>, required: true })
+    @IsOptional()
+    tasks?:string[];
 
     @ApiProperty({ type: [CreateFieldDto], required: true })
     @IsOptional()
@@ -42,11 +39,11 @@ export class UpdateClientTypeDto {
     @IsString()
     name?: string;
     
-    @ApiProperty()
-    @IsNotEmpty()
     @IsArray()
+    @ApiProperty()
+    @IsOptional()
     @IsString({ each: true })
-    tasks: string[]
+    tasks?:string[];
 
     @ApiProperty({ type: Array<Field>})
     @IsOptional()

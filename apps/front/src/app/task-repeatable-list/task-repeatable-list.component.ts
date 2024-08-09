@@ -77,6 +77,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 })
 export class TaskRepeatableListComponent {
   frequencies: Frequency[] = [];
+
   tasks: RepeatableTask[] = [];
   toDoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
@@ -86,7 +87,9 @@ export class TaskRepeatableListComponent {
   progressValue: number = 0;
 
   searchTerm: string = '';
+
   showFilter: boolean = false;
+
   filter: {
     deadlineRange: [Date, Date] | null;
     client: Client | null;
@@ -100,12 +103,14 @@ export class TaskRepeatableListComponent {
     task: null,
     tags: [],
   };
+
   clientSuggestions: Client[] = [];
   userSuggestions: User[] = [];
   taskSuggestions: any[] = [];
   tagSuggestions: Tag[] = [];
   display: any;
   filterFirstStatus = true;
+
   constructor(
     private taskService: RepeatableTaskService,
     private userService: UserService,
@@ -115,6 +120,7 @@ export class TaskRepeatableListComponent {
     private messageService: MessageService,
     private frequencyService: FrequencyService
   ) {}
+
   ngOnInit(): void {
     this.getTasks();
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
@@ -125,6 +131,7 @@ export class TaskRepeatableListComponent {
       console.log(this.frequencies);
     });
   }
+
   getTasks(): void {
     this.taskService
       .getAllRepeatableTasks()
@@ -135,6 +142,7 @@ export class TaskRepeatableListComponent {
         console.log(this.progressValue);
       });
   }
+
   categorizeTasks(f: Frequency): RepeatableTask[] {
     return this.tasks.filter((task) => {
       {
@@ -142,8 +150,10 @@ export class TaskRepeatableListComponent {
       }
     });
   }
+
   searchTask(): void {
     console.log(typeof this.searchTerm);
+
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
     } else {
@@ -153,6 +163,7 @@ export class TaskRepeatableListComponent {
       console.log('filter: ', this.filteredTasks);
     }
   }
+
   showConfirmation(task: RepeatableTask): void {
     this.selectedTask = task;
     this.confirmationService.confirm({
@@ -172,6 +183,7 @@ export class TaskRepeatableListComponent {
   confirmDelete(task: RepeatableTask): void {
     this.deleteTask(task);
   }
+
   deleteTask(task: RepeatableTask): void {
     this.taskService.deleteRepeatableTask(task._id!).subscribe({
       next: () => {
@@ -180,15 +192,19 @@ export class TaskRepeatableListComponent {
       error: (err) => console.error('Error deleting task: ', err),
     });
   }
+
   reloadPage(): void {
     window.location.reload();
   }
+
   cancelDelete(): void {
     this.confirmationService.close();
   }
+
   toggleFilter(): void {
     this.showFilter = !this.showFilter;
   }
+
   searchClients(event: any): void {
     this.clientService.getAllClients().subscribe((clients: Client[]) => {
       this.clientSuggestions = clients.filter(
@@ -198,8 +214,10 @@ export class TaskRepeatableListComponent {
       );
     });
   }
+
   searchUsers(event: any): void {
     console.log(event.query);
+
     this.userService.getAllUsers().subscribe((users: any[]) => {
       this.userSuggestions = users.filter(
         (user) =>
@@ -208,6 +226,7 @@ export class TaskRepeatableListComponent {
       );
     });
   }
+
   searchTasks(event: any): void {
     const query = event.query.toLowerCase().toLowerCase();
     this.taskSuggestions = this.tasks
@@ -216,6 +235,7 @@ export class TaskRepeatableListComponent {
       )
       .map((task) => ({ taskName: task.taskName }));
   }
+
   searchTags(event: any): void {
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
       this.tagSuggestions = tags.filter((tag) =>
@@ -224,28 +244,34 @@ export class TaskRepeatableListComponent {
       // this.filter.tags = tags;
     });
   }
+
   applyFilter() {
     this.display = false;
     this.filteredTasks = this.tasks.filter((task) => {
       this.filterFirstStatus = false;
+
       const deadlineMatch =
         !this.filter.deadlineRange ||
         (new Date(task.dueDate) >= this.filter.deadlineRange[0] &&
           new Date(task.dueDate) <= this.filter.deadlineRange[1]);
+
       // const clientMatch = !this.filter.client || task.client.firstName.includes(this.filter.client.firstName);
       const clientMatch =
         !this.filter.client ||
         (task.client &&
           task.client.firstName.includes(this.filter.client.firstName));
+
       // const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
       const userMatch =
         !this.filter.user ||
         (task.assignedTo[0] &&
           task.assignedTo[0].userName &&
           task.assignedTo[0].userName.includes(this.filter.user.userName));
+
       console.log(userMatch);
       console.log(this.filter.user);
       console.log(task.assignedTo[0].userName);
+
       const taskNameMatch =
         !this.filter.task || task.taskName.includes(this.filter.task.taskName);
       let tagsMatch = true;
@@ -256,6 +282,7 @@ export class TaskRepeatableListComponent {
           );
         });
       }
+
       console.log(
         deadlineMatch,
         clientMatch,
@@ -263,6 +290,7 @@ export class TaskRepeatableListComponent {
         taskNameMatch,
         tagsMatch
       );
+
       return (
         deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch
       );
@@ -297,16 +325,17 @@ export class TaskRepeatableListComponent {
       }
       return 0;
     });
-}
-progressDueDate() {
-  // const today = new Date();
-  // const tasksDueToday = this.tasks.filter(task => new Date(task.dueDate) >= today);
-  // return tasksDueToday.length;
-  const today = new Date();
-  const t = this.tasks.filter((obj) => {
-    const objDate = new Date(obj.dueDate);
-    return objDate < today;
-  });
-  return t.length;
-}
+  }
+
+  progressDueDate() {
+    // const today = new Date();
+    // const tasksDueToday = this.tasks.filter(task => new Date(task.dueDate) >= today);
+    // return tasksDueToday.length;
+    const today = new Date();
+    const t = this.tasks.filter((obj) => {
+      const objDate = new Date(obj.dueDate);
+      return objDate < today;
+    });
+    return t.length;
+  }
 }

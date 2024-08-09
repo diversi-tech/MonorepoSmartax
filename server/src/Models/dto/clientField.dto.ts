@@ -20,10 +20,10 @@ export class CreateClientFieldDto {
 }
 
 export class UpdateClientFieldDto {
-    // @ApiProperty()
-    // @IsNotEmpty()
-    // @IsString()
-    // _id: string;
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    id: string;
 
 
     @ApiProperty({ type: Field, required: true })

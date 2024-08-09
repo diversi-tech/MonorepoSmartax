@@ -21,8 +21,6 @@ import { Field } from '../../../_models/field.module';
 import { FieldService } from '../../../_services/field.service';
 import { Router, RouterLink } from '@angular/router';
 import { ClientTypeService } from '../../../_services/clientType.service';
-import { RepeatableTask } from '../../../_models/repeatable.module';
-import { RepeatableTaskService } from '../../../_services/repeatable.service';
 
 @Component({
   selector: 'app-type-client-create',
@@ -47,15 +45,15 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
   @Output() dataUpdated = new EventEmitter<void>();
 
   // @Input() create: string | undefined;
-  tasks: RepeatableTask[] = [];
-  selectedTask: RepeatableTask[] = [];
+  tasks: Task[] = [];
+  selectedTask: Task[] = [];
   selectedField: Field[] = [];
   fields: Field[] = [];
   value: string;
   tasksId: string[] = [];
 
   constructor(
-    private taskService: RepeatableTaskService,
+    private taskService: TaskService,
     private fieldService: FieldService,
     private r: Router,
     private clientTypeService: ClientTypeService
@@ -75,7 +73,7 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
       }
       if (this.type.tasks) {
         for (const taskId of this.type.tasks) {
-          this.taskService.searchRepeatableTask(taskId._id).subscribe({
+          this.taskService.searchTask(taskId).subscribe({
             next: (data) => {
               this.selectedTask.push(data);
               console.log(this.selectedTask);
@@ -121,7 +119,7 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
 
       if (this.type.tasks) {
         this.type.tasks.forEach((taskId) => {
-          this.taskService.searchRepeatableTask(taskId._id).subscribe({
+          this.taskService.searchTask(taskId).subscribe({
             next: (task) => this.selectedTask.push(task),
             error: (err) => console.error(err),
           });
@@ -165,7 +163,7 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     // else
     //   this.createType();
 
-    this.taskService.getAllRepeatableTasks().subscribe({
+    this.taskService.getAllTasks().subscribe({
       next: (data) => {
         console.log(data);
         this.tasks = data;
@@ -201,7 +199,7 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     });
     const c: ClientType = {
       name: this.value,
-      tasks: this.selectedTask,
+      tasks: this.tasksId,
       fields: this.selectedField,
     };
 
@@ -217,7 +215,7 @@ export class TypeClientCreateComponent implements OnInit, OnChanges {
     } else {
       const c: ClientType = {
         name: this.value,
-        tasks: this.selectedTask,
+        tasks: this.tasksId,
         fields: this.selectedField,
         _id: this.type._id,
       };

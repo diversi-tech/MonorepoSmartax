@@ -292,15 +292,6 @@ export class ClientSearchComponent implements OnInit {
 
   selectCurrentClient(client: Client) {
     this.currentClient = client;
-
-
-}
-navigateWithClientIds() {
-  const clientIds = this.choosedClients.map(client => client._id);
-  const queryParams = clientIds.join(',');
-  const url = `/taskSpe/create/${queryParams}`;
-  this.router.navigateByUrl(url);
-}
-
+  }
 
 }
