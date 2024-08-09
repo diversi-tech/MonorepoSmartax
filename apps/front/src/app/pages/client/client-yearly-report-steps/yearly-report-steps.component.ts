@@ -75,7 +75,7 @@ export class YearlyReportStepsComponent implements OnInit {
 
   groupSteps() {
     this.allStep.forEach((step) => {
-      const stepNumber = step.stepNumber; // Assuming stepNumber is the property you want to group by
+      const stepNumber = step.stepNumber; 
       if (!this.stepsByNumber[stepNumber]) {
         this.stepsByNumber[stepNumber] = [];
       }
@@ -129,10 +129,10 @@ export class YearlyReportStepsComponent implements OnInit {
     }
     console.log("this.responseData after updating status", this.responseData);
     try {
-      this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData).subscribe(data => {
+      this.yearlyReportService.updateYearlyReport(this.responseData._id, this.responseData)
+      .subscribe(data => {
         if(data){
          Swal.fire('Success', 'דוח שנתי עודכן בהצלחה', 'success');
-
         }
          this.responseData = data;
         this.changes = {};

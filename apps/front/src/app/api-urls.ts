@@ -1,7 +1,7 @@
-// export const API_URL = 'http://localhost:8080';
+export const API_URL = 'http://localhost:8080';
 import { environment } from '../environments/environment';
 
-export const API_URL = environment.apiUrl;
+// export const API_URL = environment.apiUrl;
 export const API_URL_APIGATEWAY = environment.apiUrlapigatway;
 // https://monoreposmartax-n13o.onrender.com/
 export const AUTH_ENDPOINT = `${API_URL}/auth`;
@@ -32,7 +32,7 @@ export const CHECKLIST_ENDPOINT = `${API_URL}/checkList`;
 export const CHECKLISTITEM_ENDPOINT = `${API_URL}/checkListItem`;
 export const IMPORTCLIENTS_ENDPOIMT = `${API_URL}/importclients`;
 export const CLIENTFIELD_ENDPOINT = `${API_URL}/ClientField`;
-export const MONTHLY_REPORT = `${API_URL}/monthly report`;
+export const MONTHLY_REPORT = `${API_URL}/monthly-report`;
 export const CALL_TOPIC = `${API_URL}/CallTopicController`;
 export const SENSITIVE_DATA = `${API_URL}/SensitiveData`;
 export const CLIENTS = `${API_URL}/clients`;
