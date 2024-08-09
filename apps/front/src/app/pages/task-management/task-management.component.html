@@ -87,10 +87,10 @@
   <div class="p-col-8" style="text-align: right; align-items: right">
     <div class="content-container">
       <div>
-        <div *ngIf="filteredTasks.length == 0">
           <div *ngFor="let status of statuses">
             <p-panel header="{{ status.name }}">
-              <p-table [value]="categorizeTasks(status)">
+              <p-table *ngIf="categorizeTasks(status).length != 0"
+                [value]="filteredTasks.length == 0 ? categorizeTasks(status) : filteredTasks ">
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">
                     <th style="width: auto; height: 50px">
@@ -161,9 +161,8 @@
               </p-table>
             </p-panel>
           </div>
-        </div>
 
-        <div *ngIf="filteredTasks.length > 0">
+        <!-- <div *ngIf="filteredTasks.length > 0">
           <p-panel header="Filtered Tasks">
             <p-table [value]="filteredTasks">
               <ng-template pTemplate="header">
@@ -235,8 +234,8 @@
               </ng-template>
             </p-table>
           </p-panel>
-        </div>
-      </div>
+        </div>-->
+      </div> 
     </div>
   </div>
 </div>
