@@ -12,7 +12,7 @@ export class SocketService {
   taskConfirmed$ = this.taskConfirmedSource.asObservable();
 
   constructor() {
-    this.socket = io('https://monoreposmartax.onrender.com');
+    this.socket = io('https://monoreposmartax-back.onrender.com');
 
     this.socket.on('connect', () => {
       console.log('מחובר לשרת WebSocket');
