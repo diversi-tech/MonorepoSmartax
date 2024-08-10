@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 import { Client } from './client.model';
 import { User } from '../Models/user.model';
 import { Tag } from './tag.model';
@@ -29,16 +29,16 @@ export class Task extends Document {
     @Prop()
     deadline: Date;
 
-    @Prop()
+    @Prop({ type: Types.ObjectId, ref: 'Status', required: true })
     status: Status;
 
-    @Prop()
+    @Prop({ type: Types.ObjectId, ref: 'User', required: true })
     assignedTo: User[];
 
-    @Prop({ type: [{ type: Tag }] })
+    @Prop({ type: Types.ObjectId, ref: 'Tag', required: true })
     tags: Tag[];
 
-    @Prop()
+    @Prop({ type: Types.ObjectId, ref: 'Priority', required: true })
     priority: Priority;
 
     @Prop()
