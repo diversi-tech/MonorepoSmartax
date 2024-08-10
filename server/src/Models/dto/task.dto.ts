@@ -44,7 +44,7 @@ export class CreateTaskDto {
     startDate: Date;
 
     @IsNotEmpty()
-    @IsString()
+    // @IsString()
     // status: Status;
     status: Types.ObjectId
 
@@ -57,7 +57,7 @@ export class CreateTaskDto {
     tags: Types.ObjectId[]
 
     @IsNotEmpty()
-    @IsString()
+    // @IsString()
     // priority: Priority;
     priority: Types.ObjectId
 
