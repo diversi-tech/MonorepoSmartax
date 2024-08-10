@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as ExcelJS from 'exceljs';
-import { CreateWorkLogDto, UpdateWorkLogDto, UpdateTimeEntryDto } from '../dto/workLog.dto';
-import { WorkLog, WorkLogDocument } from '../model/workLog.model';
+import { CreateWorkLogDto, UpdateWorkLogDto, UpdateTimeEntryDto } from '../Models/dto/workLog.dto';
+import { WorkLog, WorkLogDocument } from '../Models/workLog.model';
 
 @Injectable()
 export class WorkLogService {

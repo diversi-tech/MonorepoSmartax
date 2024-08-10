@@ -10,8 +10,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../_services/token.service';
-import { UpdateWorkLogDto } from '../../../../../../timesheet/src/dto/workLog.dto';
 import { User } from '../../../../../../server/src/Models/user.model';
+import { UpdateWorkLogDto } from '../../../../../../server/src/Models/dto/workLog.dto';
 
 @Component({
   selector: 'app-work-log',

@@ -5,6 +5,7 @@ import { UserController } from './controller/user/user.controller';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigModule } from '@nestjs/config';
 import { TasksController } from './controller/tasks/tasks.controller';
+import { WorkLogController } from './controller/worklog/workLog.controller';
 import { CommunicationsController } from './controller/communications/communications.controller';
 import { BillingController } from './controller/billing/billing.controller';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -142,6 +143,7 @@ import { TasksGateway } from './services/socket/socket.gateway';
 import { TaxRefundsService } from './services/taxRefunds.service';
 import { TaxRefundsController } from './controller/taxRefunds/taxRefunds.controller';
 import { taxRefundsModel, TaxRefunds } from './Models/taxRefunds.model';
+import { WorkLogModel, WorkLog } from './Models/workLog.model';
 import { YearArchive, YearArchiveModel } from './Models/yearArchive.model';
 import { YearArchiveController } from './controller/yearArchive/yearArchive.controller';
 import { YearArchiveService } from './services/yearArchive.service';
@@ -149,6 +151,7 @@ import { FinancialStatement, FinancialStatementModel } from './Models/financialS
 import { FinancialStatementController } from './controller/financialStatement/financialStatement.controller';
 import { FinancialStatementService } from './services/financialStatement.service';
 import { MonthlyReportService } from './services/monthlyReport.service';
+import { WorkLogService } from './services/workLog.service';
 import { MonthlyReportController } from './controller/monthlyReport/monthlyReport.controller';
 import { MonthlyReportModel,MonthlyReport } from './Models/monthlyReport.model';
 import { StepFieldMonthController } from './controller/stepFieldMonth/stepFieldMonth.controller';
@@ -196,6 +199,7 @@ import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.mod
   MongooseModule.forFeature([{ name: CheckList.name, schema: CheckListModel },]),
   MongooseModule.forFeature([{ name: CommunicationArchive.name, schema: communicationArchiveModel },]),
   MongooseModule.forFeature([{ name: TaxRefunds.name, schema: taxRefundsModel },]),
+  MongooseModule.forFeature([{ name: WorkLog.name, schema: WorkLogModel },]),
   MongooseModule.forFeature([
     { name: FinancialStatement.name, schema: FinancialStatementModel },
     { name: MonthlyReport.name, schema: MonthlyReportModel },
@@ -208,6 +212,7 @@ import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.mod
 
   ],
   controllers: [
+    WorkLogController ,
     YearArchiveController,
     AppController,
     CheckListItemController,
@@ -253,6 +258,7 @@ import { StepFieldMonth, stepFieldMonthModel } from './Models/stepFieldMonth.mod
   ],
 
   providers: [
+    WorkLogService,
     AppService,
     UserService,
     MailService,

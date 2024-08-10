@@ -18,7 +18,7 @@ export class TimeEntry {
   hoursWorked: number;
 }
 
-const TimeEntrySchema = SchemaFactory.createForClass(TimeEntry);
+const TimeEntryModel = SchemaFactory.createForClass(TimeEntry);
 
 @Schema()
 export class WorkLog {
@@ -28,7 +28,7 @@ export class WorkLog {
   @Prop({ required: true })
   date: Date;
 
-  @Prop({ type: [TimeEntrySchema], default: [] })
+  @Prop({ type: [TimeEntryModel], default: [] })
   timeEntries: TimeEntry[];
 
   @Prop()
