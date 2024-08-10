@@ -11,8 +11,8 @@ import { Task } from '../task.model';
 
 export class CreateTaskDto {
     @IsNotEmpty()
-    client: Client;
-    // client:Types.ObjectId
+    // client: Client;
+    client:Types.ObjectId
     
     @ApiProperty({ description: 'The task parent ID' })
     @IsString()
@@ -45,18 +45,21 @@ export class CreateTaskDto {
 
     @IsNotEmpty()
     @IsString()
-    status: Status;
+    // status: Status;
+    status: Types.ObjectId
 
     @IsOptional()
-    assignedTo: User[];
-    // assignedTo: Types.ObjectId
+    // assignedTo: User[];
+    assignedTo: Types.ObjectId[]
 
     @IsNotEmpty()
-    tags: Tag[];
+    // tags: Tag[];
+    tags: Types.ObjectId[]
 
     @IsNotEmpty()
     @IsString()
-    priority: Priority;
+    // priority: Priority;
+    priority: Types.ObjectId
 
     @IsOptional()
     deadline: Date;
