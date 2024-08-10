@@ -7,21 +7,25 @@ import { Priority } from '../priority.model';
 import { Status } from '../status.model';
 import { CheckList } from '../checkList.model';
 import { Types } from 'mongoose';
+import { Task } from '../task.model';
 
 export class CreateTaskDto {
     @IsNotEmpty()
-    // client: Client;
-    client:Types.ObjectId
+    client: Client;
+    // client:Types.ObjectId
     
     @ApiProperty({ description: 'The task parent ID' })
     @IsString()
     @IsOptional()
-    parent?: string;
+    // parent?: string;
+    parent?:Task
 
     @IsOptional()
     @ApiProperty({ description: 'The subTasks ID array' })
     @IsString()
-    subTasks?: string[];
+    // subTasks?: string[];
+    subTasks?: Task[];
+
 
     @IsNotEmpty()
     @IsString()
@@ -44,8 +48,8 @@ export class CreateTaskDto {
     status: Status;
 
     @IsOptional()
-    // assignedTo: User[];
-    assignedTo: Types.ObjectId
+    assignedTo: User[];
+    // assignedTo: Types.ObjectId
 
     @IsNotEmpty()
     tags: Tag[];
