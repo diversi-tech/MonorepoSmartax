@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { WorkLog } from '../_models/workLog.model';
 import { UpdateTimeEntryDto } from '../../../../../server/src/Models/dto/workLog.dto';
-import { API_URL , USER_ENDPOINT} from '../api-urls';
+import { WORK_LOGS , USER_ENDPOINT} from '../api-urls';
 import { User } from '../../../../../server/src/Models/user.model';
 
 @Injectable({
@@ -12,7 +12,7 @@ import { User } from '../../../../../server/src/Models/user.model';
 export class WorkLogService {
   // private apiUrl = WORK_LOGS;
 
-  private apiUrl = API_URL;
+  private apiUrl = WORK_LOGS;
   private userApiUrl = USER_ENDPOINT;
 
 
