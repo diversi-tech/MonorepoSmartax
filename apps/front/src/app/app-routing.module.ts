@@ -128,13 +128,51 @@ export const routes: Routes = [
     data: { authType: 6, forToolbar: false, label: 'Mod', icon: '' },
   },
   // { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard], data: { authType: 3, forToolbar: true, label: 'מנהל', icon: icons.admin } },
+  // {
+  //   path: 'tasks',
+  //   component: TaskManagementComponent,
+  //   children: [{ path: 'task-in-list', component: TaskInListComponent }],
+  //   canActivate: [AuthGuard],
+  //   data: { authType: 6, forToolbar: true, label: 'משימות', icon: icons.tasks },
+  // },
+  // 
   {
     path: 'tasks',
     component: TaskManagementComponent,
-    children: [{ path: 'task-in-list', component: TaskInListComponent }],
     canActivate: [AuthGuard],
-    data: { authType: 6, forToolbar: true, label: 'משימות', icon: icons.tasks },
+    data: {
+      authType: 3,
+      forToolbar: true,
+      label: 'משימות',
+      icon: icons.tasks,
+      list: true,
+    },
+    children: [
+      // { path: '', redirectTo: 'task-report', pathMatch: 'full' },
+      {
+        path: 'tasks',
+        component: TaskManagementComponent,
+        data: {
+          authType: 10,
+          forToolbar: false,
+          label: ' משימות',
+          icon: icons.tasks,
+        },
+      },
+      {
+        path: 're',
+        component: TaskRepeatableListComponent,
+        data: {
+          authType: 10,
+          forToolbar: false,
+          label: 'משימות חזרתיות',
+          icon: icons.tasks,
+        },
+      }
+    ],
   },
+
+  // 
   { path: 'taskSpe/:id', component: TaskComponent }, //, canActivate: [AuthGuard], data: { authType: 6, forToolbar: false, label: 'TaskSpe', icon: icons.tasks }, children: [ { path: 'create', component: TaskComponent }, { path: ':id', component: TaskComponent } ]
   // { path: 'taskRpe', component: TaskRepeatableListComponent },
 
