@@ -455,10 +455,11 @@ export class TaskComponent implements OnInit {
           next: (data) => {
             // alert("ok")
             // alert(data)
-            window.history.back();
+           
             // Task updated
             // if (this.eventId) this.updateTask();
             if (this.taskId) this.closeModal.emit();
+            window.history.back();
           },
           error: (err) => {
             alert("העדכון נכשל")
