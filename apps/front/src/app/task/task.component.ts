@@ -418,7 +418,8 @@ export class TaskComponent implements OnInit {
     if (this.dueDate) newTask.dueDate = this.dueDate;
     if (this.eventId) newTask.googleId = this.eventId;
     if (this.parent) newTask.parent = this.parent;
-    if (this.id == 'create' || (this.create == null || this.create == true)) {
+    if (this.id == 'create') {
+      //  || (this.create == null || this.create == true)
       this.tasksService.createTask(newTask).subscribe({
         next: (task) => {
           if (this.parent) {
