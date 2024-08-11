@@ -138,7 +138,7 @@ export const routes: Routes = [
   // 
   {
     path: 'tasks',
-    component: TaskManagementComponent,
+    // component: TaskManagementComponent,
     canActivate: [AuthGuard],
     data: {
       authType: 3,
