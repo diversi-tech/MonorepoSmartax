@@ -448,13 +448,14 @@ export class TaskComponent implements OnInit {
           console.log(errClients);
         },
       });
+      window.history.back();
     } else
       if (this.id != 'create') {
         this.tasksService.updateTask(this.id!, newTask).subscribe({
           next: (data) => {
             // alert("ok")
             // alert(data)
-            window.location.reload()
+            window.history.back();
             // Task updated
             // if (this.eventId) this.updateTask();
             if (this.taskId) this.closeModal.emit();
