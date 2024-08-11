@@ -91,7 +91,7 @@ export class UpdateTaskDto {
     subTasks: string[];
 
     @IsOptional()
-    client?: Client;
+    client?: Types.ObjectId;
 
     @IsOptional()
     @IsString()
@@ -106,18 +106,18 @@ export class UpdateTaskDto {
     dueDate?: Date;
 
     @IsOptional()
-    @IsString()
-    status?: string;
+    // @IsString()
+    status?: Types.ObjectId;
 
     @IsOptional()
-    assignedTo?: User[];
+    assignedTo?: Types.ObjectId[];
 
     @IsOptional()
-    tags: Tag[];
+    tags: Types.ObjectId[];
 
     @IsOptional()
-    @IsString()
-    priority?: Priority;
+    // @IsString()
+    priority?: Types.ObjectId;
 
     @IsOptional()
     startDate?: Date;
