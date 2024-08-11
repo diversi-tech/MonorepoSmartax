@@ -452,9 +452,9 @@ export class TaskComponent implements OnInit {
       if (this.id != 'create') {
         this.tasksService.updateTask(this.id!, newTask).subscribe({
           next: (data) => {
-            alert("ok")
-            alert(data)
-            // window.location.reload()
+            // alert("ok")
+            // alert(data)
+            window.location.reload()
             // Task updated
             // if (this.eventId) this.updateTask();
             if (this.taskId) this.closeModal.emit();
