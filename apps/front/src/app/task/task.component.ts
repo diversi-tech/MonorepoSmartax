@@ -454,9 +454,9 @@ export class TaskComponent implements OnInit {
           next: (data) => {
             alert("ok")
             alert(data)
-            window.location.reload()
+            // window.location.reload()
             // Task updated
-            if (this.eventId) this.updateTask();
+            // if (this.eventId) this.updateTask();
             if (this.taskId) this.closeModal.emit();
           },
           error: (err) => {
