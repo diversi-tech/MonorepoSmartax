@@ -69,10 +69,12 @@ export class UpdateTaskDto {
     @IsString()
     id: string;
 
+    @IsOptional()
     @ApiProperty({ description: 'The task parent ID' })
     @IsString()
     parent: string;
 
+    @IsOptional()
     @ApiProperty({ description: 'The subTasks ID array' })
     subTasks: string[];
 
