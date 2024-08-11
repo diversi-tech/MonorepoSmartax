@@ -77,7 +77,7 @@ export class CreateTaskDto {
 export class UpdateTaskDto {
 
     @ApiProperty({ description: 'The task ID' })
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     id: string;
 
