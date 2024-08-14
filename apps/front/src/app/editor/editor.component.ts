@@ -29,12 +29,9 @@ export class EditorComponent implements OnInit {
       theme: 'snow',
       modules: {
         toolbar: [
-          // First row
           [{ header: [1, 2, false] }, { font: [] }, { align: [] }],
           [{ list: 'ordered' }, { list: 'bullet' }],
           [{ indent: '-1' }, { indent: '+1' }, { direction: 'rtl' }],
-
-          // Second row
           ['bold', 'italic', 'underline', 'link'],
           [{ color: [] }, { background: [] }],
           ['clean', 'image', 'code-block'],

@@ -27,23 +27,23 @@ export class CreateTaskDto {
     subTasks?: Task[];
 
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     taskName: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     description: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsDateString()
     dueDate: Date;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsDateString()
     startDate: Date;
 
-    @IsNotEmpty()
+    @IsOptional()
     // @IsString()
     // status: Status;
     status: Types.ObjectId
@@ -52,11 +52,11 @@ export class CreateTaskDto {
     // assignedTo: User[];
     assignedTo: Types.ObjectId[]
 
-    @IsNotEmpty()
+    @IsOptional()
     // tags: Tag[];
     tags: Types.ObjectId[]
 
-    @IsNotEmpty()
+    @IsOptional()
     // @IsString()
     // priority: Priority;
     priority: Types.ObjectId

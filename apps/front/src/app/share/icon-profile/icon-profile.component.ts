@@ -24,7 +24,6 @@ export class IconProfileComponent {
   // function - hash that create color profile
 
   getColor(name: string): string {
-
     const hash = name
       .split('')
       .reduce((acc, char) => char.codePointAt(0)! + ((acc << 5) - acc), 0);
