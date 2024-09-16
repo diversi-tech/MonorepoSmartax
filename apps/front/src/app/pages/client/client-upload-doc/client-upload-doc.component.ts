@@ -76,4 +76,16 @@ export class ClientUploadDocComponent implements OnInit {
   }
   async showUploadedFiles() {
   }
+
+  loadUploadedFiles() {
+    // קריאה ל-API לטעינת רשימת הקבצים
+    this.documentService.getAllFiles(this.client?._id!).subscribe(files => {
+      this.uploadedFiles = files;
+    });
+  }
+
+  onUploadCompleted() {
+    // רענון רשימת הקבצים אחרי העלאת מסמך
+    this.loadUploadedFiles();
+  }
 }

@@ -8,42 +8,33 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-upload-doc-task',
   standalone: true,
-  imports: [
-    FileUploadModule,
-    FormsModule,
-    CommonModule,
-    DropdownModule
-  ],
-  providers: [
-    DocumentService
-  ],
+  imports: [FileUploadModule, FormsModule, CommonModule, DropdownModule],
+  providers: [DocumentService],
   templateUrl: './upload-doc-task.component.html',
-  styleUrl: './upload-doc-task.component.css'
+  styleUrl: './upload-doc-task.component.css',
 })
-
 export class UploadDocTaskComponent implements OnInit {
-
-  constructor(
-    private documentService: DocumentService
-  ) { }
+  constructor(private documentService: DocumentService) {}
 
   @Input() idClient: string | undefined;
   @Output() responseReceived = new EventEmitter<any>();
+  //
+  @Output() uploadCompleted = new EventEmitter<void>();
+
   DocTypes: DocType[] = [];
   selectedType: DocType | undefined;
   newTypeName: string = '';
-  
+  showDrop: boolean = false;
+
   ngOnInit(): void {
-    this.documentService.getAllDocTypes().subscribe(
-      {
-        next: (response: any) => {
-          this.DocTypes = response;
-        },
-        error: (err) => {
-          console.error('Error get all docs', err);
-        }
-      }
-    )
+    this.documentService.getAllDocTypes().subscribe({
+      next: (response: any) => {
+        this.DocTypes = response;
+      },
+      error: (err) => {
+        console.error('Error get all docs', err);
+      },
+    });
   }
 
   async upload(event: any) {
@@ -60,8 +51,12 @@ export class UploadDocTaskComponent implements OnInit {
       },
       complete: () => {
         console.log('Upload complete');
-      }
+        // לאחר סיום ההעלאה, נפעיל את האירוע:
+        this.uploadCompleted.emit();
+      },
     });
+    this.selectedType=undefined
+    this.showDrop = false;
   }
 
   addItem(event: Event) {
@@ -78,10 +73,8 @@ export class UploadDocTaskComponent implements OnInit {
         },
         complete: () => {
           console.log('add type complete');
-        }
+        },
       });
     }
   }
 }
-
-

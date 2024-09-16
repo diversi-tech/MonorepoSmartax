@@ -14,3 +14,30 @@
   margin-right: 0rem;
   padding-right: 0rem;
 }
+
+// 
+.header-container {
+    display: flex;
+    align-items: center; /* מיישר את כל האלמנטים במרכז השורה אנכית */
+    justify-content: space-between; /* רווח בין הפרופיל לכפתור */
+    padding: 10px;
+    border-radius: 10px; /* קצוות עגולים */
+    border: 1px solid black; /* מסגרת שחורה דקה */
+  }
+  
+  .header-icons {
+    display: flex;
+    align-items: center; /* מיישר את האייקון והטקסט */
+    margin: 0; /* אין רווחים סביב הכותרת */
+  }
+  
+  .header-icons app-icon-profile {
+    margin-right: 10px; /* רווח בין האייקון לשם */
+  }
+  
+  .details-button {
+    margin-left: 20px; /* רווח בין הטקסט לכפתור */
+    // background-color: #007ad9; 
+    // color: white; 
+  }
+  
