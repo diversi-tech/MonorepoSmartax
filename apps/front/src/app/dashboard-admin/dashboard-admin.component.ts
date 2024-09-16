@@ -75,6 +75,9 @@ export class DashboardAdminComponent implements OnInit {
   valueUser2: any[] = [];
   valueUser3: any[] = [];
 
+  listPayment:any[]=[];
+
+
   constructor(
     private taskService: TaskService,
     private statusService: StatusService,
@@ -222,7 +225,7 @@ export class DashboardAdminComponent implements OnInit {
           borderColor: documentStyle.getPropertyValue('--purple-500'),
           yAxisID: 'y1',
           tension: 0.4,
-          data: [28, 48, 40, 19, 86, 27, 90],
+          data: this.listPayment,
         },
       ],
     };

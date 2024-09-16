@@ -105,7 +105,7 @@
             placeholder="בחר תגיות"
             display="chip"
             [showClear]="true"
-            [style]="{ width: '80%' ,'direction': 'rtl' }"
+            [style]="{ width: '80%', direction: 'rtl' }"
           >
           </p-multiSelect>
         </div>
@@ -224,7 +224,6 @@
       </div>
       <div>
         <div>
-          <!-- *ngIf="filteredTasks.length == 0" -->
           <div *ngFor="let frequency of frequencies">
             <br />
             <p-panel
@@ -241,8 +240,6 @@
               >
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">
-                    <!-- <th style="width: auto">Edit</th>
-                    <th style="width: auto">Delete</th> -->
                     <th></th>
                     <th style="width: auto">
                       תגיות
