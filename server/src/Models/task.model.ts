@@ -29,16 +29,16 @@ export class Task extends Document {
     @Prop()
     deadline: Date;
 
-    @Prop({ type: Types.ObjectId, ref: 'Status', required: true })
+    @Prop({ type: Types.ObjectId, ref: 'Status'})
     status: Status;
 
-    @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+    @Prop({ type: Types.ObjectId, ref: 'User'})
     assignedTo: User[];
 
-    @Prop({ type: Types.ObjectId, ref: 'Tag', required: true })
+    @Prop({ type: Types.ObjectId, ref: 'Tag'})
     tags: Tag[];
 
-    @Prop({ type: Types.ObjectId, ref: 'Priority', required: true })
+    @Prop({ type: Types.ObjectId, ref: 'Priority'})
     priority: Priority;
 
     @Prop()
