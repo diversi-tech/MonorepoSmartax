@@ -50,11 +50,16 @@
             <td>{{ yearlyReport.price }}</td>
             <td>{{ yearlyReport.dateTime | date:'dd/MM/yyyy' }}</td>
             <td>{{ yearlyReport.yearReport }}</td>
-            <td>{{getClientName(yearlyReport.idUser)?.firstName }} {{getClientName(yearlyReport.idUser)?.lastName }}</td>
+            <!-- <td>{{getClientName(yearlyReport.idClient) }}</td> -->
+            <td>{{ yearlyReport.idClient ? getClientName(yearlyReport.idClient) : 'ID missing' }}</td>
+            <!-- <td>{{ yearlyReport.idClient }}</td> -->
+
             <app-icon-profile
-                [userName]="getClientName(yearlyReport.idUser)?.firstName  &&  getClientName(yearlyReport.idUser)?.lastName"
-                style="width: 50px;"></app-icon-profile>
+                [userName]="getClientName(yearlyReport.idClient)"
+                style="width: 50px;">
+            </app-icon-profile>
 
         </tr>
     </ng-template>
 </p-table>
+<br>

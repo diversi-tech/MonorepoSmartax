@@ -55,6 +55,8 @@ export class ReportClientYearlyReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllYearlyReport();
+    console.log(this.allYearlyReport);
+    
     this.getAllClients();
     this.getAllEmployes();
   }
@@ -78,6 +80,8 @@ export class ReportClientYearlyReportComponent implements OnInit {
       (reports) => {
         this.allYearlyReport = reports.filter(Boolean); // remove any falsy values
         this.sortReportsByClientName(); // Sort after fetching data
+        console.log(this.allYearlyReport);
+        
       },
       (error) => console.error('Error fetching yearly reports for client', error)
     );
@@ -91,11 +95,42 @@ export class ReportClientYearlyReportComponent implements OnInit {
     return this.allEmployes.find((x) => x._id === idEmploye);
   }
 
-  getClientName(idClient: string): string | undefined {
-    const client = this.allClient.find((x) => x._id === idClient);
-    return client?.firstName + ' ' + client?.lastName;
+  getEmployeName2(idClient: string): Client | undefined {
+    console.log(this.allClient.find((x) => x._id === idClient));
+
+    return this.allClient.find((x) => x._id === idClient);
+
   }
 
+  getClientName2(idClient: string): Client | undefined {
+    // const client = this.allClient.find((x) => x._id === idClient);
+    // console.log(client?.firstName + ' ' + client?.lastName);
+    // console.log(this.allClient);
+    
+    return this.allClient.find((x) => x._id === idClient);
+  }
+
+
+  getClientName(idClient: string): string {
+    if (!idClient) {
+      console.log('idClient is undefined or empty');
+      return 'Client not found';
+    }
+  
+    const client = this.allClient.find((x) => x._id === idClient);
+    
+    if (!client) {
+      console.log(`Client with id ${idClient} not found`);
+      return 'Client not found';
+    }
+    
+    const firstName = client.firstName || 'Unknown';
+    const lastName = client.lastName || 'Unknown';
+    
+    return `${firstName} ${lastName}`;
+  }
+  
+  
   getClient(idClient: string): Client | undefined {
     return this.allClient.find((x) => x._id === idClient);
   }

@@ -136,6 +136,7 @@ export class YearlyReportComponent implements OnInit {
   }
 
   getClientName(name: string): string {
+    console.log(this.client.firstName + " " + this.client.lastName)
     return this.client.firstName + " " + this.client.lastName;
   }
 }
