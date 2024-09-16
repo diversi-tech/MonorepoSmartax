@@ -21,6 +21,8 @@ import { Button } from 'primeng/button';
 export class ClientNavbarComponent implements OnInit {
 
   client: Client | null = null;
+  // clientName: Client;
+
 
   constructor(
     private router: Router,
@@ -37,4 +39,17 @@ export class ClientNavbarComponent implements OnInit {
       this.cdr.detectChanges();
     }
   }
+  // 
+  // onClientNameReceived(name: Client) {
+  //   this.clientName = name; // שומר את שם הלקוח
+  //   console.log('Client name received:', this.clientName);
+  // }
+
+  // navigateTo2(route: string) : void{
+  //   this.router.navigate([`/taskSpe/create`], { queryParams: { clientName: this.clientName } });
+  //   if (this.client) {
+  //     this.router.navigate(['/clientSearch/clientManagement/clientNavbar', route], { state: { client: this.client } });
+  //     this.cdr.detectChanges();
+  //   }
+  // }
 }

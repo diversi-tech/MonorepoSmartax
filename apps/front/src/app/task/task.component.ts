@@ -57,7 +57,12 @@ import { Subscription } from 'rxjs';
 import { CheckList } from '../_models/checkList.model';
 import { CheckListService } from '../_services/checkList.service';
 import { EmptyDatePipe } from '../_pipes/EmptyDatePipe';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { UploadDocTaskComponent } from '../upload-doc-task/upload-doc-task.component';
 import { ActivatedRoute } from '@angular/router';
 
@@ -118,7 +123,7 @@ export class TaskComponent implements OnInit {
   newTask: Task | undefined;
   taskName!: string;
   rangeDates: Date[] = [];
-  dueDate: Date | null = null;
+  dueDate: Date;
   id: string | undefined;
   checked: boolean = false;
   text: string | undefined; //description of task
@@ -131,7 +136,7 @@ export class TaskComponent implements OnInit {
   checkListId: string[] | undefined;
   subTasks: string[] = [];
   tags2: Tag[] = [];
-  color: string ='#1976d2';
+  color: string = '#1976d2';
   value: string;
 
   //
@@ -147,7 +152,6 @@ export class TaskComponent implements OnInit {
   // service
   private eventDataSubscription: Subscription;
   public eventId: string;
-
 
   showStatus: boolean = false;
   showAssignees: boolean = false;
@@ -196,14 +200,16 @@ export class TaskComponent implements OnInit {
   newTaskCreated: boolean = false;
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
-    if (this.taskId)
-      this.id = this.taskId;
-    if (this.id != 'create' || (this.create == null || (this.create && !this.create))) {
-
+    if (this.taskId) this.id = this.taskId;
+    if (
+      this.id != 'create' ||
+      this.create == null ||
+      (this.create && !this.create)
+    ) {
       this.tasksService.searchTask(this.id!).subscribe({
         next: (data) => {
           this.currentTask = data;
-          this.subTasks = this.currentTask.subTasks
+          this.subTasks = this.currentTask.subTasks;
           this.selectStatus = this.currentTask.status;
           console.log(this.currentTask.priority);
 
@@ -214,7 +220,7 @@ export class TaskComponent implements OnInit {
           this.rangeDates![0] = new Date(this.currentTask.startDate);
           this.rangeDates![1] = new Date(this.currentTask.deadline);
           this.htmlContent = this.currentTask.description;
-          this.dueDate = new Date(this.currentTask.dueDate || null);
+          this.dueDate = new Date(this.currentTask.dueDate);
           this.images = this.currentTask.images;
           this.taskName = this.currentTask.taskName;
           this.buttons = this.currentTask.tags?.map((tag: Tag) => ({
@@ -237,18 +243,15 @@ export class TaskComponent implements OnInit {
             next: (dataClients) => {
               this.selectedClient = dataClients;
             },
-            error: (errClients) => {
-            },
+            error: (errClients) => {},
           });
         },
         error: (err) => {
           console.log(err);
         },
       });
-
-    }
-    else {
-      this.newTaskCreated = true
+    } else {
+      this.newTaskCreated = true;
     }
     //users
     this.userSErvice.getAllUsers().subscribe({
@@ -263,6 +266,19 @@ export class TaskComponent implements OnInit {
     this.clientService.getAllClients().subscribe({
       next: (dataClients) => {
         this.clients = dataClients;
+        // קבלת שם הלקוח מ-queryParams
+        this.route.queryParams.subscribe((params) => {
+          this.clientId = params['client']; // קבלת שם הלקוח מ-queryParams
+          console.log('Client name in tasks:', this.clientId);
+          console.log(this.clients);
+
+          this.clients.filter((client) => {
+            if (client._id == this.clientId) {
+              this.selectedClient = client;
+              console.log('Selected client:', this.selectedClient);
+            }
+          });
+        });
       },
       error: (errClients) => {
         console.log(errClients);
@@ -354,6 +370,7 @@ export class TaskComponent implements OnInit {
       },
     });
   }
+  clientId: string;
 
   notInThisTask(id: string) {
     this.currentTask.checkList.forEach((item) => {
@@ -365,8 +382,7 @@ export class TaskComponent implements OnInit {
   showDialog() {
     if (this.id == 'create' || this.parent) {
       this.visible = true;
-    }
-    else {
+    } else {
       this.save();
     }
   }
@@ -381,7 +397,7 @@ export class TaskComponent implements OnInit {
     const taskDetails = {
       title: this.taskName,
       notes: 'Task Notes',
-      dueTime: this.rangeDates[1]
+      dueTime: this.rangeDates[1],
     };
     const createEventPromise = this.googleTask.createSimpleTask(taskDetails);
     // After creating event, save the meeting
@@ -426,19 +442,19 @@ export class TaskComponent implements OnInit {
             this.tasksService.searchTask(this.parent).subscribe({
               next: (parentTask) => {
                 parentTask.subTasks.push(task._id);
-                this.tasksService.updateTask(this.parent, parentTask).subscribe({
-                  next: (data) => {
-
-                  },
-                  error: (err) => {
-                    alert("ההוספה נכשלה, נא נסה שנית")
-                  }
-                })
+                this.tasksService
+                  .updateTask(this.parent, parentTask)
+                  .subscribe({
+                    next: (data) => {},
+                    error: (err) => {
+                      alert('ההוספה נכשלה, נא נסה שנית');
+                    },
+                  });
               },
               error: (err) => {
                 console.log(err);
-              }
-            })
+              },
+            });
           }
           if (!this.selectedUsers || this.selectedUsers.length === 0) {
             this.socketService.addTask(task);
@@ -449,23 +465,22 @@ export class TaskComponent implements OnInit {
         },
       });
       window.history.back();
-    } else
-      if (this.id != 'create') {
-        this.tasksService.updateTask(this.id!, newTask).subscribe({
-          next: (data) => {
-            // alert("ok")
-            // alert(data)
-           
-            // Task updated
-            // if (this.eventId) this.updateTask();
-            if (this.taskId) this.closeModal.emit();
-            window.history.back();
-          },
-          error: (err) => {
-            alert("העדכון נכשל")
-          },
-        });
-      }
+    } else if (this.id != 'create') {
+      this.tasksService.updateTask(this.id!, newTask).subscribe({
+        next: (data) => {
+          // alert("ok")
+          // alert(data)
+
+          // Task updated
+          // if (this.eventId) this.updateTask();
+          if (this.taskId) this.closeModal.emit();
+          window.history.back();
+        },
+        error: (err) => {
+          alert('העדכון נכשל');
+        },
+      });
+    }
     // window.history.back();
   }
 
@@ -474,7 +489,7 @@ export class TaskComponent implements OnInit {
       title: this.taskName,
       notes: 'Task Notes',
       dueDate: this.rangeDates[1],
-      id: this.eventId
+      id: this.eventId,
     };
     this.googleTask.updateGoogleTask(taskDetails);
   }
@@ -492,7 +507,7 @@ export class TaskComponent implements OnInit {
       }
     }
   }
-  
+
   //
   // createTag() {
   //   this.showTags = !this.showTags;
@@ -609,46 +624,40 @@ export class TaskComponent implements OnInit {
     if (this.newListName) {
       let l: CheckList = { name: this.newListName, items: [] };
       this.checkListServise.createCheckList(l).subscribe({
-        next
-          : (newList) => {
-            this.currentTask.checkList.push(newList._id)
-            this.checkList.push(newList)
-            this.save()
-          },
-        error
-          : (err) => {
-            alert("ההוספה נכשלה, אנא נסה שנית")
-          },
-      })
-    }
-    else {
-      alert("יש להזין שם")
+        next: (newList) => {
+          this.currentTask.checkList.push(newList._id);
+          this.checkList.push(newList);
+          this.save();
+        },
+        error: (err) => {
+          alert('ההוספה נכשלה, אנא נסה שנית');
+        },
+      });
+    } else {
+      alert('יש להזין שם');
     }
   }
 
   // create new list
   createList(i: any) {
-    this.selectedList = i.value
-    if (this.selectedList && this.selectedList != "new") {
+    this.selectedList = i.value;
+    if (this.selectedList && this.selectedList != 'new') {
       this.checkListServise.getCheckLists(this.selectedList).subscribe({
         next: (copylist) => {
           let l: CheckList = { name: copylist.name, items: copylist.items };
           this.checkListServise.createCheckList(l).subscribe({
-            next
-              : (newList) => {
-                this.currentTask.checkList.push(newList._id)
-                this.checkList.push(newList)
-                this.save()
-              },
-            error
-              : (err) => {
-                alert("ההוספה נכשלה, אנא נסה שנית")
-              },
-          })
-        }
-      })
-    }
-    else {
+            next: (newList) => {
+              this.currentTask.checkList.push(newList._id);
+              this.checkList.push(newList);
+              this.save();
+            },
+            error: (err) => {
+              alert('ההוספה נכשלה, אנא נסה שנית');
+            },
+          });
+        },
+      });
+    } else {
       this.newList = true;
     }
     this.selectedList = undefined;
@@ -659,8 +668,8 @@ export class TaskComponent implements OnInit {
     if (list._id) {
       this.checkListServise.updateCheckList(list).subscribe({
         next: (newList) => {
-          let prev = this.checkList.findIndex(c => c._id === newList._id)
-          this.checkList[prev] = newList
+          let prev = this.checkList.findIndex((c) => c._id === newList._id);
+          this.checkList[prev] = newList;
         },
         error: (err) => {
           console.log(err);
@@ -680,10 +689,10 @@ export class TaskComponent implements OnInit {
       this.checkListServise.deleteCheckList(_id).subscribe({
         next: (data) => {},
         error: (err) => {
-          this.currentTask.checkList.push(a[0])//delete from current-task.checklist
-          this.checkList.push(b[0])//delete from checklist
-          this.groupedLists[1].items.push(c[0])
-          alert("המחיקה נכשלה, אנא נסה שנית")
+          this.currentTask.checkList.push(a[0]); //delete from current-task.checklist
+          this.checkList.push(b[0]); //delete from checklist
+          this.groupedLists[1].items.push(c[0]);
+          alert('המחיקה נכשלה, אנא נסה שנית');
         },
       });
     }
@@ -733,5 +742,10 @@ export class TaskComponent implements OnInit {
 
   ngOnDestroy() {
     this.unsubscribeFromEventData();
+  }
+  //
+  // פונקציה שבודקת אם כל השדות מלאים
+  isFormValid(): boolean {
+    if (this.selectedClient && this.taskName && this.selectStatus) return true;
   }
 }
