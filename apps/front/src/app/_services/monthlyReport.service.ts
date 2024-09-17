@@ -33,6 +33,7 @@ export class MonthlyReportService {
         catchError(this.handleError<MonthlyReport[]>('getAllMonthlyReport', []))
       );
   }
+  
 
   getMonthlyReportForClient(clientId: string): Observable<MonthlyReport[]> {
     return this.getAllMonthlyReport().pipe(
@@ -43,9 +44,6 @@ export class MonthlyReportService {
     );
 
   }
-
-
-
 
   async updateMonthlyReport(id: string, monthlyReport: MonthlyReport): Promise<MonthlyReport> {
     try {
