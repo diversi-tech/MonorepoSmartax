@@ -30,7 +30,7 @@ export class UpdateFinancialStatementDto {
 
     @ApiProperty({ required: false, example: '2022-01-01' })
     @IsOptional()
-    @IsDate()
+    // @IsDate()
     date?: Date;
 
     @ApiProperty({ required: false, example: 100 })
@@ -52,7 +52,8 @@ export class UpdateFinancialStatementDto {
     @IsOptional()
     entityType: string;
 
-    @ApiProperty({ required: false, type: [StepField] })
+    @ApiProperty()
+    // { required: false, type: [StepField] }
     @IsOptional()
     stepsList: StepField[];
 
@@ -66,56 +67,71 @@ export class UpdateFinancialStatementDto {
 
     @ApiProperty({ required: false, example: '2023-01-01' })
     @IsOptional()
-    @IsDate()
+    // @IsDate()
     finalSubmissionDate: Date;
 }
 
 export class CreateFinancialStatementDto {
     @ApiProperty({ example: true })
     @IsBoolean()
+    @IsOptional()
     isInterested: boolean;
 
+    @IsOptional()
     @ApiProperty({ example: '<client_id>' })
     client: Client;
 
+    @IsOptional()
     @ApiProperty({ example: ['<user_id_1>', '<user_id_2>'] })
     assignee: User[];
 
+    @IsOptional()
     @ApiProperty({ example: '<user_id>' })
     lastEmployeeWhoTreated: User;
 
+    @IsOptional()
     @ApiProperty({ example: '<year_id>' })
     year: Year;
 
+    @IsOptional()
     @ApiProperty({ example: '2022-01-01' })
-    @IsDate()
+    // @IsDate()
     date: Date;
 
+    @IsOptional()
     @ApiProperty({ example: 100 })
     @IsNumber()
     price: number;
 
+    @IsOptional()
     @ApiProperty({ example: 50 })
     @IsNumber()
     paymentAmountPaid: number;
 
+    @IsOptional()
     @ApiProperty({ example: 50 })
     @IsNumber()
     balanceDue: number;
 
+    @IsOptional()
     @ApiProperty({ example: 'entityType' })
     entityType: string;
 
-    @ApiProperty({ type: [StepField] })
+    @IsOptional()
+    @ApiProperty()
+    // { type: [StepField] }
     stepsList: StepField[];
 
+    @IsOptional()
     @ApiProperty({ example: '<status_id>' })
     status: Status;
 
+    @IsOptional()
     @ApiProperty({ example: { dateTime: '2022-01-01', comment: 'Example comment' } })
     followUp: { dateTime: Date, comment: string };
 
+    @IsOptional()
     @ApiProperty({ example: '2023-01-01' })
-    @IsDate()
+    // @IsDate()
     finalSubmissionDate: Date;
 }
