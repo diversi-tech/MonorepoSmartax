@@ -192,7 +192,7 @@ export class ClientAddCommunicationComponent implements OnInit {
       this.is = false
       this.filteredCallTopic = this.callTopics;
     }
-    this.selectedCallTopic = null;
+    // this.selectedCallTopic = null;
 
   }
   select(event: AutoCompleteSelectEvent): void {
