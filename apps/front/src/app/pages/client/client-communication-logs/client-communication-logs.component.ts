@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
 import { callTopicSchema } from '../../../_models/callTopic.module';
 import { CallTopicService } from "../../../_services/callTopic.service"
+import { ClientService } from '../../../_services/client.service';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-client-communication-logs',
@@ -32,6 +34,7 @@ import { CallTopicService } from "../../../_services/callTopic.service"
     ClientAddCommunicationComponent,
     ConfirmDialogModule,
     FormsModule,
+    CalendarModule
   ],
 })
 export class ClientCommunicationLogsComponent {
@@ -44,6 +47,9 @@ export class ClientCommunicationLogsComponent {
   selectedCommunication: Communication | null = null;
   thisSubject = "";
   users: SelectItem[] = [];
+  listClients:Client[] = [];
+  selectedClient:Client | null = null;
+  date:Date;
 
 
   constructor(
@@ -51,7 +57,8 @@ export class ClientCommunicationLogsComponent {
     private communicationService: CommunicationService,
     private confirmationService: ConfirmationService,
     private userService: UserService,
-    private calltopicservice: CallTopicService
+    private calltopicservice: CallTopicService,
+    private clientService:ClientService
   ) { }
 
   ngOnInit(): void {
@@ -59,6 +66,7 @@ export class ClientCommunicationLogsComponent {
     this.getCommunications();
     this.loadUsers();
     this.getCallTopics();
+    this.loadClients();
   }
 
   private loadUsers(): void {
@@ -70,6 +78,19 @@ export class ClientCommunicationLogsComponent {
         }));
       });
   }
+
+  private loadClients(): void {
+    this.clientService.getAllClients()
+      .subscribe((c: any[]) => {
+        this.listClients = c;
+      });
+  }
+
+  getClientById(id: string): Client | undefined {
+    return this.listClients.find(client => client._id === id)
+    // return this.listClients.find(client => client._id === id);
+  }
+
 
   getCommunications(): void {
     this.communicationService.getCommunicationsByClientId(this.client._id)
@@ -93,10 +114,23 @@ export class ClientCommunicationLogsComponent {
       key: "edit"
     });
   }
+  selectedDate: Date = new Date(); // תאריך ברירת מחדל
 
   selectCommunication(communication: Communication): void {
-    this.selectedCommunication = { ...communication }; // Clone the communication for editing
+    console.log(this.selectedCommunication);
+    
+    this.selectedCommunication = { ...communication }; 
+    console.log(this.selectedCommunication);
+    this.selectedCommunication.client = this.getClientById(communication.client).firstName+" "+this.getClientById(communication.client).lastName;
+    this.selectedCommunication.date = new Date(this.selectedCommunication.date);
+    this.date=new Date()
+    console.log(this.selectedCommunication.date);
+    
+    this.selectedClient = this.getClientById(communication.client);
+    console.log(this.selectedClient);
+    // Clone the communication for editing
   }
+  
 
   updateCommunication(): void {
     if (this.thisSubject != "")

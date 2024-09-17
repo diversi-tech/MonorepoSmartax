@@ -59,19 +59,43 @@
             [(ngModel)]="selectedCommunication.client"
             name="editClientName"
             required
+            readonly
           />
         </div>
+        <!--  -->
+        <!-- <div class="card flex justify-content-center">
+          <p-dropdown
+            [options]="listClients"
+            [(ngModel)]="selectClient"
+            [checkmark]="true"
+            optionLabel="firstName"
+            [showClear]="true"
+            placeholder="Select a client"
+            [filter]="true"
+            filterBy="firstName"
+            name="editClient"
+          ></p-dropdown>
+        </div> -->
+        <!--  -->
         <div class="p-field">
           <label for="editDate">תאריך</label>
-          <input
+          <!-- <input
             type="date"
             class="p-inputtext"
             id="editDate"
             [(ngModel)]="selectedCommunication.date"
             name="editDate"
             required
-          />
+          /> -->
+          <p-calendar
+            [(ngModel)]="selectedCommunication.date"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            inputId="icondisplay"
+            name="calendarDate"
+          ></p-calendar>
         </div>
+
         <div class="p-field">
           <label for="editSubject">נושא</label>
           <!-- <input
