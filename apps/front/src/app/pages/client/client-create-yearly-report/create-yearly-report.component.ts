@@ -469,27 +469,32 @@ export class CreateYearlyReportComponent implements OnInit {
     this.displayModal = false;
   }
 
+
   ngOnInit(): void {
     this.yearlyReportForm = this.fb.group({
-      type: ['', Validators.required],
-      price: ['', Validators.required],
-      paymentAmountPaid: ['', Validators.required],
-      balanceDue: [{ value: 0, disabled: true }]
+        type: ['', Validators.required],
+        price: ['', Validators.required],
+        paymentAmountPaid: ['', Validators.required],
+        balanceDue: [{ value: 0, disabled: true }]
     });
 
     if (this.reportToUpdate) {
-      this.yearlyReportForm.patchValue({
-        type: this.reportToUpdate.entityType,
-        price: this.reportToUpdate.price,
-        paymentAmountPaid: this.reportToUpdate.paymentAmountPaid,
-        balanceDue: this.reportToUpdate.balanceDue,
-      });
+        this.yearlyReportForm.patchValue({
+            type: this.reportToUpdate.entityType,
+            price: this.reportToUpdate.price,
+            paymentAmountPaid: this.reportToUpdate.paymentAmountPaid,
+            balanceDue: this.reportToUpdate.balanceDue, // לא חובה, מאחר שמחושב אוטומטית
+        });
+        
+        // חישוב היתרה מיד אחרי טעינת הערכים
+        this.calculateBalanceDue();
     }
 
     this.yearlyReportForm.get('price')?.valueChanges.subscribe(() => this.calculateBalanceDue());
     this.yearlyReportForm.get('paymentAmountPaid')?.valueChanges.subscribe(() => this.calculateBalanceDue());
+
     this.showModalDialog();
-  }
+}
 
   calculateBalanceDue() {
     const price = this.yearlyReportForm.get('price')?.value || 0;
