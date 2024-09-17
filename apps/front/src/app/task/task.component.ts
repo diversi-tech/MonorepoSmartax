@@ -553,6 +553,16 @@ export class TaskComponent implements OnInit {
               text: dataTag.text,
               _id: dataTag._id!,
             });
+            this.tags.push({
+              color: dataTag.color,
+              text: dataTag.text,
+              _id: dataTag._id!,
+            })
+            this.tags2.push({
+              color: dataTag.color,
+              text: dataTag.text,
+              _id: dataTag._id!,
+            })
             this.value = '';
           },
           error: (errTag) => {

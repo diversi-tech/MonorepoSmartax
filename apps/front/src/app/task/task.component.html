@@ -244,7 +244,7 @@
             </ng-template>
             <ng-template style="display: flex" let-t pTemplate="selectedItems">
               <div class="selected-items-container" style="display: flex">
-                <p *ngIf="!buttons || buttons.length < 1">בחר תגיות</p>
+                <p *ngIf="!tags2 || tags2.length < 1">בחר תגיות</p>
                 <button
                   *ngFor="let button of tags2; let i = index"
                   [ngStyle]="{ backgroundColor: button.color, color: 'white' }"
