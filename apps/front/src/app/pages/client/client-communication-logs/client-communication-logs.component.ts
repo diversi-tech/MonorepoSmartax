@@ -12,8 +12,8 @@ import { UserService } from '../../../_services/user.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
-import { callTopicSchema } from 'src/app/_models/callTopic.module';
-import { CallTopicService } from 'src/app/_services/callTopic.service';
+import { callTopicSchema } from '../../../_models/callTopic.module';
+import { CallTopicService } from "../../../_services/callTopic.service"
 
 @Component({
   selector: 'app-client-communication-logs',
