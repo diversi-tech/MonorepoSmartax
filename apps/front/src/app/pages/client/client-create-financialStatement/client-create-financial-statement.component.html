@@ -7,6 +7,7 @@
     <h2>:הצהרת הון</h2>
     <form [formGroup]="financialStatementForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
+        <label for="year"><span style="color: red">*</span>:שנה</label>
         <p-dropdown
           id="year"
           formControlName="year"
@@ -24,18 +25,33 @@
           "
           class="error"
         >
-          This field is required.
+          <span style="color: red">This field is required.</span>
         </div>
       </div>
       <div class="form-group">
-        <label for="price" dir="rtl">מחיר:</label>
-        <input type="number" id="price" formControlName="price" class="form-control" placeholder="מחיר" dir="rtl">
-        <div *ngIf="financialStatementForm.get('price').invalid && financialStatementForm.get('price').touched" class="error">
-          This field is required.
+        <label for="price"><span style="color: red">*</span>:מחיר</label>
+        <input
+          type="number"
+          id="price"
+          formControlName="price"
+          class="form-control"
+          placeholder="מחיר"
+          dir="rtl"
+        />
+        <div
+          *ngIf="
+            financialStatementForm.get('price').invalid &&
+            financialStatementForm.get('price').touched
+          "
+          class="error"
+        >
+          <span style="color: red">This field is required.</span>
         </div>
       </div>
       <div class="form-group">
-        <label for="paymentAmountPaid">:סכום ששולם</label>
+        <label for="paymentAmountPaid"
+          ><span style="color: red">*</span>:סכום ששולם</label
+        >
         <input
           type="number"
           id="paymentAmountPaid"
@@ -51,7 +67,7 @@
           "
           class="error"
         >
-          This field is required.
+          <span style="color: red">This field is required.</span>
         </div>
       </div>
       <div class="form-group">
@@ -63,8 +79,9 @@
           class="form-control"
           placeholder="יתרה לתשלום"
           dir="rtl"
+          readonly
         />
-        <div
+        <!-- <div
           *ngIf="
             financialStatementForm.get('balanceDue').invalid &&
             financialStatementForm.get('balanceDue').touched
@@ -72,9 +89,13 @@
           class="error"
         >
           This field is required.
-        </div>
+        </div> -->
       </div>
-      <button pButton label="לאישור" class= "p-button-text p-button-raised p-button-rounded"></button>
+      <button
+        pButton
+        label="לאישור"
+        class="p-button-text p-button-raised p-button-rounded"
+      ></button>
     </form>
   </div>
 </div>

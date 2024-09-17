@@ -37,7 +37,7 @@
             <td>{{financialStatement.year }}</td>
             <td *ngIf="this.currentRoute === 'allClientFinancialStatement'">{{ getClientName(financialStatement.client) }} </td>
             <app-icon-profile *ngIf="this.currentRoute === 'allClientFinancialStatement'"
-            [userName]="getClientName(financialStatement.client)"
+            [userName]="getClientName2(financialStatement.client)?.firstName"
             style="width: 50px;"></app-icon-profile>
         </tr>
     </ng-template>

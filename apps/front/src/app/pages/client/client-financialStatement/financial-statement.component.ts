@@ -84,7 +84,9 @@ export class FinancialStatementComponent implements OnInit {
 
   goToSteps(currentFinancialStatement: any) {
     if (this, this.currentRoute === 'allClientFinancialStatement') {
-      this.router.navigate(['clientSearch/clientManagement/clientNavbar/stepsFS'], { state: { data: currentFinancialStatement, client: this.getClientName(currentFinancialStatement.client) } });
+      console.log(this.getClientName2(currentFinancialStatement.client));
+      
+      this.router.navigate(['clientSearch/clientManagement/clientNavbar/stepsFS'], { state: { data: currentFinancialStatement, client: this.getClientName2(currentFinancialStatement.client) } });
     }
     else {
       this.router.navigate(['clientSearch/clientManagement/clientNavbar/stepsFS', this.router], { state: { data: currentFinancialStatement, client: this.client } });
@@ -105,6 +107,12 @@ export class FinancialStatementComponent implements OnInit {
     const client = this.allClient.find((x) => x._id === idClient);
     debugger
     return client?.firstName + ' ' + client?.lastName;
+  }
+  getClientName2(idClient: string): Client | undefined {
+    // debugger
+    return this.allClient.find((x) => x._id === idClient);
+    // debugger
+    // return client?.firstName + ' ' + client?.lastName;
   }
   // sortStatementsByClientName(): void {
   //   this.sortedStatement = [...this.allFinancialStatement].sort((a, b) => {

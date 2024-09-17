@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Year } from '../../../_models/year.module';
 import { FinancialStatement } from '../../../_models/financialStatement.module';
 import { Status } from '../../../_models/status.module';
@@ -19,7 +25,10 @@ import { InputOtpModule } from 'primeng/inputotp';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { UserService } from '../../../_services/user.service';
-import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
+import {
+  AutoCompleteModule,
+  AutoCompleteSelectEvent,
+} from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-client-create-financial-statement',
@@ -50,10 +59,10 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
   yearList: Year[];
   yearList2: Year[];
   selectedyear: Year | null = null;
-  thisSubject2 = "";
+  thisSubject2 = '';
   is: boolean = false;
-  thisSubject = "";
-  Year2: any[] = [{ yearNum: "לא נמצא" }];
+  thisSubject = '';
+  Year2: any[] = [{ yearNum: 'לא נמצא' }];
   typeOptions: any[] = [
     { label: 'פיצול לעצמאי', value: 'עצמאי' },
     { label: 'עמותה', value: 'עמותה' },
@@ -63,8 +72,8 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
   statementToUpdate: FinancialStatement | null = null;
   statusList: Status[] = [];
   newYear: Year = {
-    yearNum: ""
-  }
+    yearNum: '',
+  };
   constructor(
     private fb: FormBuilder,
     private stepFieldsService: stepFieldService,
@@ -72,11 +81,10 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
     private yearService: YearService,
     private tokenService: TokenService,
     private router: Router,
-    private route: ActivatedRoute,// Inject ActivatedRoute
+    private route: ActivatedRoute, // Inject ActivatedRoute
     private location: Location,
     private statusService: StatusService,
-    private userService: UserService,
-
+    private userService: UserService
   ) {
     this.loadData();
   }
@@ -86,13 +94,19 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
       next: (data) => {
         console.log(data);
         this.yearList = data;
-        this.yearList2=data
+        this.yearList = Array.from(
+          new Map(
+            data.map((item: Year) => [Number(item.yearNum), item])
+          ).values()
+        ).sort((a: Year, b: Year) => Number(a.yearNum) - Number(b.yearNum));
+        console.log(this.yearList);
+        
+        this.yearList2 = data;
       },
       error: (error) => {
         console.log(error);
       },
-    },
-    );
+    });
     this.statusService.getAllStatuses().subscribe({
       next: (data) => {
         this.statusList = data;
@@ -100,8 +114,7 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
       error: (error) => {
         console.log(error);
       },
-
-    })
+    });
     this.userId = this.tokenService.getCurrentDetail('_id');
     this.client = history.state.client;
     this.statementToUpdate = history.state.report || null;
@@ -121,7 +134,8 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
       year: ['', Validators.required],
       price: ['', Validators.required],
       paymentAmountPaid: ['', Validators.required],
-      balanceDue: ['', Validators.required],
+      // balanceDue: ['', Validators.required],
+      balanceDue: [''] // השדה נעול להזנה
       // status: ['', Validators.required],
     });
     if (this.statementToUpdate) {
@@ -133,6 +147,10 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
         balanceDue: this.statementToUpdate.balanceDue,
         status: this.statementToUpdate.status,
       });
+      console.log(this.statementToUpdate);
+      console.log(this.financialStatementForm.value);
+      
+      
     }
     this.showModalDialog(); // Open the modal dialog when component initializes
     this.userService.getAllUsers().subscribe(
@@ -142,15 +160,24 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
       (error) => {
         console.error('Error ', error);
       }
-    )
+    );
+    // 
+    // האזנה לשינויים במחיר או בסכום ששולם
+  this.financialStatementForm.get('price').valueChanges.subscribe(() => {
+    this.calculateBalanceDue();
+  });
+
+  this.financialStatementForm.get('paymentAmountPaid').valueChanges.subscribe(() => {
+    this.calculateBalanceDue();
+  });
   }
 
   getUser(idEmploye: any): any {
-    return this.allEmploye.find(x => x._id === idEmploye);
+    return this.allEmploye.find((x) => x._id === idEmploye);
   }
 
   onSubmit() {
-    debugger
+    debugger;
     this.formSubmitted = true;
     if (this.financialStatementForm.valid) {
       const financialStatement = this.financialStatementForm.value;
@@ -165,25 +192,28 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
     }
     this.hideModalDialog(); //
     // this.location.back();
-    debugger
+    debugger;
   }
 
   determineStatus(): Status {
-    const stepsList = this.statementToUpdate ? this.statementToUpdate.stepsList : [];
-    const allCompleted = stepsList.every(step => step.isCompleted);
-    const someCompleted = stepsList.some(step => step.isCompleted);
+    const stepsList = this.statementToUpdate
+      ? this.statementToUpdate.stepsList
+      : [];
+    const allCompleted = stepsList.every((step) => step.isCompleted);
+    const someCompleted = stepsList.some((step) => step.isCompleted);
 
     if (allCompleted) {
-      return this.statusList.find(s => s.name == 'COMPLETE') || null;
+      return this.statusList.find((s) => s.name == 'COMPLETE') || null;
     } else if (someCompleted) {
-      return this.statusList.find(s => s.name == 'IN PROGRESS') || null;
+      return this.statusList.find((s) => s.name == 'IN PROGRESS') || null;
     } else {
-      return this.statusList.find(s => s.name == 'TO DO') || null;
+      return this.statusList.find((s) => s.name == 'TO DO') || null;
     }
   }
 
   createfinancialStatement(financialStatement: any) {
-    financialStatement.status = this.statusList.find(s => s.name == 'TO DO') || null;
+    financialStatement.status =
+      this.statusList.find((s) => s.name == 'TO DO') || null;
     const user = this.getUser(this.userId);
     const statement: FinancialStatement = {
       isInterested: financialStatement.isInterested,
@@ -202,20 +232,22 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
       status: financialStatement.status,
     };
 
-    this.financialStatementService.createFinancialStatement(statement).subscribe(
-      (response) => {
-        console.log("response", response);
-        this.router.navigate(
-          ['/clientSearch/clientManagement/clientNavbar/financialStatement'],
-          {
-            state: { data: response, client: this.client },
-
-          });
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.financialStatementService
+      .createFinancialStatement(statement)
+      .subscribe(
+        (response) => {
+          console.log('response', response);
+          this.router.navigate(
+            ['/clientSearch/clientManagement/clientNavbar/financialStatement'],
+            {
+              state: { data: response, client: this.client },
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   updatefinancialStatement(financialStatement: any, status: any) {
@@ -234,9 +266,7 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
       .then(
         (response) => {
           console.log(response);
-          if (response)
-            this.location.back();
-
+          if (response) this.location.back();
         },
         (error) => {
           console.log(error);
@@ -247,47 +277,68 @@ export class ClientCreateFinancialStatementComponent implements OnInit {
     this.location.back();
   }
   filterByyear(value: string): void {
-    console.log(this.yearList2, '2')
-    if (value != "") {
-      this.is = false
+    console.log(this.yearList2, '2');
+    if (value != '') {
+      this.is = false;
       const query = value.toLowerCase();
-      this.yearList2 = this.yearList.filter(year =>
+      this.yearList2 = this.yearList.filter((year) =>
         year.yearNum.toLowerCase().includes(query.toLowerCase())
       );
       if (this.yearList2.length == 0) {
-        this.yearList2 = this.Year2
-        this.thisSubject2 = value
+        this.yearList2 = this.Year2;
+        this.thisSubject2 = value;
         this.is = true;
       }
-    }
-    else {
-      this.is = false
-      console.log(this.yearList, '1')
+    } else {
+      this.is = false;
+      console.log(this.yearList, '1');
       this.yearList2 = this.yearList;
     }
     this.selectedyear = null;
-
   }
 
   select(event: AutoCompleteSelectEvent): void {
     const year = event.value as Year;
-    this.thisSubject = year.yearNum
+    this.thisSubject = year.yearNum;
   }
 
   add() {
-    alert(this.thisSubject2)
-    this.newYear.yearNum = this.thisSubject2
+    alert(this.thisSubject2);
+    this.newYear.yearNum = this.thisSubject2;
     this.yearService.createYear(this.newYear).subscribe(
-      response => {
+      (response) => {
         if (response) {
           this.yearList.push(response);
-          alert(response.yearNum + " נוסף בהצלחה");
+          alert(response.yearNum + ' נוסף בהצלחה');
         }
       },
-      error => {
+      (error) => {
         console.error('שגיאה ביצירת שנה:', error);
         alert('לא ניתן להוסיף שנה. שגיאה בקישור לשרת.');
       }
     );
   }
+  // 
+  calculateBalanceDue() {
+    const price = this.financialStatementForm.get('price').value;
+    const paymentAmountPaid = this.financialStatementForm.get('paymentAmountPaid').value;
+  
+    // מחשבים את היתרה לתשלום ומעדכנים בשדה היתרה
+    const balanceDue = price - paymentAmountPaid;
+    this.financialStatementForm.get('balanceDue').setValue(balanceDue > 0 ? balanceDue : 0);
+  }
+  // 
+  ngAfterViewInit() {
+    if (this.statementToUpdate) {
+      this.financialStatementForm.patchValue({
+        type: this.statementToUpdate.entityType,
+        year: this.statementToUpdate.year,
+        price: this.statementToUpdate.price,
+        paymentAmountPaid: this.statementToUpdate.paymentAmountPaid,
+        balanceDue: this.statementToUpdate.balanceDue,
+        status: this.statementToUpdate.status,
+      });
+    }
+  }
+  
 }
