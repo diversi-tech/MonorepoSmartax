@@ -73,4 +73,4 @@
   </p-footer>
 </p-confirmDialog>
 
-<app-client-add-communication *ngIf="displayDialog" (close)="displayDialog = false"></app-client-add-communication>
+<app-client-add-communication *ngIf="displayDialog" (createCompleted)="onCreateCompleted()" (close)="displayDialog = false"></app-client-add-communication>
