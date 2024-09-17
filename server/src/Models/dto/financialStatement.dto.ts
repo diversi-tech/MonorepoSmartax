@@ -30,7 +30,7 @@ export class UpdateFinancialStatementDto {
 
     @ApiProperty({ required: false, example: '2022-01-01' })
     @IsOptional()
-    @IsDate()
+    // @IsDate()
     date?: Date;
 
     @ApiProperty({ required: false, example: 100 })
@@ -52,7 +52,8 @@ export class UpdateFinancialStatementDto {
     @IsOptional()
     entityType: string;
 
-    @ApiProperty({ required: false, type: [StepField] })
+    @ApiProperty()
+    // { required: false, type: [StepField] }
     @IsOptional()
     stepsList: StepField[];
 
@@ -66,7 +67,7 @@ export class UpdateFinancialStatementDto {
 
     @ApiProperty({ required: false, example: '2023-01-01' })
     @IsOptional()
-    @IsDate()
+    // @IsDate()
     finalSubmissionDate: Date;
 }
 
