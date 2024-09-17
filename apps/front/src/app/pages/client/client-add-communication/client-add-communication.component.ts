@@ -130,6 +130,7 @@ export class ClientAddCommunicationComponent implements OnInit {
       .subscribe(
         (newCommunication: Communication) => {
           this.resetForm();
+          this.createCompleted.emit();
         },
         error => {
           console.error('Error creating communication:', error);

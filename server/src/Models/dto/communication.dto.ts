@@ -43,7 +43,7 @@ export class UpdateCommunicationDto {
 
     @ApiProperty({ type: Date, example: new Date(), required: true })
     @IsOptional()
-    @IsDateString()
+    // @IsDateString()
     date?: Date;
 
     @ApiProperty({ type: String, example: 'Meeting', required: true })
