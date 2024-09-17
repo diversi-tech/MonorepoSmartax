@@ -18,6 +18,7 @@ import { EventEmitter } from '@angular/core';
 import { TokenService } from '../../../_services/token.service';
 import { ButtonModule } from 'primeng/button';
 import { ClientService } from '../../../_services/client.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -169,7 +170,16 @@ export class ClientAddCommunicationComponent implements OnInit {
     this.newcallTopicSchema.name = this.thisSubject2
     this.calltopicservice.createCallTopic(this.newcallTopicSchema).subscribe(response => {
       this.callTopics.push(response); 
-      alert( response.name+" "+"נוסף בהצלחה")
+      const callTopic = this.thisSubject2;
+      this.thisSubject = callTopic;
+      Swal.fire({
+        icon: 'success',
+        title: 'הנושא נוסף בהצלחה',
+        showConfirmButton: false,
+        timer: 1500,
+        position: 'top-end'
+      })
+      // alert( response.name+" "+"נוסף בהצלחה")
        // הוספת הנושא החדש לרשימה המקומית
     });
   }

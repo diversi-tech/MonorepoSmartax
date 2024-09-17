@@ -1,62 +1,117 @@
-<button pButton label="להוספת שיחה" (click)="displayDialog = true" class= "p-button-text p-button-raised p-button-rounded"></button>
+<button
+  pButton
+  label="להוספת שיחה"
+  (click)="displayDialog = true"
+  class="p-button-text p-button-raised p-button-rounded"
+></button>
 <p-table [value]="communications">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th></th>
-      <th>סוג השיחה </th>
+      <th>סוג השיחה</th>
       <th>תאריך</th>
       <th>נושא שיחה</th>
       <th>סיכום</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-communication let-columns="columns">
-    <tr (click)="selectCurrentCommunication(communication)"
-      [ngClass]="{ 'highlight': currentCommunication === communication }">
-
-      <td><button *ngIf="currentCommunication === communication" pButton
+    <tr
+      (click)="selectCurrentCommunication(communication)"
+      [ngClass]="{ highlight: currentCommunication === communication }"
+    >
+      <td>
+        <button
+          *ngIf="currentCommunication === communication"
+          pButton
           class="pi pi-pencil p-button-outlined p-button-rounded p-button-info"
-          (click)="selectCommunication(this.currentCommunication); showConfirmationEdit()"></button>
-        <button *ngIf="currentCommunication === communication" pButton [class]="myClass"
+          (click)="
+            selectCommunication(this.currentCommunication);
+            showConfirmationEdit()
+          "
+        ></button>
+        <button
+          *ngIf="currentCommunication === communication"
+          pButton
+          [class]="myClass"
           class="pi pi-trash p-button-outlined p-button-rounded p-button-danger"
-          (click)="showConfirmationDelete()"></button>
+          (click)="showConfirmationDelete()"
+        ></button>
       </td>
       <td *ngIf="communication.Status === 'true'">ליד</td>
       <td *ngIf="communication.Status === 'false'">מעקב</td>
-      <td>{{communication.date | date: 'yyyy-MM-dd' }}</td>
-      <td>{{communication.Subject}}</td>
-      <td>{{communication.summary}}</td>
+      <td>{{ communication.date | date: 'yyyy-MM-dd' }}</td>
+      <td>{{ communication.Subject }}</td>
+      <td>{{ communication.summary }}</td>
     </tr>
   </ng-template>
 </p-table>
 
-<p-confirmDialog header='עריכת שיחה' key="edit">
+<p-confirmDialog header="עריכת שיחה" key="edit">
   <p-footer>
     <div *ngIf="selectedCommunication" class="p-grid">
       <form (ngSubmit)="updateCommunication()" class="form-background">
         <div class="p-field">
           <label for="editClientName">שם לקוח</label>
-          <input type="text" class="p-inputtext" id="editClientName" [(ngModel)]="selectedCommunication.client"
-            name="editClientName" required>
+          <input
+            type="text"
+            class="p-inputtext"
+            id="editClientName"
+            [(ngModel)]="selectedCommunication.client"
+            name="editClientName"
+            required
+          />
         </div>
         <div class="p-field">
           <label for="editDate">תאריך</label>
-          <input type="date" class="p-inputtext" id="editDate" [(ngModel)]="selectedCommunication.date" name="editDate"
-            required>
+          <input
+            type="date"
+            class="p-inputtext"
+            id="editDate"
+            [(ngModel)]="selectedCommunication.date"
+            name="editDate"
+            required
+          />
         </div>
         <div class="p-field">
           <label for="editSubject">נושא</label>
-          <input type="text" class="p-inputtext" id="editSubject" [(ngModel)]="selectedCommunication.Subject"
-            name="editSubject" required>
+          <!-- <input
+            type="text"
+            class="p-inputtext"
+            id="editSubject"
+            [(ngModel)]="selectedCommunication.Subject"
+            name="editSubject"
+            required
+          /> -->
+          <!--  -->
+          <p-dropdown
+            [options]="callTopics"
+            [(ngModel)]="selectedCommunication.Subject"
+            optionLabel="name"
+            [filter]="true"
+            filterBy="name"
+          ></p-dropdown>
+          <!--  -->
         </div>
         <div class="p-field">
           <label for="editSummary">סיכום</label>
-          <textarea class="p-textarea" id="editSummary" [(ngModel)]="selectedCommunication.summary" name="editSummary"
-            rows="3" required></textarea>
+          <textarea
+            class="p-textarea"
+            id="editSummary"
+            [(ngModel)]="selectedCommunication.summary"
+            name="editSummary"
+            rows="3"
+            required
+          ></textarea>
         </div>
         <div class="p-field">
           <label for="editAssignedTo">משוייך ל</label>
-          <p-dropdown [options]="users" [(ngModel)]="selectedCommunication.assignedTo" name="editAssignedTo"
-            optionLabel="label" placeholder="Select an assigned user"></p-dropdown>
+          <p-dropdown
+            [options]="users"
+            [(ngModel)]="selectedCommunication.assignedTo"
+            name="editAssignedTo"
+            optionLabel="label"
+            placeholder="Select an assigned user"
+          ></p-dropdown>
         </div>
         <button type="submit" class="p-button">עדכון שיחה</button>
       </form>
@@ -66,11 +121,27 @@
 
 <p-confirmDialog header="Confirmation" key="delete">
   <p-footer>
-    <button type="button" pButton icon="pi pi-times" label="ביטול" class="p-button-text"
-      (click)="cancelDelete()"></button>
-    <button type="button" pButton icon="pi pi-check" label="מחיקה" class="p-button-text"
-      (click)="confirmDelete()"></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times"
+      label="ביטול"
+      class="p-button-text"
+      (click)="cancelDelete()"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      label="מחיקה"
+      class="p-button-text"
+      (click)="confirmDelete()"
+    ></button>
   </p-footer>
 </p-confirmDialog>
 
-<app-client-add-communication *ngIf="displayDialog" (createCompleted)="onCreateCompleted()" (close)="displayDialog = false"></app-client-add-communication>
+<app-client-add-communication
+  *ngIf="displayDialog"
+  (createCompleted)="onCreateCompleted()"
+  (close)="displayDialog = false"
+></app-client-add-communication>

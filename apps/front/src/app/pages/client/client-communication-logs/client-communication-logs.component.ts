@@ -12,6 +12,8 @@ import { UserService } from '../../../_services/user.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
+import { callTopicSchema } from 'src/app/_models/callTopic.module';
+import { CallTopicService } from 'src/app/_services/callTopic.service';
 
 @Component({
   selector: 'app-client-communication-logs',
@@ -49,12 +51,14 @@ export class ClientCommunicationLogsComponent {
     private communicationService: CommunicationService,
     private confirmationService: ConfirmationService,
     private userService: UserService,
+    private calltopicservice: CallTopicService
   ) { }
 
   ngOnInit(): void {
     this.client = history.state.client;
     this.getCommunications();
     this.loadUsers();
+    this.getCallTopics();
   }
 
   private loadUsers(): void {
@@ -148,5 +152,13 @@ export class ClientCommunicationLogsComponent {
   onCreateCompleted() {
     // רענון רשימת הקבצים אחרי העלאת מסמך
     this.loadUploadedFiles();
+  }
+  // 
+  callTopics: callTopicSchema[];
+
+  getCallTopics(): void {
+    this.calltopicservice.getAll().subscribe(callTopic => {
+      this.callTopics = callTopic
+    });
   }
 }
