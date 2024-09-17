@@ -62,6 +62,9 @@ export class ClientAddCommunicationComponent implements OnInit {
   currentRoute: string;
   selectedClient: Client;
   @Output() close = new EventEmitter<void>();
+  // 
+  @Output() createCompleted = new EventEmitter<void>();
+
   statusOptions = [
     { label: 'ליד', value: true },
     { label: 'מעקב', value: false }
@@ -131,6 +134,7 @@ export class ClientAddCommunicationComponent implements OnInit {
           console.error('Error creating communication:', error);
         }
       );
+      this.createCompleted.emit();
     this.close.emit();
   }
 

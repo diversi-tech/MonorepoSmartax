@@ -38,24 +38,29 @@ export class EditorComponent implements OnInit {
         ],
       },
     });
-
+  
+    // הוספת כיוון RTL ל-ql-editor
+    const qlEditor = this.editor!.nativeElement.querySelector('.ql-editor');
+    qlEditor.setAttribute('dir', 'rtl');
+    qlEditor.style.textAlign = 'right';  // ליישור הטקסט לימין
+  
     if (this.initialContent) {
       this.quill.clipboard.dangerouslyPasteHTML(0, this.initialContent);
     }
-
+  
     this.quill.on('text-change', () => {
-      const html =
-        this.editor!.nativeElement.querySelector('.ql-editor').innerHTML;
+      const html = qlEditor.innerHTML;
       this.contentChange.emit(html);
       this.addBorderHighlight();
     });
-
+  
     this.quill.on('selection-change', (range: any) => {
       if (!range) {
         this.removeBorderHighlight();
       }
     });
   }
+  
   getContents() {
     this.htmlContent = this.quill!.root.innerHTML;
   }

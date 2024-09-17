@@ -1,27 +1,31 @@
-<p-fileUpload
-name="file"
-[customUpload]="true"
-(uploadHandler)="upload($event)"
-[style]="{'margin-bottom': '20px'}"
-[auto]="true"
-chooseIcon="pi pi-cloud-upload"
-chooseLabel=" ">
-</p-fileUpload>
-<p-dropdown 
-    [options]="DocTypes" 
-    [(ngModel)]="selectedType" 
-    optionLabel="name" 
-    placeholder="פתח בתקיה">
-    <ng-template pTemplate="footer">
-        <div class="p-fluid">
-            <div class="input-container">
-             <input type="text" pInputText [(ngModel)]="newTypeName" placeholder="הוסף תקיה חדשה" (click)="$event.stopPropagation()" (keydown.enter)="addItem($event)">
-            <!-- <div class="p-field"> -->
-              <button type="button" icon="pi pi-plus" (click)="addItem($event)" [style]="{'margin-left': '8px',
-                }"
-              ></button>
-            <!-- </div> -->
-          </div>
+<div class="div-all">
+  <p-button class="custom-button" (click)="showDrop=!showDrop" icon="pi pi-plus" label="   העלאת מסמך"  [raised]="true" ></p-button>
+
+  <!-- <div *ngIf="showDrop" class="dropdown-container"> -->
+    <p-dropdown *ngIf="showDrop"
+      [options]="DocTypes" 
+      [(ngModel)]="selectedType" 
+      optionLabel="name" 
+      placeholder="פתח בתקיה">
+      <ng-template pTemplate="footer">
+        <div class="p-fluid input-container">
+          <input type="text" pInputText [(ngModel)]="newTypeName" placeholder="הוסף תקיה חדשה" (click)="$event.stopPropagation()" (keydown.enter)="addItem($event)">
+          <button type="button" icon="pi pi-plus" (click)="addItem($event)" class="add-item-button"></button>
         </div>
       </ng-template>
-</p-dropdown>
+    </p-dropdown>
+  <!-- </div> -->
+
+  <div *ngIf="selectedType" class="file-upload-container">
+    <p-fileUpload
+      name="file"
+      [customUpload]="true"
+      (uploadHandler)="upload($event)"
+      [auto]="true"
+      chooseIcon="pi pi-cloud-upload"
+      chooseLabel=" "
+      class="file-upload">
+    </p-fileUpload>
+  </div>
+</div>
+<br>

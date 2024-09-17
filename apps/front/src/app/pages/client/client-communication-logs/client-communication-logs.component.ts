@@ -139,4 +139,14 @@ export class ClientCommunicationLogsComponent {
   confirmDelete(): void {
     this.deleteCommunication();
   }
+  // 
+  loadUploadedFiles() {
+    // קריאה ל-API לטעינת רשימת הקבצים
+    this.getCommunications();
+  }
+
+  onCreateCompleted() {
+    // רענון רשימת הקבצים אחרי העלאת מסמך
+    this.loadUploadedFiles();
+  }
 }

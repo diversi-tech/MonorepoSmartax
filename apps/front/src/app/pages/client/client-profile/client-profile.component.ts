@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Client } from '../../../_models/client.module';
 import { NgIf, DatePipe, NgFor, CommonModule } from '@angular/common';
@@ -43,6 +43,10 @@ export class ClientProfileComponent implements OnInit {
   showBusinessDetails: boolean = false;
   showSensitiveDetails: boolean = false;
 
+  // 
+  // @Output() clientNameChanged = new EventEmitter<Client>();
+
+
 
   constructor(
     private router: Router,
@@ -52,6 +56,8 @@ export class ClientProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.client = history.state.client as Client;
+    // this.clientNameChanged.emit(this.client); // שולחים את השם החוצה
+
     if (!this.client) {
       this.router.navigate(['/clientSearch']); // Redirect to client search if no client is found in state
     }

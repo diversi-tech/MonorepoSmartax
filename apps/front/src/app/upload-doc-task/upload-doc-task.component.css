@@ -1,33 +1,73 @@
-@import "primeicons/primeicons.css";
+@import 'primeicons/primeicons.css';
 .input-container {
-    display: flex;
-    align-items: center;
-  }
+  display: flex;
+  align-items: center;
+}
+
+.input-container input {
+  flex: 1;
+}
+
+:host ::ng-deep .p-fileupload .p-fileupload-content {
+  display: none;
+}
+
+:host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
+  /* display: none !important; */
+  background-color: none;
+  padding: 0%;
+  border: 0cm;
+  background: none;
+}
+
+:host
+  ::ng-deep
+  span.p-ripple.p-element.p-button.p-component.p-fileupload-choose.ng-star-inserted {
+  margin-top: 1cm;
+}
+/* .custom-button {
+  margin-bottom: 5%;
+  margin-right: 3%;
+  margin-left: 3%;
+}
+.div-all {
+  display: flex;
+  direction: rtl;
+  margin-left: 3%;
+
+} */
+
+/*  */
+.div-all {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* רווח בין האלמנטים */
+  direction: rtl;
   
-  .input-container input {
-    flex: 1;
-  }
 
-  :host ::ng-deep .p-fileupload .p-fileupload-content{
-    display: none;
-   
-  }
-
-  :host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
-    /* display: none !important; */
-   background-color: none;
-   padding: 0%;
-   border: 0cm;
-   background: none;
-  }
-
-
-  :host ::ng-deep span.p-ripple.p-element.p-button.p-component.p-fileupload-choose.ng-star-inserted{
-    margin-top:1cm;
-  }
   
-  
-  /* .add-button {
+  border: 1px solid black; /* מסגרת שחורה דקה */
+  border-radius: 10px; /* קצוות עגולים */
+  background-color: white; /* רקע לבן */
+  padding: 10px; /* רווח פנימי */
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.add-item-button {
+  margin-left: 8px;
+}
+
+.dropdown-container, .file-upload-container {
+  margin-left: 10px; /* רווח כדי להפריד בין האלמנטים */
+}
+
+/*  */
+
+/* .add-button {
     margin-left: 8px !important;
     padding: 0 8px !important;
     font-size: 6px !important;
@@ -49,5 +89,3 @@
   .p-button-sm.add-button .pi {
     font-size: 10px !important;
   } */
-  
-  

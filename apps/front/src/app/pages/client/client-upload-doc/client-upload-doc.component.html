@@ -9,7 +9,8 @@ chooseLabel=" ">
 </p-fileUpload> (responseReceived)="handleResponse($event)"-->
 
 <app-upload-doc-task
-[idClient]="this.client!._id!">
+[idClient]="this.client!._id!"
+ (uploadCompleted)="onUploadCompleted()">
 </app-upload-doc-task>
 <div class="card">
   <p-table [value]="uploadedFiles" sortField="name" [sortOrder]="-1" [tableStyle]="{ 'min-width': '60rem' }">

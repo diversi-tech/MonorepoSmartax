@@ -22,7 +22,7 @@ export class CreateTaskDto {
 
     @IsOptional()
     @ApiProperty({ description: 'The subTasks ID array' })
-    @IsString()
+    // @IsString()
     // subTasks?: string[];
     subTasks?: Task[];
 
