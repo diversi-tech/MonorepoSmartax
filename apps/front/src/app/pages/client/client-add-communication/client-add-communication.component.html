@@ -87,7 +87,7 @@
                 [style]="{ width: '100%' }"
                 placeholder="Search callTopics"
               >
-              <ng-template let-callTopicSchema pTemplate="item"></ng-template>
+              <ng-template let-callTopicSchema pTemplate="item">
                 <div class="p-d-flex p-ai-center">
                   {{ callTopicSchema.name }}
                   <ng-container *ngIf="is">
