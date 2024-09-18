@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { IconProfileComponent } from 'src/app/share/icon-profile/icon-profile.component';
+import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
