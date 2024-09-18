@@ -474,6 +474,7 @@ export class TaskComponent implements OnInit {
           // Task updated
           // if (this.eventId) this.updateTask();
           if (this.taskId) this.closeModal.emit();
+          sessionStorage.setItem('refreshTasks', 'true'); // שמירת דגל רענון
           window.history.back();
         },
         error: (err) => {

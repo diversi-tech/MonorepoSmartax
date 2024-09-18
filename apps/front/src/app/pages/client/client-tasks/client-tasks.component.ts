@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe, NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import {
+  CommonModule,
+  DatePipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+  NgTemplateOutlet,
+} from '@angular/common';
 import { Client } from '../../../_models/client.module';
 import { TaskService } from '../../../_services/task.service';
 import { Task } from '../../../_models/task.module';
@@ -19,7 +27,10 @@ import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CalendarModule } from 'primeng/calendar';
-import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
+import {
+  AutoCompleteCompleteEvent,
+  AutoCompleteModule,
+} from 'primeng/autocomplete';
 import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
@@ -55,9 +66,7 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
   ],
 })
-
 export class ClientTasksComponent implements OnInit {
-
   // statuses: Status[] = [];
   // tasks: Task[] = [];
   // client: Client | null = null;
@@ -77,7 +86,6 @@ export class ClientTasksComponent implements OnInit {
   // filterFirstStatus = true;
   // currentTask: Task;
 
-
   // filter: {
   //   deadline: Date | null;
   //   client: Client | null;
@@ -91,8 +99,6 @@ export class ClientTasksComponent implements OnInit {
   //     task: null,
   //     tags: []
   //   };
-
-
 
   // constructor(
   //   private router: Router,
@@ -115,13 +121,14 @@ export class ClientTasksComponent implements OnInit {
   //   });
   // }
 
-
   // editTask() {
   //   this.router.navigate(['/taskSpe', this.currentTask._id]);
   // }
 
   createTask() {
-    this.router.navigate(['/taskSpe', 'create'],{ queryParams: { client: this.client._id } });
+    this.router.navigate(['/taskSpe', 'create'], {
+      queryParams: { client: this.client._id },
+    });
   }
 
   // client: Client | null = null;
@@ -134,7 +141,6 @@ export class ClientTasksComponent implements OnInit {
   //       console.log('Failed to fetch users:', error);
   //     })
   // }
-
 
   // categorizeTasks(status: Status): Task[] {
   //   return this.tasks.filter((task) => {
@@ -295,12 +301,12 @@ export class ClientTasksComponent implements OnInit {
     task: Task | null;
     tags: Tag[];
   } = {
-      deadline: null,
-      client: null,
-      user: null,
-      task: null,
-      tags: []
-    };
+    deadline: null,
+    client: null,
+    user: null,
+    task: null,
+    tags: [],
+  };
 
   clientSuggestions: Client[] = [];
   userSuggestions: User[] = [];
@@ -311,7 +317,6 @@ export class ClientTasksComponent implements OnInit {
   currentTask: Task;
 
   client: Client | null = null;
-  
 
   constructor(
     private taskService: TaskService,
@@ -320,12 +325,18 @@ export class ClientTasksComponent implements OnInit {
     private tagService: TagService,
     private confirmationService: ConfirmationService,
     private statusService: StatusService,
-    private router: Router,
-  ) {  }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.client = history.state.client;
     this.getTasksByClientId();
+    // בדוק אם יש צורך לרענן
+    const shouldRefresh = sessionStorage.getItem('refreshTasks');
+    if (shouldRefresh === 'true') {
+      this.getTasksByClientId(); // רענן את המשימות
+      sessionStorage.removeItem('refreshTasks'); // מחק את הדגל אחרי הרענון
+    }
     this.tagService.getAllTags().subscribe((tags: Tag[]) => {
       this.tagSuggestions = tags;
     });
@@ -347,46 +358,49 @@ export class ClientTasksComponent implements OnInit {
       },
       (error) => {
         console.log('Failed to fetch users:', error);
-      })
+      }
+    );
   }
 
   categorizeTasks(status: Status): Task[] {
     return this.tasks.filter((task) => {
-      { return task.status && task.status.name === status.name; }
+      {
+        return task.status && task.status.name === status.name;
+      }
     });
   }
 
   searchTask(): void {
     if (this.searchTerm.trim() === '') {
       this.filteredTasks = [];
-      alert("לחיפוש משימה אנא הקלידו את שם המשימה")
+      alert('לחיפוש משימה אנא הקלידו את שם המשימה');
     } else {
       this.filteredTasks = [];
-      this.searchTerm.trim()
-      this.searchTerm.toLowerCase()
-      this.tasks.forEach(t => {
+      this.searchTerm.trim();
+      this.searchTerm.toLowerCase();
+      this.tasks.forEach((t) => {
         if (t.taskName! && t.taskName.toLowerCase()?.includes(this.searchTerm))
           this.filteredTasks.push(t);
       });
       if (this.filteredTasks.length == 0) {
-        alert("לא נמצאות משימות בשם זה")
+        alert('לא נמצאות משימות בשם זה');
       }
     }
   }
 
-//   filterCountry(event: AutoCompleteCompleteEvent) {
-//     let filtered: any[] = [];
-//     let query = event.query;
+  //   filterCountry(event: AutoCompleteCompleteEvent) {
+  //     let filtered: any[] = [];
+  //     let query = event.query;
 
-//     for (let i = 0; i < (this.countries as any[]).length; i++) {
-//         let country = (this.countries as any[])[i];
-//         if (country.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-//             filtered.push(country);
-//         }
-//     }
+  //     for (let i = 0; i < (this.countries as any[]).length; i++) {
+  //         let country = (this.countries as any[])[i];
+  //         if (country.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+  //             filtered.push(country);
+  //         }
+  //     }
 
-//     this.filteredCountries = filtered;
-// }
+  //     this.filteredCountries = filtered;
+  // }
 
   showConfirmation(): void {
     this.confirmationService.confirm({
@@ -432,7 +446,11 @@ export class ClientTasksComponent implements OnInit {
 
   searchClients(event: any): void {
     this.clientService.getAllClients().subscribe((clients: Client[]) => {
-      this.clientSuggestions = clients.filter(client => client.firstName && client["firstName"].toLowerCase().includes(event.query.toLowerCase()));
+      this.clientSuggestions = clients.filter(
+        (client) =>
+          client.firstName &&
+          client['firstName'].toLowerCase().includes(event.query.toLowerCase())
+      );
     });
   }
 
@@ -448,10 +466,9 @@ export class ClientTasksComponent implements OnInit {
 
   searchTasks(event: any): void {
     const query = event.query.toLowerCase();
-    this.taskSuggestions = this.tasks!
-      .filter((task) =>
-        (task.taskName?.toLowerCase())?.includes(query.toLowerCase())
-      ).map((task) => ({ taskName: task.taskName }));
+    this.taskSuggestions = this.tasks!.filter((task) =>
+      task.taskName?.toLowerCase()?.includes(query.toLowerCase())
+    ).map((task) => ({ taskName: task.taskName }));
   }
 
   searchTags(event: any): void {
@@ -466,12 +483,24 @@ export class ClientTasksComponent implements OnInit {
     this.tasks.forEach((task) => {
       this.filterFirstStatus = false;
 
-      const deadlineMatch = !this.filter.deadline || new Date(task.deadline) <= new Date(this.filter.deadline);
+      const deadlineMatch =
+        !this.filter.deadline ||
+        new Date(task.deadline) <= new Date(this.filter.deadline);
 
-      const clientMatch = !this.filter.client || (task.client && task.client.firstName && task.client.firstName.includes(this.filter.client.firstName));
+      const clientMatch =
+        !this.filter.client ||
+        (task.client &&
+          task.client.firstName &&
+          task.client.firstName.includes(this.filter.client.firstName));
 
-      const userMatch = !this.filter.user || task.assignedTo[0].userName.includes(this.filter.user.userName);
-      const taskNameMatch = !this.filter.task || task.taskName!.toLowerCase()!.includes(this.filter.task.taskName.trim().toLowerCase());
+      const userMatch =
+        !this.filter.user ||
+        task.assignedTo[0].userName.includes(this.filter.user.userName);
+      const taskNameMatch =
+        !this.filter.task ||
+        task
+          .taskName!.toLowerCase()!
+          .includes(this.filter.task.taskName.trim().toLowerCase());
       let tagsMatch = true;
 
       if (this.filter.tags && this.filter.tags.length > 0) {
@@ -482,7 +511,13 @@ export class ClientTasksComponent implements OnInit {
         });
       }
 
-      if (deadlineMatch && clientMatch && userMatch && taskNameMatch && tagsMatch)
+      if (
+        deadlineMatch &&
+        clientMatch &&
+        userMatch &&
+        taskNameMatch &&
+        tagsMatch
+      )
         this.filteredTasks.push(task);
     });
   }
@@ -490,12 +525,16 @@ export class ClientTasksComponent implements OnInit {
   sortTasks(field: string, list: Task[], reverse: boolean) {
     list.sort((a, b) => {
       if (field === 'taskName') {
-        return reverse ? b.taskName.localeCompare(a.taskName) : a.taskName.localeCompare(b.taskName);
+        return reverse
+          ? b.taskName.localeCompare(a.taskName)
+          : a.taskName.localeCompare(b.taskName);
       }
       if (field === 'assignedTo') {
-        const nameA = a.assignedTo.map(user => user.userName).join(', ');
-        const nameB = b.assignedTo.map(user => user.userName).join(', ');
-        return reverse ? nameB.localeCompare(nameA) : nameA.localeCompare(nameB);
+        const nameA = a.assignedTo.map((user) => user.userName).join(', ');
+        const nameB = b.assignedTo.map((user) => user.userName).join(', ');
+        return reverse
+          ? nameB.localeCompare(nameA)
+          : nameA.localeCompare(nameB);
       }
       if (field === 'dueDate') {
         const dateA = new Date(a.deadline).getTime();
@@ -503,9 +542,11 @@ export class ClientTasksComponent implements OnInit {
         return reverse ? dateB - dateA : dateA - dateB;
       }
       if (field === 'tags') {
-        const tagsA = a.tags.map(tag => tag.text).join(', ');
-        const tagsB = b.tags.map(tag => tag.text).join(', ');
-        return reverse ? tagsB.localeCompare(tagsA) : tagsA.localeCompare(tagsB);
+        const tagsA = a.tags.map((tag) => tag.text).join(', ');
+        const tagsB = b.tags.map((tag) => tag.text).join(', ');
+        return reverse
+          ? tagsB.localeCompare(tagsA)
+          : tagsA.localeCompare(tagsB);
       }
       return 0;
     });
