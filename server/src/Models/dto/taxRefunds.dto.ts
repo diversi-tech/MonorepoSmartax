@@ -1,6 +1,6 @@
 import { Prop, Schema} from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsNotEmpty } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsOptional } from 'class-validator';
 import { StepField } from '../stepField.model';
 import { Status } from '../status.model';
 
@@ -14,34 +14,36 @@ export class CreateTaxRefundsDto  {
 
     @Prop()
     @ApiProperty({ example: 'employee_id_example' })
-    @IsNotEmpty()
+    // @IsNotEmpty()
     idEmploye: string;
 
     @Prop()
     @ApiProperty({ example: '2022-01-01'})
     @IsNotEmpty()
-    @IsDateString()
+    // @IsDateString()
     date: Date;
 
     @Prop()
     @ApiProperty({ example: '2023' })
-    @IsNotEmpty()
+    // @IsNotEmpty()
     year: string;
 
     @Prop([StepField])
-    @ApiProperty({ type: [StepField] })
+    @ApiProperty()
+    // { type: [StepField] }
     @IsNotEmpty()
     stepsList: StepField[];
    
 
     @Prop()
-    @ApiProperty({ type: [String], example: ['assignee1', 'assignee2'] })
-    @IsNotEmpty()
+    @ApiProperty()
+    // { type: [String], example: ['assignee1', 'assignee2'] }
+    // @IsNotEmpty()
     assignee: string[];
 
     @Prop()
     @ApiProperty({ example: 100 })
-    @IsNotEmpty()
+    // @IsNotEmpty()
     price: number;
 
     @Prop()
@@ -51,13 +53,23 @@ export class CreateTaxRefundsDto  {
 
     @Prop()
     @ApiProperty({ example: 50 })
-    @IsNotEmpty()
+    // @IsNotEmpty()
     balanceDue: number;
 
     @Prop()
     @ApiProperty()
     @IsNotEmpty()
     status: Status[];
+
+    @Prop()
+    @ApiProperty({ example: 'user_id_example' })
+    @IsOptional()
+    idUser?: string;
+
+    @Prop()
+    @ApiProperty({ example: 'user_id_example' })
+    @IsOptional()
+    entityType: string;
 
 
 }
@@ -71,56 +83,56 @@ export class UpdateTaxRefundsDto  {
 
     @Prop()
     @ApiProperty({ example: 'employee_id_example' })
-    @IsNotEmpty()
+    @IsOptional()
     idEmploye: string;
 
     @Prop()
     @ApiProperty({ example: new Date() })
-    @IsNotEmpty()
-    @IsDateString()
+    @IsOptional()
+    // @IsDateString()
     date: Date;
 
     @Prop()
     @ApiProperty({ example: '2023' })
-    @IsNotEmpty()
+    @IsOptional()
     year: string;
 
     @Prop([StepField])
     @ApiProperty({ type: [StepField] })
-    @IsNotEmpty()
+    @IsOptional()
     stepsList: StepField[];
 
     @Prop()
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     status: Status[];
      
    
 
     @Prop()
     @ApiProperty({ type: [String], example: ['assignee1', 'assignee2'] })
-    @IsNotEmpty()
+    @IsOptional()
     assignee: string[];
 
 
     @Prop()
     @ApiProperty({ example: 100 })
-    @IsNotEmpty()
+    @IsOptional()
     price: number;
 
     @Prop()
     @ApiProperty({ example: 50 })
-    @IsNotEmpty()
+    @IsOptional()
     paymentAmountPaid: number;
 
     @Prop()
     @ApiProperty({ example: 50 })
-    @IsNotEmpty()
+    @IsOptional()
     balanceDue: number;
 
     @Prop()
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     entityType: string;
 
 }
