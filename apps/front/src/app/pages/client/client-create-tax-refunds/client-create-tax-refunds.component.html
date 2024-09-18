@@ -56,7 +56,7 @@
   
       <div class="form-group">
         <label for="balanceDue">יתרה לתשלום:</label>
-        <input type="number" id="balanceDue" formControlName="balanceDue" class="form-control" placeholder="יתרה לתשלום" readonly>
+        <input type="number" id="balanceDue" formControlName="balanceDue" class="form-control" placeholder="יתרה לתשלום" >
         <div *ngIf="taxRefundsForm.get('balanceDue').invalid && taxRefundsForm.get('balanceDue').touched" class="error">
           This field is required.
         </div>
