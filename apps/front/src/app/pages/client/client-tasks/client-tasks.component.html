@@ -297,7 +297,7 @@
       <button
         pButton
         class="p-button-text p-button-raised p-button-rounded"
-        [routerLink]="['/taskSpe', 'create']"
+        (click)="createTask"
         id="addBtn"
         type="button"
         icon="pi pi-plus"
@@ -337,6 +337,7 @@
                 [paginator]="true"
                 [rows]="5"
                 [rowsPerPageOptions]="[5, 10, 20]"
+                *ngIf="categorizeTasks(status).length > 0"
               >
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">

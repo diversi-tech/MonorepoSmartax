@@ -120,9 +120,9 @@ export class ClientTasksComponent implements OnInit {
   //   this.router.navigate(['/taskSpe', this.currentTask._id]);
   // }
 
-  // createTask() {
-  //   this.router.navigate(['/taskSpe', 'create'],{ queryParams: { client: this.client._id } });
-  // }
+  createTask() {
+    this.router.navigate(['/taskSpe', 'create'],{ queryParams: { client: this.client._id } });
+  }
 
   // client: Client | null = null;
   // getTasksByClientId(): void {
