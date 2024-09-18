@@ -297,7 +297,7 @@
       <button
         pButton
         class="p-button-text p-button-raised p-button-rounded"
-        (click)="createTask"
+        (click)="createTask()"
         id="addBtn"
         type="button"
         icon="pi pi-plus"
@@ -323,6 +323,13 @@
         (change)="searchTask()"
         [(ngModel)]="searchTerm"
       />
+
+        <!-- <p-autoComplete 
+            [(ngModel)]="searchTerm" 
+            [dropdown]="true" 
+            [suggestions]="task" 
+            (completeMethod)="filterCountry($event)" 
+            field="name" /> -->
     </div>
   </div>
 
@@ -331,13 +338,13 @@
       <div>
         <div *ngIf="filteredTasks.length == 0">
           <div *ngFor="let status of statuses">
-            <p-panel header="{{ status.name }}">
+            <p-panel header="{{ status.name }}" *ngIf="categorizeTasks(status).length > 0">
               <p-table
                 [value]="categorizeTasks(status)"
                 [paginator]="true"
                 [rows]="5"
                 [rowsPerPageOptions]="[5, 10, 20]"
-                *ngIf="categorizeTasks(status).length > 0"
+                
               >
                 <ng-template pTemplate="header">
                   <tr style="height: 50px">

@@ -19,7 +19,7 @@ import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CalendarModule } from 'primeng/calendar';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { IconProfileComponent } from '../../../share/icon-profile/icon-profile.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
@@ -373,6 +373,20 @@ export class ClientTasksComponent implements OnInit {
       }
     }
   }
+
+//   filterCountry(event: AutoCompleteCompleteEvent) {
+//     let filtered: any[] = [];
+//     let query = event.query;
+
+//     for (let i = 0; i < (this.countries as any[]).length; i++) {
+//         let country = (this.countries as any[])[i];
+//         if (country.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+//             filtered.push(country);
+//         }
+//     }
+
+//     this.filteredCountries = filtered;
+// }
 
   showConfirmation(): void {
     this.confirmationService.confirm({
