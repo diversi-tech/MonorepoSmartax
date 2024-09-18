@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { CommonModule, DatePipe, NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { Client } from '../../../_models/client.module';
 import { TaskService } from '../../../_services/task.service';
 import { Task } from '../../../_models/task.module';
@@ -10,14 +10,20 @@ import { Tag } from '../../../_models/tag.module';
 import { UserService } from '../../../_services/user.service';
 import { ClientService } from '../../../_services/client.service';
 import { TagService } from '../../../_services/tag.service';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, Footer, PrimeTemplate } from 'primeng/api';
 import { StatusService } from '../../../_services/status.service';
 import { Status } from '../../../_models/status.module';
-import { ButtonModule } from 'primeng/button';
+import { Button, ButtonDirective, ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { IconProfileComponent } from 'src/app/share/icon-profile/icon-profile.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-client-tasks',
@@ -25,14 +31,28 @@ import { Router } from '@angular/router';
   templateUrl: './client-tasks.component.html',
   styleUrl: './client-tasks.component.css',
   imports: [
-    CommonModule,
     ConfirmDialogModule,
+    Footer,
+    ButtonDirective,
     SidebarModule,
+    NgIf,
+    CalendarModule,
     FormsModule,
-    ButtonModule,
+    AutoCompleteModule,
+    PrimeTemplate,
+    IconProfileComponent,
+    MultiSelectModule,
+    Button,
+    RouterLink,
+    InputTextModule,
+    NgFor,
     PanelModule,
     TableModule,
-    NgTemplateOutlet,
+    NgStyle,
+    NgClass,
+    ToastModule,
+    DatePipe,
+    ButtonModule,
   ],
 })
 
